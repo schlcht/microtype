@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 % -*- TeX:DTX -*-
-% $Id: microtype.dtx,v 1.4 2004-11-12 02:21:11+01 schlicht Exp schlicht $
+% $Id: microtype.dtx,v 1.5 2004-11-18 00:34:52+01 schlicht Exp schlicht $
 % -----------------------------------------------------------------------
 %                      The `microtype' package
 %       An interface to the micro-typographic extensions of pdfTeX
@@ -25,7 +25,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{microtype}
 %<*package>
-      [2004/11/12 v1.4 Micro-typography with pdfTeX (RS)]
+      [2004/11/17 v1.4a Micro-typography with pdfTeX (RS)]
 %</package>
 %<*config>
 %<m-t>\ProvidesFile{microtype.cfg}
@@ -200,7 +200,8 @@
       \@tempa\endgroup\@esphack}
 %   \def\theCodelineNo{% % ... and everything else (would double the file size)
 %      \reset@font\color{thegrey}\scriptsize
-%      \hypertarget{L:\arabic{CodelineNo}}{\arabic{CodelineNo}}}
+%      \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
+%      \hypertarget{L:\number\@tempcnta}{\arabic{CodelineNo}}}
 %   \def\main#1{\underline{\hyperlink{L:#1}{#1}}}
 %   \def\codeline#1{\link@sanitize#1-\@nil{#1}}
 %   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
@@ -265,7 +266,7 @@
 % to a certain set of fonts, and to configure micro-typographic aspects of the
 % fonts in a straight-forward and flexible way. Settings for various fonts are
 % provided.\footnote{
-%     Currently, this package provides settings for: Computer Modern Roman,
+%     Currently, this package provides settings for Computer Modern Roman,
 %     Palatino, Times, Adobe Garamond and Minion as well as some generic
 %     settings for unknown fonts.}
 %
@@ -390,23 +391,23 @@
 %\Describe{Option}{DVIoutput}{\Default{\Option{true}}, \Option{false}}
 % \pdftex\ is not only able to generate \pdf\ output but can also spit out
 % \dvi\ files. The latter behaviour can be ordered by the option |DVIoutput|.
-% If you've previously set \cs{pdfoutput} to zero, |DVIoutput| will also be set
-% to true.
 %
-% When producing \dvi\ files, automatic font expansion will not work because
-% dvips (resp. the \dvi\ viewer) is not able to generate the expanded fonts on
-% the fly.
+% When producing \dvi\ files, \emph{automatic} font expansion will not work
+% because dvips (resp. the \dvi\ viewer) is not able to generate the expanded
+% fonts on the fly.
 %
 %\bigskip
 %\Describe{Option}{verbose}{\Default{\Option{true}}, \Option{false}}
-% You can get information in the log file on each font being set up, if you
+% You can get information in the log file on each font being set up if you
 % enable the |verbose| option, which is disabled by default.
 %
 %\bigskip
-%\noindent\Describe{Option}{draft}{\Default{\Option{true}}, \Option{false}}
-% If the |draft| option is passed to the package~-- which may also originate
-% from the class options~--, font expansion and character protrusion will be
-% turned off.
+%\Describe{Option}{draft}{\Default{\Option{true}}, \Option{false}}
+%\DescribeOption{final}
+% If the |draft| option is passed to the package, font expansion and character
+% protrusion will be turned off. The |draft| and |final| may options may also
+% be inherited from the class options; of course, you can override them in the
+% package options.
 %
 % \subsection{Options for Font Expansion}
 %\Describe{Option}{auto}{\Default{\Option{true}}, \Option{false}}
@@ -922,7 +923,8 @@
 %\DoNotIndex{\bigvee,\bigwedge,\braceld,\bracelu,\bracerd,\braceru,\bracevert}
 %\DoNotIndex{\coprod,\intop,\lgroup,\lmoustache,\ointop,\prod,\rgroup,\rmoustache}
 %\DoNotIndex{\sqrtsign,\sum} ^^A largesymbols
-%\DoNotIndex{\/,\\,\",\`,\',\,,\[,\],\*,\-,\.,\~,\^,\%,\&,\ } ^^A the last five cannot be excluded
+%\DoNotIndex{\/,\\,\",\`,\',\,,\[,\],\*,\-,\.,\;,\<,\>,\?,\!}
+%\DoNotIndex{\{,\},\#,\~,\^,\%,\&,\ } ^^A these cannot be excluded, unfortunately
 %\DoNotIndex{\define@key,\KV@@sp@def,\KVo@tempa,\setkeys} ^^A keyval
 %
 % ^^A -------------------------------------------------------------------------
@@ -1229,11 +1231,14 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 %\end{macro}
 %\begin{macro}{\MT@in@llist}
 % Test whether item is in list (separated by a comma; faster for long lists).
+%\changes{v1.4}{2004/11/16}{bug fix: compare with \cs{@empty} instead of \cs{relax}
+%                          (reported by Herb Schulz)}  ^^A <herbs@wideopenwest.com>
+%                                 ^^A in <MID:BDBFA967.C01F%herbs@wideopenwest.com>
 %    \begin{macrocode}
 \def\MT@in@llist#1#2{%
    \MT@inlist@false
    \def\MT@in@l##1#1,##2\@nil{%
-      \ifx\relax##2\relax\else
+      \ifx\@empty##2\@empty\else
          \MT@inlist@true
       \fi}%
    \expandafter\MT@in@l#2,#1,\@nil
@@ -1262,7 +1267,7 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 \def\MT@increment#1{%
    \MT@count#1\relax
    \advance\MT@count by 1\relax
-   \edef#1{\the\MT@count}%
+   \edef#1{\number\MT@count}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -1651,9 +1656,8 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 %    \begin{macrocode}
          \ifx\MT@expansioninh@name\relax\else
             \expandafter\ifx
-                  \csname MT@inh@\MT@expansioninh@name @\MT@char @\endcsname\relax
-               \else\MT@set@exp@children
-            \fi
+               \csname MT@inh@\MT@expansioninh@name @\MT@char @\endcsname\relax
+            \else\MT@set@exp@children\fi
          \fi
       \fi\fi
    \fi
@@ -1746,16 +1750,14 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
          {\csname MT@file@#1\endcsname}\MT@file@list
    \ifMT@inlist@\else
 %    \end{macrocode}
-% We have to take care that all characters have the correct category code.
-% Especially, new lines and spaces should be ignored, since files might be
-% loaded in the middle of the document. That's what \cs{nfss@catcodes} (from
-% the \LaTeX\ kernel) is good for.
-%
 % Don't forget that because reading the files takes place inside a group, all
 % commands that may be used there have to be defined globally.
+%\changes{v1.4}{2004/11/16}{bug fix: reset some more catcodes when reading files
+%                          (reported by Michael Hoppe)} ^^A <mh@michael-hoppe.de>
+%                               ^^A in <MID:p06002000bdbff1f93eb7@[192.168.0.34]>
 %    \begin{macrocode}
       \begingroup
-      \nfss@catcodes
+      \MT@file@catcodes
       \InputIfFileExists{mt-#1.cfg}%
          {\MT@xadd\MT@file@list{\csname MT@file@#1\endcsname,}%
           \ifMT@verbose\MT@info{... Loading font settings
@@ -1777,9 +1779,46 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@file@catcodes}
+% We have to make sure that all characters have the correct category code.
+% Especially, new lines and spaces should be ignored, since files might be
+% loaded in the middle of the document. This is basically \cs{nfss@catcodes}
+% (from the \LaTeX\ kernel). I've added: |&| (tabulars), |;|, |,|, |!| and |?|.
+%    \begin{macrocode}
+\def\MT@file@catcodes{%
+     \makeatletter
+     \catcode`\ 9%
+     \catcode`\^^I9%
+     \catcode`\^^M9%
+     \catcode`\\\z@
+     \catcode`\{\@ne
+     \catcode`\}\tw@
+     \catcode`\#6%
+     \catcode`\^7%
+     \catcode`\%14%
+   \@makeother\<%
+   \@makeother\>%
+   \@makeother\*%
+   \@makeother\.%
+   \@makeother\-%
+   \@makeother\/%
+   \@makeother\[%
+   \@makeother\]%
+   \@makeother\`%
+   \@makeother\'%
+   \@makeother\"%
+   \@makeother\&%
+   \@makeother\;%
+   \@makeother\,%
+   \@makeother\!%
+   \@makeother\?%
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@get@basefamily}
+% The family name might have a suffix
 %\changes{v1.1}{2004/09/14}{only remove suffix, if it is `x' or `j'}
-% The family name might have a suffix for expert or old style number font set
+% for expert or old style number font set
 %\changes{v1.2}{2004/09/26}{also remove `w' (swash capitals)}
 % or for swash capitals (|x|, |j| or |w|). We mustn't simply remove the last
 % letter, as this would make for instance |cms| out of |cmss| \textit{and}
@@ -1832,19 +1871,19 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 %    \begin{macrocode}
 \def\MT@next@listname#1#2#3#4{%
    \edef\@tempa{\MT@encoding/%
-                \ifnum#1=1 \MT@family\fi/%
-                \ifnum#2=1 \MT@series\fi/%
-                \ifnum#3=1 \MT@shape\fi/%
-                \ifnum#4=1 \MT@size\fi}%
+                \ifnum#1=\@ne \MT@family\fi/%
+                \ifnum#2=\@ne \MT@series\fi/%
+                \ifnum#3=\@ne \MT@shape\fi/%
+                \ifnum#4=\@ne \MT@size\fi}%
 %<debug>   \MT@info{trying \@tempa}%
    \@ifundefined{MT@\@tempb @\@tempa}{%
-      \ifnum#1=1
+      \ifnum#1=\@ne
          \ifx\MT@familyalias\@empty\else
             \edef\@tempa{\MT@encoding/%
                          \MT@familyalias/%
-                         \ifnum#2=1 \MT@series\fi/%
-                         \ifnum#3=1 \MT@shape\fi/%
-                         \ifnum#4=1 \MT@size\fi}%
+                         \ifnum#2=\@ne \MT@series\fi/%
+                         \ifnum#3=\@ne \MT@shape\fi/%
+                         \ifnum#4=\@ne \MT@size\fi}%
 %<debug>            \MT@info{(alias) \@tempa}%
          \fi
       \fi
@@ -1979,7 +2018,8 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
          \fi
       \fi
       \ifnum\MT@char > \@cclv
-         \MT@warning{Character number \MT@char\space larger than 255! Ignoring it}%
+         \MT@warning{Character \noexpand#1\noexpand#2\noexpand#3
+                     not recognized! Ignoring it}%
          \let\MT@char\m@ne
       \fi
    \fi
@@ -2025,10 +2065,10 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 % \pkg{hyperref}), \pkg{tipa}, and probably many more. Furthermore, we had to
 % include a hack for the \pkg{IEEEtran} class which loads all fonts in the
 % class file itself (to fine tune inter-word spacing). Then I discovered that
-% even the \pkg{memoir} class loads fonts. To cut this short: It seemed to get
-% out of hand, and I decided that it would be better to use \cs{pickup@font}
-% and decide for ourselves whether we've already seen that font. I hope the
-% overhead isn't too large. (We use a comma-separated list.)
+% even my favorite class, the \pkg{memoir} class, loads fonts. To cut this
+% short: It seemed to get out of hand, and I decided that it would be better to
+% use \cs{pickup@font} and decide for ourselves whether we've already seen that
+% font. I hope the overhead isn't too large. (We use a comma-separated list.)
 %    \begin{macrocode}
 %\g@addto@macro\define@newfont{%
 %   \MT@setupfont
@@ -4269,7 +4309,7 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 % \subsection{User Command}
 %\begin{macro}{\microtypesetup}
 %\changes{v1.4}{2004/11/04}{bug fix: set the correct levels, and remember them;
-%                           warning when enabling if disabled in package options}
+%                           warning when enabling an option disabled in package options}
 %\begin{macro}{\MT@define@optionX}
 % This command may be used anywhere in the document. It accepts the options:
 % |protrusion|, |expansion| and |activate|. Specifying font sets is not
@@ -4295,8 +4335,8 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 % loaded and hence wouldn't be set up.
 % (A whole caboodle of \cs{expandafter}s because we have to use \cs{csname}s.)
 %    \begin{macrocode}
-               \expandafter\expandafter\expandafter
-               \ifx\expandafter\csname ifMT@#1\expandafter\endcsname\csname iftrue\endcsname
+               \expandafter\expandafter\expandafter\ifx\expandafter
+               \csname ifMT@#1\expandafter\endcsname\csname iftrue\endcsname
                   \expandafter\@tempcnta\csname MT@#1level\endcsname
                   \MT@info{\@tempb\space enabled}%
                \else
@@ -4399,6 +4439,23 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
    \setkeys{MT}{protrusion={#1}}%
    \setkeys{MT}{expansion={#1}}%
 }
+\define@key{MT}{DVIoutput}[true]{\csname MT@DVIoutput#1\endcsname}
+\define@key{MT}{verbose}[true]{\csname MT@verbose#1\endcsname}
+%    \end{macrocode}
+% |draft| may be inherited from the class options.
+%    \begin{macrocode}
+\define@key{MT}{draft}[true]{\csname MT@draft#1\endcsname}
+%    \end{macrocode}
+% |final| is the opposite.
+%\changes{v1.4}{2004/11/16}{new option: \texttt{final}}
+%    \begin{macrocode}
+\define@key{MT}{final}[true]{%
+   \def\@tempa{#1}\def\@tempb{true}%
+   \ifx\@tempa\@tempb
+      \MT@draftfalse
+   \else
+      \MT@drafttrue
+   \fi}
 %    \end{macrocode}
 % |stretch|, etc., have to end with a space to terminate the number.
 %    \begin{macrocode}
@@ -4406,12 +4463,6 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 \define@key{MT}{shrink}[20]{\def\MT@shrink{#1 }}
 \define@key{MT}{step}[2]{\def\MT@step{#1 }}
 \define@key{MT}{auto}[true]{\csname MT@auto#1\endcsname}
-\define@key{MT}{DVIoutput}[true]{\csname MT@DVIoutput#1\endcsname}
-\define@key{MT}{verbose}[true]{\csname MT@verbose#1\endcsname}
-%    \end{macrocode}
-% |draft| may be inherited from the class options.
-%    \begin{macrocode}
-\define@key{MT}{draft}[true]{\csname MT@draft#1\endcsname}
 %    \end{macrocode}
 % Load the local configuration file before executing the package options.
 %    \begin{macrocode}
@@ -4450,7 +4501,7 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
-\ProcessOptionsWithKV{MT}%
+\ProcessOptionsWithKV{MT}
 %    \end{macrocode}
 % Now we can process the options:
 %
@@ -4465,12 +4516,12 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
    \fi
 \fi
 %    \end{macrocode}
-% Set up the numbers for font expansion: If |stretch| has not been specified, we
+% Set up the values for font expansion: If |stretch| has not been specified, we
 % take the default value of 20.
 %    \begin{macrocode}
 \ifMT@expansion
    \ifnum\MT@stretch=\m@ne
-      \def\MT@stretch{20 }%
+      \def\MT@stretch{20 }
    \fi
 %    \end{macrocode}
 % If |shrink| has not been specified, it will inherit the value from |stretch|.
@@ -4479,7 +4530,7 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
       \ifnum\MT@stretch>\z@
          \let\MT@shrink\MT@stretch
       \else
-         \def\MT@shrink{20 }%
+         \def\MT@shrink{20 }
       \fi
    \fi
 %    \end{macrocode}
@@ -4513,7 +4564,7 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
       \@tempcnta=\MT@step
    \fi
    \ifnum\@tempcnta=\z@ \@tempcnta=\@ne\fi
-   \edef\MT@step{\the\@tempcnta\space}%
+   \edef\MT@step{\number\@tempcnta\space}
 \fi
 %    \end{macrocode}
 %\begin{macro}{\MT@auto}
@@ -4538,6 +4589,7 @@ time will almost certainly lead to undesired results. Have your choice!}}{}%
    \MT@protrusionfalse
    \MT@expansionfalse
    \let\MT@setupfont\relax
+   \renewcommand{\UseMicroTypeSet}[2][]{}
 \else
    \MT@info{%
       \ifMT@protrusion Character protrusion enabled (level \MT@protrusionlevel)%
@@ -4702,7 +4754,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{3687}
+% \CheckSum{3767}
 %
 % \Finale
 %
