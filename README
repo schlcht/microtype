@@ -8,18 +8,18 @@
 * Overview
 -----------
 
-The `microtype' package  provides a LaTeX interface to  pdfTeX's micro-
+The `microtype' package  provides a  LaTeX interface to  pdfTeX's micro-
 typographic extensions: character protrusion and font expansion.
    It allows to  restrict character protrusion and/or font expansion to
-a certain set of fonts,  and to configure  micro-typographic aspects of
+a definable set of fonts, and to configure micro-typographic aspects of
 the fonts in a straight-forward and flexible way.
    Settings for various fonts are provided.
 
 Note that font expansion and character protrusion only works  with  the
-pdfTeX compiler,  at least version 0.14f,  resp. version 1.20a (release
-candidate 7), for automatic font expansion.
+pdfTeX  compiler,  at  least  version  0.14f,  resp.  version 1.20a for
+automatic font expansion.
 
-The manual can be found in microtype.pdf resp. microtype.dvi.
+The documentation can be found in microtype.pdf resp. microtype.dvi.
 
 
 * Installation
@@ -32,7 +32,7 @@ The manual can be found in microtype.pdf resp. microtype.dvi.
 
  - Run latex on microtype.dtx to create the documentation.
  - For an index run:
-      makeindex -s gind.ist microtype.idx
+      makeindex -s gind.ist -o microtype.ind microtype.idx
  - For the change history run:
       makeindex -s gglo.ist -o microtype.gls microtype.glo
 
@@ -40,15 +40,13 @@ The manual can be found in microtype.pdf resp. microtype.dvi.
 * License
 ----------
 
-This work may be distributed and/or modified under  the  conditions  of
+This work may be  distributed and/or modified  under the conditions  of
 the LaTeX Project Public License, either version 1.3 of this license or
-(at your option) any later version. The latest version of this  license
-is in:
-   <http://www.latex-project.org/lppl.txt>
-and version 1.3 or later is part of all distributions of LaTeX version
-2003/12/01 or later.
+(at your option) any later version.  The latest version of this license
+is in:  http://www.latex-project.org/lppl.txt, and version 1.3 or later
+is part of all distributions of LaTeX version 2003/12/01 or later.
 
-This work has the LPPL maintenance status "author-maintained".
+This work has the LPPL maintenance status `author-maintained'.
 
 This work consists of the files microtype.dtx and microtype.ins and the
 derived file microtype.sty.
@@ -61,4 +59,4 @@ provided  that (1) the original copyright statement is not removed, and
            Copyright (c) 2004 R Schlicht <w.m.l@gmx.net>
            ---------------------------------------------
 
-$Id: README,v 1.0 2004-09-11 15:07:08+02 schlicht Exp schlicht $
+$Id: README,v 1.1 2004-09-21 22:50:26+02 schlicht Exp schlicht $
