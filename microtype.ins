@@ -1,5 +1,5 @@
 % -*- TeX:UK -*-
-% $Id: microtype.ins,v 1.2 2004-10-27 15:18:55+02 schlicht Exp schlicht $
+% $Id: microtype.ins,v 1.3 2004-11-13 17:04:37+01 schlicht Exp schlicht $
 % -----------------------------------------------------------------------
 \input docstrip
 \keepsilent
@@ -8,7 +8,7 @@
 
 -----------------------------------------------------------------------
                        The `microtype' package
-       An interface to the micro-typographic features of pdfTeX
+       An interface to the micro-typographic extensions of pdfTeX
             Copyright (c) 2004 R Schlicht <w.m.l@gmx.net>
 
 This work  may be  distributed and/or modified  under the conditions of
@@ -85,14 +85,14 @@ derived file microtype.sty.
   \usepreamble\haraldpreamble
       \file{mt-pmn.cfg}{\from{microtype.dtx}{config,pmn}}
   \usepreamble\testpreamble
-      \file{test-microtype.tex}{\from{microtype.dtx}{auxiliary}}
+      \file{test-microtype.tex}{\from{microtype.dtx}{test}}
 }
 
 \obeyspaces
 \Msg{***********************************************************************}
 \Msg{* To finish installation, move all files to their appropriate places. *}
 \Msg{* See the documentation for details.                                  *}
-\Msg{* You can create the documentation by running LaTeX on microtype.dtx. *}
+\Msg{* You can create the documentation by running latex on microtype.dtx. *}
 \Msg{***********************************************************************}
 
 \endbatchfile

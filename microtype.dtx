@@ -1,7 +1,6 @@
 % \iffalse meta-comment
 % -*- TeX:DTX -*-
-% smartQuote: english
-% $Id: microtype.dtx,v 1.3 2004-10-27 15:20:30+02 schlicht Exp schlicht $
+% $Id: microtype.dtx,v 1.4 2004-11-12 02:21:11+01 schlicht Exp schlicht $
 % -----------------------------------------------------------------------
 %                      The `microtype' package
 %       An interface to the micro-typographic extensions of pdfTeX
@@ -21,25 +20,26 @@
 % -----------------------------------------------------------------------
 %
 %<*driver>
-\ProvidesFile{microtype.dtx}%
+\ProvidesFile{microtype.dtx}
 %</driver>
-%<package>\ProvidesPackage{microtype}%
-%<*package|driver>
-      [2004/10/27 v1.3 Micro-typography with pdfTeX (RS)]
-%</package|driver>
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{microtype}
+%<*package>
+      [2004/11/12 v1.4 Micro-typography with pdfTeX (RS)]
+%</package>
 %<*config>
 %<m-t>\ProvidesFile{microtype.cfg}
-%<m-t>         [2004/10/27 v1.3 microtype configuration file (RS)]
 %<cmr>\ProvidesFile{mt-cmr.cfg}
-%<cmr>         [2004/10/27 v1.3 microtype config. file: Computer Modern (RS)]
 %<pad>\ProvidesFile{mt-pad.cfg}
-%<pad>         [2004/10/03 v1.2 microtype config. file: Adobe Garamond (RS)]
 %<ppl>\ProvidesFile{mt-ppl.cfg}
-%<ppl>         [2004/10/27 v1.2 microtype config. file: Palatino (RS)]
 %<ptm>\ProvidesFile{mt-ptm.cfg}
-%<ptm>         [2004/10/27 v1.2 microtype config. file: Times (RS)]
 %<pmn>\ProvidesFile{mt-pmn.cfg}
-%<pmn>         [2004/09/15 v1.1 microtype config. file: Adobe Minion (HH)]
+%<m-t>      [2004/11/04 v1.4 microtype configuration file (RS)]
+%<cmr>      [2004/11/04 v1.4 microtype config. file: Computer Modern (RS)]
+%<pad>      [2004/11/04 v1.3 microtype config. file: Adobe Garamond (RS)]
+%<ppl>      [2004/11/04 v1.3 microtype config. file: Palatino (RS)]
+%<ptm>      [2004/10/27 v1.2 microtype config. file: Times (RS)]
+%<pmn>      [2004/09/15 v1.1 microtype config. file: Adobe Minion (HH)]
 %</config>
 %
 %<*driver>
@@ -107,6 +107,13 @@
    \sbox\@tempboxa{\small\itshape #1: #2}%
    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
    \vskip\belowcaptionskip}
+\def\thebibliography#1{%
+   \section{\refname}
+   \list{}{\leftmargin 0pt}%
+   \sloppy
+   \clubpenalty 4000
+   \@clubpenalty \clubpenalty
+   \widowpenalty 4000}
 \IndexPrologue{\section{Index}% add to pdf bookmarks
    Numbers written in italic refer to the page where the corresponding entry is
    described; numbers underlined refer to the code line of the definition;
@@ -121,7 +128,7 @@
       \def\@idxitem ####1####2\efill{%
          \end{multicols}
          \begin{multicols}{2}
-            [\subsection*{\ifx####1v\relax Version\ \fi ####2}][8\baselineskip]
+            [\subsection*{\ifx####1v\relax Version \fi ####2}][8\baselineskip]
          \GlossaryParms
          \let\item\@idxitem
          \ignorespaces \makeatletter \scan@allowedfalse}%
@@ -138,8 +145,7 @@
 \headheight15pt
 \def\ps@MTheadings{%
    \let\@oddfoot\@empty
-   \def\@oddhead{%
-      \hbox to\textwidth{\vbox{\hbox to\textwidth{%
+   \def\@oddhead{\hbox to\textwidth{\vbox{\hbox to\textwidth{%
          \footnotesize{\itshape\leftmark\rightmark\strut}\hfill\thepage\strut}%
          \hrule\@height0.4pt\@width\textwidth \vskip-0.4pt
       }}\hss}
@@ -177,27 +183,34 @@
       citecolor=linkcolor,
       hyperindex=false,
       hyperfootnotes=false,
-      pdfauthor={R Schlicht <w.m.l@gmx.net>},
       pdftitle={The microtype package},
+      pdfauthor={R Schlicht <w.m.l@gmx.net>},
       pdfsubject={An interface to the micro-typographic extension of pdfTeX},
       pdfkeywords={TeX, LaTeX, pdftex, typography, micro-typography,
                    font expansion, character protrusion, margin kerning}
      ]{hyperref}
-   \def\usage#1{\textbf{\textit{\hyperpage{#1}}}}% for indexing of \DescribeMacro
-%   \makeatletter % ... and everything else (would double the file size)
+   \def\usage#1{\textbf{\textit{\hyperpage{#1}}}}% for indexing of \DescribeMacro ...
+   \makeatletter
+   \def\changes@#1#2#3{% ... the changes ...
+      \protected@edef\@tempa{\noexpand\glossary{#1\levelchar
+         \ifx\saved@macroname\@empty \space\actualchar\generalname
+         \else\expandafter\@gobble\saved@macroname\actualchar
+            \string\verb\quotechar*\verbatimchar\saved@macroname\verbatimchar\fi
+         :\levelchar #3\encapchar hyperpage}}%
+      \@tempa\endgroup\@esphack}
+%   \def\theCodelineNo{% % ... and everything else (would double the file size)
+%      \reset@font\color{thegrey}\scriptsize
+%      \hypertarget{L:\arabic{CodelineNo}}{\arabic{CodelineNo}}}
 %   \def\main#1{\underline{\hyperlink{L:#1}{#1}}}
 %   \def\codeline#1{\link@sanitize#1-\@nil{#1}}
 %   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
 %   \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
-%   \def\theCodelineNo{%
-%      \reset@font\color{thegrey}\scriptsize
-%      \hypertarget{L:\arabic{CodelineNo}}{\arabic{CodelineNo}}}
 %   \def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
 %         \string#1\actualchar
 %         \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
 %         \encapchar codeline}%
 %      \@esphack}
-%   \makeatother
+   \makeatother
    \def\ctanurl#1{\href{http://www.tex.ac.uk/tex-archive#1}{\texttt{#1}}}
    \def\mailto#1{\href{mailto:#1}{\texttt{#1}}}
    \def\mailtoRS{\href{mailto:<w.m.l@gmx.net> R Schlicht?subject=microtype \fileversion}
@@ -212,14 +225,15 @@
 % some abbreviations
 \def\pdftex{\texorpdfstring{pdf\kern.05em\TeX}{pdfTeX}}
 \def\thanh{H\`an Th\^e\llap{\raisebox{0.5ex}{\'{}}} Th\`anh}
-\def\pdf{{\small PDF}}
-\def\dvi{{\small DVI}}
-\def\nfss{{\small NFSS}}
-\def\ctan{{\small CTAN}}
-\def\tOne{{\small T1}}
-\def\otOne{{\small OT1}}
-\def\lyOne{{\small LY1}}
-\def\tsOne{{\small TS1}}
+\def\acro#1{{\small#1}}
+\def\pdf{\acro{PDF}}
+\def\dvi{\acro{DVI}}
+\def\nfss{\acro{NFSS}}
+\def\ctan{\acro{CTAN}}
+\def\tOne{\acro{T1}}
+\def\otOne{\acro{OT1}}
+\def\lyOne{\acro{LY1}}
+\def\tsOne{\acro{TS1}}
 \CodelineIndex
 \RecordChanges
 \begin{document}
@@ -229,7 +243,7 @@
 % \fi
 %
 % ^^A -------------------------------------------------------------------------
-% \changes{v1.0}{2004/09/11}{Initial version}
+%\changes{v1.0}{2004/09/11}{Initial version}
 % ^^A -------------------------------------------------------------------------
 %
 %\newif\ifbooktabs
@@ -256,7 +270,7 @@
 %     settings for unknown fonts.}
 %
 % Note that font expansion and character protrusion does only work with \pdftex,
-% at least version 0.14f, resp.\ version 1.20a for automatic font expansion.
+% at least version 0.14f, resp. version 1.20a for automatic font expansion.
 %\end{abstract}
 %
 % \tableofcontents
@@ -314,10 +328,10 @@
 % This package provides a simple interface to both font expansion and character
 % protrusion.\footnote{
 %     Therefore, it is an alternative, not a supplement, to the \pkg{pdfcprot}
-%     package. I have decided to include an interface to character protrusion
-%     in this package, too, because both features are closely related, and
-%     should not be split over two packages; also, the \pkg{pdfcprot} is no
-%     longer maintained by its author.}
+%     package, and cannot be used together with \pkg{pdfcprot}. I have decided
+%     to include an interface to character protrusion in this package, too,
+%     because both features are closely related, and should not be split over
+%     two packages.}
 % It should be straightforward to customize all relevant micro-typographic
 % aspects to your taste and needs. The next chapters will present a survey of
 % all options and customization possibilities.
@@ -380,7 +394,7 @@
 % to true.
 %
 % When producing \dvi\ files, automatic font expansion will not work because
-% dvips (resp.\ the \dvi\ viewer) is not able to generate the expanded fonts on
+% dvips (resp. the \dvi\ viewer) is not able to generate the expanded fonts on
 % the fly.
 %
 %\bigskip
@@ -401,7 +415,7 @@
 % to be 1.20a or higher. If |auto| is set to false, the fonts for all steps of
 % expansion must exist in your \TeX\ installation.
 %
-%\iffalse ^^A is this true? Buggy!
+%\iffalse ^^A is this true?
 % Note that if |auto| is true, but expanded fonts do actually exist (with files
 % called \meta{font~name}|[+-]|\meta{expansion factor}, e.\,g. |cmr12+10.tfm|
 % etc., as described by Thành \cite{ThanhThesis,ThanhTUG}), these fonts
@@ -411,10 +425,10 @@
 %\bigskip
 %\Describe{Option}{stretch}{\OptionV{number} (\Default{20})}
 %\DescribeOption{shrink}
-% You may specify the stretchability and shrinkability of a font, i.\,e.\ the
-% maximum amount that a font may stretch or shrink. The \OptionV{number}s will
-% be divided by 1000, so that a stretch factor of 10 means that the font may
-% be expanded by up to 1\%.
+% You may specify the stretchability and shrinkability of a font, i.\,e. the
+% maximum amount that a font may stretch or shrink. The numbers will be divided
+% by 1000, so that a stretch factor of 10 means that the font may be expanded
+% by up to 1\%.
 %
 % The default stretch factor is 20. The shrink factor will by default be the
 % same as the stretch factor. Therefore, the following lines are equivalent:
@@ -470,7 +484,7 @@
 %\begin{tabbing}\MacroFont
 %|\UseMicroTypeSet[|\Option{protrusion}\textbar\Option{expansion}|]{|\OptionV{set name}|}|
 %\end{tabbing}
-% or by passing the name to the |expansion| resp.\ |protrusion| option when
+% or by passing the name to the |expansion| resp. |protrusion| option when
 % loading the package; e.\,g.:
 %
 %\begin{verbatim}
@@ -520,13 +534,13 @@
 %
 % If a value is followed by an asterisk (like `|rm*|' and `|sf*|' in the example
 % above), it does not designate a \nfss\ code, but will expand to the current
-% |\|\meta{value}|default|, e.\,g. |\rmdefault|.\footnote{
+% |\|\meta{value}|default|, e.\,g. \cs{rmdefault}.\footnote{
 %     Note that this expansion will take place immediately, so you should make
 %     all relevant changes \emph{before} loading this package.}
 % For example, if you want to include the bold font, too, you should say `|bf*|'
-% instead of `|b|' (|\bfdefault| for Computer Modern is `|bx|', while for other
+% instead of `|b|' (\cs{bfdefault} for Computer Modern is `|bx|', while for other
 % fonts, it might be `|sb|'). A single asterisk means |\|\meta{characteristic}|default|,
-% e.\,g.\ \cs{encodingdefault}, respectively \cs{normalsize} for the size axis.
+% e.\,g. \cs{encodingdefault}, respectively \cs{normalsize} for the size axis.
 % Sizes may be either specified as a dimension (|10| or |10pt|), or as a size
 % selection command \emph{without} the backslash.
 %
@@ -560,7 +574,7 @@
 %
 %\bigskip\noindent
 % The commands \cs{DeclareMicroTypeSet} and \cs{UseMicroTypeSet} may only be
-% used in the preamble or in the main configuration file (cf.\
+% used in the preamble or in the main configuration file (cf.
 % chapter~\ref{sub:Config-File}).
 %
 %\newpage
@@ -577,7 +591,6 @@
 % font or a set of fonts.
 %
 % A very incomplete example would be the following:
-%
 %\begin{verbatim}
 %\SetProtrusion
 %   { encoding = T1,
@@ -710,13 +723,13 @@
 % \Describe{Macro}{\DeclareCharacterInheritance}
 %           {\hspace{1em}[\Option{protrusion}\textbar\Option{expansion}]
 %           \{\OptionV{font set}\} \{\OptionV{inheritance list}\}}
-% In most cases, accented characters should inherit the protrusion resp.\
+% In most cases, accented characters should inherit the protrusion resp.
 % expansion factors from the respective base character. For example, all of the
 % characters \`A, \'A, \^A, \~A, \"A, \r{A} and \u{A} should probably be
 % protruded by the same amount as the character A. Using the command
 % \cs{DeclareCharacterInheritance}, you may declare such lists of characters,
 % so that you then only have to set up the base characters. Using the optional
-% argument, you may confine the scope of the list to protrusion resp.\
+% argument, you may confine the scope of the list to protrusion resp.
 % expansion. The font set can be declared in the usual way, with the only
 % exception that you must specify exactly one encoding. The inheritance lists
 % are to be declared as pairs of \meta{base character} |=| \meta{list of
@@ -733,7 +746,7 @@
 %
 % However, if you want to create new expansion and protrusion settings for a
 % different font family, you should put them into a separate file, whose name
-% must be: `|mt-|\meta{font family}|.cfg|', (e.\,g.\ `|mt-pad.cfg|'), and may
+% must be: `|mt-|\meta{font family}|.cfg|', (e.\,g. `|mt-pad.cfg|'), and may
 % contain the commands \cs{SetProtrusion}, \cs{SetExpansion} and
 % \cs{DeclareCharacterInheritance}. These files will only be loaded if you are
 % actually using the respective fonts. If the font name consists of four
@@ -761,7 +774,7 @@
 %\begin{verbatim}
 %\DeclareMicroTypeAlias{lmr}{cmr}
 %\end{verbatim}
-% which would make the package, whenever it encounters the font |lmr|, and does
+% which would make the package, whenever it encounters the font |lmr| and does
 % not find settings for it, also try the font |cmr|. In fact, you will find
 % this very line in the default configuration file.
 %
@@ -782,15 +795,10 @@
 % by producing a more uniform greyness of the text block (and potentially
 % reducing the number of necessary hyphenations). When expanding or shrinking a
 % font too much, the effect will be turned into its opposite. Expanding the
-% font by more than 2\%, i.\,e.\ setting a |stretch| factor of more than 20,
+% font by more than 2\%, i.\,e. setting a |stretch| factor of more than 20,
 % should be justified by a typographically trained eye. If you are so lucky as
 % to be in the possession of multiple instances of a Multiple Master font, you
 % may set expansion limits to up to 4\%.
-%
-% \paragraph{Load the \pkg{microtype} package as early as possible.} The
-% package will only see fonts the first time they are selected. If a font has
-% been called before this package is loaded, it will not be set up for
-% protrusion or expansion. (This does not apply to the default font, though.)
 %
 % \paragraph{Don't use font expansion for web documents.} Because each instance
 % of the font will be embedded in the \pdf\ file, the file size may increase
@@ -808,14 +816,16 @@
 %
 % If you have created a configuration file for another font, or if you have any
 % suggestions for enhancements in the default configuration files, you can send
-% them to me: \mailtoRS.
+% them to me: \mailtoRS.\footnote{
+%     Should you have lots of \pkg{pdfcprot} configuration files lying around,
+%     I can also provide you with a conversion script. Just ask me.}
 %
 %
 % \section{Acknowledgments}
 %
 % Harald Harders (\mailto{h.harders@tu-bs.de}) has contributed protrusion
 % settings for Adobe Minion. I would also like to thank him for a number of
-% suggestions he had to make.
+% bug reports and suggestions he had to make.
 %
 %
 %\begin{thebibliography}{}
@@ -844,7 +854,6 @@
 %
 %
 % \StopEventually{
-%   \newpage
 %   \appendix
 %   \PrintChanges
 %   \PrintIndex
@@ -925,27 +934,25 @@
 %
 % The \pkg{docstrip} modules in this file are:
 %\begin{itemize}\setlength{\itemsep}{0pt}
-%  \item[|driver|:] The driver file (only visible in the |dtx| file).
+%  \item[|driver|:]  The documentation driver (only visible in the |dtx| file).
 %  \item[|package|:] The code for the \pkg{microtype} package.
-%  \item[|debug|:] Code for additional output in the log file.\\
-%                Used for~-- surprise!~-- debugging purposes.
-%  \item[|config|:] Surrounds all configuration modules.
-%  \item[|m-t|:] The main configuration file (|microtype.cfg|).
-%  \item[|cmr|:] Settings for Computer Modern Roman (|mt-cmr.cfg|).
-%  \item[|pad|:] Settings for Adobe Garamond (|mt-pad.cfg|).
-%  \item[|ppl|:] Settings for Palatino (|mt-ppl.cfg|).
-%  \item[|ptm|:] Settings for Times (|mt-ptm.cfg|).
-%  \item[|pmn|:] Settings for Adobe Minion (|mt-pmn.cfg|). \\
-%                Contributed by Harald Harders.
-%  \item[|auxiliary|:] A helper file that may be used to create and test
-%                protrusion settings (|test-microtype.tex|).
+%  \item[|debug|:]   Code for additional output in the log file.\\
+%                    Used for~-- surprise!~-- debugging purposes.
+%  \item[|config|:]  Surrounds all configuration modules.
+%  \item[|m-t|:]     The main configuration file (|microtype.cfg|).
+%  \item[|cmr|:]     Settings for Computer Modern Roman (|mt-cmr.cfg|).
+%  \item[|pad|:]     Settings for Adobe Garamond (|mt-pad.cfg|).
+%  \item[|ppl|:]     Settings for Palatino (|mt-ppl.cfg|).
+%  \item[|ptm|:]     Settings for Times (|mt-ptm.cfg|).
+%  \item[|pmn|:]     Settings for Adobe Minion (|mt-pmn.cfg|). \\
+%                    Contributed by Harald Harders.
+%  \item[|test|:]    A helper file that may be used to create and test
+%                    protrusion settings (|test-microtype.tex|).
 %\end{itemize}
-%
-% \noindent And now for something completely different.
+% And now for something completely different.
 %
 %    \begin{macrocode}
 %<*package>
-\NeedsTeXFormat{LaTeX2e}
 \RequirePackage{keyval}
 %    \end{macrocode}
 %\begin{macro}{\MT@info}
@@ -982,9 +989,9 @@
 \newif\ifMT@auto      \MT@autotrue
 \def\MT@expansionlevel{2}
 \def\MT@protrusionlevel{2}
-\def\MT@stretch{-1}
-\def\MT@shrink{-1}
-\def\MT@step{-1}
+\let\MT@stretch\m@ne
+\let\MT@shrink\m@ne
+\let\MT@step\m@ne
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -1133,7 +1140,7 @@ by saying `expansion=false'.}%
 %    \begin{macrocode}
 \MT@exitornot
 %    \end{macrocode}
-%\changes{v1.3}{2004/10/27}{check some category codes}
+%\changes{v1.3}{2004/10/27}{check some category codes (compatibility with \pkg{german})}
 % We make sure that the category codes of some characters are correct (the
 % \pkg{german} package, for instance, makes |"| active). Probably overly
 % cautious.
@@ -1158,12 +1165,26 @@ by saying `expansion=false'.}%
 \MT@catcodes
 \AtEndOfPackage{\MT@restore@catcodes}
 %    \end{macrocode}
+%\changes{v1.4}{2004/11/04}{check for \pkg{pdfcprot}}
+% Our competitor, the \pkg{pdfcprot} package, must not be tolerated!
+%    \begin{macrocode}
+\AtBeginDocument{%
+   \@ifpackageloaded{pdfcprot}%
+      {\MT@error{%
+Detected the `pdfcprot' package!\MessageBreak
+`microtype' and `pdfcprot' may not be used together}%
+{The `pdfcprot' package provides an interface to character protrusion.\MessageBreak
+So does the `microtype' package. Using both packages at the same\MessageBreak
+time will almost certainly lead to undesired results. Have your choice!}}{}%
+}
+%    \end{macrocode}
+%
 % \subsection{Auxiliary macros}
 %\begin{macro}{\MT@ifempty}
+% Test whether argument is empty.
 %\changes{v1.1}{2004/09/15}{bug fix: use category code 12 for the percent character
 %                           (reported by Tom Kink)} ^^A <kink@hia.rwth-aachen.de>
 %                                      ^^A in <MID:2qrkp9F134l6lU1@uni-berlin.de>
-% Test whether argument is empty.
 %    \begin{macrocode}
 \begingroup
 \catcode`\%=12\relax
@@ -1194,7 +1215,7 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@in@list}
-% Test whether item is in list.
+% Test whether item is in list (separated by \cs{MT@lt}).
 %    \begin{macrocode}
 \newif\ifMT@inlist@
 \def\MT@in@list#1#2{%
@@ -1206,15 +1227,43 @@ by saying `expansion=false'.}%
 \let\MT@lt\@empty
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@in@llist}
+% Test whether item is in list (separated by a comma; faster for long lists).
+%    \begin{macrocode}
+\def\MT@in@llist#1#2{%
+   \MT@inlist@false
+   \def\MT@in@l##1#1,##2\@nil{%
+      \ifx\relax##2\relax\else
+         \MT@inlist@true
+      \fi}%
+   \expandafter\MT@in@l#2,#1,\@nil
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@loop}
 %\changes{v1.2}{2004/09/23}{bug fix: new macro, used instead of \cs{loop}}
 %\begin{macro}{\MT@repeat}
 % This is the same as \LaTeX's \cs{loop}, which we mustn't use, since this could
 % confuse an outer \cs{loop} in the document.
 %    \begin{macrocode}
-\def\MT@loop#1\MT@repeat{\def\MT@iterate{#1\relax\expandafter\MT@iterate\fi}%
-  \MT@iterate \let\MT@iterate\relax}
+\def\MT@loop#1\MT@repeat{%
+   \def\MT@iterate{#1\relax\expandafter\MT@iterate\fi}%
+   \MT@iterate \let\MT@iterate\relax}
 \let\MT@repeat\fi
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\changes{v1.4}{2004/11/12}{use one instead of five counters}
+%\begin{macro}{\MT@count}
+%\begin{macro}{\MT@increment}
+% Increment macro \meta{\#1} by one. Saves using up too many counters.
+%    \begin{macrocode}
+\newcount\MT@count
+\def\MT@increment#1{%
+   \MT@count#1\relax
+   \advance\MT@count by 1\relax
+   \edef#1{\the\MT@count}%
+}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -1222,25 +1271,17 @@ by saying `expansion=false'.}%
 % \subsection{Setting up a font}
 %\begin{macro}{\MT@setupfont}
 % Setting up a font means checking whether protrusion/expansion is desired for
-% the current font (\cs{font@name}), and if so, adjusting \cs{lpcode},
-% \cs{rpcode}, and \cs{efcode}.
+% the current font (\cs{font@name}), and if so, adjusting \cs{lpcode}
+% and \cs{rpcode} (protrusion) and \cs{efcode} (expansion).
 %    \begin{macrocode}
 \def\MT@setupfont{%
    \ifMT@verbose\MT@info{Setting up font `\expandafter\string\font@name'}\fi
 %    \end{macrocode}
-% The font properties must be extracted from |\font@name|, since the current
-% value of \cs{f@encoding} and friends may be wrong! We split up the name here
-% (that we have to set \cs{escapechar} to -1 will get us in trouble, see later).
-% Why do we have to set it to -1? See |source2e|.
-%
-% We could save this trouble if we changed \cs{define@newfont}, so that
-% \cs{MT@setupfont} would be called inside its group.
+% The font properties must be extracted from \cs{font@name}, since the current
+% value of \cs{f@encoding} and friends may be wrong!
 %    \begin{macrocode}
-   \begingroup
-      \escapechar\m@ne
-      \expandafter\expandafter\expandafter
-         \MT@split@name\expandafter\string\font@name\@nil
-   \endgroup
+   \expandafter\expandafter\expandafter
+      \MT@split@name\expandafter\string\font@name\@nil
 %    \end{macrocode}
 % Try to find a configuration file for the current font family.
 %\changes{v1.2}{2004/09/29}{also search for alias font file}
@@ -1274,7 +1315,7 @@ by saying `expansion=false'.}%
 %\begin{macro}{\ifMT@font@expansion}
 %\begin{macro}{\MT@checkfor}
 % We check all features of the current font against the lists defined by the
-% |expansion| resp.\ |protrusion| option, and set \cs{MT@font@expansion} resp.\
+% |expansion| resp. |protrusion| option, and set \cs{MT@font@expansion} resp.
 % \cs{MT@font@protrusion} accordingly.
 %\changes{v1.2}{2004/09/29}{also check for alias font name}
 %    \begin{macrocode}
@@ -1313,7 +1354,7 @@ by saying `expansion=false'.}%
    \edef\@tempa{\csname MT@#1@setname\endcsname}%
 %    \end{macrocode}
 % If no limitations have been specified, i.e. the list for a font characteristic
-% has not been defined at all, the font should be expanded resp.\ protruded.
+% has not been defined at all, the font should be expanded resp. protruded.
 %    \begin{macrocode}
    \expandafter\ifx\csname MT@#1list@#2@\@tempa\endcsname\relax
 %<debug>      \MT@info{#1: #2 list empty}%
@@ -1436,9 +1477,6 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@protdo}
-%\begin{macro}{\MT@protsplit}
-%\begin{macro}{\MT@protsplit@val}
-%\changes{v1.1}{2004/09/13}{bug fix: allow zero and negative values}
 % Split up the values and set the \cs{lpcode}s and \cs{rpcode}s.
 %    \begin{macrocode}
 \def\MT@protdo#1,{%
@@ -1446,24 +1484,33 @@ by saying `expansion=false'.}%
       \MT@protsplit #1==\relax
       \expandafter\MT@protdo\fi
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@protsplit}
+%\changes{v1.1}{2004/09/13}{bug fix: allow zero and negative values}
+%    \begin{macrocode}
 \def\MT@protsplit#1=#2=#3\relax{%
    \KV@@sp@def\@tempa{#1}%
    \ifx\@tempa\@empty\else
       \MT@get@slot
-      \KV@@sp@def\@tempb{#2}%
-      \ifnum\@tempc < \@cclvi \ifnum\@tempc > \m@ne
+      \ifnum\MT@char < \@cclvi \ifnum\MT@char > \m@ne
+         \KV@@sp@def\@tempb{#2}%
          \expandafter\MT@protsplit@val\@tempb\relax
       \fi\fi
    \fi
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@protsplit@val}
+%    \begin{macrocode}
 \def\MT@protsplit@val#1,#2\relax{%
    \KV@@sp@def\@tempb{#1}%
    \MT@ifempty{\@tempb}{}{%
-      \lpcode\font@name\@tempc=\@tempb
+      \lpcode\font@name\MT@char=\@tempb
    }%
    \KV@@sp@def\@tempb{#2}%
    \MT@ifempty{\@tempb}{}{%
-      \rpcode\font@name\@tempc=\@tempb
+      \rpcode\font@name\MT@char=\@tempb
    }%
 %    \end{macrocode}
 % Now we can set the values for the inheriting characters. Their slot numbers
@@ -1471,14 +1518,12 @@ by saying `expansion=false'.}%
 %    \begin{macrocode}
    \ifx\MT@protrusioninh@name\relax\else
       \expandafter\ifx
-            \csname MT@inh@\MT@protrusioninh@name @\@tempc @\endcsname\relax
+            \csname MT@inh@\MT@protrusioninh@name @\MT@char @\endcsname\relax
          \else\MT@set@prot@children
       \fi
    \fi
 }
 %    \end{macrocode}
-%\end{macro}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@prot@children}
 % Don't know whether the group is necessary.
@@ -1486,11 +1531,11 @@ by saying `expansion=false'.}%
 \def\MT@set@prot@children{%
    \begingroup
    \def\MT@lt##1{%
-%<debug>      \MT@info{-- heir of \@tempc: ##1}%
-      \lpcode\font@name##1=\lpcode\font@name\@tempc
-      \rpcode\font@name##1=\rpcode\font@name\@tempc
+%<debug>      \MT@info{-- heir of \MT@char: ##1}%
+      \lpcode\font@name##1=\lpcode\font@name\MT@char
+      \rpcode\font@name##1=\rpcode\font@name\MT@char
    }%
-   \csname MT@inh@\MT@protrusioninh@name @\@tempc @\endcsname
+   \csname MT@inh@\MT@protrusioninh@name @\MT@char @\endcsname
    \endgroup
 }
 %    \end{macrocode}
@@ -1598,15 +1643,15 @@ by saying `expansion=false'.}%
    \KV@@sp@def\@tempa{#1}%
    \ifx\@tempa\@empty\else
       \MT@get@slot
-      \KV@@sp@def\@tempb{#2}%
-      \ifnum\@tempc < \@cclvi \ifnum\@tempc > \m@ne
-         \efcode\font@name\@tempc=\@tempb
+      \ifnum\MT@char < \@cclvi \ifnum\MT@char > \m@ne
+         \KV@@sp@def\@tempb{#2}%
+         \efcode\font@name\MT@char=\@tempb
 %    \end{macrocode}
 % Heirs, heirs, I love thy heirs.
 %    \begin{macrocode}
          \ifx\MT@expansioninh@name\relax\else
             \expandafter\ifx
-                  \csname MT@inh@\MT@expansioninh@name @\@tempc @\endcsname\relax
+                  \csname MT@inh@\MT@expansioninh@name @\MT@char @\endcsname\relax
                \else\MT@set@exp@children
             \fi
          \fi
@@ -1620,10 +1665,10 @@ by saying `expansion=false'.}%
 \def\MT@set@exp@children{%
    \begingroup
    \def\MT@lt##1{%
-%<debug>      \MT@info{-- heir of \@tempc: ##1}%
-      \efcode\font@name##1=\efcode\font@name\@tempc
+%<debug>      \MT@info{-- heir of \MT@char: ##1}%
+      \efcode\font@name##1=\efcode\font@name\MT@char
    }%
-   \csname MT@inh@\MT@expansioninh@name @\@tempc @\endcsname
+   \csname MT@inh@\MT@expansioninh@name @\MT@char @\endcsname
    \endgroup
 }
 %    \end{macrocode}
@@ -1691,14 +1736,14 @@ by saying `expansion=false'.}%
 %                           font family has already been loaded}
 % Micro-typographic settings may be written into a file |mt-|\meta{font family}|.cfg|:
 %    \begin{macrocode}
-\let\MT@files\@empty
+\let\MT@file@list\@empty
 \def\MT@find@file#1{%
 %    \end{macrocode}
 % Check for existence of the file only once.
 %    \begin{macrocode}
-   \expandafter\expandafter\expandafter\MT@in@list
+   \expandafter\expandafter\expandafter\MT@in@llist
       \expandafter\expandafter\expandafter
-         {\csname MT@file@#1\endcsname}\MT@files
+         {\csname MT@file@#1\endcsname}\MT@file@list
    \ifMT@inlist@\else
 %    \end{macrocode}
 % We have to take care that all characters have the correct category code.
@@ -1712,22 +1757,19 @@ by saying `expansion=false'.}%
       \begingroup
       \nfss@catcodes
       \InputIfFileExists{mt-#1.cfg}%
-         {\MT@xadd\MT@files
-            {\noexpand\MT@lt{\csname MT@file@#1\endcsname}}%
+         {\MT@xadd\MT@file@list{\csname MT@file@#1\endcsname,}%
           \ifMT@verbose\MT@info{... Loading font settings
             from mt-#1.cfg\@gobble}\fi}%
          {\expandafter\MT@get@basefamily#1\relax\relax\relax
-          \expandafter\expandafter\expandafter\MT@in@list
+          \expandafter\expandafter\expandafter\MT@in@llist
              \expandafter\expandafter\expandafter
-                {\csname MT@file@\@tempa\endcsname}\MT@files
+                {\csname MT@file@\@tempa\endcsname}\MT@file@list
           \ifMT@inlist@\else
              \InputIfFileExists{mt-\@tempa.cfg}%
-                {\MT@xadd\MT@files
-                   {\noexpand\MT@lt{\csname MT@file@\@tempa\endcsname}}%
+                {\MT@xadd\MT@file@list{\csname MT@file@\@tempa\endcsname,}%
                  \ifMT@verbose\MT@info{... Loading font settings
                    from mt-\@tempa.cfg\@gobble}\fi}%
-                {\MT@xadd\MT@files
-                   {\noexpand\MT@lt{\csname MT@file@#1\endcsname}}%
+                {\MT@xadd\MT@file@list{\csname MT@file@#1\endcsname,}%
                  \ifMT@verbose\MT@info{... No file mt-#1.cfg\@gobble}\fi}%
           \fi}%
       \endgroup
@@ -1753,10 +1795,10 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@get@listname}
-%\changes{v1.1}{2004/09/15}{no longer check for empty characteristics list}
-%\changes{v1.2}{2004/09/30}{alternatively check for alias font name}
 % Try all combinations of font family, series and shape to get a list for the
 % current font.
+%\changes{v1.1}{2004/09/15}{don't check for empty characteristics list}
+%\changes{v1.2}{2004/09/30}{alternatively check for alias font name}
 %    \begin{macrocode}
 \def\MT@get@listname#1{%
 %<debug>   \MT@info{trying to find #1. list for font \font@name}%
@@ -1818,7 +1860,8 @@ by saying `expansion=false'.}%
    \@ifundefined{MT@#1codes@\@tempa}%
       {\expandafter\let\expandafter\@tempb\csname MT@#1codes@name\endcsname
        \expandafter\let\csname MT@#1codes@\@tempb\endcsname\relax
-       \MT@warning{I cannot find a #1. list for `\font@name'.\MessageBreak
+       \MT@warning{I cannot find a #1. list for
+            `\expandafter\string\font@name'.\MessageBreak
             Switching off #1. for this font}}%
       {\expandafter\edef\csname MT@#1codes@name\endcsname
          {\csname MT@#1codes@\@tempa\endcsname}%
@@ -1839,24 +1882,25 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\changes{v1.4}{2004/11/04}{don't use scratch registers in global definitions}
 %\begin{macro}{\MT@get@slot}
 % Get the slot number of the character in the current encoding. There are three
 % possibilities:
 %    \begin{macrocode}
 \def\MT@get@slot{%
-   \let\@tempc\@cclvi
+   \let\MT@char\@cclvi
 %    \end{macrocode}
 %\begin{enumerate}
-% \item The character is either specified as a three-digit number; \dots
+% \item The character is either specified as a number; \dots
 %    \begin{macrocode}
    \expandafter\MT@get@number\@tempa\relax\relax
-   \ifnum\@tempc < \@cclvi\else
+   \ifnum\MT@char < \@cclvi\else
 %    \end{macrocode}
 % (well, it may also be a backslash, which we catch here, lest it will be
 % recognized as a command)
 %    \begin{macrocode}
       \expandafter\ifx\@tempa\ \relax
-         \edef\@tempc{\number`\\}%
+         \edef\MT@char{\number`\\}%
 %    \end{macrocode}
 % \item as a command declared by \cs{DeclareTextSymbol};
 %    \begin{macrocode}
@@ -1874,7 +1918,7 @@ by saying `expansion=false'.}%
 % depending on context.
 %
 % We check whether the command is defined in the current encoding. We should
-% also test whether it has been declared by \cs{DeclareTextSymbol}, i.\,e.\
+% also test whether it has been declared by \cs{DeclareTextSymbol}, i.\,e.
 % whether it expands to |\char"|\meta{hex number} \dots\ better error handling
 % remains TO DO (and probably demands a completely different approach than this
 % mess).
@@ -1885,16 +1929,16 @@ by saying `expansion=false'.}%
                \MT@warning{\expandafter\string\@tempa\space
                            is undefined in encoding `\MT@encoding'}%
             \else
-               \xdef\@tempc{\expandafter\number
+               \xdef\MT@char{\expandafter\number
                      \expandafter\csname\expandafter\MT@encoding
                            \expandafter\string\@tempa\endcsname}%
             \fi
          \else
 %    \end{macrocode}
-% \item  or by itself (e.\,g.\ `|A|', or `|\"A|').
+% \item  or by itself (e.\,g. `|A|', or `|\"A|').
 %    \begin{macrocode}
             \expandafter\MT@two@tokens\@tempa\relax\relax
-            \expandafter\xdef\expandafter\@tempc\expandafter
+            \expandafter\xdef\expandafter\MT@char\expandafter
                   {\expandafter\number\expandafter`\@tempa}%
          \fi
          \endgroup
@@ -1914,40 +1958,41 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@get@number}
+% Numbers may be specified as a three-digit decimal number (|092|),
 %\changes{v1.1}{2004/09/13}{numbers may also be specified in hexadecimal or octal
 %                           (suggested by Harald Harders).}
-% Numbers may be specified as a three-digit decimal number (|092|), as a
-% hexidecimal number (prefixed with~|"|: |"5C|) or as a octal number (prefixed
-% with~|'|: |'134|).
+% as a hexidecimal number (prefixed with~|"|: |"5C|) or as a octal number
+% (prefixed with~|'|: |'134|).
 %    \begin{macrocode}
 \def\MT@get@number#1#2#3\relax{%
    \ifx\relax#3\relax\else
       \if#1"\relax
-         \def\@tempc{\uppercase{\edef\@tempc{\number#1#2#3}}}%
+         \def\@tempc{\uppercase{\edef\MT@char{\number#1#2#3}}}%
          \@tempc
       \else
          \if#1'\relax
-            \def\@tempc{\number#1#2#3}%
+            \def\MT@char{\number#1#2#3}%
          \else
             \ifnum9<1#1\relax
-               \def\@tempc{\number#1#2#3}%
+               \def\MT@char{\number#1#2#3}%
             \fi
          \fi
       \fi
-      \ifnum\@tempc > \@cclv
-         \MT@warning{Character number \@tempc\space larger than 255! Ignoring it}%
-         \let\@tempc\m@ne
+      \ifnum\MT@char > \@cclv
+         \MT@warning{Character number \MT@char\space larger than 255! Ignoring it}%
+         \let\MT@char\m@ne
       \fi
    \fi
 }
 %    \end{macrocode}
 %\end{macro}
 %
-% \subsubsection{Changes to \LaTeX's font selection scheme}
-% We add \cs{MT@setupfont} to \cs{define@newfont}, which is called by \LaTeX\
-% whenever a font is selected that has previously not been defined. This
-% ensures that we will catch all fonts, and that we will not set up fonts more
-% than once. The whole package really hangs on this command.
+% \subsubsection{Hook into \LaTeX's font selection}
+% We add \cs{MT@setupfont} to \cs{pickup@font}, which is called by \LaTeX\ every
+% time a font is selected. We then check whether we've already seen this font,
+% and if not, set it up for micro-typography.
+% This ensures that we will catch all fonts, and that we will not set up fonts
+% more than once. The whole package really hangs on this command.
 %
 % In contrast to the \pkg{pdfcprot} package, there is no need to declare the
 % fonts in advance that should be subjected to micro-typography. Also, only
@@ -1967,47 +2012,40 @@ by saying `expansion=false'.}%
 %     or \\\cs{getanddefine@fonts} (for math).
 %\end{itemize}
 %
-% It \emph{might} be better to use \cs{pickup@font} for our purposes and check
-% for ourselves whether we've seen the font before. I'll wait for bug reports~\dots
+%\changes{v1.2}{2004/10/02}{check for packages that might load fonts}
+%\changes{v1.4}{2004/11/04}{no need to check for packages that might load fonts anymore}
+%\changes{v1.4}{2004/11/04}{use \cs{pickup@font} instead of \cs{define@newfont}
+%                           as the hook for \cs{MT@setupfont}}
+% Up to version 1.3 of this package, we were using \cs{define@newfont} as the
+% hook, which is only called for new fonts. This meant that we had to take
+% special care to catch all fonts: We additionally had to set up the default
+% font, the error font (if it wasn't the default font), we had to check for
+% some packages that might have been loaded before \pkg{microtype} and were
+% loading fonts, e.g. \pkg{jurabib}, \pkg{ledmac}, \pkg{pifont} (loaded by
+% \pkg{hyperref}), \pkg{tipa}, and probably many more. Furthermore, we had to
+% include a hack for the \pkg{IEEEtran} class which loads all fonts in the
+% class file itself (to fine tune inter-word spacing). Then I discovered that
+% even the \pkg{memoir} class loads fonts. To cut this short: It seemed to get
+% out of hand, and I decided that it would be better to use \cs{pickup@font}
+% and decide for ourselves whether we've already seen that font. I hope the
+% overhead isn't too large. (We use a comma-separated list.)
 %    \begin{macrocode}
-\g@addto@macro\define@newfont{%
-   \MT@setupfont
-}
-%    \end{macrocode}
-% We make sure that the normal font is set up, too (it might have been called
-% earlier in the preamble, possibly by another package). Furthermore, we have
-% to explicitly set up the \cs{error@font} (usually |OT1/cmr/m/n|) in the
-% normal size, too, since it is always defined and thence would slip from our
-% treatment.
-%    \begin{macrocode}
-\AtBeginDocument{%
-   \begingroup
-   \escapechar\m@ne
-      \normalsize\normalfont\MT@setupfont
-      \edef\@tempa{\csname\curr@fontshape/\f@size\endcsname}%
-      \let\@tempb\f@size
-      \error@fontshape
-      \edef\font@name{\csname\curr@fontshape/\@tempb\endcsname}%
-      \ifx\font@name\@tempa\else
-         \MT@setupfont
-      \fi
+%\g@addto@macro\define@newfont{%
+%   \MT@setupfont
+%}
+\let\MT@font@list\@empty
+\g@addto@macro\pickup@font{%
+   \begingroup\escapechar\m@ne
+   \expandafter\expandafter\expandafter\MT@in@llist
+      \expandafter\expandafter\expandafter
+         {\expandafter\string\font@name}\MT@font@list
+   \ifMT@inlist@\else
+      \MT@setupfont
+      \xdef\MT@font@list{\MT@font@list\expandafter\string\font@name,}%
+   \fi
    \endgroup
 }
 %    \end{macrocode}
-%\begin{macro}{\MT@pack@warn}
-% We also check for a couple of packages that might load fonts. There are
-% certainly more.
-%\changes{v1.2}{2004/10/02}{check for packages that might load fonts}
-%    \begin{macrocode}
-\def\MT@pack@warn#1{\@ifpackageloaded{#1}{%
-   \MT@warning{You should load the `#1' package after the\MessageBreak
-               `microtype' package, or else some fonts might\MessageBreak
-               not be set up for micro-typography}}{}}
-\AtEndOfPackage{%
-   \MT@pack@warn{jurabib}%
-}
-%    \end{macrocode}
-%\end{macro}
 %
 % \subsection{Configuration}
 % \subsubsection{Font Sets}
@@ -2019,11 +2057,11 @@ by saying `expansion=false'.}%
 % be created.
 %
 % The third argument must be a list of |key=value| pairs. If a font characteristic
-% is unspecified, we define the corresponding list to \cs{relax}, so that it
+% is not specified, we define the corresponding list to \cs{relax}, so that it
 % does not constitute a constraint.
 %
-% The internal list will be of the form |\MT@lt {|\meta{var1}|} \MT@lt {|\meta{var2}|} ... |,
-% where |\MT@lt| acts as the delimiter between the list entries.
+% The internal list will be of the form |\MT@lt{|\meta{var1}|} \MT@lt{|\meta{var2}|}|~\dots,
+% where \cs{MT@lt} acts as the delimiter between the list entries.
 %    \begin{macrocode}
 \def\DeclareMicroTypeSet{%
    \@ifstar
@@ -2064,9 +2102,15 @@ by saying `expansion=false'.}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@tmp@setname}
+% We need to remember the name of the set currently being declared.
+%    \begin{macrocode}
+\let\MT@tmp@setname\@empty
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@declare@sets}
-%\changes{v1.1}{2004/09/20}{remove spaces around set name}
 % Define the current set name and parse the keys.
+%\changes{v1.1}{2004/09/20}{remove spaces around set name}
 %    \begin{macrocode}
 \def\MT@declare@sets#1#2#3{%
    \KV@@sp@def\@tempa{#2}%
@@ -2110,7 +2154,7 @@ by saying `expansion=false'.}%
 %\end{macro}
 %\begin{macro}{\MT@get@highlevel}
 % Saying, for instance, |family={rm*}| or |shape={bf*}| will lead to
-% \cs{rmdefault} resp.\ \cs{bfdefault} being expanded/protruded.
+% \cs{rmdefault} resp. \cs{bfdefault} being expanded/protruded.
 %\changes{v1.2}{2004/09/26}{check whether defaults have changed}
 %    \begin{macrocode}
 \def\MT@get@highlevel#1{%
@@ -2123,7 +2167,7 @@ by saying `expansion=false'.}%
          {\def\@tempa{#1}}{}%
       \def\MT@val{\csname \@tempa default\endcsname}%
 %    \end{macrocode}
-% Beware that |\rmdefault| etc.\ might change after this package has been
+% Beware that \cs{rmdefault} etc. might change after this package has been
 % loaded! Therefore, we check (once for each characteristic/list) at the
 % beginning of the document.
 %    \begin{macrocode}
@@ -2146,11 +2190,11 @@ by saying `expansion=false'.}%
    \expandafter\let\expandafter\@tempa\csname MT@#1@#2@default\endcsname
    \edef\@tempb{\csname #2default\endcsname}%
    \ifx\@tempa\@tempb\else
-      \MT@warning{\expandafter\noexpand\csname #2default\endcsname has changed
-            (`\csname MT@#1@#2@default\endcsname' <> `\csname #2default\endcsname')!%
-      \MessageBreak This might affect the `#1' font set.\MessageBreak
-      Please make all relevant font changes *before*\MessageBreak
-      loading the `microtype' package\@gobble}%
+      \MT@warning{\expandafter\noexpand\csname #2default\endcsname
+            has changed (`\@tempa' <> `\@tempb')!\MessageBreak
+            This might affect the `#1' font set.\MessageBreak
+            Please make all relevant font changes *before*\MessageBreak
+            loading the `microtype' package\@gobble}%
    \fi
 }
 %    \end{macrocode}
@@ -2211,11 +2255,11 @@ by saying `expansion=false'.}%
    \fi
    \ifx\@tempa\relax\else
 %    \end{macrocode}
-% The |relsize| solution of parsing \cs{@setfontsize} does not work with the AMS
-% classes, among others. I hope my hijacking doesn't do any harm.
+% The \pkg{relsize} solution of parsing \cs{@setfontsize} does not work with the
+% \pkg{AMS} classes, among others. I hope my hijacking doesn't do any harm.
 %\changes{v1.2}{2004/09/26}{hijack \cs{set@fontsize} instead of \cs{@setfontsize}}
 % We redefine \cs{set@fontsize}, and not \cs{@setfontsize}, because some classes
-% might define the size selection commands by simply using \cs{fontsize} (e.\,g.\
+% might define the size selection commands by simply using \cs{fontsize} (e.\,g.
 % the \pkg{a0poster} class).
 %    \begin{macrocode}
       \begingroup
@@ -2227,11 +2271,9 @@ by saying `expansion=false'.}%
 %\changes{v1.2}{2004/09/27}{additional magic to catch some errors}
 % Test whether we finally got a number or dimension so that we can strip the
 % `pt' (\cs{@defaultunits} and \cs{strip@pt} are kernel macros).
-% (We mustn't use \cs{@tempcnta} since that is already used for the
-% permutation.)
 %    \begin{macrocode}
-   \setbox\z@=\hbox{\global\@tempcntb=0\MT@val\relax}%
-   \ifnum\@tempcntb=\z@
+   \setbox\z@=\hbox{\global\MT@count=0\MT@val\relax}%
+   \ifnum\MT@count=\z@
       \MT@warning{Could not parse size `\MT@val' in set `\MT@tmp@setname'}%
    \else
       \@defaultunits\@tempdima\MT@val pt\relax\@nnil
@@ -2250,12 +2292,6 @@ by saying `expansion=false'.}%
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@tmp@setname}
-% We need to remember the name of the set currently being declared.
-%    \begin{macrocode}
-\def\MT@tmp@setname{}
-%    \end{macrocode}
-%\end{macro}
 % We have finally assembled all pieces to define \cs{DeclareMicroTypeSet}'s
 % keys.
 %    \begin{macrocode}
@@ -2263,11 +2299,11 @@ by saying `expansion=false'.}%
 \MT@define@set@keys{expansion}
 %    \end{macrocode}
 %\begin{macro}{\UseMicroTypeSet}
-%\changes{v1.1}{2004/09/20}{remove spaces around first argument}
 % To use a particular set we simply redefine
-% |\MT@|\meta{|expansion|\textbar|protrusion|}|@setname|. If the optional
+% \cs{MT@\meta{expansion\textbar protrusion}@setname}. If the optional
 % argument is empty, both \cs{MT@expansion@setname} and
 % \cs{MT@protrusion@setname} will be redefined.
+%\changes{v1.1}{2004/09/20}{remove spaces around first argument}
 %    \begin{macrocode}
 \renewcommand{\UseMicroTypeSet}[2][]{%
    \KV@@sp@def{\@tempa}{#1}
@@ -2279,14 +2315,15 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@use@sets}
-%\changes{v1.1}{2004/09/20}{remove spaces around set name}
 % The set might be defined later on.
+%\changes{v1.1}{2004/09/20}{remove spaces around set name}
 %    \begin{macrocode}
 \def\MT@use@sets#1#2{%
    \KV@@sp@def{\@tempa}{#2}%
    \expandafter\edef\csname MT@#1@setname\endcsname{\@tempa}%
    \expandafter\ifx\csname MT@#1list@@\@tempa\endcsname\relax
-      \MT@warning{#1 set `\@tempa' currently not defined.\MessageBreak Using it anyway}%
+      \MT@warning{#1 set `\@tempa' currently not defined.\MessageBreak
+                  Using it anyway}%
       \else\MT@info{Using #1 set `\@tempa'}\fi
 }
 %    \end{macrocode}
@@ -2310,8 +2347,18 @@ by saying `expansion=false'.}%
 
 \DeclareMicroTypeSet{all}{}
 
+\DeclareMicroTypeSet{allmath}
+   { encoding = {T1,OT1,LY1,TS1,OML,OMS} }
+
 \DeclareMicroTypeSet{alltext}
    { encoding = {T1,OT1,LY1,TS1} }
+
+\DeclareMicroTypeSet{basicmath}
+   { encoding = {T1,OT1,LY1,OML,OMS},
+     family   = {rm*,sf*},
+     series   = {m},
+     size     = {normalsize,footnotesize,small,large}
+   }
 
 \DeclareMicroTypeSet{basictext}
    { encoding = {T1,OT1,LY1},
@@ -2328,16 +2375,6 @@ by saying `expansion=false'.}%
      size     = *
    }
 
-\DeclareMicroTypeSet{allmath}
-   { encoding = {T1,OT1,LY1,TS1,OML,OMS} }
-
-\DeclareMicroTypeSet{basicmath}
-   { encoding = {T1,OT1,LY1,OML,OMS},
-     family   = {rm*,sf*},
-     series   = {m},
-     size     = {normalsize,footnotesize,small,large}
-   }
-
 %    \end{macrocode}
 % The Latin Modern fonts,
 %\changes{v1.3}{2004/10/22}{declare \texttt{cmr} as an alias for
@@ -2347,9 +2384,9 @@ by saying `expansion=false'.}%
 % and the \pkg{eco} and \pkg{hfoldsty} packages (oldstyle numerals) all inherit
 % the settings from Computer Modern Roman.
 %    \begin{macrocode}
-\DeclareMicroTypeAlias{lmr}{cmr}
-\DeclareMicroTypeAlias{aer}{cmr}
-\DeclareMicroTypeAlias{zer}{cmr}
+\DeclareMicroTypeAlias{lmr} {cmr}
+\DeclareMicroTypeAlias{aer} {cmr}
+\DeclareMicroTypeAlias{zer} {cmr}
 \DeclareMicroTypeAlias{cmor}{cmr}
 \DeclareMicroTypeAlias{hfor}{cmr}
 %</config&m-t>
@@ -2372,53 +2409,58 @@ by saying `expansion=false'.}%
 % interface for setting the character protrusion resp. expansion factors for a
 % set of fonts.
 %
-%\begin{macro}{\SetExpansion}
+%\begin{macro}{\SetProtrusion}
 % This macro accepts three arguments: [options,] set of font characteristics and
 % list of character protrusion factors.
 %
-% A new macro called |\MT@expcodes@|\meta{name} will be defined to be \meta{\#3}
+% A new macro called |\MT@protcodes@|\meta{name} will be defined to be \meta{\#3}
 % (i.e. the list of characters).
-%    \begin{macrocode}
-\renewcommand{\SetExpansion}[3][]{%
-   \let\MT@expcodes@name\relax
-   \let\MT@load\relax
-%    \end{macrocode}
-% Parse the first argument:
-%    \begin{macrocode}
-   \setkeys{MT@expcodes}{#1}%
-%    \end{macrocode}
-% If the user hasn't specified a name we will create one.
-%    \begin{macrocode}
-   \MT@get@codes@name{exp}%
-%<debug>   \MT@info{creating expansion list `\MT@expcodes@name'}%
-%    \end{macrocode}
-% Now we can define the macro to be \meta{\#3}. Here, as elsewhere, we have to
-% make the definitions global, since they may occur inside a group.
-%    \begin{macrocode}
-   \expandafter\gdef\csname MT@expcodes@\MT@expcodes@name\endcsname{#3}%
-%    \end{macrocode}
-% The second argument:
-% We define macros for all permutations of the font characteristics to point to
-% this macro.
-%    \begin{macrocode}
-   \setkeys{MT@expcodes}{#2}%
-   \def\MT@permutelist{expcodes}%
-   \MT@permute
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\SetProtrusion}
-% |\SetProtrusion| is just the same.
 %    \begin{macrocode}
 \renewcommand{\SetProtrusion}[3][]{%
    \let\MT@protcodes@name\relax
    \let\MT@load\relax
+%    \end{macrocode}
+% Parse the first argument:
+%    \begin{macrocode}
    \setkeys{MT@protcodes}{#1}%
+%    \end{macrocode}
+% If the user hasn't specified a name we will create one.
+%    \begin{macrocode}
    \MT@get@codes@name{prot}%
 %<debug>   \MT@info{creating protrusion list `\MT@protcodes@name'}%
+%    \end{macrocode}
+% Now we can define the macro to be \meta{\#3}. Here, as elsewhere, we have to
+% make the definitions global, since they may occur inside a group.
+%    \begin{macrocode}
    \expandafter\gdef\csname MT@protcodes@\MT@protcodes@name\endcsname{#3}%
+%    \end{macrocode}
+% The second argument: We define macros for all permutations of the font
+% characteristics to point to this macro.
+%    \begin{macrocode}
    \setkeys{MT@protcodes}{#2}%
    \def\MT@permutelist{protcodes}%
+   \MT@permute
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\SetExpansion}
+% \cs{SetExpansion} only differs in that it allows some extra options (|stretch|,
+% |shrink|, |step|, |auto|).
+%    \begin{macrocode}
+\renewcommand{\SetExpansion}[3][]{%
+   \let\MT@expcodes@name\relax
+   \let\MT@extra@stretch\relax
+   \let\MT@extra@shrink\relax
+   \let\MT@extra@step\relax
+   \let\MT@extra@auto\relax
+   \let\MT@load\relax
+   \setkeys{MT@expcodes}{#1}%
+   \MT@get@codes@name{exp}%
+   \MT@set@extraopt
+%<debug>   \MT@info{creating expansion list `\MT@expcodes@name'}%
+   \expandafter\gdef\csname MT@expcodes@\MT@expcodes@name\endcsname{#3}%
+   \setkeys{MT@expcodes}{#2}%
+   \def\MT@permutelist{expcodes}%
    \MT@permute
 }
 %    \end{macrocode}
@@ -2447,6 +2489,32 @@ by saying `expansion=false'.}%
    \ifx\MT@load\relax\else
       \expandafter\let\expandafter\@tempa\csname MT@#1codes@name\endcsname
       \global\expandafter\let\csname MT@#1codes@\@tempa load\endcsname\MT@load
+   \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@set@extraopt}
+% The extra options to \cs{SetExpansion} also have to be dealt with only after
+% we know the name.
+%\changes{v1.4}{2004/11/10}{bug fix: specifying extra options does no
+%                           longer require to give a \texttt{name}, too}
+%    \begin{macrocode}
+\def\MT@set@extraopt{%
+   \ifx\MT@extra@stretch\relax\else
+      \global\expandafter\let
+         \csname MT@expcodes@\MT@expcodes@name stretch\endcsname\MT@extra@stretch
+   \fi
+   \ifx\MT@extra@shrink\relax\else
+      \global\expandafter\let
+         \csname MT@expcodes@\MT@expcodes@name shrink\endcsname\MT@extra@shrink
+   \fi
+   \ifx\MT@extra@step\relax\else
+      \global\expandafter\let
+         \csname MT@expcodes@\MT@expcodes@name step\endcsname\MT@extra@step
+   \fi
+   \ifx\MT@extra@auto\relax\else
+      \global\expandafter\let
+         \csname MT@expcodes@\MT@expcodes@name auto\endcsname\MT@extra@auto
    \fi
 }
 %    \end{macrocode}
@@ -2516,11 +2584,10 @@ by saying `expansion=false'.}%
 \def\MT@define@expcodes@key#1{%
    \define@key{MT@expcodes}{#1}[]{%
       \MT@ifempty{##1}{}{%
-         \expandafter\let\expandafter\@tempa\csname MT@expcodes@name\endcsname
 %    \end{macrocode}
 % A space terminates the number.
 %    \begin{macrocode}
-         \expandafter\gdef\csname MT@expcodes@\@tempa #1\endcsname{##1 }%
+         \expandafter\def\csname MT@extra@#1\endcsname{##1 }%
       }%
    }
 }
@@ -2533,20 +2600,18 @@ by saying `expansion=false'.}%
 \define@key{MT@expcodes}{auto}[]{%
    \MT@ifempty{#1}{\def\@tempb{true}}{\def\@tempb{#1}}%
    \csname if\@tempb\endcsname
-      \def\@tempb{autoexpand }%
+      \def\MT@extra@auto{autoexpand }%
    \else
-      \let\@tempb\relax
+      \let\MT@extra@auto\@empty
    \fi
-   \expandafter\let\expandafter\@tempa\csname MT@expcodes@name\endcsname
-   \expandafter\xdef\csname MT@expcodes@\@tempa auto\endcsname{\@tempb}%
 }
 %    \end{macrocode}
 %\begin{macro}{\DeclareCharacterInheritance}
 %\changes{v1.1}{2004/09/15}{new macro: possibility to specify character inheritance}
 % This macro may be used in the configuration files to declare characters
-% that should inherit protrusion resp.\ expansion values from other characters.
+% that should inherit protrusion resp. expansion values from other characters.
 % Thus, there is no need to define all accented characters
-% (e.\,g.\ |\`a|, |\'a|, |\^a|, |\~a|, |\"a|, |\r{a}|, |\k{a}|, |\u{a}|), which
+% (e.\,g. |\`a|, |\'a|, |\^a|, |\~a|, |\"a|, |\r{a}|, |\k{a}|, |\u{a}|), which
 % will make the configuration files look much nicer. If a single character of an
 % inheritance list should have a different value, one can simply override it.
 %    \begin{macrocode}
@@ -2582,7 +2647,7 @@ by saying `expansion=false'.}%
 \def\MT@define@inh@key@encoding#1{%
    \define@key{MT@#1}{encoding}[]{%
       \expandafter\KV@@sp@def\expandafter\MT@val\expandafter{##1}%
-      \expandafter\MT@encoding@check\MT@val,\@nnil
+      \expandafter\MT@encoding@check\MT@val,\@nil
       \MT@get@highlevel{encoding}%
       \expandafter\edef\csname MT@tempencoding\romannumeral1\endcsname{\MT@val}%
    }%
@@ -2591,7 +2656,7 @@ by saying `expansion=false'.}%
 %\end{macro}
 %\begin{macro}{\MT@encoding@check}
 %    \begin{macrocode}
-\def\MT@encoding@check#1,#2\@nnil{%
+\def\MT@encoding@check#1,#2\@nil{%
    \MT@ifempty{#2}{}{%
       \edef\MT@val{#1}%
       \MT@warning{You may only specify one encoding for character\MessageBreak
@@ -2632,7 +2697,7 @@ by saying `expansion=false'.}%
 % containing the inheriting characters. They will also be translated to slot
 % numbers here, to save some time. The following will be executed the first
 % time this inheritance list is encountered (called from \cs{MT@set@prot@codes}
-% resp.\ \cs{MT@set@exp@codes}).
+% resp. \cs{MT@set@exp@codes}).
 %    \begin{macrocode}
 \def\MT@inhdo#1,{%
    \ifx\relax#1\empty\else
@@ -2642,7 +2707,7 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@inhsplit}
-% At the right time (viz.\ in |\MT@set@|\meta{|exp|\textbar|prot|}|@children|),
+% At the right time (viz. in \cs{MT@set@\meta{exp\textbar prot}@children}),
 % \cs{MT@lt} will be redefined to set the codes for the inheriting characters
 % gathered here.
 %    \begin{macrocode}
@@ -2650,7 +2715,7 @@ by saying `expansion=false'.}%
    \KV@@sp@def\@tempa{#1}%
    \ifx\@tempa\@empty\else
       \MT@get@slot
-      \let\MT@val\@tempc
+      \let\MT@val\MT@char
       \ifnum\MT@val < \@cclvi \ifnum\MT@val > \m@ne
          \let\MT@lt\relax
          \KV@@sp@def\@tempb{#2}%
@@ -2659,10 +2724,10 @@ by saying `expansion=false'.}%
             \ifx\@tempa\@empty\else
                \MT@get@slot
                \expandafter\MT@xadd\csname MT@inh@\MT@inh@name @\MT@val @\endcsname
-                  {\noexpand\MT@lt{\@tempc}}%
+                  {\noexpand\MT@lt{\MT@char}}%
             \fi
          }%
-%<debug>      \def\MT@lt{}%
+%<debug>      \let\MT@lt\@empty
 %<debug>      \MT@info{children of #1:
 %<debug>          \csname MT@inh@\MT@inh@name @\MT@val @\endcsname\@gobble}%
       \fi\fi
@@ -2679,13 +2744,8 @@ by saying `expansion=false'.}%
 %\begin{macro}{\MT@permute@@@@@}
 % This permutation can surely be done in a more elegant way.
 %    \begin{macrocode}
-\newcount\MT@cnta
-\newcount\MT@cntb
-\newcount\MT@cntc
-\newcount\MT@cntd
-\newcount\MT@cnte
 \def\MT@permute{%
-   \MT@cnta=\@ne
+   \let\MT@cnt@encoding\@ne
    \MT@permute@
 %    \end{macrocode}
 % Set commands back to \cs{relax} for the next round.
@@ -2693,39 +2753,39 @@ by saying `expansion=false'.}%
    \MT@permute@reset
 }
 \def\MT@permute@{%
-   \MT@cntb=\@ne
+   \let\MT@cnt@family\@ne
    \MT@permute@@
-   \advance\MT@cnta\@ne
-   \@ifundefined{MT@tempencoding\romannumeral\MT@cnta}{}%
+   \MT@increment\MT@cnt@encoding
+   \@ifundefined{MT@tempencoding\romannumeral\MT@cnt@encoding}{}%
       {\MT@permute@}%
 }
 \def\MT@permute@@{%
-   \MT@cntc=\@ne
+   \let\MT@cnt@series\@ne
    \MT@permute@@@
-   \advance\MT@cntb\@ne
-   \@ifundefined{MT@tempfamily\romannumeral\MT@cntb}{}%
+   \MT@increment\MT@cnt@family
+   \@ifundefined{MT@tempfamily\romannumeral\MT@cnt@family}{}%
       {\MT@permute@@}%
 }
 \def\MT@permute@@@{%
-   \MT@cntd=\@ne
+   \let\MT@cnt@shape\@ne
    \MT@permute@@@@
-   \advance\MT@cntc\@ne
-   \@ifundefined{MT@tempseries\romannumeral\MT@cntc}{}%
+   \MT@increment\MT@cnt@series
+   \@ifundefined{MT@tempseries\romannumeral\MT@cnt@series}{}%
       {\MT@permute@@@}%
 }
 \def\MT@permute@@@@{%
-   \MT@cnte=\@ne
+   \let\MT@cnt@size\@ne
    \MT@permute@@@@@
-   \advance\MT@cntd\@ne
-   \@ifundefined{MT@tempshape\romannumeral\MT@cntd}{}%
+   \MT@increment\MT@cnt@shape
+   \@ifundefined{MT@tempshape\romannumeral\MT@cnt@shape}{}%
       {\MT@permute@@@@}%
 }
 \def\MT@permute@@@@@{%
-   \MT@permute@define{a}{encoding}%
-   \MT@permute@define{b}{family}%
-   \MT@permute@define{c}{series}%
-   \MT@permute@define{d}{shape}%
-   \MT@permute@define{e}{size}%
+   \MT@permute@define{encoding}%
+   \MT@permute@define{family}%
+   \MT@permute@define{series}%
+   \MT@permute@define{shape}%
+   \MT@permute@define{size}%
    \edef\@tempa{\MT@tempencoding/%
                 \MT@tempfamily/%
                 \MT@tempseries/%
@@ -2750,15 +2810,15 @@ by saying `expansion=false'.}%
                `\csname MT@\MT@permutelist @name\endcsname' will override list\MessageBreak
                `\csname MT@\MT@permutelist @\@tempa\endcsname' for font `\@tempa'}}%
          \ifx\MT@tempsize\@empty\else
-            \expandafter\MT@size@check\@tempa//\@nnil
+            \expandafter\MT@size@check\@tempa//\@nil
          \fi
          \expandafter\xdef\csname MT@\MT@permutelist @\@tempa\endcsname
             {\csname MT@\MT@permutelist @name\endcsname}%
 %<debug>         \MT@info{initializing: use list for font \@tempa\@gobble}%
       \fi
    \fi
-   \advance\MT@cnte\@ne
-   \@ifundefined{MT@tempsize\romannumeral\MT@cnte}{}%
+   \MT@increment\MT@cnt@size
+   \@ifundefined{MT@tempsize\romannumeral\MT@cnt@size}{}%
       {\MT@permute@@@@@}%
 }
 %    \end{macrocode}
@@ -2769,11 +2829,12 @@ by saying `expansion=false'.}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@size@check}
+% Check whether all font characteristics are specified.
 %\changes{v1.3}{2004/10/27}{check only once}
 %    \begin{macrocode}
-\def\MT@size@check#1//#2\@nnil{%
+\def\MT@size@check#1//#2\@nil{%
    \MT@ifempty{#2}{}{%
-      \expandafter\let\csname MT@tempsize\romannumeral\MT@cnte\endcsname\relax
+      \expandafter\let\csname MT@tempsize\romannumeral\MT@cnt@size\endcsname\relax
       \edef\@tempa{\MT@tempencoding/\MT@tempfamily/\MT@tempseries/\MT@tempshape/}%
       \MT@warning{Size may only be specified if all other font\MessageBreak
             characteristics are specified, too. Ignoring size\MessageBreak
@@ -2782,14 +2843,14 @@ by saying `expansion=false'.}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@permute@define}
-% Defining and resetting the commands.
+% Define and reset the commands.
 %    \begin{macrocode}
-\def\MT@permute@define#1#2{%
-   \expandafter\@tempcnta\csname MT@cnt#1\endcsname
-   \@ifundefined{MT@temp#2\romannumeral\@tempcnta}%
-      {\expandafter\def\csname MT@temp#2\endcsname{}}%
-      {\expandafter\edef\csname MT@temp#2\endcsname
-         {\csname MT@temp#2\romannumeral\@tempcnta\endcsname}}%
+\def\MT@permute@define#1{%
+   \expandafter\@tempcnta\csname MT@cnt@#1\endcsname
+   \@ifundefined{MT@temp#1\romannumeral\@tempcnta}%
+      {\expandafter\def\csname MT@temp#1\endcsname{}}%
+      {\expandafter\edef\csname MT@temp#1\endcsname
+         {\csname MT@temp#1\romannumeral\@tempcnta\endcsname}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -2826,7 +2887,7 @@ by saying `expansion=false'.}%
 %<*m-t>
 %    \end{macrocode}
 % These are the inheriting characters. We only declare those characters that
-% are the same on \emph{both} sides, i.\,e.\ not \AE\ for A.
+% are the same on \emph{both} sides, i.\,e. not \AE\ for A.
 %    \begin{macrocode}
 %% CHARACTER INHERITANCE
 
@@ -3003,16 +3064,16 @@ by saying `expansion=false'.}%
 %   }
 %
 %    \end{macrocode}
-%\changes{v1.1}{2004/09/14}{added protrusion factors for some more characters}
-%\changes{v1.1}{2004/09/14}{removed 8-bit characters from the configuration files
-%                           (suggested by Harald Harders)}
-%\changes{v1.1}{2004/09/14}{added protrusion settings for Adobe Minion
-%                           (contributed by Harald Harders)}
 % We also create configuration files for the fonts Computer Modern Roman (\nfss\
 % code |cmr|), Palatino (|ppl|, |pplx|, |pplj|), Times (|ptm|, |ptmx|, |ptmj|),
 % Adobe Garamond (|pad|, |padx|, |padj|) and Minion\footnote{
 %     Contributed by Harald Harders (\mailto{h.harders@tu-bs.de})}
 % (|pmnx|, |pmnj|).
+%\changes{v1.1}{2004/09/14}{added protrusion factors for some more characters}
+%\changes{v1.1}{2004/09/14}{removed 8-bit characters from the configuration files
+%                           (suggested by Harald Harders)}
+%\changes{v1.1}{2004/09/14}{added protrusion settings for Adobe Minion
+%                           (contributed by Harald Harders)}
 %
 % The default settings always use the most moderate value.
 %    \begin{macrocode}
@@ -3088,29 +3149,29 @@ by saying `expansion=false'.}%
 %<m-t|ppl|ptm>     * = {200,200},
 %<pad|cmr>     * = {300,300},
 %<pmn>     * = {200,300},
-%<cmr|ppl|ptm>     + = {250,250},
+%<m-t|cmr|ppl|ptm>     + = {250,250},
 %<pad>     + = {300,300},
 %<pmn>     + = {150,200},
-%<cmr|ppl>     ( = {100,   },    ) = {   ,300},
 %<m-t|pad|pmn|ptm>     ( = {100,   },    ) = {   ,200},
+%<cmr|ppl>     ( = {100,   },    ) = {   ,300},
 %<pmn>     [ = {100,   },    ] = {   ,100},
-%<cmr|ppl>     \ = {200,300},    / = {200,300},
 %<m-t|pad|pmn|ptm>     \ = {100,200},    / = {100,200},
+%<cmr|ppl>     \ = {200,300},    / = {200,300},
 %<m-t|cmr|pad|ppl|ptm>     - = {500,500},
 %<pmn>     - = {200,400},
-%<m-t|cmr|pad|ppl|ptm>     \textendash       = {300,300},   \textemdash        = {200,200},
-%<pmn>     \textendash       = {200,200},   \textemdash       = {150,150},
+%<m-t|pmn>     \textendash       = {200,200},   \textemdash       = {150,150},
+%<cmr|pad|ppl|ptm>     \textendash       = {300,300},   \textemdash        = {200,200},
 %    \end{macrocode}
 % Why settings for left \emph{and} right quotes? Because in some languages they
 % might be used like that (see the \pkg{csquotes} package for example).
 %    \begin{macrocode}
-%<m-t|ptm>     \textquoteleft    = {500,500},   \textquoteright    = {300,500},
-%<cmr|pad|ppl>     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
-%<pmn>     \textquoteleft    = {300,400},   \textquoteright    = {300,400},
-%<pmn>     \textquotedblleft = {300,300},   \textquotedblright = {300,300},
-%<m-t|ptm>     \textquotedblleft = {300,400},   \textquotedblright = {300,400},
-%<cmr|ppl>     \textquotedblleft = {300,500},   \textquotedblright = {300,500},
-%<pad>     \textquotedblleft = {400,500},   \textquotedblright = {400,500},
+%<m-t|pmn>     \textquoteleft    = {300,400},   \textquoteright    = {300,400},
+%<cmr>     \textquoteleft    = {500,700},   \textquoteright    = {500,600},
+%<pad|ppl>     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
+%<ptm>     \textquoteleft    = {500,500},   \textquoteright    = {300,500},
+%<m-t|pmn>     \textquotedblleft = {300,300},   \textquotedblright = {300,300},
+%<cmr>     \textquotedblleft = {500,300},   \textquotedblright = {200,600},
+%<pad|ppl|ptm>     \textquotedblleft = {300,400},   \textquotedblright = {300,400},
 %    \end{macrocode}
 % Greek uppercase letters (for math mode).
 %    \begin{macrocode}
@@ -3157,12 +3218,19 @@ by saying `expansion=false'.}%
 %<pmn>   { family   = pmnj,
 %<!m-t>     encoding = {T1,LY1}    }
    {
+%    \end{macrocode}
+%\changes{v1.4}{2004/10/30}{tweak quote characters for variants of Computer Modern Roman
+%                           (\otOne, \tOne, \pkg{lmodern})}
+% The EC fonts do something weird: They insert a kern between quote and boundary
+% character. Therefore, we must override the settings from \otOne.
+%    \begin{macrocode}
+%<cmr>     \textquotedblleft = {200,600},
 %<pmn>     \TH = {  , 50},
 %<m-t|cmr|pad|ppl|ptm>     \quotesinglbase   = {400,400},   \quotedblbase      = {400,400},
 %<pmn>     \quotesinglbase   = {400,400},   \quotedblbase      = {300,300},
-%<m-t|cmr|pad|ppl|ptm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
-%<pmn>     \guilsinglleft    = {400,300},   \guilsinglright    = {300,400},
-%<m-t>     \guillemotleft    = {300,300},   \guillemotright    = {300,300},
+%<m-t|pmn>     \guilsinglleft    = {400,300},   \guilsinglright    = {300,400},
+%<cmr|pad|ppl|ptm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
+%<m-t>     \guillemotleft    = {200,200},   \guillemotright    = {200,200},
 %<cmr>     \guillemotleft    = {300,200},   \guillemotright    = {100,400},
 %<pad>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
 %<pmn>     \guillemotleft    = {200,200},   \guillemotright    = {150,300},
@@ -3176,6 +3244,22 @@ by saying `expansion=false'.}%
 %<pmn>     \textvisiblespace = {100,100},
    }
 
+%    \end{macrocode}
+% The \pkg{lmodern} fonts, on the other hand, restore the original kerning from
+% the \otOne\ fonts, and so do we.
+%    \begin{macrocode}
+%<*cmr>
+\SetProtrusion
+   [ name     = lmr-T1,
+     load     = cmr-T1 ]
+   { family   = lmr,
+     encoding = {T1,LY1}    }
+   {
+     \textquotedblleft = {500,300},
+     \quotedblbase     = {500,300},
+   }
+
+%</cmr>
 %<*pmn>
 \SetProtrusion
    [ name     = pmnx-OT1,
@@ -3339,15 +3423,16 @@ by saying `expansion=false'.}%
 %<cmr|ptm>     - = {500,500},
 %<pmn>     - = {200,300},
 %<ppl>     - = {300,500},
-%<m-t|cmr|pad|ppl|ptm>     \textendash       = {300,300},   \textemdash        = {200,200},
-%<pmn>     \textendash       = {200,200},   \textemdash        = {150,150},
-%<m-t|ppl>     \textquoteleft    = {700,400},   \textquoteright    = {700,400},
+%<m-t|pmn>     \textendash       = {200,200},   \textemdash        = {150,150},
+%<cmr|pad|ppl|ptm>     \textendash       = {300,300},   \textemdash        = {200,200},
+%<m-t|pmn>     \textquoteleft    = {400,200},   \textquoteright    = {400,200},
 %<cmr|pad>     \textquoteleft    = {800,200},   \textquoteright    = {800,200},
-%<pmn>     \textquoteleft    = {400,200},   \textquoteright    = {400,200},
+%<ppl>     \textquoteleft    = {700,400},   \textquoteright    = {700,400},
 %<ptm>     \textquoteleft    = {800,500},   \textquoteright    = {800,500},
-%<m-t|ppl>     \textquotedblleft = {500,300},   \textquotedblright = {500,300},
-%<cmr|pad>     \textquotedblleft = {700,200},   \textquotedblright = {700,200},
-%<pmn>     \textquotedblleft = {400,200},   \textquotedblright = {400,200},
+%<m-t|pmn>     \textquotedblleft = {400,200},   \textquotedblright = {400,200},
+%<ppl>     \textquotedblleft = {500,300},   \textquotedblright = {500,300},
+%<cmr>     \textquotedblleft = {700,100},   \textquotedblright = {500,300},
+%<pad>     \textquotedblleft = {700,200},   \textquotedblright = {700,200},
 %<ptm>     \textquotedblleft = {700,400},   \textquotedblright = {700,400},
    }
 
@@ -3372,13 +3457,15 @@ by saying `expansion=false'.}%
 %<pmn>     family   = pmnj,
      encoding = {T1,LY1}    }
    {
+%<cmr>     \textquotedblleft = {500,300},
 %<pmn>     188 = {  ,-30}, % ij
 %<pmn>     031 = { ,-100}, % ffl
 %<cmr|ptm>     156 = {100, },  % IJ
 %<pad>     156 = {50,  },  % IJ
 %<pmn>     156 = {20,  },  % IJ
 %<pmn>   \v{t} = { ,100},
-%<m-t|cmr|ptm>     \quotesinglbase   = {300,700},   \quotedblbase      = {400,500},
+%<m-t|ptm>     \quotesinglbase   = {300,700},   \quotedblbase      = {400,500},
+%<cmr>     \quotesinglbase   = {300,700},   \quotedblbase      = {200,600},
 %<pad|ppl>     \quotesinglbase   = {500,500},   \quotedblbase      = {400,400},
 %<pmn>     \quotesinglbase   = {200,500},   \quotedblbase      = {150,500},
 %<m-t|ppl|ptm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
@@ -3401,6 +3488,19 @@ by saying `expansion=false'.}%
 %<pmn>     \textvisiblespace = {100,100},
    }
 
+%<*cmr>
+\SetProtrusion
+   [ name     = lmr-it-T1,
+     load     = cmr-it-T1 ]
+   { family   = lmr,
+     shape    = it,
+     encoding = {T1,LY1}    }
+   {
+     \textquotedblleft = {700,100},
+     \quotedblbase     = {600,300},
+   }
+
+%</cmr>
 %<*pmn>
 \SetProtrusion
    [ name     = pmnx-it,
@@ -3941,30 +4041,30 @@ by saying `expansion=false'.}%
    "25 = {100, },   % \varrho
    "26 = {100, },   % \varsigma
    "27 = {50,  },   % \varphi
-   "3A = { ,500},   % ., \ldotp
-   "3B = { ,500},   % ,
-   "3C = {200,100}, % <
-   "3D = {300,400}, % /
-   "3E = {100,200}, % >
-%  "7B = {   ,   }, % \imath
-   "7C = {100,   }, % \jmath
-%  "60 = {   ,   }, % \ell
-   "7D = {   ,100}, % \wp
-%  "40 = {   ,   }, % \partial
-   "5B = {   ,100}, % \flat
-%  "5C = {   ,   }, % \natural
-%  "5D = {   ,   }, % \sharp
-   "2F = {100,   }, % \triangleleft
-   "2E = {   ,100}, % \triangleright
-   "3F = {200,200}, % \star
-   "5E = {200,200}, % \smile
-   "5F = {200,200}, % \frown
    "28 = {100,100}, % \leftharpoonup
    "29 = {100,100}, % \leftharpoondown
    "2A = {100,100}, % \rightharpoonup
    "2B = {100,100}, % \rightharpoondown
    "2C = {300,200}, % \lhook
    "2D = {200,300}, % \rhook
+   "2E = {   ,100}, % \triangleright
+   "2F = {100,   }, % \triangleleft
+   "3A = { ,500},   % ., \ldotp
+   "3B = { ,500},   % ,
+   "3C = {200,100}, % <
+   "3D = {300,400}, % /
+   "3E = {100,200}, % >
+   "3F = {200,200}, % \star
+%  "40 = {   ,   }, % \partial
+   "5B = {   ,100}, % \flat
+%  "5C = {   ,   }, % \natural
+%  "5D = {   ,   }, % \sharp
+   "5E = {200,200}, % \smile
+   "5F = {200,200}, % \frown
+%  "60 = {   ,   }, % \ell
+%  "7B = {   ,   }, % \imath
+   "7C = {100,   }, % \jmath
+   "7D = {   ,100}, % \wp
    }
 
 %    \end{macrocode}
@@ -4168,49 +4268,68 @@ by saying `expansion=false'.}%
 %
 % \subsection{User Command}
 %\begin{macro}{\microtypesetup}
+%\changes{v1.4}{2004/11/04}{bug fix: set the correct levels, and remember them;
+%                           warning when enabling if disabled in package options}
 %\begin{macro}{\MT@define@optionX}
 % This command may be used anywhere in the document. It accepts the options:
 % |protrusion|, |expansion| and |activate|. Specifying font sets is not
 % allowed.
 %    \begin{macrocode}
 %<*package>
+\def\MT@capitalize#1#2\@nil{%
+   \uppercase{\def\@tempb{#1}}%
+   \edef\@tempb{\@tempb#2}}%
 \def\microtypesetup{\setkeys{MTX}}
 \def\MT@define@optionX#1{%
    \define@key{MTX}{#1}[true]{%
       \@for\MT@val:=##1\do{%
+         \MT@capitalize#1\@nil
          \expandafter\KV@@sp@def\expandafter\MT@val\expandafter{\MT@val}%
          \MT@ifempty{\MT@val}{}{%
             \@tempcnta\m@ne
             \def\@tempa{true}%
             \ifx\MT@val\@tempa
-               \@tempcnta\MT@expansionlevel
-               \MT@info{#1 enabled}%
+%    \end{macrocode}
+% Enabling micro-typography in the middle of the document is not allowed if it
+% has been disabled in the package options since fonts might already have been
+% loaded and hence wouldn't be set up.
+% (A whole caboodle of \cs{expandafter}s because we have to use \cs{csname}s.)
+%    \begin{macrocode}
+               \expandafter\expandafter\expandafter
+               \ifx\expandafter\csname ifMT@#1\expandafter\endcsname\csname iftrue\endcsname
+                  \expandafter\@tempcnta\csname MT@#1level\endcsname
+                  \MT@info{\@tempb\space enabled}%
+               \else
+                  \MT@warning{You cannot enable #1 if it was disabled\MessageBreak
+                        in the package options,}%
+               \fi
                \let\MT@val\relax
             \fi
             \def\@tempa{false}%
             \ifx\MT@val\@tempa
                \@tempcnta\z@
-               \MT@info{#1 disabled}%
+               \MT@info{\@tempb\space disabled}%
                \let\MT@val\relax
             \fi
             \def\@tempa{compatibility}%
             \ifx\MT@val\@tempa
                \@tempcnta\@ne
-               \MT@info{#1 set to level 1}%
+               \expandafter\let\csname MT@#1level\endcsname\@ne
+               \MT@info{\@tempb\space set to level 1}%
                \let\MT@val\relax
             \fi
-            \def\@tempa{nocompatibility}
+            \def\@tempa{nocompatibility}%
             \ifx\MT@val\@tempa
                \@tempcnta\tw@
-               \MT@info{#1 set to level 2}%
+               \expandafter\let\csname MT@#1level\endcsname\tw@
+               \MT@info{\@tempb\space set to level 2}%
                \let\MT@val\relax
             \fi
             \ifx\MT@val\relax\else
                \MT@warning{Value `\MT@val' not recognized}%
             \fi
             \ifnum\@tempcnta>\m@ne
-               \def\@tempa{expansion}%
-               \def\@tempb{#1}%
+               \def\@tempa{Expansion}%
                \ifx\@tempa\@tempb
                   \pdfadjustspacing\@tempcnta
                \else
@@ -4253,7 +4372,7 @@ by saying `expansion=false'.}%
                \expandafter\def\csname MT@#1level\endcsname{1}%
                \let\MT@val\relax
             \fi
-            \def\@tempa{nocompatibility}
+            \def\@tempa{nocompatibility}%
             \ifx\MT@val\@tempa
                \expandafter\def\csname MT@#1level\endcsname{2}%
                \let\MT@val\relax
@@ -4347,17 +4466,15 @@ by saying `expansion=false'.}%
 \fi
 %    \end{macrocode}
 % Set up the numbers for font expansion: If |stretch| has not been specified, we
-% take the default value of 20. If |shrink| has not been specified, it will get
-% the same value as |stretch|.
-% If both values have been set to 0, we will switch off expansion.
-%
-% If |step| has not been specified, we will set it to min(|stretch|,|shrink|)/10,
-% rounded off, minimum value 1.
+% take the default value of 20.
 %    \begin{macrocode}
 \ifMT@expansion
    \ifnum\MT@stretch=\m@ne
       \def\MT@stretch{20 }%
    \fi
+%    \end{macrocode}
+% If |shrink| has not been specified, it will inherit the value from |stretch|.
+%    \begin{macrocode}
    \ifnum\MT@shrink=\m@ne
       \ifnum\MT@stretch>\z@
          \let\MT@shrink\MT@stretch
@@ -4365,11 +4482,18 @@ by saying `expansion=false'.}%
          \def\MT@shrink{20 }%
       \fi
    \fi
+%    \end{macrocode}
+% If both values have been set to 0, we will switch off expansion.
+%    \begin{macrocode}
    \ifnum\MT@stretch=\z@
       \ifnum\MT@shrink=\z@
          \MT@expansionfalse
       \fi
    \fi
+%    \end{macrocode}
+% If |step| has not been specified, we will set it to min(|stretch|,|shrink|)/10,
+% rounded off, minimum value 1.
+%    \begin{macrocode}
    \ifnum\MT@step=\m@ne
       \ifnum\MT@stretch>\MT@shrink
          \ifnum\MT@shrink=\z@
@@ -4413,6 +4537,7 @@ by saying `expansion=false'.}%
       Disabling all micro-typographic features\@gobble}
    \MT@protrusionfalse
    \MT@expansionfalse
+   \let\MT@setupfont\relax
 \else
    \MT@info{%
       \ifMT@protrusion Character protrusion enabled (level \MT@protrusionlevel)%
@@ -4445,7 +4570,7 @@ by saying `expansion=false'.}%
 % \subsection{Auxiliary file for micro-fine tuning}
 % This file can be used to test protrusion and expansion settings.
 %    \begin{macrocode}
-%<*auxiliary>
+%<*test>
 \documentclass{article}
 
 %% Here you can set the font you want to test, using
@@ -4554,7 +4679,7 @@ normal, and shrunk by 5\%:
                    \teststring}\par\bigskip
 \parbox{0.95\MTln}{\teststring}
 \end{document}
-%</auxiliary>
+%</test>
 %    \end{macrocode}
 % Needless to say that things may always be improved. For suggestions, mail to
 % \mailtoRS.
@@ -4577,7 +4702,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{3576}
+% \CheckSum{3687}
 %
 % \Finale
 %

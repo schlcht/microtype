@@ -1,7 +1,7 @@
 
 
                      The `microtype' package
-      An interface to the micro-typographic features of pdfTeX
+      An interface to the micro-typographic extensions of pdfTeX
                ====================================
 
 
@@ -59,4 +59,4 @@ provided  that (1) the original copyright statement is not removed, and
            Copyright (c) 2004 R Schlicht <w.m.l@gmx.net>
            ---------------------------------------------
 
-$Id: README,v 1.2 2004-10-04 17:09:51+02 schlicht Exp schlicht $
+$Id: README,v 1.3 2004-11-13 17:04:25+01 schlicht Exp schlicht $
