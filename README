@@ -2,15 +2,16 @@
 
                      The `microtype' package
       An interface to the micro-typographic extensions of pdfTeX
-               ====================================
+                =================================
+                       v1.6a    2005/02/02
 
 
 * Overview
------------
+ ----------
 
 The `microtype' package  provides an interface  to the  micro-typographic
 extensions of pdfTeX: character protrusion and font expansion.  It allows
-to restrict  font expansion and/or character protrusion to a customizable
+to restrict font expansion and/or character protrusion  to a customizable
 set of fonts, and to configure all micro-typographic aspects of the fonts
 in a  straight-forward and flexible way.  Settings for  various fonts are
 provided.
@@ -24,7 +25,7 @@ The documentation can be found in microtype.pdf resp. microtype.dvi.
 
 
 * Installation
----------------
+ --------------
 
  - Run latex on microtype.ins to generate the package and
    configuration files.
@@ -39,7 +40,7 @@ The documentation can be found in microtype.pdf resp. microtype.dvi.
 
 
 * License
-----------
+ ---------
 
 This work may be distributed and/or modified  under the conditions of the
 LaTeX Project Public License,  either version 1.3 of this license  or (at
@@ -60,4 +61,4 @@ provided that  (1)  the original copyright statement  is not removed, and
          Copyright (c) 2004, 2005 R Schlicht <w.m.l@gmx.net>
          ---------------------------------------------------
 
-$Id: README,v 1.4 2005-01-24 05:43:41+01 schlicht Exp schlicht $
+$Id: README,v 1.5 2005-02-02 23:55:18+01 schlicht Exp schlicht $
