@@ -30,7 +30,7 @@ The documentation can be found in microtype.pdf resp. microtype.dvi.
  - Put all files into a directory where LaTeX will find them,
    e.g. TEXMF/tex/latex/microtype.
 
- - Run latex on microtype.dtx to create the documentation.
+ - Run latex twice on microtype.dtx to create the documentation.
  - For an index run:
       makeindex -s gind.ist -o microtype.ind microtype.idx
  - For the change history run:
@@ -59,4 +59,4 @@ provided  that (1) the original copyright statement is not removed, and
            Copyright (c) 2004 R Schlicht <w.m.l@gmx.net>
            ---------------------------------------------
 
-$Id: README,v 1.1 2004-09-21 22:50:26+02 schlicht Exp schlicht $
+$Id: README,v 1.2 2004-10-04 17:09:51+02 schlicht Exp schlicht $
