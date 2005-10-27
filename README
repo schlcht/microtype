@@ -3,18 +3,18 @@
                      The `microtype' package
       An interface to the micro-typographic extensions of pdfTeX
                 =================================
-                       v1.8    2005/06/23
+                       v1.9    2005/10/28
 
 
 * Overview
  ----------
 
-The `microtype' package  provides an interface  to the  micro-typographic
-extensions of pdfTeX: character protrusion and font expansion.  It allows
-to restrict font expansion and/or character protrusion  to a customizable
-set of fonts, and to configure all micro-typographic aspects of the fonts
-in a  straight-forward and flexible way.  Settings for  various fonts are
-provided.
+The `microtype' package provides an interface  to  the  micro-typographic
+extensions  of  pdfTeX:  most  prominently, character protrusion and font
+expansion, furthermore the possibility to disable all ligatures of a font.
+It allows to apply these features to customizable sets of fonts,  and  to
+configure  all  micro-typographic  aspects  of  the  fonts in a straight-
+forward and flexible way. Settings for various fonts are provided.
 
 Note:  Font expansion and character protrusion will only work with pdfTeX,
 at least version 0.14f.  Automatic font expansion  requires version 1.20a
@@ -22,6 +22,10 @@ or newer. The package will by default enable the features that can safely
 be assumed to work.
 
 The documentation can be found in microtype.pdf resp. microtype.dvi.
+
+A preview of the next version  is also included,  which supports  the new
+experimental extensions of pdfTeX: adjustment of interword spacing (glue)
+and the possibility to specify additional character kerning.
 
 
 * Installation
@@ -60,4 +64,4 @@ provided that  (1)  the original copyright statement is not removed,  and
          Copyright (c) 2004, 2005 R Schlicht <w.m.l@gmx.net>
          ---------------------------------------------------
 
-$Id: README,v 1.9 2005-06-24 00:01:03+02 schlicht Exp schlicht $
+$Id: README,v 1.10 2005-10-28 16:43:44+02 schlicht Exp schlicht $

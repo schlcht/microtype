@@ -1,6 +1,8 @@
 % -*- TeX:UK -*-
-% $Id: microtype.ins,v 1.7 2005-06-10 17:17:29+02 schlicht Exp schlicht $
+% $Id: microtype.ins,v 1.8 2005-10-28 16:22:21+02 schlicht Exp schlicht $
 % -----------------------------------------------------------------------
+\newif\ifbeta
+\betatrue
 \input docstrip
 \keepsilent
 \askonceonly
@@ -75,23 +77,23 @@ derived file microtype.sty.
 % ---------------------------------------------------------------------
 
 \generate{
-      \file{microtype.sty}{\from{microtype.dtx}{package}}
-   \usepreamble\cfgpreamble
-      \file{microtype.cfg}{\from{microtype.dtx}{config,m-t}}
-   \usepreamble\fontpreamble
-      \file{mt-bch.cfg}{\from{microtype.dtx}{config,bch}}
-      \file{mt-cmr.cfg}{\from{microtype.dtx}{config,cmr}}
-      \file{mt-pad.cfg}{\from{microtype.dtx}{config,pad}}
-      \file{mt-ppl.cfg}{\from{microtype.dtx}{config,ppl}}
-      \file{mt-ptm.cfg}{\from{microtype.dtx}{config,ptm}}
-      \file{mt-msa.cfg}{\from{microtype.dtx}{config,cfg-u,msa}}
-      \file{mt-msb.cfg}{\from{microtype.dtx}{config,cfg-u,msb}}
-      \file{mt-euf.cfg}{\from{microtype.dtx}{config,cfg-u,euf}}
-      \file{mt-eus.cfg}{\from{microtype.dtx}{config,cfg-u,eus}}
-   \usepreamble\haraldpreamble
-      \file{mt-pmn.cfg}{\from{microtype.dtx}{config,pmn}}
-   \usepreamble\testpreamble
-      \file{test-microtype.tex}{\from{microtype.dtx}{test}}
+      \file{microtype.sty}{\from{microtype.dtx}{package\ifbeta,beta\fi}}
+%   \usepreamble\cfgpreamble
+%      \file{microtype.cfg}{\from{microtype.dtx}{config,m-t\ifbeta,beta\fi}}
+%   \usepreamble\fontpreamble
+%      \file{mt-bch.cfg}{\from{microtype.dtx}{config,bch}}
+%      \file{mt-cmr.cfg}{\from{microtype.dtx}{config,cmr}}
+%      \file{mt-pad.cfg}{\from{microtype.dtx}{config,pad}}
+%      \file{mt-ppl.cfg}{\from{microtype.dtx}{config,ppl}}
+%      \file{mt-ptm.cfg}{\from{microtype.dtx}{config,ptm}}
+%      \file{mt-msa.cfg}{\from{microtype.dtx}{config,cfg-u,msa}}
+%      \file{mt-msb.cfg}{\from{microtype.dtx}{config,cfg-u,msb}}
+%      \file{mt-euf.cfg}{\from{microtype.dtx}{config,cfg-u,euf}}
+%      \file{mt-eus.cfg}{\from{microtype.dtx}{config,cfg-u,eus}}
+%   \usepreamble\haraldpreamble
+%      \file{mt-pmn.cfg}{\from{microtype.dtx}{config,pmn}}
+%   \usepreamble\testpreamble
+%      \file{test-microtype.tex}{\from{microtype.dtx}{test}}
 }
 
 \obeyspaces
