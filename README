@@ -3,7 +3,7 @@
                      The `microtype' package
       An interface to the micro-typographic extensions of pdfTeX
                 =================================
-                       v1.9a    2005/12/05
+                       v1.9c    2006/02/02
 
 
 * Overview
@@ -53,13 +53,13 @@ of all distributions of LaTeX version 2003/12/01 or later.
 
 This work has the LPPL maintenance status `author-maintained'.
 
-This work consists of  the files  microtype.dtx and microtype.ins and the
+This work consists of the files  microtype.dtx and  microtype.ins and the
 derived file microtype.sty.
 
-Modified versions of the configuration files (*.cfg) may  be  distributed
+Modified versions  of the configuration files (*.cfg)  may be distributed
 provided that  (1)  the original copyright statement is not removed,  and
 (2) the identification string is changed.
 
-         ---------------------------------------------------
-         Copyright (c) 2004, 2005 R Schlicht <w.m.l@gmx.net>
-         ---------------------------------------------------
+         ----------------------------------------------------
+         Copyright (c) 2004--2006  R Schlicht <w.m.l@gmx.net>
+         ----------------------------------------------------
