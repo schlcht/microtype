@@ -1,6 +1,6 @@
 % -*- TeX:UK -*-
-% $Id: microtype.ins,v 1.11 2006-05-05 19:20:39+02 schlicht Exp schlicht $
-% -----------------------------------------------------------------------
+% $Id: microtype.ins,v 1.12 2006-07-28 18:27:03+02 schlicht Exp schlicht $
+% ------------------------------------------------------------------------
 \newif\ifbeta
 %\betatrue
 \input docstrip
@@ -8,16 +8,16 @@
 \askonceonly
 \preamble
 
------------------------------------------------------------------------
-                       The `microtype' package
+------------------------------------------------------------------------
+                      The `microtype' package
        An interface to the micro-typographic extensions of pdfTeX
           Copyright (c) 2004--2006  R Schlicht <w.m.l@gmx.net>
 
-This work  may be distributed  and/or modified  under the conditions of
-the LaTeX Project Public License, either version 1.3 of this license or
-(at your option) any later version.  The latest version of this license
-is in:  http://www.latex-project.org/lppl.txt, and version 1.3 or later
-is part of all distributions of LaTeX version 2003/12/01 or later.
+This work may be distributed and/or modified under the conditions of the
+LaTeX Project Public License, either version 1.3c of this license or (at
+your option) any later version. The latest version of this license is in:
+http://www.latex-project.org/lppl.txt, and version 1.3c or later is part
+of all distributions of LaTeX version 2005/12/01 or later.
 
 This work has the LPPL maintenance status `author-maintained'.
 
@@ -25,9 +25,9 @@ This work consists of the files microtype.dtx and microtype.ins and the
 derived file microtype.sty.
 
 % Modified versions of the configuration files (*.cfg) may be distributed
-% provided that  (1) the original copyright statement is not removed, and
+% provided that: (1) the original copyright statement is not removed, and
 % (2) the identification string is changed.
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 \endpreamble
 {\catcode`\^^M=13 %
@@ -36,7 +36,7 @@ derived file microtype.sty.
   \def^^M{^^J\MetaPrefix\space}%
   \edef#1{\firstpreamblepart\checkeoln#2\lastpreamblepart\empty}}}
 \def\defaultlastpreamblepart{^^J\MetaPrefix\space
------------------------------------------------------------------------
+------------------------------------------------------------------------
 ^^J\MetaPrefix}
 \let\firstpreamblepart\defaultpreamble
 \let\lastpreamblepart \defaultlastpreamblepart
@@ -52,7 +52,7 @@ derived file microtype.sty.
 \endpreamble
 \declarepreamble\fontpreamble
   This is a font-specific configuration file for the `microtype'
-  package. It contains settings for font expansion and character
+  package. It may contain settings for font expansion and character
   protrusion. Please consult the documentation for details.^^M
   If you think you have found improvements to these settings, please
   let me know.^^M
@@ -91,6 +91,7 @@ derived file microtype.sty.
     \makecfg{u}{msa}
     \makecfg{u}{msb}
     \makecfg{u}{euf}
+    \makecfg{u}{eur}
     \makecfg{u}{eus}
     \makecfg{e}{zpeu}
     \makecfg{e}{euroitc}
