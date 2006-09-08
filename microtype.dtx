@@ -2,9 +2,9 @@
 % ^^A messages to WinEdt:
 % -*- TeX:DTX:UK -*-
 % smartQuote: English
-% DTXversion: 1.9e
+% DTXversion: 1.9f
 % ------------------------------------------------------------------------
-% $Id: microtype.dtx,v 1.36 2006-07-28 18:46:46+02 schlicht Exp schlicht $
+% $Id: microtype.dtx,v 1.37 2006-09-09 20:07:46+02 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %        An interface to the micro-typographic extensions of pdfTeX
@@ -29,12 +29,12 @@
 %<*driver>
 \expandafter\newif\csname ifbeta\endcsname
 %\betatrue
-\ProvidesFile{microtype.dtx}[2006/07/28 v\ifbeta 2.0-beta:6 \else 1.9e \fi]
+\ProvidesFile{microtype.dtx}[2006/09/09 v\ifbeta 2.0-beta:7 \else 1.9f \fi]
 %</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\ProvidesPackage{microtype}[2006/07/28
-%<package&beta>    v2.0-beta:6
-%<package&!beta>    v1.9e
+%<package>\ProvidesPackage{microtype}[2006/09/09
+%<package&beta>    v2.0-beta:7
+%<package&!beta>    v1.9f
 %<package>    Micro-typography with pdfTeX (RS)]
 %<*config>
 %<config>\ProvidesFile
@@ -49,7 +49,7 @@
 %<msa>   {mt-msa.cfg}[2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)]
 %<msb>   {mt-msb.cfg}[2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)]
 %<euf>   {mt-euf.cfg}[2006/07/03 v1.1 microtype config. file: AMS Euler Fraktur (RS)]
-%<eur>   {mt-eur.cfg}[2006/07/28 v1.0 microtype config. file: AMS Euler Roman (RS)]
+%<eur>   {mt-eur.cfg}[2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)]
 %<eus>   {mt-eus.cfg}[2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)]
 %<zpeu>   {mt-zpeu.cfg}[2006/05/04 v1.0 microtype config. file: Adobe Euro (RS)]
 %<euroitc>   {mt-euroitc.cfg}[2006/05/04 v1.0 microtype config. file: ITC Euro (RS)]
@@ -86,14 +86,15 @@
 \makeatletter
 \tolerance=700
 \let\textmatrix@patch0
-\if\textmatrix@patch1 % ... we're using Hartmut's textmatrix.ch patch
+\ifpdf\ifnum\pdftexversion<140 \else
+\if\textmatrix@patch1 % we're using Hartmut's textmatrix.ch patch ...
   \microtypesetup{expansion=alltext,step=1}
-  \tolerance=300 % this is almost TeX's default tolerance
+  \tolerance=300 % ... so that we can apply almost TeX's default tolerance
   \g@addto@macro\macrocode{\pdfadjustspacing\z@}
   \AtBeginDocument{\def\@pdfproducer{pdftex 1.40.0-beta with textmatrix.ch patch}}
-\fi
+\fi\fi\fi
 \let\printlogo\@empty
-\ifpdf\InputIfFileExists{microtype-logo.dtx}\relax\relax\fi
+\ifbeta\else\ifpdf\InputIfFileExists{microtype-logo.dtx}\relax\relax\fi\fi
 \usepackage{booktabs}
 \usepackage{array}
  \newcolumntype{L}[1]{p{#1}<{\raggedright}}
@@ -102,7 +103,7 @@
  \definecolor{thered}  {rgb}{0.65,0.04,0.07}
  \definecolor{thegreen}{rgb}{0.06,0.44,0.08}
  \definecolor{thegrey} {gray}{0.5}
- \definecolor{theshade}{gray}{0.92}
+ \definecolor{theshade}{gray}{0.94}
 \ifbeta
  \usepackage[color]{changebar}
  \cbcolor{thered}
@@ -169,13 +170,13 @@
   {\let\numberline\@gobble{\small[#1~--~#2]}}}
 \def\l@table{\@dottedtocline{1}{0pt}{1.5em}}
 \def\@pnumwidth{1.7em}
-\def\special@outlines{attr{/C [0.85 0.04 0.07] /F 00}}
-\def\special@toc#1#2#3{%
+\def\special@outlines{attr{/F 01}} % /C [0.85 0.04 0.07]
+\def\defspecial@toc#1#2#3{%
   \long\def#1{\ifpdf\hypertarget{section.#3}{}\fi
     \section*{#2}\@mkboth{\textls[30]{\MakeUppercase{#2}}}{}\@starttoc{#3}}%
   \ifpdf\pdfoutline \special@outlines goto name {section.#3}{#2}\fi}
-\special@toc\tableofcontents\contentsname{toc}
-\special@toc\listoftables\listtablename{lot}
+\defspecial@toc\tableofcontents\contentsname{toc}
+\defspecial@toc\listoftables\listtablename{lot}
 % bibliography
 \def\@cite#1#2{#1\if@tempswa, #2\fi}
 \def\thebibliography#1{%
@@ -314,8 +315,8 @@
    comment=[l]\%,
    commentstyle=\color{thegrey}\itshape,
    escapeinside=<>,
-   frame=single,framerule=0pt,backgroundcolor=\color{theshade},
-   xleftmargin=\fboxsep,xrightmargin=\fboxsep,belowskip=\smallskipamount
+   frame=single,backgroundcolor=\color{theshade},rulecolor=\color[gray]{0.75},
+   xleftmargin=3.4pt,xrightmargin=3.4pt,belowskip=\smallskipamount
  }
  \let\verbatim\relax
  \lstnewenvironment{verbatim}{}{}
@@ -334,6 +335,7 @@
  \let\todo\@gobble
 \fi
 \newcommand\microtypesample[1]{\begin{quote}#1\end{quote}}
+\let\emptypdfpageresources\relax
 % fancy PDF document
 \ifpdf
   \ifx\eTeXversion\undefined \else % errors when not using etex (conflict with multicol)
@@ -381,19 +383,19 @@
   %    \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
   %    \encapchar codeline}%
   %  \@esphack}
-  \def\ctanurl#1{\href{http://www.tex.ac.uk/tex-archive#1}{\nolinkurl{#1}}}
+  \def\ctanurl#1{\href{http://www.tex.ac.uk/tex-archive/#1}{\nolinkurl{/#1}}}
   \def\mailto#1{\href{mailto:#1}{\texttt{#1}}}
-  % some PDF viewers don't like spaces:
-  {\catcode`\%=12
+  {% some PDF viewers don't like spaces:
+   \catcode`\%=12
    \gdef\mailtoRS{\href
       {mailto:<w.m.l@gmx.net>%20Robert%20Schlicht?subject=[microtype%20\fileversion]}
       {\texttt{w.m.l@gmx.net}}}}
-  \let\ORIGpdfoutline\pdfoutline
-  \protected@write\@outlinefile{}{\let\pdfoutline\ORIGpdfoutline}
+  \let\ORIGpdfoutline\pdfoutline % since hyperref v6.75a, this must be \AtBeginDocument:
+  \AtBeginDocument{\protected@write\@outlinefile{}{\let\pdfoutline\ORIGpdfoutline}}
   \g@addto@macro\appendix{\protected@write\@outlinefile{}%
     {\def\pdfoutline{\ORIGpdfoutline \special@outlines}}}
   % the samples on the first page, utilizing nested optional content groups (aka. layers):
-  \if\textmatrix@patch1
+  \ifpdf\ifnum\pdftexversion<140 \else \if\textmatrix@patch1
     \def\mt@layer#1#2{\pdfliteral{/OC/#1 BDC}#2\pdfliteral{EMC}}
     \let\mt@objects\@empty \let\mt@resources\@empty
     \def\mt@register#1#2{%
@@ -464,7 +466,8 @@
       \vskip 4pt
       \endgroup
       \edef\x{\pdfpageresources{/Properties <<\mt@resources>>}}\x}
-    \fi
+      \def\emptypdfpageresources{\pdfpageresources{}}
+    \fi\fi\fi
 \else
   \usepackage{url}
   \newcommand\hyperref[2][]{#2}
@@ -545,7 +548,7 @@
 %
 % Note that font expansion and character protrusion will only work with \pdftex,
 % at least version 0.14f. Automatic font expansion requires version 1.20 or
-% newer. Disabling ligatures require \pdftex\ 1.30^^A
+% newer. Disabling ligatures requires \pdftex\ 1.30^^A
 %\betastart,
 % adjustment of interword spacing and of kerning requires version 1.40^^A
 %\betaend.
@@ -680,6 +683,7 @@
 %   \file{microtype.ins} resp. \file{microtype.dtx}.}\fi
 %
 %\ifbeta\else\pagebreak\fi ^^A layout
+%\emptypdfpageresources
 %\bigskip\noindent
 % The \microtype\ package provides an interface to all these micro-typographic
 % extensions.\footnote{
@@ -704,7 +708,6 @@
 % typographic issues), you may actually skip the rest of this document.
 %
 %
-%\ifpdf\pdfpageresources{}\fi
 %\section{Options}
 %
 % Like many other \LaTeX\ packages, the \microtype\ package accepts options in
@@ -1939,7 +1942,7 @@
 % Additionally, the following people have reported bugs or helped otherwise
 % (in chronological order):
 %\ifbeta\else
-%  \contributor Ulrich Dirr     <ud\at satz-art.de>,
+%  \contributor Ulrich Dirr     <ud\at art-satz.de>,
 %\fi
 %  \contributor Tom Kink        <kink\at hia.rwth-aachen.de>,
 %  \contributor Herb Schulz     <herbs\at wideopenwest.com>,
@@ -1993,25 +1996,25 @@
 % \bibitem[\pdftex\ manual]{pdftexman}
 %   \thanh, Sebastian Rahtz, Hans Hagen, Hartmut Henkel, Pawe\l\ Jackowski,
 %   \emph{The \pdftex\ user manual},
-%   \newblock December 4, 2005.
-%   \newblock (Available from <CTAN> at \ctanurl{/systems/pdftex/manual/};
+%   \newblock 16 February 2006.
+%   \newblock (Available from <CTAN> at \ctanurl{systems/pdftex/manual/};
 %              latest version at \url{http://sarovar.org/projects/pdftex/})
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX3 Project Team, \emph{\LaTeXe\ font selection},
-%   \newblock November 27, 2005.
-%   \newblock (Available from <CTAN> at \ctanurl{/macros/latex/doc/fntguide.pdf})
+%   \newblock 27 November 2005.
+%   \newblock (Available from <CTAN> at \ctanurl{macros/latex/doc/fntguide.pdf})
 %
 % \bibitem[\texttt{pdfcprot}]{pdfcprot}
 %   Carsten Schurig, Tobias Schlemmer, \emph{The |pdfcprot.sty| package},
-%   \newblock June 10, 2005.
-%   \newblock (Available from <CTAN> at \ctanurl{/macros/latex/contrib/pdfcprot/})
+%   \newblock 10 June 2005.
+%   \newblock (Available from <CTAN> at \ctanurl{macros/latex/contrib/pdfcprot/})
 %
 %\ifbeta
 % \bibitem[\texttt{soul}]{soul}
 %   Melchior Franz, \emph{The |soul| package},
-%   \newblock November 17, 2003.
-%   \newblock (Available from <CTAN> at \ctanurl{/macros/latex/contrib/soul/})
+%   \newblock 17 November 2003.
+%   \newblock (Available from <CTAN> at \ctanurl{macros/latex/contrib/soul/})
 %\fi
 %\end{thebibliography}
 %
@@ -2046,6 +2049,7 @@
 %  \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
 %
 %\begin{History}
+%\VersionDate{2.0}{<N/A>}
 %\betastart
 %\Version 2.0 (\filedate)
 %  \item Support for the new experimental extensions of \pdftex\ version 1.40:
@@ -2061,7 +2065,9 @@
 %         see section~\ref{sec:lettersp})
 %\betaend
 %
-%\Version 1.9e (\filedate)
+%\VersionDate{1.9f}{\filedate}
+%
+%\Version 1.9e (2006/07/28)
 %  \item New key `|inputenc|' to specify the lists' input encodings
 %  \item Protrusion settings for Euler math fonts
 %
@@ -2289,10 +2295,9 @@
 %  \@gobbletwo,\@ifnextchar,\@ifpackagelater,\@ifpackageloaded,\@ifpackagewith,
 %  \@ifstar,\@m,\@makeother,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,
 %  \@onlypreamble,\@ptionlist,\@removeelement,\@secondoftwo,\@tempa,\@tempb,\@tempc,
-%  \@tempcnta,\@tempcntb,\@tempdima,\@tempswafalse,\@tempswatrue,\@undefined,
-%  \@unprocessedoptions,\@unusedoptionlist,\g@addto@macro,\if@tempswa,\m@ne,\p@,
-%  \set@display@protect,\strip@prefix,\strip@pt,\thr@@,\tw@,\z@,\zap@space,
-%  \active,\makeatletter,\newcommand,\nonfrenchspacing,\normalsize,
+%  \@tempcnta,\@tempcntb,\@tempdima,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
+%  \g@addto@macro,\m@ne,\on@line,\p@,\set@display@protect,\strip@prefix,\strip@pt,\thr@@,
+%  \tw@,\z@,\zap@space,\active,\makeatletter,\newcommand,\nonfrenchspacing,\normalsize,
 %  \renewcommand,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
 %  \DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,
 %  \PackageError,\PackageInfo,\PackageWarning,\RequirePackage}
@@ -2518,7 +2523,7 @@
 %\changes{v1.1}{2004/09/13}{fix concerning version check
 %               (reported by \contributor Harald Harders <h.harders\at tu-bs.de>)}
 %    \begin{macrocode}
-\let\MT@pdftex@no\z@
+\def\MT@pdftex@no{0}
 %    \end{macrocode}
 %\changes{v1.9}{2005/08/29}{compatibility with \TeX Live hack
 %               (reported by \contributor Herbert Vo\ss{} <Herbert.Voss\at gmx.net>)}
@@ -2544,17 +2549,17 @@
     \ifnum\pdftexversion < 130
       \def\MT@pdftex@no{4}
       \ifnum\pdftexversion < 120
-        \let\MT@pdftex@no\thr@@
+        \def\MT@pdftex@no{3}
         \ifnum\pdftexversion = 14
           \ifnum \expandafter`\pdftexrevision < `h
-            \let\MT@pdftex@no\tw@
+            \def\MT@pdftex@no{2}
             \ifnum \expandafter`\pdftexrevision < `f
-              \let\MT@pdftex@no\@ne
+              \def\MT@pdftex@no{1}
             \fi
           \fi
         \else
           \ifnum\pdftexversion < 14
-            \let\MT@pdftex@no\@ne
+            \def\MT@pdftex@no{1}
           \fi
         \fi
       \fi
@@ -2562,7 +2567,7 @@
 %<beta>   \fi
   \fi
 \fi
-%<debug>\MT@dinfo@nl{0}{pdftex no: \number\MT@pdftex@no}
+%<debug>\MT@dinfo@nl{0}{pdftex no.: \number\MT@pdftex@no}
 %    \end{macrocode}
 %\end{macro}
 % If we are not using \pdftex\ or in case it is too old, we disable everything
@@ -2631,6 +2636,12 @@
 %\changes{v1.9}{2005/09/28}{use instead of \cmd{\toks@}}
 %    \begin{macrocode}
 \newtoks\MT@toks
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\ifMT@if@}
+% A scratch if.
+%    \begin{macrocode}
+\newif\ifMT@if@
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\ifMT@protrusion}
@@ -2804,18 +2815,32 @@
 }
 %    \end{macrocode}
 %\end{macro}
-%\changes{v1.4b}{2004/11/21}{optimization: use less \cmd\csname s and \cmd\expandafter s}
-%\begin{macro}{\MT@def@n}
-% This is \cmd{\@namedef}.
+%\begin{macro}{\MT@glet}
+%\changes{v1.9f}{2006/08/09}{new macro}
+% The forgotten primitive.
 %    \begin{macrocode}
-\def\MT@def@n#1{\expandafter\def\csname #1\endcsname}
+\def\MT@glet{\global\let}
 %    \end{macrocode}
 %\end{macro}
+%\changes{v1.4b}{2004/11/21}{optimization: use less \cmd\csname s and \cmd\expandafter s}
+%\begin{macro}{\MT@def@n}
+%\begin{macro}{\MT@gdef@n}
+%\changes{v1.9f}{2006/08/09}{new macros: global variants}
+% This is \cmd{\@namedef} and global.
+%    \begin{macrocode}
+\def\MT@def@n#1{\expandafter\def\csname #1\endcsname}
+\def\MT@gdef@n#1{\expandafter\gdef\csname #1\endcsname}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@edef@n}
-% Its expanding version.
+%\begin{macro}{\MT@xdef@n}
+% Its expanding versions.
 %    \begin{macrocode}
 \def\MT@edef@n#1{\expandafter\edef\csname #1\endcsname}
+\def\MT@xdef@n#1{\expandafter\xdef\csname #1\endcsname}
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@let@nc}
 % \cmd\let\ a \cmd\csname\ sequence to a command.
@@ -2835,10 +2860,10 @@
 \def\MT@let@nn#1{\expandafter\MT@let@cn\csname #1\endcsname}
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@exp@string}
-% Remove trailing space.
+%\begin{macro}{\MT@@font}
+% Remove trailing space from the font name.
 %    \begin{macrocode}
-\def\MT@exp@string{\expandafter\string}
+\def\MT@@font{\expandafter\string\MT@font}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@exp@one@n}
@@ -3433,7 +3458,7 @@
 % It will be executed at the end of the preamble, and emptied (the \pkg{combine}
 % class will call it repeatedly).
 %    \begin{macrocode}
-\AtBeginDocument{\MT@setup@ \global\let\MT@setup@\@empty}
+\AtBeginDocument{\MT@setup@ \MT@glet\MT@setup@\@empty}
 %    \end{macrocode}
 %\begin{macro}{\MT@with@package}
 % We almost never do anything if a package is not loaded.
@@ -3680,7 +3705,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@setupfont{%
   \ifx\MT@vinfo\MT@info@nl
-    \MT@info{Setting up font `\MT@exp@string\MT@font'}\fi
+    \MT@info{Setting up font `\MT@@font'}\fi
 %    \end{macrocode}
 % We might have to disable stuff when used together with adventurous packages.
 %    \begin{macrocode}
@@ -3859,10 +3884,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \expandafter\MT@font\expandafter}%
       \csname MT@#1list@font@\@tempa\endcsname
     \ifMT@inlist@
-%<debug>\MT@dinfo@nl{1}{\@nameuse{MT@abbr@#1}: font `\MT@font' in list}%
+%<debug>\MT@dinfo@nl{1}{\@nameuse{MT@abbr@#1}: font `\MT@@font' in list}%
       \expandafter\MT@clist@break
     \else
-%<debug>\MT@dinfo@nl{1}{\@nameuse{MT@abbr@#1}: font `\MT@font' not in list}%
+%<debug>\MT@dinfo@nl{1}{\@nameuse{MT@abbr@#1}: font `\MT@@font' not in list}%
       \MT@dofalse
     \fi
   }%
@@ -3958,6 +3983,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \MT@get@inh@list
 %    \end{macrocode}
+% Set an input encoding?
+%    \begin{macrocode}
+    \MT@set@inputenc{c}%
+%    \end{macrocode}
 % Load additional lists?
 %    \begin{macrocode}
     \MT@load@list\MT@pr@c@name
@@ -4005,7 +4034,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@get@dimen@six{%
   \ifnum\fontdimen6\MT@font=\z@
     \MT@warning@nl{%
-      Font `\MT@exp@string\MT@font' does not specify its\MessageBreak
+      Font `\MT@@font' does not specify its\MessageBreak
       \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
       \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
     \expandafter\MT@gobble@settings
@@ -4169,14 +4198,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \def\MT@info@missing@char{%
     \MT@info@nl{Character `\the\MT@toks' \iffontchar\MT@font\MT@char
       has a width of 0pt \else is missing \fi in font\MessageBreak
-      `\MT@exp@string\MT@font'. Ignoring protrusion settings\MessageBreak
+      `\MT@@font'. Ignoring protrusion settings\MessageBreak
       for this character}%
   }
 }{
   \def\MT@info@missing@char{%
     \MT@info@nl{%
       Character `\the\MT@toks' has a width of 0pt\MessageBreak
-      (it's probably missing) in font `\MT@exp@string\MT@font'.\MessageBreak
+      (it's probably missing) in font `\MT@@font'.\MessageBreak
       Ignoring protrusion settings for this character}%
   }
 }
@@ -4295,14 +4324,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
-% We might have to change the input encoding,
-%\begin{macro}{\MT@cat}
-% for which we need the type of list we're currently loading.
-%    \begin{macrocode}
-  \def\MT@cat{c}%
-  \MT@set@inputenc
-%    \end{macrocode}
-%\end{macro}
 % Preset all characters? If so, we surely don't need to reset, too.
 %\changes{v1.9}{2005/10/08}{new key `\texttt{preset}' to set all characters to
 %                           the specified value before loading the lists}
@@ -4357,23 +4378,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@set@inputenc}
 % The configurations may be under the regime of an input encoding.
+%\changes{v1.9f}{2006/08/03}{fix: input encoding must be set after the inheritance
+%                            list has been parsed}
+%\begin{macro}{\MT@cat}
+% We remember the current category (|c| or |inh|), in case of warnings later.
 %    \begin{macrocode}
-\def\MT@set@inputenc{%
-  \MT@ifdefined@n@T
-      {MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}{%
+\def\MT@set@inputenc#1{%
+  \def\MT@cat{#1}%
+  \MT@ifdefined@n@T{%
+        MT@\MT@feat @#1@\csname MT@\MT@feat @#1@name\endcsname @inputenc}{%
     \MT@ifdefined@c@TF\inputencoding{%
 %<debug>\MT@dinfo@nl{1}{input encoding: \@nameuse{%
-%<debug>MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}}%
+%<debug>MT@\MT@feat @#1@\csname MT@\MT@feat @#1@name\endcsname @inputenc}}%
       \inputencoding{\@nameuse{%
-        MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}}%
+        MT@\MT@feat @#1@\csname MT@\MT@feat @#1@name\endcsname @inputenc}}%
     }{%
       \MT@error{Key `inputenc' used in \MT@curr@list@name, but the `inputenc'
-          \MessageBreak package isn't loaded}%
+          \MessageBreak package isn't loaded. Ignoring key}%
         {You must load the `inputenc' package before you can use the `inputenc' key.}%
     }%
   }%
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@pr@heirs}
 % Set the inheriting characters.
@@ -4462,6 +4489,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@get@ex@opt
     \MT@reset@ef@codes
     \MT@get@inh@list
+    \MT@set@inputenc{c}%
     \MT@load@list\MT@ex@c@name
     \MT@set@listname
     \MT@let@cn\@tempc{MT@ex@c@\MT@ex@c@name}%
@@ -4618,9 +4646,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@ex@opt@{step}   {Setting expansion step to \number\MT@step@}%
   \def\@tempa{autoexpand}%
   \MT@get@ex@opt@{auto}{\ifx\@tempa\MT@auto@ En\else Dis\fi abling automatic expansion}%
-  \def\MT@cat{c}%
-  \MT@set@inputenc
-  \MT@ifdefined@n@T{MT@ex@c@\csname MT@ex@c@name\endcsname @preset}{%
+  \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @preset}{%
     \MT@preset@ex
     \let\MT@reset@ef@codes\relax
   }%
@@ -4690,6 +4716,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@get@opt
     \MT@reset@sp@codes
     \MT@get@inh@list
+    \MT@set@inputenc{c}%
     \MT@load@list\MT@sp@c@name
     \MT@set@listname
     \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
@@ -4843,6 +4870,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@get@opt
     \MT@reset@kn@codes
     \MT@get@inh@list
+    \MT@set@inputenc{c}%
     \MT@load@list\MT@kn@c@name
     \MT@set@listname
     \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
@@ -4988,7 +5016,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \ifMT@inlist@ \else
           \expandafter\MT@xadd
             \csname MT@knlist@font@\MT@kn@setname\endcsname
-            {\MT@exp@string\csname\curr@fontshape/\f@size\endcsname,}%
+            {\expandafter\string\csname\curr@fontshape/\f@size\endcsname,}%
         \fi
       \endgroup
     \fi
@@ -5006,7 +5034,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@warning{Letterspacing only works with pdftex version 1.40\MessageBreak
       or newer. You might want to use the `soul' package\MessageBreak
       instead}%
-    \global\let\lsstyle\relax
+    \MT@glet\lsstyle\relax
   }
 }
 %    \end{macrocode}
@@ -5066,7 +5094,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@load@list#1{%
   \edef\@tempa{#1}%
-  \MT@let@cn\@tempb{MT@\MT@feat @c@\@tempa load}%
+  \MT@let@cn\@tempb{MT@\MT@feat @c@\@tempa @load}%
   \MT@ifstreq\@tempa\@tempb{%
     \MT@warning{\@nameuse{MT@abbr@\MT@feat} list `\@tempa' cannot load itself}%
   }{%
@@ -5076,7 +5104,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \begingroup
           \MT@load@list\@tempb
         \endgroup
-        \edef\MT@curr@list@name{\@nameuse{MT@abbr@\MT@feat} list\MessageBreak`\@tempb'}%
+        \edef\MT@curr@list@name{\@nameuse{MT@abbr@\MT@feat} list
+          \noexpand\MessageBreak`\@tempb'}%
         \MT@let@cn\@tempc{MT@\MT@feat @c@\@tempb}%
         \expandafter\csname MT@\MT@feat @do\expandafter\endcsname\@tempc,\relax,%
       }{%
@@ -5229,7 +5258,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.8}{2005/04/16}{made recursive}
 %    \begin{macrocode}
 \def\MT@get@listname#1{%
-%<debug>\MT@dinfo@nl{1}{trying to find \@nameuse{MT@abbr@#1} list for font \MT@font}%
+%<debug>\MT@dinfo@nl{1}{trying to find \@nameuse{MT@abbr@#1} list for font `\MT@@font'}%
   \let\MT@listname\@undefined
   \def\@tempb{#1}%
   \MT@map@tlist@c\MT@try@order\MT@get@listname@
@@ -5288,10 +5317,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@next@listname#1#2#3#4{%
   \edef\@tempa{\MT@encoding
-               /\ifnum#1=\@ne \MT@family\fi
-               /\ifnum#2=\@ne \MT@series\fi
-               /\ifnum#3=\@ne \MT@shape\fi
-               /\ifnum#4=\@ne *\fi
+              /\ifnum#1=\@ne \MT@family\fi
+              /\ifnum#2=\@ne \MT@series\fi
+              /\ifnum#3=\@ne \MT@shape\fi
+              /\ifnum#4=\@ne *\fi
                \MT@context}%
 %<debug>\MT@dinfo@nl{1}{trying \@tempa}%
   \MT@ifdefined@n@TF{MT@\@tempb @\@tempa}{%
@@ -5345,10 +5374,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@ifdefined@c@TF\MT@listname{%
     \MT@edef@n{MT@\MT@feat @c@name}{\MT@listname}%
     \ifMT@nonselected
-      \MT@vinfo{... Applying non-selected expansion (list `\MT@ex@c@name')}%
+      \MT@vinfo{... Applying non-selected expansion (list `\MT@listname')}%
     \else
-      \MT@vinfo{... Loading \@nameuse{MT@abbr@\MT@feat} list
-                    `\@nameuse{MT@\MT@feat @c@name}'}%
+      \MT@vinfo{... Loading \@nameuse{MT@abbr@\MT@feat} list `\MT@listname'}%
     \fi
     \@firstoftwo
   }{%
@@ -5364,7 +5392,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@vinfo{... Applying non-selected expansion}%
     \else
       \MT@warning{I cannot find a \@nameuse{MT@abbr@\MT@feat} list
-        for font\MessageBreak`\MT@exp@string\MT@font'%
+        for font\MessageBreak`\MT@@font'%
           \ifx\MT@context\@empty\else\space(context: `\MT@context')\fi.
         Switching off\MessageBreak\@nameuse{MT@abbr@\MT@feat} for this font}%
     \fi
@@ -5386,25 +5414,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@edef@n{MT@\MT@feat @inh@name}{\MT@listname}%
 %<*debug>
     \MT@dinfo@nl{1}{... Using \@nameuse{MT@abbr@\MT@feat} inheritance list
-                    `\@nameuse{MT@\MT@feat @inh@name}'}%
+                    `\MT@listname'}%
 %</debug>
-    \MT@let@cn\@tempc{MT@\MT@feat @inh@\csname MT@\MT@feat @inh@name\endcsname}%
+    \MT@let@cn\@tempc{MT@\MT@feat @inh@\MT@listname}%
 %    \end{macrocode}
 % If the list is \cmd{\@empty}, it has already been parsed.
 %\changes{v1.2}{2004/09/26}{fix: set inheritance list \cmd\global ly to \cmd{\@empty}}
 %    \begin{macrocode}
     \ifx\@tempc\@empty \else
 %<debug>\MT@dinfo@nl{1}{parsing inheritance list ...}%
-      \MT@let@cn\MT@inh@name{MT@\MT@feat @inh@name}%
-      \edef\MT@curr@list@name{inheritance list\MessageBreak`\MT@inh@name'}%
 %    \end{macrocode}
 % The group is only required in case an input encoding is given.
 %    \begin{macrocode}
       \begingroup
-      \def\MT@cat{inh}%
-      \MT@set@inputenc
+      \edef\MT@curr@list@name{inheritance list\noexpand\MessageBreak`\MT@listname'}%
+      \MT@set@inputenc{inh}%
       \expandafter\MT@inh@do\@tempc,\relax,%
-      \global\MT@let@nc{MT@\MT@feat @inh@\csname MT@\MT@feat @inh@name\endcsname}\@empty
+      \global\MT@let@nc{MT@\MT@feat @inh@\MT@listname}\@empty
       \endgroup
     \fi
   }{%
@@ -5655,7 +5681,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We refrain from checking whether there is a sufficient number of octets.
 %    \begin{macrocode}
       \def\UTFviii@defined##1{\ifx ##1\relax
-         \MT@undefined@char{utf8}\else\expandafter##1\fi}%
+        \MT@undefined@char{utf8}\else\expandafter##1\fi}%
       \edef\x{%
         \def\noexpand\@tempa{\@tempa}%
 %    \end{macrocode}
@@ -5775,11 +5801,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Some warning messages, for performance reasons separated here.
 %\begin{macro}{\MT@curr@list@name}
 %\changes{v1.8}{2005/06/08}{new macro: current list type and name}
+%\changes{v1.9f}{2006/08/03}{fix: \cs{MessageBreak} must not be expanded}
 %\begin{macro}{\MT@set@listname}
 % The type and name of the current list, defined at various places.
 %    \begin{macrocode}
 \def\MT@set@listname{%
-  \edef\MT@curr@list@name{\@nameuse{MT@abbr@\MT@feat} list\MessageBreak
+  \edef\MT@curr@list@name{\@nameuse{MT@abbr@\MT@feat} list\noexpand\MessageBreak
     `\@nameuse{MT@\MT@feat @c@name}'}%
 }
 %    \end{macrocode}
@@ -5813,8 +5840,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@warn@rest{%
   \MT@warning@nl{%
-    Unknown slot number of character\MessageBreak`\the\MT@toks'\MessageBreak
-    in font encoding `\MT@encoding'\MT@warn@maybe@inputenc
+    Unknown slot number of character\MessageBreak`\the\MT@toks'%
+    \MT@warn@maybe@inputenc\MessageBreak
+    in font encoding `\MT@encoding'.\MessageBreak
     Make sure it's a single character\MessageBreak
     (or a number) in \MT@curr@list@name}%
 }
@@ -5825,9 +5853,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@warn@unknown{%
   \MT@warning@nl{%
-    Unknown slot number of character\MessageBreak`\the\MT@toks'\MessageBreak
-    in font encoding `\MT@encoding'\MT@warn@maybe@inputenc
-    in \MT@curr@list@name}%
+    Unknown slot number of character\MessageBreak`\the\MT@toks'%
+    \MT@warn@maybe@inputenc\MessageBreak
+    in font encoding `\MT@encoding' in \MT@curr@list@name}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5836,11 +5864,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@warn@maybe@inputenc{%
   \MT@ifdefined@n@T
-    {MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}%
-    { (input encoding `%
-      \@nameuse
-        {MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}')%
-      \MessageBreak}%
+     {MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}%
+    { (input encoding `\@nameuse
+     {MT@\MT@feat @\MT@cat @\csname MT@\MT@feat @\MT@cat @name\endcsname @inputenc}')}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5964,7 +5990,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@setupfont
         \MT@register@font
       \fi
-      \global\let\MT@font\@empty
+      \MT@glet\MT@font\@empty
     \endgroup
   }
 %    \end{macrocode}
@@ -6039,17 +6065,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % with the combination of contexts, as we've done it before.
 %    \begin{macrocode}
 \def\MT@check@font@cx{%
-  \@tempswatrue
+  \MT@if@true
   \MT@map@clist@c\MT@active@features{%
     \expandafter\MT@exp@one@n\expandafter\MT@in@clist\expandafter\MT@font
       \csname MT@##1@\csname MT@##1@context\endcsname font@list\endcsname
     \ifMT@inlist@
       \MT@let@nc{MT@\@nameuse{MT@abbr@##1}}\relax
     \else
-      \@tempswafalse
+      \MT@if@false
     \fi
   }%
-  \if@tempswa \MT@inlist@true \else \MT@inlist@false \fi
+  \ifMT@if@ \MT@inlist@true \else \MT@inlist@false \fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -6110,24 +6136,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@addto@setup{%
   \def\microtypecontext#1{%
     \MT@setup@contexts
+    \let\MT@reset@context\relax
     \setkeys{MTC}{#1}%
     \selectfont
-    \aftergroup\MT@reset@context
+    \MT@reset@context
   }%
 }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@reset@context}
-% We have to reset the font at the end of the group.
+%\changes{v1.9f}{2006/08/03}{only reset context if it has actually been changed}
+%\begin{macro}{\MT@reset@context@}
+% We have to reset the font at the end of the group, provided there actually was
+% a change.
 %    \begin{macrocode}
-\def\MT@reset@context{%
-  \MT@vinfo{Resetting contexts on line \the\inputlineno
+\def\MT@reset@context@{%
+  \MT@vinfo{<<< Resetting contexts\on@line
 %<debug>  \MessageBreak= \MT@pr@context/\MT@ex@context
 %<debug&beta>           /\MT@kn@context/\MT@sp@context
   }%
   \selectfont
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@setup@contexts}
 % The first time \cs{microtypecontext} is called, we initialize the context
@@ -6136,10 +6167,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@setup@contexts{%
   \MT@map@clist@c\MT@active@features
     {\global\MT@let@nc{MT@##1@@font@list}\MT@font@list}%
-  \global\let\MT@check@font\MT@check@font@cx
-  \global\let\MT@register@font\MT@register@font@cx
-  \global\let\MT@register@subst@font\MT@register@subst@font@cx
-  \global\let\MT@setup@contexts\relax
+  \MT@glet\MT@check@font\MT@check@font@cx
+  \MT@glet\MT@register@font\MT@register@font@cx
+  \MT@glet\MT@register@subst@font\MT@register@subst@font@cx
+  \MT@glet\MT@setup@contexts\relax
 }
 %    \end{macrocode}
 %\end{macro}
@@ -6156,8 +6187,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % `|@|' instead (hoping for the \LaTeX\ users' natural awe of this character).
 %    \begin{macrocode}
       \MT@ifempty{##1}{\def\MT@val{@}}{\KV@@sp@def\MT@val{##1}}%
-      \expandafter\ifx\csname MT@\@tempb @context\endcsname\MT@val \else
-        \MT@vinfo{--- Changing #1 context to `\MT@val'}%
+      \expandafter\ifx\csname MT@\@tempb @context\endcsname\MT@val
+%<debug>\MT@dinfo{1}{>>> no change of #1 context: `\MT@val'}%
+      \else
+        \MT@vinfo{>>> Changing #1 context to `\MT@val'\MessageBreak\on@line
+%<debug>          \space(previous: `\@nameuse{MT@\@tempb @context}')%
+                 }%
+        \def\MT@reset@context{\aftergroup\MT@reset@context@}%
 %    \end{macrocode}
 % The next time we see the font, we have to reset \emph{all} factors.
 %    \begin{macrocode}
@@ -6169,7 +6205,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
           \expandafter\MT@val\csname MT@\@tempb @doc@contexts\endcsname
         \ifMT@inlist@ \else
           \expandafter\MT@xadd\csname MT@\@tempb @doc@contexts\endcsname{{\MT@val}}%
-%<debug>  \MT@dinfo{2}{>>> added #1 context: \@nameuse{MT@\@tempb @doc@contexts}}%
+%<debug>  \MT@dinfo{1}{||| added #1 context: \@nameuse{MT@\@tempb @doc@contexts}}%
         \fi
         \MT@edef@n{MT@\@tempb @context}{\MT@val}%
       \fi
@@ -6617,11 +6653,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@use@set#1#2{%
   \KV@@sp@def\@tempa{#2}%
   \MT@ifdefined@n@TF{MT@#1@set@@\@tempa}{%
-    \global\MT@edef@n{MT@#1@setname}{\@tempa}%
+    \MT@xdef@n{MT@#1@setname}{\@tempa}%
     \MT@info{Using \@nameuse{MT@abbr@#1} set `\@tempa'}%
   }{%
     \MT@ifdefined@n@TF{MT@#1@setname}\relax{%
-      \global\MT@edef@n{MT@#1@setname}{\@nameuse{MT@default@#1@set}}%
+      \MT@xdef@n{MT@#1@setname}{\@nameuse{MT@default@#1@set}}%
     }%
     \MT@warning{%
       The \@nameuse{MT@abbr@#1} set `\@tempa' is undeclared.\MessageBreak
@@ -6653,7 +6689,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@warning{Disabling ligatures of a font is only possible\MessageBreak
       with pdftex version 1.30 or newer.\MessageBreak
       Ignoring \string\DisableLigatures}%
-    \global\let\DisableLigatures\@gobble
+    \MT@glet\DisableLigatures\@gobble
   }
 }
 %    \end{macrocode}
@@ -6691,12 +6727,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \KV@@sp@def\@tempa{#2}%
   \MT@ifdefined@n@TF{MT@#1@set@@\@tempa}{%
 %<debug>\MT@dinfo{1}{declaring default \@nameuse{MT@abbr@#1} set `\@tempa'}%
-    \global\MT@edef@n{MT@default@#1@set}{\@tempa}%
+    \MT@xdef@n{MT@default@#1@set}{\@tempa}%
   }{%
     \MT@warning{%
       The \@nameuse{MT@abbr@#1} set `\@tempa' is not declared.\MessageBreak
       Cannot make it the default set. Using set\MessageBreak `all' instead}%
-    \global\MT@edef@n{MT@default@#1@set}{all}%
+    \MT@xdef@n{MT@default@#1@set}{all}%
   }%
 }
 %    \end{macrocode}
@@ -6719,7 +6755,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@warning{Alias font family `\@tempb' will override
       alias `\@nameuse{MT@\@tempa @alias}'\MessageBreak
       for font family `\@tempa'}}%
-  \global\MT@edef@n{MT@\@tempa @alias}{\@tempb}%
+  \MT@xdef@n{MT@\@tempa @alias}{\@tempb}%
 %    \end{macrocode}
 % If we encounter this command while a font is being set up, we also set the
 % alias for the current font so that if \cs{DeclareMicrotypeAlias} has been
@@ -6729,7 +6765,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \MT@ifdefined@c@T\MT@family{%
 %<debug>\MT@dinfo{1}{Activating alias font `\@tempb' for `\MT@family'}%
-    \global\let\MT@familyalias\@tempb
+    \MT@glet\MT@familyalias\@tempb
   }%
 }
 %    \end{macrocode}
@@ -6774,7 +6810,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\DeclareMicrotypeBabelHook#1#2{%
   \MT@map@clist@n{#1}{%
     \KV@@sp@def\@tempa{##1}%
-    \global\MT@def@n{MT@babel@\@tempa}{#2}%
+    \MT@gdef@n{MT@babel@\@tempa}{#2}%
   }%
 }
 %</beta>
@@ -6792,35 +6828,32 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.9d}{2006/02/23}{(et al.) split keys of optional and mandatory argument}
 %\changes{v1.9d}{2006/02/23}{(et al.) optimize: unify keys for mandatory argument}
 %\changes{v1.9e}{2006/07/26}{new key: \texttt{inputenc}}
-%\begin{macro}{\MT@pr@c@name}
-%\begin{macro}{\MT@extra@load}
-%\begin{macro}{\MT@extra@factor}
-%\begin{macro}{\MT@extra@preset}
-%\begin{macro}{\MT@extra@unit}
-%\begin{macro}{\MT@extra@context}
-%\begin{macro}{\MT@permutelist}
+%\changes{v1.9f}{2006/08/10}{(et al.) set catcodes before parsing optional argument}
 % This macro accepts three arguments: [options,] set of font attributes and
 % list of character protrusion factors.
 %
 % A new macro called |\MT@pr@c@|\meta{name} will be defined to be \meta{\#3}
 % (\ie, the list of characters, not expanded).
 %    \begin{macrocode}
-\renewcommand*\SetProtrusion[2][]{%
-  \let\MT@pr@c@name\@undefined
+\def\SetProtrusion{%
+  \MT@begin@catcodes
+  \MT@SetProtrusion
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@SetProtrusion}
+%\begin{macro}{\MT@pr@c@name}
+%\begin{macro}{\MT@extra@context}
+%\begin{macro}{\MT@permutelist}
+% We want the catcodes to be correct even if this is called in the preamble.
+%    \begin{macrocode}
+\newcommand*\MT@SetProtrusion[3][]{%
   \let\MT@extra@context\@empty
-  \MT@map@clist@n{load,factor,unit,preset,inputenc}{\MT@let@nc{MT@extra@##1}\@undefined}%
 %    \end{macrocode}
-% Parse the optional first argument:
+% Parse the optional first argument. We first have to know the name before we
+% can deal with the extra options.
 %    \begin{macrocode}
-  \setkeys{MT@pr@c}{#1}%
-%    \end{macrocode}
-% If the user hasn't specified a name, we will create one.
-%    \begin{macrocode}
-  \MT@get@codes@name{pr}%
-%    \end{macrocode}
-% Extra options.
-%    \begin{macrocode}
-  \MT@map@clist@n{factor,unit,preset,inputenc}{\MT@set@opt{pr}{##1}}%
+  \MT@set@named@keys{MT@pr@c}{#1}%
 %<debug>\MT@dinfo{1}{creating protrusion list `\MT@pr@c@name'}%
   \def\MT@permutelist{pr@c}%
   \setkeys{MT@cfg}{#2}%
@@ -6831,219 +6864,141 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@permute
 %    \end{macrocode}
 % \dots~which we can now define to be \meta{\#3}.
-% We want the catcodes to be correct even if this is called in the preamble.
-%    \begin{macrocode}
-  \MT@begin@catcodes
-  \MT@set@pr@list
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@set@pr@list}
 % Here, as elsewhere, we have to make the definitions global, since they will
 % occur inside a group.
 %    \begin{macrocode}
-\def\MT@set@pr@list#1{%
-  \global\MT@def@n{MT@pr@c@\MT@pr@c@name}{#1}%
+  \MT@gdef@n{MT@pr@c@\MT@pr@c@name}{#3}%
   \MT@end@catcodes
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\SetExpansion}
 %\changes{v1.4}{2004/11/10}{fix: specifying extra options does no
 %                           longer require to give a \texttt{name}, too}
 %\changes{v1.9e}{2006/07/26}{new key: \texttt{inputenc}}
-%\begin{macro}{\MT@ex@c@name}
-%\begin{macro}{\MT@extra@load}
-%\begin{macro}{\MT@extra@factor}
-%\begin{macro}{\MT@extra@stretch}
-%\begin{macro}{\MT@extra@shrink}
-%\begin{macro}{\MT@extra@step}
-%\begin{macro}{\MT@extra@auto}
-%\begin{macro}{\MT@extra@preset}
-%\begin{macro}{\MT@extra@context}
-%\begin{macro}{\MT@extra@inputenc}
 % \cs{SetExpansion} only differs in that it allows some extra options
 % (|stretch|, |shrink|, |step|, |auto|).
 %    \begin{macrocode}
-\renewcommand*\SetExpansion[2][]{%
-  \let\MT@ex@c@name\@undefined
-  \let\MT@extra@context\@empty
-  \MT@map@clist@n{load,factor,preset,inputenc,stretch,shrink,step,auto}%
-                 {\MT@let@nc{MT@extra@##1}\@undefined}%
-  \setkeys{MT@ex@c}{#1}%
-  \MT@get@codes@name{ex}%
+\def\SetExpansion{%
+  \MT@begin@catcodes
+  \MT@SetExpansion
+}
 %    \end{macrocode}
-% The extra options to \cs{SetExpansion} also have to be dealt with only after
-% we know the name.
+%\end{macro}
+%\begin{macro}{\MT@SetExpansion}
+%\begin{macro}{\MT@ex@c@name}
+%\begin{macro}{\MT@extra@context}
+%\begin{macro}{\MT@permutelist}
 %    \begin{macrocode}
-  \MT@map@clist@n{preset,inputenc,stretch,shrink,step,auto}{\MT@set@opt{ex}{##1}}%
-  \MT@ifdefined@c@T\MT@extra@factor{%
-    \ifnum\MT@extra@factor>\@m
-      \MT@warning@nl{Expansion factor \number\MT@extra@factor\space too
-        large in list\MessageBreak `\MT@ex@c@name'. Setting it to the
+\newcommand*\MT@SetExpansion[3][]{%
+  \let\MT@extra@context\@empty
+  \MT@set@named@keys{MT@ex@c}{#1}%
+  \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @factor}{%
+    \ifnum\csname MT@ex@c@\MT@ex@c@name @factor\endcsname>\@m
+      \MT@warning@nl{Expansion factor \number\@nameuse{MT@ex@c@\MT@ex@c@name @factor}
+        too large in list\MessageBreak `\MT@ex@c@name'. Setting it to the
         maximum of 1000}%
-      \let\MT@extra@factor\@m
+      \global\MT@let@nc{MT@ex@c@\MT@ex@c@name @factor}\@m
     \fi
-    \global\MT@let@nc{MT@ex@c@\MT@ex@c@name @factor}\MT@extra@factor
   }%
 %<debug>\MT@dinfo{1}{creating expansion list `\MT@ex@c@name'}%
   \def\MT@permutelist{ex@c}%
   \setkeys{MT@cfg}{#2}%
   \MT@permute
-  \MT@begin@catcodes
-  \MT@set@ex@list
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@set@ex@list}
-% Same story.
-%    \begin{macrocode}
-\def\MT@set@ex@list#1{%
-  \global\MT@def@n{MT@ex@c@\MT@ex@c@name}{#1}%
+  \MT@gdef@n{MT@ex@c@\MT@ex@c@name}{#3}%
   \MT@end@catcodes
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %    \begin{macrocode}
 %<*beta>
 %    \end{macrocode}
 %\begin{macro}{\SetExtraSpacing}
 %\changes{v2.0}{2005/09/28}{new command: adjustment of interword spacing}
-%\begin{macro}{\MT@sp@c@name}
-%\begin{macro}{\MT@extra@load}
-%\begin{macro}{\MT@extra@factor}
-%\begin{macro}{\MT@extra@unit}
-%\begin{macro}{\MT@extra@preset}
-%\begin{macro}{\MT@extra@context}
-%\begin{macro}{\MT@extra@inputenc}
 %    \begin{macrocode}
-\renewcommand*\SetExtraSpacing[2][]{%
-  \let\MT@sp@c@name\@undefined
+\def\SetExtraSpacing{%
+  \MT@begin@catcodes
+  \MT@SetExtraSpacing
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@SetExtraSpacing}
+%\begin{macro}{\MT@sp@c@name}
+%\begin{macro}{\MT@extra@context}
+%\begin{macro}{\MT@permutelist}
+%    \begin{macrocode}
+\newcommand*\MT@SetExtraSpacing[3][]{%
   \let\MT@extra@context\@empty
-  \MT@map@clist@n{load,factor,unit,preset,inputenc}{\MT@let@nc{MT@extra@##1}\@undefined}%
-  \setkeys{MT@sp@c}{#1}%
-  \MT@get@codes@name{sp}%
-  \MT@map@clist@n{factor,unit,preset,inputenc}{\MT@set@opt{sp}{##1}}%
+  \MT@set@named@keys{MT@sp@c}{#1}%
 %<debug>\MT@dinfo{1}{creating spacing list `\MT@sp@c@name'}%
   \def\MT@permutelist{sp@c}%
   \setkeys{MT@cfg}{#2}%
   \MT@permute
-  \MT@begin@catcodes
-  \MT@set@sp@list
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@set@sp@list}
-%    \begin{macrocode}
-\def\MT@set@sp@list#1{%
-  \global\MT@def@n{MT@sp@c@\MT@sp@c@name}{#1}%
+  \MT@gdef@n{MT@sp@c@\MT@sp@c@name}{#3}%
   \MT@end@catcodes
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\todo{command to inhibit kerning etc.}
 %\begin{macro}{\SetExtraKerning}
 %\changes{v2.0}{2005/09/28}{new command: additional kerning}
-%\begin{macro}{\MT@kn@c@name}
-%\begin{macro}{\MT@extra@load}
-%\begin{macro}{\MT@extra@factor}
-%\begin{macro}{\MT@extra@unit}
-%\begin{macro}{\MT@extra@preset}
-%\begin{macro}{\MT@extra@context}
-%\begin{macro}{\MT@extra@inputenc}
 %    \begin{macrocode}
-\renewcommand*\SetExtraKerning[2][]{%
-  \let\MT@kn@c@name\@undefined
+\def\SetExtraKerning{%
+  \MT@begin@catcodes
+  \MT@SetExtraKerning
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@SetExtraKerning}
+%\begin{macro}{\MT@kn@c@name}
+%\begin{macro}{\MT@extra@context}
+%\begin{macro}{\MT@permutelist}
+%    \begin{macrocode}
+\newcommand*\MT@SetExtraKerning[3][]{%
   \let\MT@extra@context\@empty
-  \MT@map@clist@n{load,factor,unit,preset,inputenc}{\MT@let@nc{MT@extra@##1}\@undefined}%
-  \setkeys{MT@kn@c}{#1}%
-  \MT@get@codes@name{kn}%
-  \MT@map@clist@n{factor,unit,preset,inputenc}{\MT@set@opt{kn}{##1}}%
+  \MT@set@named@keys{MT@kn@c}{#1}%
 %<debug>\MT@dinfo{1}{creating kerning list `\MT@kn@c@name'}%
   \def\MT@permutelist{kn@c}%
   \setkeys{MT@cfg}{#2}%
   \MT@permute
-  \MT@begin@catcodes
-  \MT@set@kn@list
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@set@kn@list}
-%    \begin{macrocode}
-\def\MT@set@kn@list#1{%
-  \global\MT@def@n{MT@kn@c@\MT@kn@c@name}{#1}%
+  \MT@gdef@n{MT@kn@c@\MT@kn@c@name}{#3}%
   \MT@end@catcodes
 }
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %    \begin{macrocode}
 %</beta>
 %    \end{macrocode}
-%\begin{macro}{\MT@get@codes@name}
-%\changes{v1.9a}{2005/11/21}{`\meta{file name}\texttt{/}\meta{line number}' as default list name}
-% Use file name and line number as the list name if the user didn't bother
-% to invent one.
+%\begin{macro}{\MT@set@named@keys}
+%\changes{v1.9f}{2006/08/10}{new macro: set name first, simplify parsing of
+%                            optional argument}
+%\begin{macro}{\MT@options}
+% We first set the name (if specified), then remove it from the list, and set
+% the remaining keys.
 %    \begin{macrocode}
-\def\MT@get@codes@name#1{%
-  \MT@ifdefined@n@TF{MT@#1@c@name}{%
-    \MT@ifdefined@n@T{MT@#1@c@\csname MT@#1@c@name\endcsname}{%
-      \MT@warning{Redefining list `\@nameuse{MT@#1@c@name}'}%
-    }%
-  }{%
-    \MT@edef@n{MT@#1@c@name}{\MT@curr@file/\the\inputlineno}%
+\def\MT@set@named@keys#1#2{%
+  \def\x##1name=##2,##3\@nil{%
+    \setkeys{#1}{name=##2}%
+    \def\MT@options{##1##3}%
+    \MT@rem@from@clist{name=}\MT@options
   }%
-  \MT@let@cn\MT@curr@set@name{MT@#1@c@name}%
-%    \end{macrocode}
-%\changes{v1.3}{2004/10/27}{fix: specifying \texttt{load} option does no
-%                           longer require to give a \texttt{name}, too}
-% Now that we know the name, we can cater for any set to be loaded by this list.
-%    \begin{macrocode}
-  \MT@ifdefined@c@T\MT@extra@load{%
-    \global\MT@let@nc{MT@#1@c@\MT@curr@set@name load}\MT@extra@load
-  }%
+  \x#2,name=,\@nil
+  \@expandtwoargs\setkeys{#1}\MT@options
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@set@opt}
-% The additional options can also only be dealt with after we know the list name.
-%    \begin{macrocode}
-\def\MT@set@opt#1#2{%
-  \MT@ifdefined@n@T{MT@extra@#2}{%
-    \global\MT@let@nn{MT@#1@c@\csname MT@#1@c@name\endcsname @#2}{MT@extra@#2}%
-  }%
-}
-%    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@define@code@key}
 % Define the keys for the configuration lists (which are setting the codes, in
@@ -7095,7 +7050,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@map@clist@n{##1}{%
       \KV@@sp@def\MT@val{####1}%
       \expandafter\MT@get@font@and@size\MT@val/////\@nil
-      \global\MT@edef@n{MT@\MT@permutelist @\@tempb\MT@extra@context}%
+      \MT@xdef@n{MT@\MT@permutelist @\@tempb\MT@extra@context}%
         {\csname MT@\MT@permutelist @name\endcsname}%
 %<*debug>
       \MT@dinfo@nl{1}{initializing: use list for font \@tempb=\MT@val
@@ -7145,31 +7100,49 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@define@code@key@font{cfg}
 %    \end{macrocode}
 %\todo{use \pkg{xkeyval} instead of \pkg{keyval}?}
-%\begin{macro}{\MT@declare@codes}
-% The options in the optional first argument. We wouldn't need to define these
-% keys for each feature, if we were using the \pkg{xkeyval} package.
+%\begin{macro}{\MT@define@opt@keys}
+% The options in the optional first argument.
 %    \begin{macrocode}
-\def\MT@declare@codes#1{%
+\def\MT@define@opt@keys#1{%
+%    \end{macrocode}
+%\changes{v1.9a}{2005/11/21}{`\meta{file name}\texttt{/}\meta{line number}' as default list name}
+% Use file name and line number as the list name if the user didn't bother
+% to invent one.
+%\changes{v1.3}{2004/10/27}{fix: specifying \texttt{load} option does no
+%                           longer require to give a \texttt{name}, too}
+%    \begin{macrocode}
   \define@key{MT@#1@c}{name}[]{%
-    \MT@ifempty{##1}\relax{\MT@def@n{MT@#1@c@name}{##1}}}%
-  \define@key{MT@#1@c}{load}[]{%
-    \MT@ifempty{##1}\relax{\def\MT@extra@load{##1}}}%
-  \define@key{MT@#1@c}{factor}[]{%
-    \MT@ifempty{##1}\relax{\def\MT@extra@factor{##1 }}}%
-  \define@key{MT@#1@c}{preset}[]{%
-    \MT@ifempty{##1}\relax{\def\MT@extra@preset{##1}}}%
+    \MT@ifempty{##1}{%
+      \MT@edef@n{MT@#1@c@name}{\MT@curr@file/\the\inputlineno}%
+    }{%
+      \MT@edef@n{MT@#1@c@name}{##1}%
+      \MT@ifdefined@n@T{MT@#1@c@\csname MT@#1@c@name\endcsname}{%
+        \MT@warning{Redefining list `\@nameuse{MT@#1@c@name}'}%
+      }%
+    }%
+    \MT@let@cn\MT@curr@set@name{MT@#1@c@name}%
+  }%
+  \MT@define@opt@key{#1}{load}%
+  \MT@define@opt@key{#1}{factor}%
+  \MT@define@opt@key{#1}{preset}%
+  \MT@define@opt@key{#1}{inputenc}%
 %    \end{macrocode}
 % Only one context is allowed. This might change in the future.
 %    \begin{macrocode}
-  \define@key{MT@#1@c}{context}[]{%
-    \MT@ifempty{##1}\relax{\def\MT@extra@context{##1}}}%
-  \define@key{MT@#1@c}{inputenc}{%
-    \MT@ifempty{##1}\relax{\def\MT@extra@inputenc{##1}}}%
+  \define@key{MT@#1@c}{context}[]{\MT@ifempty{##1}\relax{\def\MT@extra@context{##1}}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@define@opt@key}
+%    \begin{macrocode}
+\def\MT@define@opt@key#1#2{%
+  \define@key{MT@#1@c}{#2}[]{\MT@ifempty{##1}\relax{%
+    \MT@xdef@n{MT@#1@c@\MT@curr@set@name @#2}{##1}}}%
 }
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
-\MT@map@clist@c\MT@features{\MT@declare@codes{#1}}
+\MT@map@clist@c\MT@features{\MT@define@opt@keys{#1}}
 %    \end{macrocode}
 % Protrusion codes may be relative to character width, or to any dimension.
 %\changes{v1.8}{2005/04/14}{\cs{SetProtrusion}: new key: \texttt{unit}}
@@ -7177,8 +7150,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           to `\texttt{character}' for key \texttt{unit}}
 %    \begin{macrocode}
 \define@key{MT@pr@c}{unit}[character]{%
-  \let\MT@extra@unit\@empty
-  \KV@@sp@def\@tempa{#1}%
+  \global\MT@let@nc{MT@pr@c@\MT@curr@set@name @unit}\@empty
+  \def\@tempa{#1}%
   \MT@ifstreq\@tempa{relative}{%
     \MT@warning{Value `relative' for key `unit' is deprecated.\MessageBreak
       Use `unit=character' instead. For now, I'll do it\MessageBreak
@@ -7191,7 +7164,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % form here, since it may be font-specific.
 %    \begin{macrocode}
     \MT@ifdimen\@tempa{%
-      \let\MT@extra@unit\@tempa
+      \global\MT@let@nc{MT@pr@c@\MT@curr@set@name @unit}\@tempa
     }{%
       \MT@warning{`\@tempa' is not a dimension.\MessageBreak
         Ignoring it and setting values relative to\MessageBreak
@@ -7206,13 +7179,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*beta>
 \def\MT@define@key@unit#1{%
   \define@key{MT@#1@c}{unit}[space]{%
-    \let\MT@extra@unit\@empty
-    \KV@@sp@def\@tempa{##1}%
+    \global\MT@let@nc{MT@#1@c@\MT@curr@set@name @unit}\@empty
+    \def\@tempa{##1}%
     \MT@ifstreq\@tempa{character}\relax{%
-      \let\MT@extra@unit\m@ne
+      \global\MT@let@nc{MT@#1@c@\MT@curr@set@name @unit}\m@ne
       \MT@ifstreq\@tempa{space}\relax{%
         \MT@ifdimen\@tempa{%
-          \let\MT@extra@unit\@tempa
+          \global\MT@let@nc{MT@#1@c@\MT@curr@set@name @unit}\@tempa
         }{%
           \MT@warning{`\@tempa' is not a dimension.\MessageBreak
             Ignoring it and setting values relative to\MessageBreak
@@ -7229,17 +7202,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@define@key@unit{kn}
 %</beta>
 %    \end{macrocode}
-%\begin{macro}{\MT@define@ex@c@key}
+%\begin{macro}{\MT@define@ex@opt@key}
 % The first argument to \cs{SetExpansion} accepts some more options.
 %    \begin{macrocode}
-\def\MT@define@ex@c@key#1{%
+\def\MT@define@ex@opt@key#1{%
   \define@key{MT@ex@c}{#1}[]{%
     \MT@ifempty{##1}\relax{%
       \MT@ifint{##1}{%
 %    \end{macrocode}
 % A space terminates the number.
 %    \begin{macrocode}
-        \MT@def@n{MT@extra@#1}{##1 }%
+        \MT@gdef@n{MT@ex@c@\MT@curr@set@name @#1}{##1 }%
       }{%
         \MT@warning{%
           Value `##1' for option `#1' is not a number.\MessageBreak
@@ -7251,27 +7224,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
-\MT@define@ex@c@key{stretch}
-\MT@define@ex@c@key{shrink}
-\MT@define@ex@c@key{step}
+\MT@define@ex@opt@key{stretch}
+\MT@define@ex@opt@key{shrink}
+\MT@define@ex@opt@key{step}
 \define@key{MT@ex@c}{auto}[true]{%
-  \KV@@sp@def\@tempa{#1}%
+  \def\@tempa{#1}%
   \csname if\@tempa\endcsname
 %    \end{macrocode}
-% Don't alter \cs{MT@extra@auto} for \pdftex\ version older than 1.20.
+% Don't use |autoexpand| for \pdftex\ version older than 1.20.
 %\changes{v1.7}{2005/03/07}{\cs{SetExpansion}: bug fix: remove
 %                           space after \texttt{autoexpand}}
 %\changes{v1.7}{2005/03/07}{\cs{SetExpansion}: don't allow automatic
 %                           expansion for old \pdftex\ versions}
 %    \begin{macrocode}
     \MT@requires@pdftex4{%
-      \def\MT@extra@auto{autoexpand}%
+      \MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}%
     }{%
-      \MT@warning{pdfTeX too old for automatic font expansion}%
+      \MT@warning{pdftex too old for automatic font expansion}%
     }
   \else
     \MT@requires@pdftex4{%
-      \let\MT@extra@auto\@empty
+      \global\MT@let@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty
     }\relax
   \fi
 }
@@ -7290,6 +7263,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % configuration files look much nicer and easier to maintain. If a single
 % character of an inheritance list should have a different value, one can
 % simply override it.
+%\begin{macro}{\MT@inh@feat}
+% The optional argument may be used to restrict the list to some features,
+%\begin{macro}{\MT@extra@inputenc}
+% and to specify an input encoding.
 %    \begin{macrocode}
 \renewcommand*\DeclareCharacterInheritance[1][]{%
   \let\MT@extra@context\@empty
@@ -7300,6 +7277,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@set@inh@list
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@inh@list}
 % Safe category codes.
@@ -7319,16 +7298,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@end@catcodes
 }
 %    \end{macrocode}
+%\changes{v1.9f}{2006/08/09}{fix: forgotten comma in the features list}
 %\end{macro}
 % The keys for the optional argument.
 %    \begin{macrocode}
-\define@key{MT@inh@}{inputenc}{\def\MT@extra@inputenc{#1}}
 \MT@map@clist@c\MT@features@long{%
-  \define@key{MT@inh@}{#1}[]{\edef\MT@inh@feat{\MT@inh@feat#1}}}
+  \define@key{MT@inh@}{#1}[]{\edef\MT@inh@feat{\MT@inh@feat#1,}}}
+\define@key{MT@inh@}{inputenc}{\def\MT@extra@inputenc{#1}}
 %    \end{macrocode}
 %\begin{macro}{\MT@declare@char@inh}
-% The optional argument may be used to restrict the inheritance list to
-% a feature.
 %\todo{share one list between features}
 % The lists cannot be given a name by the user.
 %    \begin{macrocode}
@@ -7337,9 +7315,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {\MT@curr@file/\the\inputlineno (\@nameuse{MT@abbr@#1})}%
   \MT@let@cn\MT@curr@set@name{MT@#1@inh@name}%
   \MT@ifdefined@c@T\MT@extra@inputenc{%
-    \global\MT@edef@n{MT@#1@inh@\MT@curr@set@name @inputenc}{\MT@extra@inputenc}}%
+    \MT@xdef@n{MT@#1@inh@\MT@curr@set@name @inputenc}{\MT@extra@inputenc}}%
 %<debug>\MT@dinfo{1}{creating inheritance list `\@nameuse{MT@#1@inh@name}'}%
-  \global\MT@def@n{MT@#1@inh@\csname MT@#1@inh@name\endcsname}{#3}%
+  \MT@gdef@n{MT@#1@inh@\csname MT@#1@inh@name\endcsname}{#3}%
   \def\MT@permutelist{#1@inh}%
   \setkeys{MT@inh}{#2}%
   \MT@permute
@@ -7409,14 +7387,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
           \MT@get@slot
           \ifnum\MT@char > \m@ne
             \expandafter\MT@xadd
-              \csname MT@inh@\MT@inh@name @\MT@val @\endcsname
+              \csname MT@inh@\MT@listname @\MT@val @\endcsname
               {{\MT@char}}%
           \fi
         \fi
       }%
 %<*debug>
       \MT@dinfo@nl{2}{children of #1 (\MT@val):
-                      \@nameuse{MT@inh@\MT@inh@name @\MT@val @}}%
+                      \@nameuse{MT@inh@\MT@listname @\MT@val @}}%
 %</debug>
     \fi
   \fi
@@ -7559,7 +7537,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
                           (context: \MT@extra@context)\fi}%
 %</debug>
       }%
-      \global\MT@edef@n{MT@\MT@permutelist @\@tempa\MT@extra@context}%
+      \MT@xdef@n{MT@\MT@permutelist @\@tempa\MT@extra@context}%
           {\csname MT@\MT@permutelist @name\endcsname}%
     \fi
   \fi
@@ -7585,7 +7563,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@permute@reset@{family}%
   \MT@permute@reset@{series}%
   \MT@permute@reset@{shape}%
-  \let\MT@tempsize\@undefined
+  \MT@glet\MT@tempsize\@undefined
 }
 %    \end{macrocode}
 %\end{macro}
@@ -7617,7 +7595,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@check@rlist@#1#2#3{%
   \def\@tempb{#1}%
   \def\@tempc{#2}%
-  \@tempswafalse
+  \MT@if@false
   \expandafter\MT@map@tlist@c
     \csname MT@\MT@permutelist @\@tempa\MT@extra@context @sizes\endcsname
     \MT@check@range
@@ -7641,14 +7619,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{itemize}
 % \item Both items are simple sizes.
 %    \begin{macrocode}
-      \MT@ifdim\@tempb={#1}\@tempswatrue\relax
+      \MT@ifdim\@tempb={#1}\MT@if@true\relax
     }{%
 %    \end{macrocode}
 % \item Item in list is a simple size, new item is a range.
 %    \begin{macrocode}
       \MT@ifdim\@tempb>{#1}\relax{%
         \MT@ifdim\@tempc>{#1}{%
-          \@tempswatrue
+          \MT@if@true
           \edef\@tempb{#1 (with range: \@tempb\space to \@tempc)}%
         }\relax
       }%
@@ -7659,7 +7637,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \item Item in list is a range, new item is a simple size.
 %    \begin{macrocode}
       \MT@ifdim\@tempb<{#2}{%
-        \MT@ifdim\@tempb<{#1}\relax\@tempswatrue
+        \MT@ifdim\@tempb<{#1}\relax\MT@if@true
       }\relax
     }{%
 %    \end{macrocode}
@@ -7667,13 +7645,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
       \MT@ifdim\@tempb<{#2}{%
         \MT@ifdim\@tempc>{#1}{%
-          \@tempswatrue
+          \MT@if@true
           \edef\@tempb{#1 to #2 (with range: \@tempb\space to \@tempc)}%
         }\relax
       }\relax
     }%
   }%
-  \if@tempswa
+  \ifMT@if@
     \MT@warning{\@nameuse{MT@abbr@\MT@permutelist} list
       `\@nameuse{MT@\MT@permutelist @name}' will override\MessageBreak
       list `#3' for font \@tempa,\MessageBreak size \@tempb}%
@@ -7732,9 +7710,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % If everything failed, it should be a set name.
 %    \begin{macrocode}
                 \MT@ifdefined@n@TF{MT@\@tempb @set@@\MT@val}{%
-                  \global\MT@edef@n{MT@\@tempb @setname}{\MT@val}%
+                  \MT@xdef@n{MT@\@tempb @setname}{\MT@val}%
                 }{%
-                  \global\MT@edef@n{MT@\@tempb @setname}%
+                  \MT@xdef@n{MT@\@tempb @setname}%
                     {\@nameuse{MT@default@\@tempb @set}}%
                   \MT@warning@nl{%
                     The #1 set `\MT@val' is undeclared.\MessageBreak
@@ -7781,9 +7759,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
             \csname MT@#1false\endcsname
           }{%
             \MT@ifdefined@n@TF{MT@\@tempb @set@@\MT@val}{%
-              \global\MT@edef@n{MT@\@tempb @setname}{\MT@val}%
+              \MT@xdef@n{MT@\@tempb @setname}{\MT@val}%
             }{%
-              \global\MT@edef@n{MT@\@tempb @setname}%
+              \MT@xdef@n{MT@\@tempb @setname}%
                 {\@nameuse{MT@default@\@tempb @set}}%
               \MT@warning@nl{%
                 The #1 set `\MT@val' is undeclared.\MessageBreak
@@ -7806,7 +7784,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               (suggested by \contributor \thanh{} <hanthethanh\at gmx.net>)}
 %                                               ^^A private mail, 30/11/2004
 %\changes{v2.0}{2005/10/04}{new option: \opt{babel}, by default false
-%               (language-dependant setup suggested by \contributor Ulrich Dirr <ud\at satz-art.de>)}
+%               (language-dependent setup suggested by \contributor Ulrich Dirr <ud\at art-satz.de>)}
 %\begin{macro}{\MT@def@bool@opt}
 % The |true|/|false| options:
 % \opt{draft}, \opt{final} (may be inherited from the class options),
@@ -8057,7 +8035,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \MT@map@clist@c\MT@features{%
   \MT@ifdefined@n@TF{MT@default@#1@set}\relax
-    {\global\MT@def@n{MT@default@#1@set}{all}}%
+    {\MT@gdef@n{MT@default@#1@set}{all}}%
 }
 %    \end{macrocode}
 %
@@ -8362,7 +8340,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@ifdefined@c@TF\MT@pr@setname{%
       \MT@info@nl{Using protrusion set `\MT@pr@setname'}%
     }{%
-      \global\let\MT@pr@setname\MT@default@pr@set
+      \MT@glet\MT@pr@setname\MT@default@pr@set
       \MT@info@nl{Using default protrusion set `\MT@pr@setname'}%
     }
   \else
@@ -8454,13 +8432,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.6}{2004/12/23}{disable automatic expansion for old \pdftex\ versions}
 %    \begin{macrocode}
       }{%
-        \ifMT@opt@auto
-          \MT@warning@nl{%
-            The pdftex you are using is too old for automatic\MessageBreak
-            font expansion. I will switch it off and hope that\MessageBreak
-            expanded fonts are available on your system.\MessageBreak
-            Install pdftex version 1.20 or newer}
-        \fi
+        \MT@warning@nl{%
+          The pdftex version you are using is too old for\MessageBreak
+          automatic font expansion. I will switch it off and\MessageBreak
+          hope that expanded fonts are available.\MessageBreak
+          Otherwise, install pdftex version 1.20 or newer}
         \MT@autofalse
         \def\MT@auto{1000 }
       }
@@ -8503,7 +8479,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@ifdefined@c@TF\MT@ex@setname{%
       \MT@info@nl{Using expansion set `\MT@ex@setname'}%
     }{%
-      \global\let\MT@ex@setname\MT@default@ex@set
+      \MT@glet\MT@ex@setname\MT@default@ex@set
       \MT@info@nl{Using default expansion set `\MT@ex@setname'}%
     }
 %    \end{macrocode}
@@ -8544,7 +8520,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@ifdefined@c@TF\MT@sp@setname{%
         \MT@info@nl{Using spacing set `\MT@sp@setname'}%
       }{%
-        \global\let\MT@sp@setname\MT@default@sp@set
+        \MT@glet\MT@sp@setname\MT@default@sp@set
         \MT@info@nl{Using default spacing set `\MT@sp@setname'}%
       }
     \else
@@ -8563,7 +8539,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@ifdefined@c@TF\MT@kn@setname{%
         \MT@info@nl{Using kerning set `\MT@kn@setname'}%
       }{%
-        \global\let\MT@kn@setname\MT@default@kn@set
+        \MT@glet\MT@kn@setname\MT@default@kn@set
         \MT@info@nl{Using default kerning set `\MT@kn@setname'}%
       }
     \else
@@ -8582,7 +8558,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@warning@nl{Adjustment of interword spacing only works with\MessageBreak
         pdftex version 1.40 or newer. Switching it off}%
     \else
-      \MT@info@nl{No adjustment of interword spacing}
+      \MT@info@nl{No adjustment of interword spacing (pdftex too old)}
     \fi
     \MT@spacingfalse
     \let\MT@spacing\relax
@@ -8590,7 +8566,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@warning@nl{Character kerning only works with\MessageBreak
         pdftex version 1.40 or newer. Switching it off}%
     \else
-      \MT@info@nl{No adjustment of character kerning}
+      \MT@info@nl{No adjustment of character kerning (pdftex too old)}
     \fi
     \MT@kerningfalse
     \let\MT@kerning\relax
@@ -8632,10 +8608,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@documenttrue
 }
 %    \end{macrocode}
-% Interaction with \pkg{babel}. We patch the language switching commands
-% to enable language-dependent setup.
+%\begin{macro}{\MT@set@babel@context}
+% Interaction with \pkg{babel}.
 %    \begin{macrocode}
 %<*beta>
+\def\MT@set@babel@context#1{%
+  \MT@ifdefined@n@TF{MT@babel@#1}{%
+    \MT@vinfo{*** Changing to language context `#1'\MessageBreak\on@line}%
+    \expandafter\MT@exp@one@n\expandafter\microtypecontext
+        \csname MT@babel@#1\endcsname
+  }{%
+    \microtypecontext{protrusion=,expansion=,spacing=,kerning=}%
+  }%
+}
+%    \end{macrocode}
+%\end{macro}
+% We patch the language switching commands to enable language-dependent setup.
+%    \begin{macrocode}
 \MT@addto@setup{%
   \ifMT@babel
     \@ifpackageloaded{babel}{%
@@ -8643,46 +8632,30 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \let\MT@orig@select@language\select@language
       \def\select@language#1{%
         \MT@orig@select@language{#1}%
-        \MT@ifdefined@n@TF{MT@babel@#1}{%
-          \MT@vinfo{Changing to language `#1' on line \the\inputlineno}%
-          \expandafter\MT@exp@one@n\expandafter\microtypecontext
-              \csname MT@babel@#1\endcsname
-        }{%
-          \microtypecontext{protrusion=,expansion=,spacing=,kerning=}%
-        }%
+        \MT@set@babel@context{#1}%
       }
       \let\MT@orig@foreign@language\foreign@language
       \def\foreign@language#1{%
         \MT@orig@foreign@language{#1}%
-        \MT@ifdefined@n@TF{MT@babel@#1}{%
-          \MT@vinfo{Changing to context `#1' on line \the\inputlineno}%
-          \expandafter\MT@exp@one@n\expandafter\microtypecontext
-              \csname MT@babel@#1\endcsname
-        }{%
-          \microtypecontext{protrusion=,expansion=,spacing=,kerning=}%
-        }%
+        \MT@set@babel@context{#1}%
       }
 %    \end{macrocode}
-% Disable \pkg{babel}'s active characters.
+% Disable French \pkg{babel}'s active characters.
 %    \begin{macrocode}
       \ifMT@kerning
-        \@tempswafalse
-        \@ifpackagewith{babel}{french}\@tempswatrue\relax
-        \@ifpackagewith{babel}{frenchb}\@tempswatrue\relax
-        \@ifpackagewith{babel}{francais}\@tempswatrue\relax
-        \if@tempswa
+        \MT@if@false
+        \@ifpackagewith{babel}{french}\MT@if@true\relax
+        \@ifpackagewith{babel}{frenchb}\MT@if@true\relax
+        \@ifpackagewith{babel}{francais}\MT@if@true\relax
+        \ifMT@if@
+          \MT@info@nl{Switching off French babel's active punctuation characters}%
           \NoAutoSpaceBeforeFDP
-          \MT@warning@nl{Switching off French babel's active punctuation characters}%
         \fi
       \fi
 %    \end{macrocode}
 % In case \pkg{babel} was loaded before \microtype:
 %    \begin{macrocode}
-      \MT@ifdefined@n@T{MT@babel@\languagename}{%
-         \MT@vinfo{Changing to context `\languagename' on line \the\inputlineno}%
-         \expandafter\MT@exp@one@n\expandafter\microtypecontext
-            \csname MT@babel@\languagename\endcsname
-      }%
+      \MT@set@babel@context\languagename
     }{%
       \MT@warning@nl{You did not load the babel package.\MessageBreak
         The `babel' option won't have any effect}
@@ -8851,7 +8824,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
    {kerning=french, spacing=}
 
 \DeclareMicrotypeBabelHook
-   {english,american,USenglish,british,UKenglish}
+   {english,UKenglish,british,american,USenglish}
    {kerning=, spacing=nonfrench}
 
 \DeclareMicrotypeBabelHook
@@ -8892,7 +8865,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               (suggested by \contributor Harald Harders <h.harders\at tu-bs.de>)}
 % 8-bit characters are also admissible, provided they have been declared in the
 % input encoding file. They should, however, only be used in private
-% configuration files, where the proper input encoding is guaranteed.
+% configuration files, where the proper input encoding is guaranteed, or else in
+% combination with the `|inputenc|' key.
 %
 %\subsection{Character Inheritance}
 %\GeneralChanges{Inheritance}
@@ -11566,9 +11540,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 
 %    \end{macrocode}
 % Extended by the \pkg{eulervm} package.
+%\changes{v1.9f}{2006/07/31}{fix: \texttt{euler-vm} did not load \texttt{euler} settings}
 %    \begin{macrocode}
 \SetProtrusion
-   [ name     = euler-vm ]
+   [ name     = euler-vm,
+     load     = euler ]
    { encoding = U,
      family   = zeur  }
    {
@@ -12062,11 +12038,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
      context  = french-guillemets,
      load     = french-default,
      unit     = space   ]
-   { encoding = {OT1,T1,LY1} }
+   { encoding = {T1,LY1} }
    {
     \guillemotleft  = { ,800}, % = 0.8\fontdimen2
     \guillemotright = {800, },
    }
+
+\SetExtraKerning
+   [ name     = french-guillemets-OT1,
+     context  = french-guillemets,
+     load     = french-default,
+     unit     = space   ]
+   { encoding = OT1     }
+   { }
 
 %    \end{macrocode}
 %\subsubsection{Turkish}
@@ -12293,7 +12277,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{7926}
+% \CheckSum{7841}
 %
 % \Finale
 %
