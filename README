@@ -1,32 +1,32 @@
 
 
-                     The `microtype' package
-      An interface to the micro-typographic extensions of pdfTeX
-                =================================
-                       v2.1     2007/01/21
+                        The `microtype' package
+         An interface to the micro-typographic extensions of pdfTeX
+                   =================================
+                          v2.2     2007/07/14
 
 
 * Overview
  ----------
 
-The `microtype' package provides an interface  to  the  micro-typographic
-extensions  of  pdfTeX:  most  prominently, character protrusion and font
-expansion, furthermore the adjustment of interword spacing and additional
-kerning,  as well as a command for  robust and hyphenatable letterspacing
-and the possibility to disable all ligatures of a font.
-It allows to apply these features  to customisable sets of fonts,  and to
-configure all micro-typographic aspects of the fonts in a straightforward
-and flexible way. Settings for various fonts are provided. 
+The `microtype' package  provides a LaTeX interface to the  micro-typographic
+extensions  of  pdfTeX:  most  prominently,  character  protrusion  and  font
+expansion, furthermore the adjustment of  interword  spacing  and  additional
+kerning, as well as hyphenatable letterspacing (tracking) and the possibility
+to disable all or selected ligatures.
+It allows  to apply these features  to  customisable  sets  of fonts,  and to
+configure all micro-typographic aspects of the fonts in a straightforward and
+flexible way. Settings for various fonts are provided.
 
-Note that  font expansion  and  character protrusion  will only work with
-pdfTeX, at least version 0.14f. Automatic font expansion requires version
-1.20 or newer.  Disabling ligatures requires  pdfTeX 1.30,  letterspacing
-and the adjustment of interword spacing  and of kerning  requires version
-1.40. The package will by default enable protrusion and expansion if they
-can safely be assumed to work. 
+Note that font expansion and character protrusion will only work with pdfTeX,
+at least  version 0.14f.  Automatic font expansion  requires  version 1.20 or
+newer.  Disabling  ligatures  requires  pdfTeX 1.30,  letterspacing  and  the
+adjustment  of  interword spacing  and of kerning requires version 1.40.  The
+package will by default enable protrusion and expansion if they can safely be
+assumed to work.
 
-The  alternative package  `letterspace'  provides  the user commands  for
-letterspacing only, omitting support for all other extensions. 
+The alternative package `letterspace'  provides the user commands for letter-
+spacing only, omitting support for all other extensions.
 
 The documentation can be found in microtype.pdf.
 
@@ -36,7 +36,7 @@ The documentation can be found in microtype.pdf.
 
  - Run latex on microtype.ins to generate the package and configuration files
  - Move all files into a directory where LaTeX will find them,
-   e.g. TEXMF/tex/latex/microtype
+   e.g., TEXMF/tex/latex/microtype
 
  - Run (pdf)latex twice on microtype.dtx to create the documentation
  - For an index run:
@@ -48,19 +48,19 @@ The documentation can be found in microtype.pdf.
 * License
  ---------
 
-This work may be distributed and/or modified under the conditions of the
-LaTeX Project Public License, either version 1.3c of this license or (at
-your option) any later version. The latest version of this license is in:
-http://www.latex-project.org/lppl.txt, and version 1.3c or later is part
-of all distributions of LaTeX version 2005/12/01 or later.
+This work  may be distributed and/or  modified  under the  conditions  of the
+LaTeX Project Public License, either version 1.3c of this license or (at your
+option)  any later version.  The  latest  version  of  this  license  is  in:
+http://www.latex-project.org/lppl.txt,  and version 1.3c or later  is part of
+all distributions of LaTeX version 2005/12/01 or later.
 
 This work has the LPPL maintenance status `author-maintained'.
 
-This work consists of the files  microtype.dtx and  microtype.ins and the
-derived file microtype.sty.
+This work  consists of the files `microtype.dtx' and `microtype.ins'  and the
+derived files `microtype.sty' and `letterspace.sty'.
 
-Modified versions  of the configuration files (*.cfg)  may be distributed
-provided that  (1)  the original copyright statement is not removed,  and
+Modified versions  of the  configuration  files  (*.cfg)  may be  distributed
+provided  that  (1)  the original  copyright statement  is not  removed,  and
 (2) the identification string is changed.
 
          ----------------------------------------------------
