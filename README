@@ -3,7 +3,7 @@
                         The `microtype' package
          An interface to the micro-typographic extensions of pdfTeX
                    =================================
-                          v2.2     2007/07/14
+                          v2.3     2007/12/23
 
 
 * Overview
@@ -25,8 +25,9 @@ adjustment  of  interword spacing  and of kerning requires version 1.40.  The
 package will by default enable protrusion and expansion if they can safely be
 assumed to work.
 
-The alternative package `letterspace'  provides the user commands for letter-
-spacing only, omitting support for all other extensions.
+The alternative package `letterspace', which also works with `eplain' or even
+`miniltx',  provides  the  user commands  for  letter-spacing only,  omitting
+support for all other extensions. 
 
 The documentation can be found in microtype.pdf.
 
