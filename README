@@ -1,9 +1,9 @@
 
 
-                        The `microtype' package
-         An interface to the micro-typographic extensions of pdfTeX
-                   =================================
-                          v2.3     2007/12/23
+                        The `microtype' package     
+        An interface to the micro-typographic extensions of pdfTeX
+                  ===================================
+                         v2.3a      2008/02/29
 
 
 * Overview
@@ -37,7 +37,7 @@ The documentation can be found in microtype.pdf.
 
  - Run latex on microtype.ins to generate the package and configuration files
  - Move all files into a directory where LaTeX will find them,
-   e.g., TEXMF/tex/latex/microtype
+   e.g., TEXMF/tex/latex/microtype/
 
  - Run (pdf)latex twice on microtype.dtx to create the documentation
  - For an index run:
@@ -65,5 +65,5 @@ provided  that  (1)  the original  copyright statement  is not  removed,  and
 (2) the identification string is changed.
 
          ----------------------------------------------------
-         Copyright (c) 2004--2007  R Schlicht <w.m.l@gmx.net>
+         Copyright (c) 2004--2008  R Schlicht <w.m.l@gmx.net>
          ----------------------------------------------------
