@@ -1,5 +1,5 @@
 % !Mode:: "TeX:STY:UK"
-% $Id: microtype.ins,v 1.17 2008-02-29 02:01:09+01 schlicht Exp schlicht $
+% $Id: microtype.ins,v 1.18 2008-11-11 12:15:03+01 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
 \input docstrip
 \keepsilent
@@ -81,13 +81,13 @@ derived files microtype.sty and letterspace.sty.
  Harald Harders <h.harders{at}tu-bs.de>.^^M
 \endpreamble
 
-% ------------------------------------------------------------------------
-
 \def\makefile#1#2{\file{#1}{\from{microtype.dtx}{#2}}}
 \def\makecfg#1#2{\makefile{mt-#2.cfg}{config,cfg-#1,#2}}
 
+% ------------------------------------------------------------------------
+
 \generate{
-    \makefile{microtype.sty}{package} % add `lua' for luatex support
+    \makefile{microtype.sty}{package,lua}
   \usepreamble\lsppreamble
     \makefile{letterspace.sty}{letterspace,plain}
   \usepreamble\cfgpreamble
