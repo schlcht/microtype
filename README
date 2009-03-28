@@ -3,7 +3,7 @@
                         The `microtype' package
         An interface to the micro-typographic extensions of pdfTeX
                   ===================================
-                         v2.3c      2008/11/11
+                         v2.3d      2009/03/27
 
 
 * Overview
@@ -21,9 +21,10 @@ flexible way. Settings for various fonts are provided.
 Note that font expansion and character protrusion will only work with pdfTeX,
 at least  version 0.14f.  Automatic font expansion  requires  version 1.20 or
 newer.  Disabling  ligatures  requires  pdfTeX 1.30,  letterspacing  and  the
-adjustment  of  interword spacing  and of kerning requires version 1.40.  The
+adjustment  of interword spacing  and of kerning  requires version 1.40.  The
 package will by default enable protrusion and expansion if they can safely be
-assumed to work. These two features are also available with luaTeX.
+assumed  to work.  These two features  are also  available  with luaTeX.  The
+`microtype' package does not work with XeTeX.
 
 The alternative package  `letterspace',  which  also  works  with  plain  TeX,
 provides the user commands  for letter-spacing only,  omitting support for all
@@ -65,5 +66,5 @@ provided  that  (1)  the original  copyright statement  is not  removed,  and
 (2) the identification string is changed.
 
          ----------------------------------------------------
-         Copyright (c) 2004--2008  R Schlicht <w.m.l@gmx.net>
+         Copyright (c) 2004--2009  R Schlicht <w.m.l@gmx.net>
          ----------------------------------------------------
