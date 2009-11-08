@@ -2,9 +2,9 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.3d"
+% !DTXversion:: "2.3e"
 % ------------------------------------------------------------------------
-% $Id: microtype.dtx,v 1.57 2009-03-27 23:27:13+01 schlicht Exp schlicht $
+% $Id: microtype.dtx,v 1.59 2009-11-09 06:01:14+01 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %        An interface to the micro-typographic extensions of pdfTeX
@@ -28,7 +28,7 @@
 %
 %<package|letterspace>\NeedsTeXFormat{LaTeX2e}
 %<*driver>
-\ProvidesFile{microtype.dtx}
+\ProvidesFile{\jobname.dtx}
 %</driver>
 %<package|letterspace>\ProvidesPackage
 %<config>\ProvidesFile
@@ -36,7 +36,7 @@
 %<letterspace>  {letterspace}
 %<m-t>  {microtype.cfg}
 %<*package|letterspace|m-t>
-  [2009/03/27 v2.3d
+  [2009/11/09 v2.3e
 %<package>   Micro-typography with pdfTeX
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -45,7 +45,7 @@
 %<*config>
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
-%<cmr>  {mt-cmr.cfg}[2008/02/29 v1.9a microtype config. file: Computer Modern Roman (RS)]
+%<cmr>  {mt-cmr.cfg}[2009/11/09 v2.0 microtype config. file: Computer Modern Roman (RS)]
 %<pad>  {mt-pad.cfg}[2005/11/07 v1.5 microtype config. file: Adobe Garamond (RS)]
 %<pmn>  {mt-pmn.cfg}[2004/11/07 v1.2 microtype config. file: Adobe Minion (HH)]
 %<ppl>  {mt-ppl.cfg}[2005/11/16 v1.6 microtype config. file: Palatino (RS)]
@@ -75,7 +75,7 @@
 \usepackage[latin1]{\ifluatex lua-inputenc,\fi inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
-\GetFileInfo{microtype.dtx}
+\GetFileInfo{\jobname.dtx}
 \usepackage[expansion=false,kerning=true]{microtype}[\filedate]
  \DeclareMicrotypeSet*[protrusion]
       { doc }
@@ -85,17 +85,17 @@
  \SetProtrusion
       { encoding = OMS,
         family   = mdbch }
-      { "68 = {400, }, % \langle
-        "69 = { ,400} }% \rangle
+      { "68 = {400, },  % \langle
+        "69 = { ,400} } % \rangle
  \DeclareMicrotypeSet*[kerning]
       { doc }
       { encoding = T1,
-        family   = blg,% typewriter font and ...
-        font     = * } % French sample in section \ref{sub:kerning}
+        family   = blg, % typewriter font and ...
+        font     = * }  % French sample in section \ref{sub:kerning}
  \SetExtraKerning
       { encoding = T1,
         family   = blg }
-      {  _ = {100,100} } % underscores shouldn't touch
+      { _ = {100,100} } % underscores shouldn't touch
  % disable ?` and !` ligatures (sample in section \ref{sec:disable-ligatures})
  \DisableLigatures[?,!]{encoding = *, family = rm* }
  % Fraktur sample in section \ref{sec:lettersp}
@@ -403,14 +403,14 @@
    basicstyle=\MacroFont,
    keywords=[0]{\microtypesetup,\DeclareMicrotypeSet,\UseMicrotypeSet,
      \DeclareMicrotypeSetDefault,\SetProtrusion,\SetExpansion,\SetTracking,
-     \SetExtraSpacing,\SetExtraKerning,\DisableLigatures,\DeclareCharacterInheritance,
+     \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
      \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
      \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
      \textls,\lsstyle,\lslig,\Microtype@Hook},
    keywordstyle=[0]\color{thegreen},
    keywords=[1]{protrusion,expansion,activate,DVIoutput,draft,final,verbose,
-     config,factor,auto,stretch,shrink,step,selected,unit,tracking,spacing,
-     kerning,letterspace,babel,context,%defersetup,copyfonts, % undocumented
+     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
+     spacing,letterspace,babel,context,%defersetup,copyfonts, % undocumented
      no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
    keywordstyle=[1]\color{thered},
    comment=[l]\%,
@@ -634,7 +634,7 @@
 \RecordChanges
 %\OnlyDescription
 \begin{document}
-  \DocInput{microtype.dtx}
+  \DocInput{\jobname.dtx}
 \end{document}
 %</driver>
 %</driver|docsty>
@@ -648,7 +648,7 @@
 %\GeneralChanges{Documentation}
 %\changes{v1.9b}{2006/01/13}{activate expansion in the distributed <PDF>}
 %\changes{v2.2}{2007/04/01}{logo transparency and amusement}
-% ^^A Adobe Reader 8 had serious bugs with transparency. Fixed in 8.1.
+% ^^A Adobe Reader 8.0 had serious bugs with transparency. Fixed in 8.1.
 %
 % \GetFileInfo{microtype.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
@@ -758,8 +758,9 @@
 % After this great leap in usability had been taken, the development did not
 % stop. On the contrary, \pdftex\ was extended with even more features: version
 % 1.30 introduced the possibility to \emph{disable all ligatures}, version 1.40
-% a robust \emph{letterspacing} command, the \emph{adjustment of interword
-% spacing} and the possibility to specify \emph{additional character kerning}.
+% a robust \emph{letterspacing} command, the possibility to specify
+% \emph{additional character kerning}, and the \emph{adjustment of interword
+% spacing}.
 %
 % Robust and hyphenatable \emph{letterspacing (tracking)} has always been
 % extremely difficult to achieve in \TeX. Although the \cite{soul} package
@@ -771,6 +772,17 @@
 % capitals. It also introduces two new commands \cs{textls} and \cs{lsstyle}
 % for ad-hoc letterspacing, which can be used like the normal text commands.
 % Note that letterspacing only works in <PDF> mode.
+%
+% Setting \emph{additional kerning} for characters of a font is especially
+% useful for languages whose typographical tradition requires certain
+% characters to be separated by a space. For example, it is customary in French
+% typography to add a small space before question mark, exclamation mark and
+% semi-colon, and a bigger space before the colon and the guillemets. Until
+% now, this could only be achieved by making these characters active (for
+% example by the \pkg{babel} package), which may not always be a robust
+% solution. In contrast to the standard kerning that is built into the fonts
+% (which will of course apply as usual), this additional kerning is based on
+% single characters, not on character pairs.
 %
 % \emph{Adjustment of interword spacing} is based upon the idea that in order
 % to achieve a uniform greyness of the text, the space between words should
@@ -791,17 +803,6 @@
 % with \microtype\ are but a first approximation, and I would welcome
 % corrections and improvements very much. I suggest reading the reasoning
 % behind the settings in section~\ref{sub:conf-spacing}.
-%
-% Setting \emph{additional kerning} for characters of a font is especially
-% useful for languages whose typographical tradition requires certain
-% characters to be separated by a space. For example, it is customary in French
-% typography to add a small space before question mark, exclamation mark and
-% semi-colon, and a bigger space before the colon and the guillemets. Until
-% now, this could only be achieved by making these characters active (for
-% example by the \pkg{babel} package), which may not always be a robust
-% solution. In contrast to the standard kerning that is built into the fonts
-% (which will of course apply as usual), this additional kerning is based on
-% single characters, not on character pairs.
 %
 % The possibility, finally, to \emph{disable all ligatures} of a font may be
 % useful for typewriter fonts.
@@ -908,19 +909,19 @@
 %
 %\medskip
 %\Describe{Option}{tracking}{true,!false,:font set name}
-%\DescribeOption{spacing}
 %\DescribeOption{kerning}
-% There is no compatibility level for the new extensions of tracking, interword
-% spacing, and additional kerning. Therefore, they can only be switched on or
-% off, or they may be activated by passing a set name to the option. By
-% default, neither feature is enabled.
+%\DescribeOption{spacing}
+% There is no compatibility level for the new extensions of tracking,
+% additional kerning, and interword spacing. Therefore, they can only be
+% switched on or off, or they may be activated by passing a set name to the
+% option. By default, neither feature is enabled.
 %
 %\begin{table}\small
 %\changes{v2.3a}{2008/02/25}{add table of available and enabled features}
 %\caption{Availability of micro-typographic features}\label{tab:available-features}
-%\catcode`\!=13 \def!{\textcolor{thered}{$\quad\varnothing$}}
-%\catcode`\?=13 \def?{\textcolor{theblue}{$\quad\boxtimes$}}
-%\catcode`\Q=13 \defQ{\textcolor{thegreen}{$\quad\!\bigstar$}}
+%\catcode`\!=13 \def!{\textcolor{thegreen}{\hskip.9em $\bigstar$}}
+%\catcode`\?=13 \def?{\textcolor{theblue} {\hskip 1em $\boxtimes$}}
+%\catcode`\_=13 \def_{\textcolor{thered}  {\hskip 1em $\varnothing$}}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -942,22 +943,22 @@
 %\cmidrule(r){1-1}\cmidrule(r){2-2}\cmidrule(r){3-3}\cmidrule(r){4-4}
 %\cmidrule(r){5-5}\cmidrule(r){6-6}\cmidrule(r){7-7}\cmidrule(r){8-8}\cmidrule{9-9}
 % \pdftex
-%    & $\less$ 0.14f & <DVI>/<PDF> & ! & ! & ! & ! & ! & !\\
-%    & $\geq$  0.14f & <DVI>/<PDF> & Q & ? & ! & ! & ! & !\\
-%    & $\geq$  1.20  & <DVI>       & Q & ? & ! & ! & ! & !\\
-%    &               & <PDF>       & Q & Q & Q & ! & ! & !\\
-%    & $\geq$  1.40  & <DVI>       & Q & ? & ! & ? & ? & !\\
-%    &               & <PDF>       & Q & Q & Q & ? & ? & ?\,\textsuperscript{\itshape a}\\
+%    & $\less$ 0.14f & <DVI>/<PDF> & _ & _ & _ & _ & _ & _\\
+%    & $\geq$  0.14f & <DVI>/<PDF> & ! & ? & _ & _ & _ & _\\
+%    & $\geq$  1.20  & <DVI>       & ! & ? & _ & _ & _ & _\\
+%    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
+%    & $\geq$  1.40  & <DVI>       & ! & ? & _ & ? & ? & _\\
+%    &               & <PDF>       & ! & ! & ! & ? & ? & ?\,\textsuperscript{\itshape a}\\
 % \luatex ^^A we will have to re-model kerning, spacing and tracking with \luatex:
-%    & $\geq$  0.25  & <DVI>       & Q & ? & ! & ! & ! & !\\
-%    &               & <PDF>       & Q & Q & Q & ! & ! & !\\
+%    & $\geq$  0.25  & <DVI>       & ! & ? & _ & _ & _ & _\\
+%    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
 %\bottomrule
 %\end{tabular}^^A
 %\vskip4pt\footnotesize
 %\hskip-.8em
-% Q = enabled\quad
+% ! = enabled\quad
 % ? = not enabled\quad
-% ! = not available
+% _ = not available
 %\hfill
 % \textit{a}\quad $\geq$ 1.40.4 recommended
 %\vskip3pt
@@ -1036,14 +1037,14 @@
 % steps within the expansion limits. With recent versions of \pdftex\ (1.40 or
 % newer), this option is by default set to 1, in order to allow \pdftex\ to try
 % the maximum number of font instances, and hence to guarantee the best
-% possible output. One problem that may occur here is that \pdftex\ runs out of
-% memory with huge documents; in this case, read about the error messages in
-% the hints and caveats section~(\ref{sec:caveats}), or try with a larger
-% \opt{step}. Older \pdftex\ versions, however, had to include every font
-% instance in the <PDF> file, which may increase the file size quite
-% dramatically. Therefore, in case you are using a pre-1.40 \pdftex\ version,
-% \opt{step} is by default set to one fifth of the smaller value of
-% \opt{stretch} and \opt{shrink}.
+% possible output.\footnote{
+%   The downside with this default is that \pdftex\ may run out of memory with
+%   huge documents; in this case, read about the error messages in the `Hints
+%   and caveats' section~(\ref{sec:caveats}), or try with a larger \opt{step}.}
+% Older \pdftex\ versions, however, had to include every font instance in the
+% <PDF> file, which may increase the file size quite dramatically. Therefore,
+% in case you are using a pre-1.40 \pdftex\ version, \opt{step} is by default
+% set to one fifth of the smaller value of \opt{stretch} and \opt{shrink}.
 %
 %\medskip
 %\Describe{Option}{selected}{true,!false}
@@ -1071,7 +1072,7 @@
 %\Describe{Option}{DVIoutput}{true,*false}
 % \pdftex\ is not only able to generate <PDF> output but can also spit out <DVI>
 % files.\footnote{
-%    Recent \TeX\ systems are using pdfe\TeX\ as the default engine even for
+%    Recent \TeX\ systems are using \pdftex\ as the default engine even for
 %    <DVI> output.}
 % The latter can be ordered with the option \opt{DVIoutput}, which will set
 % \cmd\pdfoutput\ to zero.
@@ -1167,8 +1168,8 @@
 % of the micro-typographic extensions. It then accepts all options from
 % section~\ref{sub:options-microtype}: \key{expansion}, \key{protrusion} and
 % \key{activate}, which in turn may receive the values |true|, |false|,
-% |compatibility| or |nocompatibility|, and \key{tracking}, \key{spacing} and
-% \key{kerning} with the admissible values |true| or |false|.
+% |compatibility| or |nocompatibility|, and \key{tracking}, \key{kerning} and
+% \key{spacing} with the admissible values |true| or |false|.
 % Passing the name of a font set is not allowed.
 % Using this command, you could for instance temporarily disable font expansion
 % by saying:
@@ -1201,7 +1202,7 @@
 % `|basictext|' in the main configuration file as follows:
 %\begin{verbatim}
 %\DeclareMicrotypeSet{basictext}
-%   { encoding = {OT1,T1,LY1,OT4,QX,T5},
+%   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5},
 %     family   = {rm*,sf*},
 %     series   = {md*},
 %     size     = {normalsize,footnotesize,small,large}
@@ -1212,7 +1213,7 @@
 %\UseMicrotypeSet[protrusion]{basictext}
 %\end{verbatim}
 % in the document's preamble, only fonts in the text encodings <OT1>, <T1>,
-% <LY1>, <OT4>, <QX> or <T5>, roman or sans serif families, normal (or
+% <T2A>, <LY1>, <OT4>, <QX> or <T5>, roman or sans serif families, normal (or
 % `medium') series, and in sizes called by \cmd\normalsize,
 % \cmd\footnotesize, \cmd\small\ or \cmd\large, will be protruded. Math
 % fonts, on the other hand, will not, since they are in another encoding.
@@ -1225,7 +1226,7 @@
 % Therefore, the predefined set `|alltext|', which is declared as:
 %\begin{verbatim}
 %\DeclareMicrotypeSet{alltext}
-%   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1} }
+%   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1} }
 %\end{verbatim}
 % is far less restrictive. The only condition here is that the encoding must
 % match.
@@ -1270,15 +1271,17 @@
 %\medskip\noindent
 % Table~\ref{tab:predefined-font-sets} lists the nine predefined font sets.
 % They may also be activated by passing their name to the feature options
-% \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{spacing} and
-% \opt{kerning} when loading the package, for example:
+% \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{kerning} and
+% \opt{spacing} when loading the package, for example:
 %\begin{verbatim}
 %\usepackage[protrusion=allmath,tracking=smallcaps]{microtype}
 %\end{verbatim}
 %
 %\begin{table}\microtypesetup{protrusion=false}\small
 %\caption{Predefined font sets}\label{tab:predefined-font-sets}
-%\catcode`\!=13 \def!{$\varnothing$}
+%\catcode`\!=13 \def!{\textcolor{thered}{$\varnothing$}}
+%\catcode`\/=13 \def/#1/{\textcolor{thegreen}{#1}}
+%\def<#1>{\textcolor{theblue}{\acronym{#1}}}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -1310,16 +1313,16 @@
 %\cmidrule(r){1-1}
 % |basictext|\linebreak(|basicmath|)
 %    & Text encodings \linebreak (<OML>, <OMS>)
-%    & \cmd\rm|*|,\linebreak \cmd\sf|*|
-%    & \cmd\md|*|
+%    & /\cmd\rm|*|/,\linebreak /\cmd\sf|*|/
+%    & /\cmd\md|*|/
 %    & !
-%    & \cmd\normalsize, \cmd\footnotesize, \cmd\small, \cmd\large\\
+%    & /\cmd\normalsize/, /\cmd\footnotesize/, /\cmd\small/, /\cmd\large/\\
 %\cmidrule(r){1-1}
 % |smallcaps|
 %    & Text encodings
 %    & !
 %    & !
-%    & sc
+%    & /\cmd\sc|*|/
 %    & ! \\
 %\cmidrule(r){1-1}
 % |footnotesize|
@@ -1327,27 +1330,27 @@
 %    & !
 %    & !
 %    & !
-%    & |-|\cmd\small\\
+%    & |-|/\cmd\small/\\
 %\cmidrule(r){1-1}
 % |scriptsize|
 %    & Text encodings, <TS1>
 %    & !
 %    & !
 %    & !
-%    & |-|\cmd\footnotesize\\
+%    & |-|/\cmd\footnotesize/\\
 %\cmidrule(r){1-1}
 % |normalfont|
-%    &  \cmd\encoding|*|
-%    &  \cmd\family|*|
-%    &  \cmd\series|*|
-%    &  \cmd\shape|*|
-%    &  \cmd\normalsize \\
+%    &  /\cmd\encoding|*|/
+%    &  /\cmd\family|*|/
+%    &  /\cmd\series|*|/
+%    &  /\cmd\shape|*|/
+%    &  /\cmd\normalsize/ \\
 %\bottomrule
 %\end{tabular}
 %\vskip4pt\footnotesize
-% `Text encodings' = <OT1>, <T1>, <LY1>, <OT4>, <QX>, <T5>
+% `Text encodings' = <OT1>, <T1>, <T2A>, <LY1>, <OT4>, <QX>, <T5>
 %\hfill
-% `\dots|*|' = `\dots|default|'
+% `/\bslash\,\dots|*|/' = `/\bslash\,\dots|default|/'
 %\vskip3pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
@@ -1376,7 +1379,7 @@
 %
 %\section{Micro fine tuning}\label{sec:fine-tuning}
 %
-% Every character asks for a particular protrusion, spacing or kerning amount.
+% Every character asks for a particular protrusion, kerning or spacing amount.
 % It may also be desirable to restrict the maximum expansion of certain
 % characters. Furthermore, since every font looks different, settings have to
 % be specific to a font or set of fonts. This package offers flexible and
@@ -1755,61 +1758,7 @@
 %\usepackage[tracking=alltext,letterspace=-40]{microtype}
 %\end{verbatim}
 %
-%
-%\subsection{Interword spacing}\label{sub:spacing}
-%
-%\Describe{Macro}{\SetExtraSpacing}{?options,set of fonts,spacing settings}
-% This command allows you to fine tune the interword spacing (also known as
-% glue). A preliminary remark on what a `space' is may be in order: between two
-% words, \TeX\ will insert a so called glue, which is characterised by three
-% parameters -- the normal distance between two words, the maximum amount of
-% space that may be added to it, and the maximum amount that may be subtracted.
-% The latter two parameters come into effect whenever \TeX\ tries to break a
-% paragraph into lines and does not succeed; it can then stretch or shrink the
-% spaces between words. These three parameters are specific to each font.
-%
-% On top of these glue dimensions, \TeX\ has the concept of `space factors'.
-% They may be used to increase the space after certain characters, most
-% prominently the punctuation characters. If \pdftex's additional spacing
-% adjustment is in effect, space factors are ignored, since it may be
-% considered an extension to space factors with much finer control.
-%
 %\emptypdfpageresources ^^A layers of letterspacing illustration
-%
-%\paragraph{The spacing settings}
-% are declared as pairs of \meta{character}\,|=|\,\meta{spacing factors}, where
-% the latter consist of three numbers: first, the additional kern inserted
-% after this character if it appears before an interword space, second, the
-% additional stretch amount, and third, the additional shrink amount. All
-% values may also be negative, in which case the dimensions will be decreased.
-% Not all values have to be specified, however, the settings must contain the
-% two separating commas.
-%
-%\paragraph{Options:}
-%\begin{options}
-%  \item[\key{name}, \key{load}, \key{factor}, \key{preset}, \key{inputenc}, \key{context}]
-%       These options serve the same function as in the previous configuration
-%       commands.
-%  \item[\key{unit}] You can specify the unit by which the specified numbers are
-%       measured. Possible values are: |character|, a \meta{dimension} and,
-%       additionally, |space|. The latter will measure the values in thousandths
-%       of the respective space dimension set by the font. By default, the unit
-%       is measured by the space dimensions. For example, with these
-%       (nonsensical) settings:
-%\begin{verbatim}
-%\SetExtraSpacing
-%   [ unit = space  ] % default
-%   { font = */*/*/*/* }
-%   {
-%       .  = {1000,1000,1000},
-%   }
-%\end{verbatim}
-%       the space inserted after a full stop would be doubled (technically
-%       speaking: 2\,\texttimes\ \fontdim2), as would the maximum stretch and
-%       shrink amounts of the interword space (\fontdim3 and~4). Conversely,
-%       setting all three values to \textminus1000 would completely cancel a
-%       space after the respective character.
-%\end{options}
 %
 %
 %\subsection{Additional kerning}\label{sub:kerning}
@@ -1863,7 +1812,11 @@
 %   }
 %\end{verbatim}
 %\changes{v2.3}{2007/11/20}{add kerning sample}
-%\ifluatex\else
+%\ifluatex
+% \fallbacktext{Since this document was compiled with |luatex| instead of
+%   |pdftex|, it does not\\include the sample that the original documentation
+%   features.}
+%\else
 %      \begin{microtypecontext}{kerning=french}
 %       What is the result of these settings? If they are active, like in the
 %       current paragraph, a thin space will be inserted in front of each
@@ -1881,6 +1834,60 @@
 %\end{microtypecontext}
 %\end{verbatim}
 %\fi
+%\end{options}
+%
+%
+%\subsection{Interword spacing}\label{sub:spacing}
+%
+%\Describe{Macro}{\SetExtraSpacing}{?options,set of fonts,spacing settings}
+% This command allows you to fine tune the interword spacing (also known as
+% glue). A preliminary remark on what a `space' is may be in order: between two
+% words, \TeX\ will insert a so called glue, which is characterised by three
+% parameters -- the normal distance between two words, the maximum amount of
+% space that may be added to it, and the maximum amount that may be subtracted.
+% The latter two parameters come into effect whenever \TeX\ tries to break a
+% paragraph into lines and does not succeed; it can then stretch or shrink the
+% spaces between words. These three parameters are specific to each font.
+%
+% On top of these glue dimensions, \TeX\ has the concept of `space factors'.
+% They may be used to increase the space after certain characters, most
+% prominently the punctuation characters. If \pdftex's additional spacing
+% adjustment is in effect, space factors are ignored, since it may be
+% considered an extension to space factors with much finer control.
+%
+%\paragraph{The spacing settings}
+% are declared as pairs of \meta{character}\,|=|\,\meta{spacing factors}, where
+% the latter consist of three numbers: first, the additional kern inserted
+% after this character if it appears before an interword space, second, the
+% additional stretch amount, and third, the additional shrink amount. All
+% values may also be negative, in which case the dimensions will be decreased.
+% Not all values have to be specified, however, the settings must contain the
+% two separating commas.
+%
+%\paragraph{Options:}
+%\begin{options}
+%  \item[\key{name}, \key{load}, \key{factor}, \key{preset}, \key{inputenc}, \key{context}]
+%       These options serve the same function as in the previous configuration
+%       commands.
+%  \item[\key{unit}] You can specify the unit by which the specified numbers are
+%       measured. Possible values are: |character|, a \meta{dimension} and,
+%       additionally, |space|. The latter will measure the values in thousandths
+%       of the respective space dimension set by the font. By default, the unit
+%       is measured by the space dimensions. For example, with these
+%       (nonsensical) settings:
+%\begin{verbatim}
+%\SetExtraSpacing
+%   [ unit = space  ] % default
+%   { font = */*/*/*/* }
+%   {
+%       .  = {1000,1000,1000},
+%   }
+%\end{verbatim}
+%       the space inserted after a full stop would be doubled (technically
+%       speaking: 2\,\texttimes\ \fontdim2), as would the maximum stretch and
+%       shrink amounts of the interword space (\fontdim3 and~4). Conversely,
+%       setting all three values to \textminus1000 would completely cancel a
+%       space after the respective character.
 %\end{options}
 %
 %
@@ -1908,6 +1915,7 @@
 % font-specific configuration files, you can find examples of all these
 % commands.
 %
+%
 %\subsection{Configuration files}\label{sub:config-file}
 %
 % The default configuration, consisting of inheritance settings, declarations
@@ -1916,7 +1924,7 @@
 % extend this file with custom settings (or load a different configuration file
 % with the `\opt{config}' option, see section~\ref{sub:options-misc}).
 %
-% If you are embarking on creating new settings for a font family, you should
+% If you embark on creating new settings for a font family, you should
 % put them into a separate file, whose name must be: `|mt-|\meta{font
 % family}|.cfg|' (\eg, `\file{mt-cmr.cfg}'), and may contain all commands
 % described in the current section~\ref{sec:fine-tuning}. These files will be
@@ -1947,12 +1955,12 @@
 %      & \footnotesize Shapes\\
 %\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
 % Generic
-%      & <OT1>, <T1>, <LY1>, <QX>, (<TS1>)\footnote{Incomplete\label{fn:incmpl}}
+%      & <OT1>, <T1>, <T2A>, <LY1>, <QX>, (<TS1>)\footnote{Incomplete\label{fn:incmpl}}
 %      & n, (it, sl, sc)\fnref{fn:incmpl} \\
 % Computer Modern Roman (|cmr|)\footnote{Aliases: Latin Modern (|lmr|),
 %                                        \pkg{ae} (|aer|), \pkg{zefonts} (|zer|),
 %                                        \pkg{eco} (|cmor|), \pkg{hfoldsty} (|hfor|)}
-%      & <OT1>, <OT4>, <T1>, <T5>, <LY1>, <TS1>
+%      & <OT1>, <OT4>, <T1>, <T2A>, <T5>, <LY1>, <TS1>
 %      & n, it, sl, sc \\
 % Bitstream Charter (|bch|)\footnote{Aliases: \pkg{mathdesign}/Charter (|mdbch|),
 %                                    MicroPress's \pkg{chmath} (|chr|)}
@@ -1967,7 +1975,7 @@
 % Bitstream Letter Gothic (|blg|)\footnote{Alias: \pkg{ulgothic} (|ulg|)}
 %      & <OT1>, <T1>, <TS1>
 %      & n, it \\
-% Adobe Minion (|pmnx|, |pmnj|)\footnote{By courtesy of Harald Harders (\mailto{h.harders@tu-bs.de})}
+% Adobe Minion (|pmnx|, |pmnj|)
 %      & <OT1>, <T1>, <LY1>, <TS1>
 %      & n, it, (sl)\fnref{fn:it-sl}, sc, si\\
 % Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
@@ -2075,6 +2083,7 @@
 %   { 1 = { ,650}, 2 = { ,400}, 3 = { ,400}, 4 = { ,400}, 5 = { ,400},
 %     6 = { ,400}, 7 = { ,500}, 8 = { ,400}, 9 = { ,400}, 0 = { ,400} }
 %\end{verbatim}
+%\ifcmr\else\enlargethispage{2\baselineskip}\fi ^^A layout
 % and have the context changed in the footnote marker command. This command
 % differs among the various classes; for the base classes, \eg, \pkg{article},
 % it would be:
@@ -2135,7 +2144,6 @@
 % will be reset.
 %
 %
-%\ifcmr\else\pagebreak\fi ^^A layout
 %\section{Letterspacing revisited}\label{sec:lettersp}
 %
 %\Describe{Macro}{\textls}{?amount,general text}
@@ -2150,8 +2158,8 @@
 %   small-capitals or all-capitals. Another just cause may be emphasis in texts
 %   typeset in Fraktur fonts.}
 % For such ad-hoc letterspacing, \microtype\ introduces two commands that can
-% be used in the same way as \LaTeX's text commands (independently of whether
-% the |tracking| option is enabled): \cs{textls} -- which also works in math
+% be used (independently of whether the |tracking| option is enabled) in the
+% same way as \LaTeX's text commands: \cs{textls} -- which also works in math
 % mode -- expects the text in the mandatory argument, while \cs{lsstyle} will
 % switch on letterspacing for all subsequent fonts until the end of the current
 % group. The starred version of \cs{textls} does not add any extra kerning
@@ -2182,11 +2190,11 @@
 % (namely, `\textfrak{\lsstyle Aus:s{\kern0pt}ichts:los{\kern0pt}igkeit}').
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
-%\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{}
+%\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{100}
 %\textfrak{\lsstyle Aus:s{\kern0pt}ichts:los{\kern0pt}igkeit}
 %\end{verbatim}
 %\begin{verbatim}
-%\SetTracking[no ligatures={f,s,c}]{encoding = LY, family = yfrak}{}
+%\SetTracking[no ligatures={f,s,c}]{encoding = LY, family = yfrak}{100}
 %\textfrak{\lsstyle Au\lslig{s:}si\lslig{ch}t\lslig{s:}losigkeit}
 %\end{verbatim}
 %
@@ -2242,7 +2250,6 @@
 % shapes that necessitate more or less protrusion or expansion. In particular,
 % italic letter shapes may differ wildly in different fonts, hence I have
 % decided against providing default protrusion settings for them.
-%
 % The file \file{test-microtype.tex} might be of some help when adjusting the
 % protrusion settings for a font.
 %
@@ -2266,36 +2273,6 @@
 % uses a different technique of expansion, the file size increase can be
 % neglected.
 %
-%\changes{v1.9e}{2006/07/10}{add hint about unknown encodings}
-%\paragraph{Settings for Cyrillic/Greek/Thai etc. encodings are not yet included.}
-% The default sets of fonts for which the micro-typographic features will be
-% enabled (see table~\ref{tab:predefined-font-sets}) only contain those
-% encodings for which configurations exist. Therefore, if you are using any
-% other encoding (\eg, <T2A>, <LGR> etc.), \microtype\ will not apply to these
-% fonts. You have to define and activate a new font set including the
-% encoding(s) you are using (for details, see section~\ref{sec:font-sets}). For
-% protrusion at least, you would also have to create settings for the fonts in
-% question (see section~\ref{sub:protrusion}). It goes without saying that
-% contributions for these encodings are more than welcome.
-%
-%\changes{v2.3c}{2008/10/27}{add hint about spacing being experimental}
-%\paragraph{Adjustment of interword spacing is still experimental.}
-% The implementation of this feature in \pdftex\ is not complete, and may not
-% yield the positive effects on the typographical quality you might expect --
-% in certain situations, there may even be undesired side effects. Therefore,
-% the \opt{spacing} option should not be chosen blindly; it is also recommended
-% to experiment with the settings in order to understand the workings of this
-% feature.
-%
-%\paragraph{Only employ kerning adjustment if it is customary in the language's
-%typographic tradition.}
-% In contrast to protrusion and expansion, additional kerning does not
-% unconditionally improve the micro-typographical quality of your document. You
-% should only switch it on if you are writing a document in a language whose
-% typographic tradition warrants such kerning. If you are, for example, writing
-% an English text, your readers would probably be rather confused by additional
-% spaces before the punctuation characters.
-%
 %\changes{v2.2}{2007/07/06}{add hint about extra <TOC> leader dot
 %                           (first discovered by \contributor Morten H\o gholm <morten.hoegholm\at latex-project.org>)}
 %                                                                                       ^^A private mail, 2006/08/26
@@ -2310,6 +2287,7 @@
 %\end{verbatim}
 %
 %\changes{v1.9}{2005/07/10}{add hint about \texttt{verbatim} environment}
+%\todo{introduce option to patch \texttt{verbatim}}
 %\paragraph{You might want to disable protrusion in \texttt{verbatim} environments.}
 % As you know by now, \microtype\ will by default activate character protrusion
 % for all fonts contained in the font set `|alltext|'. This also includes the
@@ -2325,12 +2303,43 @@
 % tiring to repeat it every time if you are using the |verbatim| environment
 % frequently. The following line, added to the document's preamble, would serve
 % the same purpose:
+%\changes{v2.3e}{2009/07/21}{suggest to patch \cmd\@verbatim\ instead of \cmd\verbatim}
 %\begin{verbatim}
-%\g@addto@macro\verbatim{\microtypesetup{activate=false}}
+%\g@addto@macro\@verbatim{\microtypesetup{activate=false}}
 %\end{verbatim}
 % If you are using the \pkg{fancyvrb} or the \pkg{listings} package, this is
 % not necessary, since their implementation of the corresponding environments
 % will inhibit protrusion anyway.
+%
+%\changes{v1.9e}{2006/07/10}{add hint about unknown encodings}
+%\paragraph{Settings for Greek/Thai/Armenian etc. encodings are not yet included.}
+% The default sets of fonts for which the micro-typographic features will be
+% enabled (see table~\ref{tab:predefined-font-sets}) only contain those
+% encodings for which configurations exist. Therefore, if you are using any
+% other encoding (\eg, <LGR>, <T2B>, etc.), \microtype\ will not apply to these
+% fonts. You have to define and activate a new font set including the
+% encoding(s) you are using (for details, see section~\ref{sec:font-sets}). For
+% protrusion at least, you would also have to create settings for the fonts in
+% question (see section~\ref{sub:protrusion}). It goes without saying that
+% contributions for these encodings are more than welcome.
+%
+%\paragraph{Only employ kerning adjustment if it is customary in the language's
+%typographic tradition.}
+% In contrast to protrusion and expansion, additional kerning does not
+% unconditionally improve the micro-typographical quality of your document. You
+% should only switch it on if you are writing a document in a language whose
+% typographic tradition warrants such kerning. If you are, for example, writing
+% an English text, your readers would probably be rather confused by additional
+% spaces before the punctuation characters.
+%
+%\changes{v2.3c}{2008/10/27}{add hint about spacing being experimental}
+%\paragraph{Adjustment of interword spacing is still experimental.}
+% The implementation of this feature in \pdftex\ is not complete, and may not
+% yield the positive effects on the typographical quality you might expect --
+% in certain situations, there may even be undesired side effects. Therefore,
+% the \opt{spacing} option should not be chosen blindly; it is also recommended
+% to experiment with the settings in order to understand the workings of this
+% feature.
 %
 %\changes{v1.7}{2005/03/23}{add hint about compatibility}
 %\paragraph{Compatibility and interaction with other packages:}
@@ -2409,6 +2418,7 @@
 % older \pdftex\ versions, this is only possible if you manually create
 % expanded instances of the fonts.
 %
+%\ifcmr\else\pagebreak\fi ^^A layout
 %\changes{v2.0}{2006/11/05}{add hint about how to increase \texttt{font\textunderscore max}
 %                            and \texttt{font\textunderscore mem\textunderscore size}}
 %  \item
@@ -2452,7 +2462,7 @@
 % configurations is quite a time-consuming task and requires a lot of patience.
 % To alleviate this process, this package also includes a test file that can be
 % used to check at least the protrusion settings (\file{test-microtype.tex}).
-%
+%^^A
 % If you have created a configuration file for another font, or if you have any
 % suggestions for enhancements in the default configuration files, I~would
 % gratefully accept them: \mailtoRS.
@@ -2483,7 +2493,9 @@
 % especially concerning the new extensions of interword spacing adjustment
 % and additional character kerning.
 % My thanks also go to \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>
-% for contributing settings for the <QX> encoding.
+% for contributing settings for the <QX> encoding, as well as to
+% \contributor Karl Karlsson <karl-karlsson\at yandex.ru> for providing
+% settings for the Cyrillic <T2A> encoding.
 %
 % I thank \contributor Philipp Lehman <plehman\at gmx.net> for adding to his
 % \pkg{csquotes} package the possibility to restore the original meanings of
@@ -2526,9 +2538,12 @@
 %  \contributor Vasile Gaburici   <vgaburici\at gmail.com>,
 %  \contributor Sveinung Heggen   <sveinung.heggen\at orkla.no>,
 %  \contributor Colin Rourke      <gt\at msp.warwick.ac.uk>,
-%  \contributor Maverick Woo      <maverick\at cs.cmu.edu>
+%  \contributor Maverick Woo      <maverick\at cs.cmu.edu>,
+%  \contributor Silas~S. Brown    <ssb22\at cam.ac.uk>,
+%  \contributor Christian Stark   <cstark\at gmx.de>,
+%  \contributor Marcin Borkowski  <mbork\at atos.wmid.amu.edu.pl>
 % and
-%  \contributor Silas~S. Brown    <ssb22\at cam.ac.uk>.
+%  \contributor \'Elie Roux       <elie.roux\at telecom-bretagne.eu>.
 %
 %
 %\begin{thebibliography}{}
@@ -2580,7 +2595,7 @@
 %
 % \bibitem[Fontname]{fontname}
 %   Karl Berry, \emph{Fontname. Filenames for \TeX\ fonts},
-%   \newblock September 2005.
+%   \newblock July 2009.
 %   \newblock (\ctanurl{info/fontname/fontname.pdf})
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
@@ -2613,12 +2628,14 @@
 %                                  \mbox{-o microtype.gls} microtype.glo}'\else
 %     found in appendix~\ref{sec:changes}\fi.
 % The following is a list of all changes relevant in the user land; bug and
-% compatibility fixes are swept under the rug.
+% compatibility fixes are swept under the rug. Numbers in brackets indicate
+% the relevant section in this manual.
 %
 %\newenvironment{History}
 %  {\list\labelitemi
 %   {\leftmargin 0pt
 %    \parsep 0pt
+%    \def\refsection##1{[##1]}
 %    \def\makelabel##1{\hss\llap{##1}}}}
 %  {\endlist}
 %\newcommand\Version[2]{
@@ -2634,8 +2651,11 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item Support for the Cyrillic <T2A> encoding (protrusion, expansion, spacing)
+%
+%\Version{2.3d}{2009/03/27}
 %  \item New default for expansion option `\opt{step}': 1, if \pdftex\ $\geq$ 1.40
-%        [section~\ref{sub:options-expansion}]
+%        \refsection{\ref{sub:options-expansion}}
 %
 %\Version{2.3c}{2008/11/11}
 %  \item Support for \luatex\ enabled by default
@@ -2646,68 +2666,67 @@
 %
 %\Version{2.3}{2007/12/23}
 %  \item New key `|outer kerning|' for \cs{SetTracking} to customise outer kerning
-%        [section~\ref{sub:tracking}]
+%        \refsection{\ref{sub:tracking}}
 %  \item Adjust protrusion settings for tracking even if protrusion is not enabled
 %  \item New option `\opt{verbose}|=silent|' to turn all warnings into mere messages
-%        [section~\ref{sub:options-misc}]
+%        \refsection{\ref{sub:options-misc}}
 %  \item The \letterspace\ package also works with \pkg{eplain} or \pkg{miniltx}
-%        [section~\ref{sec:lettersp}]
+%        \refsection{\ref{sec:lettersp}}
 %
 %\Version{2.2}{2007/07/14}
-%  \item Improvements to tracking/letterspacing: retain kerning (with \pdftex\ 1.40.4);
+%  \item Improvements to tracking/letterspacing: retain kerning (\pdftex\ $\geq$ 1.40.4);
 %        automatically adjust protrusion settings
 %  \item New key `|no ligatures|' for \cs{SetTracking} to disable selected or
-%        all ligatures (with \pdftex\ 1.40.4)
-%        [section~\ref{sub:tracking}]
+%        all ligatures (\pdftex\ $\geq$ 1.40.4)
+%        \refsection{\ref{sub:tracking}}
 %  \item New keys `|spacing|' and `|outer spacing|' for \cs{SetTracking} to
 %        customise interword spacing
-%        [section~\ref{sub:tracking}]
-%  \item Possibility to expand a font with different parameters (with \pdftex\ 1.40.4)
+%        \refsection{\ref{sub:tracking}}
+%  \item Possibility to expand a font with different parameters (\pdftex\ $\geq$ 1.40.4)
 %    ^^A ; new option `\opt{copyfonts}'
-%        [section~\ref{sub:expansion}]
+%        \refsection{\ref{sub:expansion}}
 %  \item New optional argument for \cs{DisableLigatures} to disable selected ligatures only
-%        [section~\ref{sec:disable-ligatures}]
+%        \refsection{\ref{sec:disable-ligatures}}
 %  \item New command \cs{DeclareMicrotypeVariants} to specify variant suffixes
-%        [section~\ref{sub:config-file}]
+%        \refsection{\ref{sub:config-file}}
 %  \item New command \cs{textmicrotypecontext} as a wrapper for \cs{microtypecontext}
-%        [section~\ref{sec:context}]
+%        \refsection{\ref{sec:context}}
 %  \item Protrusion settings for Bitstream Letter Gothic
 %^^A  \item Basic support for \luatex\ (if generated with the |lua| option)
 %
 %\Version{2.1}{2007/01/21}
 %  \item New command \cs{lslig} to protect ligatures in letterspaced text
-%        [section~\ref{sec:lettersp}]
+%        \refsection{\ref{sec:lettersp}}
 %
 %\Version{2.0}{2007/01/14}
-%  \item Support for the new extensions of \pdftex\ version 1.40:
+%  \item Support for the new extensions of \pdftex\ $\geq$ 1.40:
 %        tracking/letterspacing, adjustment of interword spacing (glue),
 %        and additional kerning
 %        (new commands \cs{SetTracking}, \cs{SetExtraSpacing}, \cs{SetExtraKerning};
 %         new options `\opt{tracking}', `\opt{spacing}', `\opt{kerning}')
-%        [sections~\ref{sub:tracking}, \ref{sub:spacing}, \ref{sub:kerning}]
+%        \refsection{\ref{sub:tracking}, \ref{sub:spacing}, \ref{sub:kerning}}
 %  \item New commands \cs{textls} and \cs{lsstyle} for letterspacing,
 %        new option `\opt{letterspace}'
-%        [sections~\ref{sub:option-tracking}, \ref{sec:lettersp}]
+%        \refsection{\ref{sub:option-tracking}, \ref{sec:lettersp}}
 %  \item New option `\opt{babel}' for automatic micro-typographic adjustment to
 %        the selected language
-%        [sections~\ref{sub:options-misc}, \ref{sec:context}]
+%        \refsection{\ref{sub:options-misc}, \ref{sec:context}}
 %  \item New font sets: `|smallcaps|', `|footnotesize|', `|scriptsize|'
-%        [section~\ref{sec:font-sets}; table~\ref{tab:predefined-font-sets}]
+%        \refsection{\ref{sec:font-sets}, table~\ref{tab:predefined-font-sets}}
 %  \item New package `\letterspace' providing the commands for robust and
 %        hyphenatable letterspacing
-%        [section~\ref{sec:lettersp}]
+%        \refsection{\ref{sec:lettersp}}
 %
 %\VersionDate{1.9f}{2006/09/09}
 %
 %\Version{1.9e}{2006/07/28}
 %  \item New key `|inputenc|' to specify the lists' input encodings
-%        [section~\ref{sec:fine-tuning}]
+%        \refsection{\ref{sec:fine-tuning}}
 %  \item Protrusion settings for Euler math fonts
 %
 %\Version{1.9d}{2006/05/05}
 %  \item Support for the Central European <QX> encoding
-%        (inheritance, generic protrusion settings, contributed by Maciej Eder;
-%         protrusion settings for Times)
+%        (protrusion, inheritance)
 %  \item Protrusion settings for various Euro symbol fonts (Adobe, <ITC>, \pkg{marvosym})
 %  \item Support for Unicode input in the configuration (\pkg{inputenc}/|utf8|)
 %
@@ -2717,23 +2736,24 @@
 %\VersionDate{1.9b}{2006/01/20}
 %
 %\Version{1.9a}{2005/12/05}
-%  \item Defer setup until the end of the preamble; consequently, no need to
-%        change font defaults before loading \microtype, or to put it the other
-%        way round, \microtype\ may now be loaded at any time
+%  \item Defer setup until the end of the preamble
+%   ^^A ; consequently, no need to
+%   ^^A   change font defaults before loading \microtype, or to put it the other
+%   ^^A   way round, \microtype\ may now be loaded at any time
 %   ^^A ; new option `\opt{defersetup}'
 %  \item Inside the preamble, \cs{microtypesetup} accepts all package options
-%        [section~\ref{sub:options-cmd}]
+%        \refsection{\ref{sub:options-cmd}}
 %  \item Protrusion settings for <T5> encoded Charter
 %
 %\Version{1.9}{2005/10/28}
 %  \item New command \cs{DisableLigatures} to disable ligatures of fonts
-%        (requires \pdftex\ version 1.30 or later)
-%        [section~\ref{sec:disable-ligatures}]
+%        (\pdftex\ $\geq$ 1.30)
+%        \refsection{\ref{sec:disable-ligatures}}
 %  \item New command \cs{microtypecontext} to change the configuration context;
 %        new key `|context|' for the configuration commands
-%        [section~\ref{sec:context}]
+%        \refsection{\ref{sec:context}}
 %  \item New key `|font|' to add single fonts to the font sets
-%        [section~\ref{sec:font-sets}]
+%        \refsection{\ref{sec:font-sets}}
 %  \item New key `|preset|' to set all characters to the specified value before
 %        loading the lists
 %  \item Value `|relative|' renamed to `|character|' for `|unit|' keys
@@ -2745,12 +2765,12 @@
 %^^A  \item If font substitution has occurred, the settings for the substitute will
 %^^A        be used instead of those for the selected font
 %  \item New command \cs{DeclareMicrotypeSetDefault} to declare the default font sets
-%        [section~\ref{sec:font-sets}]
+%        \refsection{\ref{sec:font-sets}}
 %  \item New option `\opt{config}' to load a different configuration file
-%        [section~\ref{sub:options-misc}]
+%        \refsection{\ref{sub:options-misc}}
 %  \item New option `\opt{unit}' to measure protrusion factors relative to a
 %        dimension instead of the character width
-%        [section~\ref{sub:protrusion}]
+%        \refsection{\ref{sub:protrusion}}
 %  \item Renamed commands from \cs{..MicroType..} to \cs{..Microtype..}
 %  \item Protrusion settings for <AMS> math fonts
 %  \item Protrusion settings for Times in <LY1> encoding completed
@@ -2758,19 +2778,19 @@
 %^^A  \item 8-bit characters in the configuration finally work as advertised,
 %^^A        even if made active by the \pkg{csquotes} package
 %  \item When using the \pkg{ledmac} package, character protrusion will work
-%        for the first time ever (requires \pdftex\ version 1.30 or later)
+%        for the first time ever (\pdftex\ $\geq$ 1.30)
 %
 %\Version{1.7}{2005/03/23}
 %  \item Possibility to specify ranges of font sizes in the set declarations
 %        and protrusion and expansion settings
-%        [sections~\ref{sec:font-sets}, \ref{sec:fine-tuning}]
+%        \refsection{\ref{sec:font-sets}, \ref{sec:fine-tuning}}
 %^^A  \item Always take font size into account when trying to find protrusion resp.
 %^^A        expansion settings for a given font
-%^^A        [section~\ref{sec:fine-tuning}]
+%^^A        \refsection{\ref{sec:fine-tuning}}
 %  \item New command \cs{LoadMicrotypeFile} to load a font configuration file manually
-%        [section~\ref{sub:config-file}]
+%        \refsection{\ref{sub:config-file}}
 %  \item Hook \cs{Microtype@Hook} for font package authors
-%        [section~\ref{sub:hook}]
+%        \refsection{\ref{sub:hook}}
 %  \item New option `\opt{verbose}|=errors|' to turn all warnings into errors
 %^^A  \item Disable expansion inside \cmd\showhyphens
 %  \item Warning when running in draft mode
@@ -2780,28 +2800,28 @@
 %\Version{1.6}{2005/01/24}
 %  \item New option `\opt{factor}' to influence protrusion resp. expansion of
 %        all characters of a font or font set
-%        [sections~\ref{sub:options-protrusion}, \ref{sec:fine-tuning}]
+%        \refsection{\ref{sub:options-protrusion}, \ref{sec:fine-tuning}}
 %  \item When \pdftex\ is too old to expand fonts automatically, expansion
 %        has to be enabled explicitly, automatic expansion will be disabled
-%        [section~\ref{sub:options-microtype}]
+%        \refsection{\ref{sub:options-microtype}}
 %^^A  \item Protrusion settings of digits improved
 %  \item Use \etex\ extensions, if available
 %
 %\Version{1.5}{2004/12/15}
 %  \item When output mode is <DVI>, font expansion has to be enabled explicitly,
 %        automatic expansion will be disabled
-%        [section~\ref{sub:options-microtype}]
+%        \refsection{\ref{sub:options-microtype}}
 %  \item New option `\opt{selected}' to enable selected expansion,
 %        default: |false|
-%        [sections~\ref{sub:options-expansion}, \ref{sub:expansion}]
+%        \refsection{\ref{sub:options-expansion}, \ref{sub:expansion}}
 %  \item New default for expansion option `\opt{step}': 4 (min(\opt{stretch},\opt{shrink})/5)
-%        [section~\ref{sub:options-expansion}]
+%        \refsection{\ref{sub:options-expansion}}
 %  \item Protrusion settings for Bitstream Charter
 %
 %\VersionDate{1.4b}{2004/11/26}
 %^^A\Version{1.4b}{2004/11/26}
 %^^A  \item \cs{UseMicrotypeSet} requires the set to be declared
-%^^A        [section~\ref{sec:font-sets}]
+%^^A        \refsection{\ref{sec:font-sets}}
 %
 %\VersionDate{1.4a}{2004/11/17}
 %
@@ -2810,28 +2830,28 @@
 %^^A        (therefore, no risk of overlooking fonts anymore, and the package may
 %^^A        be loaded at any time)
 %^^A  \item \cs{microtypesetup} now sets the correct level of protrusion
-%^^A        [section~\ref{sub:options-cmd}]
+%^^A        \refsection{\ref{sub:options-cmd}}
 %  \item New option: `\opt{final}'
-%        [section~\ref{sub:options-misc}]
+%        \refsection{\ref{sub:options-misc}}
 %
 %\VersionDate{1.3}{2004/10/27}
 %
 %\Version{1.2}{2004/10/03}
 %  \item New font sets: `|allmath|' and `|basicmath|'
-%        [section~\ref{sec:font-sets}; table~\ref{tab:predefined-font-sets}]
+%        \refsection{\ref{sec:font-sets}, table~\ref{tab:predefined-font-sets}}
 %  \item Protrusion settings for Computer Modern Roman math symbols
 %  \item Protrusion settings for <TS1> encoding completed for Computer Modern
 %        Roman and Adobe Garamond
 %^^A  \item If an alias font name is specified, it will be used as an alternative,
-%^^A        not as a replacement [section~\ref{sub:config-file}]
+%^^A        not as a replacement \refsection{\ref{sub:config-file}}
 %
 %\Version{1.1}{2004/09/21}
-%  \item Protrusion settings for Adobe Minion, contributed by Harald Harders
+%  \item Protrusion settings for Adobe Minion
 %  \item New command: \cs{DeclareCharacterInheritance}
-%        [section~\ref{sub:inherit}]
+%        \refsection{\ref{sub:inherit}}
 %  \item Characters may also be specified as octal or hexadecimal numbers
-%        [section~\ref{sec:fine-tuning}]
-%^^A  \item Configuration file names in lowercase [section~\ref{sub:config-file}]
+%        \refsection{\ref{sec:fine-tuning}}
+%^^A  \item Configuration file names in lowercase [\ref{sub:config-file}]
 %
 %\Version{1.0}{2004/09/11}
 %  \item First <CTAN> release
@@ -2923,7 +2943,7 @@
 %^^A  \tagcode,\letterspacefont,\pdfcopyfont,\pdffontexpand,\pdfnoligatures,
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(app,prep)endkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
-%\DoNotIndex{\directlua,\luaescapestring,\luatexversion}                     ^^A luatex
+%\DoNotIndex{\directlua,\luaescapestring,\luatexluaescapestring,\luatexversion}^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
@@ -2962,6 +2982,7 @@
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\SOUL@,\soulregister}                                           ^^A soul
+%\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
@@ -3296,7 +3317,7 @@
 %\begin{enum}
 %\changes{v2.3}{2007/11/07}{\letterspace: support for \pkg{eplain}/\pkg{miniltx}}
 %  \item \pkg{miniltx}
-%  \item \pkg{eplain} ^^A tested with eplain v3.1, 2006/12/03; v3.2, 2007/11/26
+%  \item \pkg{eplain} ^^A tested with eplain v3.1, 2006/12/03; v3.2, 2007/11/26; v3.3, 2009/07/21
 %  \item \LaTeX
 %\end{enum}
 % For plain usage, we have to copy some commands from \file{latex.ltx}.
@@ -3689,7 +3710,7 @@
 \def\MT@requires@pdftex#1{%
   \ifnum\MT@pdftex@no<#1 \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi
 }
-%<debug>\MT@requires@pdftex6{\pdftracingfonts=1}\relax
+%<debug>\MT@requires@pdftex6{\pdftracingfonts=1 }\relax
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@requires@luatex}
@@ -3708,10 +3729,10 @@
 %\end{macro}
 %\begin{macro}{\MT@lua}
 % Communicate with |lua|.
-%
 % Beginning with \luatex\ 0.36, \cmd\directlua\ no longer requires a state
 % number.
 %\changes{v2.3d}{2009/03/25}{update for \luatex\ 0.36}
+% \cmd\luatexversion\ ought to have been enabled by the format.
 %    \begin{macrocode}
 \MT@requires@luatex{
 \ifnum\luatexversion<36
@@ -3906,6 +3927,18 @@
 %<*package>
 %    \end{macrocode}
 %\end{macro}
+% In \texlive\ 2009 all \luatex\ primitives are prefixed with `|luatex|'.
+%\changes{v2.3e}{2009/10/22}{compatibility fix for \texlive\ 2009 \luatex\
+%                            (reported by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
+%                             ^^A private mail, 2009/10/21
+%    \begin{macrocode}
+%<*lua>
+\MT@requires@luatex{
+  \MT@ifdefined@c@TF\luatexluaescapestring\relax
+    {\let\luatexluaescapestring\luaescapestring}
+}\relax
+%</lua>
+%    \end{macrocode}
 %\begin{macro}{\MT@ifint}
 % Test whether argument is an integer, using an old trick by Mr. Arseneau,
 %\changes{v1.9a}{2005/11/03}{use \cmd\pdfmatch\ if available}
@@ -3919,7 +3952,7 @@
   \MT@requires@luatex{
     \def\MT@ifint#1{%
       \csname \MT@lua{
-        if string.find("\luaescapestring{#1}","^-*[0-9]+ *$")
+        if string.find("\luatexluaescapestring{#1}","^-*[0-9]+ *$")
           then tex.write("@firstoftwo")
           else tex.write("@secondoftwo")
         end}%
@@ -3964,8 +3997,8 @@
   \MT@requires@luatex{
     \def\MT@ifdimen#1{%
       \csname \MT@lua{
-        if (string.find("\luaescapestring{#1}","^-*[0-9]+(\@percentchar a*) *$") or
-            string.find("\luaescapestring{#1}","^-*[0-9]*[.,][0-9]+(\@percentchar a*) *$"))
+        if (string.find("\luatexluaescapestring{#1}","^-*[0-9]+(\@percentchar a*) *$") or
+            string.find("\luatexluaescapestring{#1}","^-*[0-9]*[.,][0-9]+(\@percentchar a*) *$"))
           then tex.write("@firstoftwo")
           else tex.write("@secondoftwo")
         end}%
@@ -4021,7 +4054,7 @@
   \MT@requires@luatex{
     \def\MT@ifstreq#1#2{%
       \csname \MT@lua{
-        if "\luaescapestring{#1}" == "\luaescapestring{#2}"
+        if "\luatexluaescapestring{#1}" == "\luatexluaescapestring{#2}"
           then tex.write("@firstoftwo")
           else tex.write("@secondoftwo")
         end}%
@@ -4430,6 +4463,9 @@
 %\changes{v1.9a}{2005/11/21}{defer setup until the end of the preamble}
 %\changes{v1.9e}{2006/07/06}{empty \cs{MT@setup@} after use
 %                            (compatibility with the \pkg{combine} class)}
+%\changes{v2.3e}{2009/08/31}{make space-unaware
+%                            (requested by \contributor Marcin Borkowski <mbork\at atos.wmid.amu.edu.pl>)}
+%                               ^^A private mail, 2009/08/31
 % The setup is deferred until the end of the preamble. This has a couple of
 % advantages: \cs{microtypesetup} can be used to change options later on in the
 % preamble, and fonts don't have to be set up before \microtype.
@@ -4621,7 +4657,7 @@
 The `pdfcprot' package provides an interface to character protrusion.\MessageBreak
 So does the `\MT@MT' package. Using both packages at the same\MessageBreak
 time will almost certainly lead to undesired results. Have your choice!}%
-  }
+  }%
   \MT@with@package@T{ledmac}\MT@ledmac@setup
 %    \end{macrocode}
 % We can clean up \cs{MT@setupfont@hook} now.
@@ -4643,7 +4679,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         Should you receive warnings about unknown slot\MessageBreak
         numbers, try upgrading the `csquotes' package}%
     }%
-  }
+  }%
 %    \end{macrocode}
 % We disable \microtype's additions inside \pkg{hyperref}'s \cmd\pdfstringdef,
 % which redefines lots of commands.
@@ -4667,7 +4703,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \def\textls#1#{\pdfstringdefWarn\textls}%
     }%
 %<package>    \MT@if@true
-  }
+  }%
 %<plain>  }\relax
 %<*package>
   \MT@with@package@T{tex4ht}\MT@if@true
@@ -4702,7 +4738,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
       \let\lst@ProcessLetter\@empty
     }%
-  }
+  }%
 %    \end{macrocode}
 %\changes{v2.0}{2005/12/21}{(beta:3) compatibility with \pkg{soul}: register \cs{textls} and \cs{lsstyle}}
 % Of course, using both \pkg{soul}'s and \microtype's letterspacing mechanisms
@@ -4714,7 +4750,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{soul}{%
     \soulregister\lsstyle 0%
     \soulregister\textls  1%
-  }
+  }%
 %    \end{macrocode}
 %\changes{v2.3a}{2008/01/06}{fix test for \pkg{soul} under plain \TeX}
 % Under plain \TeX, \pkg{soul} doesn't register itself the \LaTeX\ way, hence
@@ -4724,7 +4760,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }{\ifx\SOUL@\@undefined\else
       \soulregister\lsstyle 0%
       \soulregister\textls  1%
-    \fi}
+    \fi}%
 %</plain>
 %<*package>
 %    \end{macrocode}
@@ -4752,7 +4788,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@orig@py@macron{#1}%
         \let\pickup@font\MT@pickupfont}%
     }%
-  }
+  }%
 %</package>
 }
 %<*package>
@@ -4763,12 +4799,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \expandafter\ifx\the\font\nullfont\normalfont\fi
 %    \end{macrocode}
 %
-%\subsection{Font Setup}\label{ssec:font-setup}
+%\subsection{Font setup}\label{ssec:font-setup}
 %
 %\begin{macro}{\MT@setupfont}
 % Setting up a font entails checking for each feature whether it should be
 % applied to the current font (\cs{MT@font}).
-% But first, We might have to disable stuff when used together with adventurous
+% But first, we might have to disable stuff when used together with adventurous
 % packages.
 %    \begin{macrocode}
 \def\MT@setupfont{\MT@setupfont@hook}
@@ -4853,9 +4889,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@copy@font}
 %\changes{v2.2}{2007/07/03}{optionally work on copies of fonts}
 %\begin{macro}{\MT@copy@font@}
-% The new \cmd\pdfcopyfont\ command allows to expand a font with different
-% parameters, or to use more than one set of protrusion factors for a given
-% font within one paragraph. It will be used when we find a context for
+% The new (1.40.4) \cmd\pdfcopyfont\ command allows to expand a font with
+% different parameters, or to use more than one set of protrusion factors for a
+% given font within one paragraph. It will be used when we find a context for
 % \cs{SetProtrusion} or \cs{SetExpansion} in the preamble, or when the package
 % has been loaded with the \opt{copyfonts} option.
 %    \begin{macrocode}
@@ -5043,8 +5079,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<debug>  \MT@ifdefined@n@TF
       {MT@#2list@#1@\@tempa}{%
 %    \end{macrocode}
-% Begin an \cmd\expandafter\ orgy to test whether the font attribute is in
-% the list.
+% Begin a (masqueraded) \cmd\expandafter\ orgy to test whether the font
+% attribute is in the list.
 %    \begin{macrocode}
     \expandafter\MT@exp@one@n\expandafter\MT@in@clist
       \csname MT@#1\expandafter\endcsname
@@ -5170,42 +5206,41 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Check whether and if, which list should be applied to the current font.
 %    \begin{macrocode}
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six
-    \MT@get@opt
-    \MT@reset@pr@codes
+    \MT@get@font@dimen@six{%
+      \MT@get@opt
+      \MT@reset@pr@codes
 %    \end{macrocode}
 % Get the name of the inheritance list and parse it.
 %    \begin{macrocode}
-    \MT@get@inh@list
+      \MT@get@inh@list
 %    \end{macrocode}
 % Set an input encoding?
 %    \begin{macrocode}
-    \MT@set@inputenc{c}%
+      \MT@set@inputenc{c}%
 %    \end{macrocode}
 % Load additional lists?
 %    \begin{macrocode}
-    \MT@load@list\MT@pr@c@name
-    \MT@set@listname
+      \MT@load@list\MT@pr@c@name
+      \MT@set@listname
 %    \end{macrocode}
 % Load the main list.
 %    \begin{macrocode}
-    \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
-    \expandafter\MT@set@codes\@tempc,\relax,%
+      \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
+      \expandafter\MT@set@codes\@tempc,\relax,}%
   }\MT@reset@pr@codes
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@gobble@settings}
-%    \begin{macrocode}
-\def\MT@gobble@settings#1\@tempc,\relax,{}
-%    \end{macrocode}
-%\end{macro}
 %\begin{macro}{\MT@get@font@dimen@six}
 %\changes{v1.8}{2005/05/03}{new macro: test whether \fontdim6 is defined}
+%\changes{v2.3e}{2009/08/31}{fix: gobbling settings with tracking failed
+%                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
+%                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
 %\begin{macro}{\MT@dimen@six}
-% If \fontdim6 is zero, character protrusion won't work, and we can
-% skip the settings (for example, the \pkg{dsfont} fonts don't specify this
-% dimension; this is probably a bug).
+% If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
+% won't work, and we can skip the settings (for example, the \pkg{dsfont} and
+% \pkg{fourier} fonts don't specify this dimension; this is probably a bug in
+% the fonts).
 %    \begin{macrocode}
 \def\MT@get@font@dimen@six{%
   \ifnum\fontdimen6\MT@font=\z@
@@ -5213,9 +5248,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       Font `\MT@@font' does not specify its\MessageBreak
       \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
       \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
-    \expandafter\MT@gobble@settings
+    \expandafter\@gobble
   \else
     \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
+    \expandafter\@firstofone
   \fi
 }
 %    \end{macrocode}
@@ -5615,21 +5651,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % we can test whether we really have to load the encoding file.
 %    \begin{macrocode}
 \MT@addto@setup{%
-  \@ifpackageloaded{inputenc}{
-    \@ifpackagelater{inputenc}{2006/02/22}{
+  \@ifpackageloaded{inputenc}{%
+    \@ifpackagelater{inputenc}{2006/02/22}{%
       \def\MT@set@inputenc@{%
         \MT@ifstreq\inputencodingname{\csname\@tempa\endcsname}\relax
           \MT@load@inputenc
-      }
-    }{
+      }%
+    }{%
       \let\MT@set@inputenc@\MT@load@inputenc
-    }
-  }{
+    }%
+  }{%
     \def\MT@set@inputenc@{%
       \MT@warning@nl{Key `inputenc' used in \MT@curr@list@name, but the `inputenc'
           \MessageBreak package isn't loaded. Ignoring input encoding}%
-    }
-  }
+    }%
+  }%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5938,15 +5974,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@set@sp@codes{%
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six
-    \MT@get@opt
-    \MT@reset@sp@codes
-    \MT@get@inh@list
-    \MT@set@inputenc{c}%
-    \MT@load@list\MT@sp@c@name
-    \MT@set@listname
-    \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
-    \expandafter\MT@set@codes\@tempc,\relax,%
+    \MT@get@font@dimen@six{%
+      \MT@get@opt
+      \MT@reset@sp@codes
+      \MT@get@inh@list
+      \MT@set@inputenc{c}%
+      \MT@load@list\MT@sp@c@name
+      \MT@set@listname
+      \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
+      \expandafter\MT@set@codes\@tempc,\relax,}%
   }\MT@reset@sp@codes
 }
 %    \end{macrocode}
@@ -6055,15 +6091,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@set@kn@codes{%
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six
-    \MT@get@opt
-    \MT@reset@kn@codes
-    \MT@get@inh@list
-    \MT@set@inputenc{c}%
-    \MT@load@list\MT@kn@c@name
-    \MT@set@listname
-    \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
-    \expandafter\MT@set@codes\@tempc,\relax,%
+    \MT@get@font@dimen@six{%
+      \MT@get@opt
+      \MT@reset@kn@codes
+      \MT@get@inh@list
+      \MT@set@inputenc{c}%
+      \MT@load@list\MT@kn@c@name
+      \MT@set@listname
+      \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
+      \expandafter\MT@set@codes\@tempc,\relax,}%
   }\MT@reset@kn@codes
 }
 %    \end{macrocode}
@@ -6186,7 +6222,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@set@tr@codes{%
 %<*package>
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
-  \MT@get@font@dimen@six
+  \MT@get@font@dimen@six{%
   \MT@if@list@exists
     \MT@get@tr@opt
     \relax
@@ -6303,7 +6339,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*package>
     \MT@outer@space=\csname MT@outer@space\expandafter\string\font@name\endcsname\relax
     \xdef\MT@set@curr@os{\MT@outer@space=\the\MT@outer@space\relax}%
-    \aftergroup\aftergroup\aftergroup\MT@set@curr@os
     \MT@tr@outer@l
 %</package>
 %    \end{macrocode}
@@ -6317,8 +6352,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@ls@outer@k
 %<*letterspace>
       \xdef\MT@set@curr@ok{\MT@outer@kern=\the\MT@outer@kern\relax}%
-      \aftergroup\aftergroup\aftergroup\MT@set@curr@ok
-      \aftergroup\aftergroup\aftergroup\MT@ls@outer@k
+      \aftergroup\aftergroup\aftergroup\MT@ls@aftergroup
 %</letterspace>
 %    \end{macrocode}
 % Otherwise, get the current outer kerning and adjust it, for left and right
@@ -6340,20 +6374,43 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % spacing (which will set kerning, if no space follows).
 %    \begin{macrocode}
     \xdef\MT@set@curr@ok{\MT@outer@kern=\the\MT@outer@kern\relax}%
-    \aftergroup\aftergroup\aftergroup\MT@set@curr@ok
-    \aftergroup\aftergroup\aftergroup\MT@tr@outer@r
+    \aftergroup\aftergroup\aftergroup\MT@ls@aftergroup
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
 %</package>
   \fi
+%<package>  }%
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@ls@aftergroup}
+% Stuff to be done after the letterspace group. The \letterspace\ package
+% only adjusts the  kerning.
+%    \begin{macrocode}
+%<letterspace>\def\MT@ls@aftergroup{\MT@set@curr@ok\MT@ls@outer@k}
+%    \end{macrocode}
+%\changes{v2.3e}{2009/11/02}{compatibility with \pkg{tikz} (first reported by
+%                           \contributor Christian Stark <cstark\at gmx.de>)}       ^^A MID: <7d81lgF2ad3ckU1@mid.dfncis.de>, 2009/07/28
+%^^A                  Also: \contributor Karl Karlsson <karl-karlsson\at yandex.ru> ^^A privat mail, 2009/10/29
+%^^A                        \contributor hscm <henkmetselaar\at gmail.com>          ^^A MID: <6a24e972-b1a7-4172-a5a0-d2707e016301@12g2000pri.googlegroups.com>, 2009/11/02
+% \microtype\ also adjusts spacing.
+% If \cmd\tikz@expandcount\ is greater than zero, we're inside or at the end of
+% a \pkg{tikz} node, where we don't want to do anything, lest we disturb
+% \pkg{tikz}.
+%    \begin{macrocode}
+%<*package>
+\MT@addto@setup{%
+  \@ifpackageloaded{tikz}
+    {\def\MT@ls@aftergroup{%
+       \ifnum\tikz@expandcount>\z@ \else
+         \MT@set@curr@os\MT@set@curr@ok\expandafter\MT@tr@outer@r\fi}}
+    {\def\MT@ls@aftergroup{\MT@set@curr@os\MT@set@curr@ok\MT@tr@outer@r}}}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@get@tr@opt}
 % Various settings (only for the \microtype\ version).
 %    \begin{macrocode}
-%<*package>
 \def\MT@get@tr@opt{%
   \MT@set@listname
   \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name}{%
@@ -6674,6 +6731,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \futurelet\MT@tr@outer@next\MT@tr@outer@r@
 }
 \def\MT@tr@outer@r@{%
+  \def\MT@temp*{}%
 %    \end{macrocode}
 % Don't adjust in math mode.
 %\changes{v2.3d}{2008/11/16}{fix: don't adjust in math mode
@@ -6682,9 +6740,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % There was a tricky bug when \cs{textls} was the last command in a
 % \cmd\mathchoice\ group.
 %    \begin{macrocode}
-  \ifmmode
-    \def\MT@temp*{}%
-  \else
+  \ifmmode \else
 %    \end{macrocode}
 % A similar bug occurred when adjustment would happen inside a discretionary
 % group, which we prevent here.
@@ -6696,17 +6752,20 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \ifnum\currentgrouptype=10 \else
       \def\MT@temp*##1{\ifhmode\hskip\MT@outer@space
-%<debug>\MT@dinfo2{]]] adjusting post spaces (1): \the\MT@outer@space}%
+%<debug>\MT@dinfo2{]]] adjusting post space (1): \the\MT@outer@space}%
         \fi}%
       \ifcat\egroup\noexpand\MT@tr@outer@next
 %    \end{macrocode}
 %\changes{v2.3c}{2008/09/18}{additional test for horizontal mode
 %                            (reported by \contributor Sveinung Heggen <sveinung.heggen\at orkla.no>)}
 %                                                                       ^^A private mail, 2008/09/18
+%\todo{fix problem with tikz}
+%^^A \path[->] (N0) edge node {\textls{abc}} (N1);
+%^^A    reported by \contributor Christian Stark <cstark\at gmx.de>
+%^^A                  ^^A 2009/07/28, MID: <7d81lgF2ad3ckU1@mid.dfncis.de>
 %    \begin{macrocode}
         \ifhmode\unkern\fi\egroup
-        \MT@set@curr@ok
-        \MT@set@curr@os
+        \MT@set@curr@ok \MT@set@curr@os
         \def\MT@temp*{\afterassignment\MT@tr@outer@r\let\MT@temp=}%
       \else
 %    \end{macrocode}
@@ -6716,8 +6775,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.3d}{2009/02/25}{don't use \cmd\x\
 %                            (reported by \contributor Ulrich Dirr <ud\at mucschach.de>)}
 %                                 ^^A private mail, 2009/02/22
+%\changes{v2.3e}{2009/05/29}{fix: set current kerning and spacing again
+%                            (found by \contributor Lars R\"onnb\"ack <lars.ronnback\at affecto.com>)}
+%                                 ^^A <http://code.google.com/p/tufte-latex/issues/detail?id=25>
 %    \begin{macrocode}
         \ifx\maybe@ic\MT@tr@outer@next
+          \MT@set@curr@ok \MT@set@curr@os
           \def\MT@temp*{\afterassignment\MT@tr@outer@icr\let\MT@temp=}%
         \else
 %    \end{macrocode}
@@ -6745,7 +6808,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % If there's no outer spacing, there may be outer kerning.
 %    \begin{macrocode}
-                      \def\MT@temp*{\ifdim\MT@outer@kern=\z@\else\MT@ls@outer@k\fi}%
+                      \def\MT@temp*{\ifdim\MT@outer@kern=\z@\else\MT@ls@outer@k
+%<debug>\MT@dinfo2{--- adjusting post kern: \the\MT@outer@kern}%
+                        \fi}%
                       \let\MT@tr@outer@next\relax
   \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
   \MT@temp*%
@@ -7875,25 +7940,25 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\todo{fix tracking with \pkg{CJK}, if worth the trouble}^^A
 % Like us, \pkg{CJK} redefines \cmd\pickup@font.
 %    \begin{macrocode}
-  \@ifpackageloaded{CJK}{
-    \@ifpackagelater{CJK}{2006/10/17} % 4.7.0
-      {\def\MT@orig@pickupfont{\CJK@ifundefined\CJK@plane}}
-      {\def\MT@orig@pickupfont{\@ifundefined{CJK@plane}}}
+  \@ifpackageloaded{CJK}{%
+    \@ifpackagelater{CJK}{2006/10/17}% 4.7.0
+      {\def\MT@orig@pickupfont{\CJK@ifundefined\CJK@plane}}%
+      {\def\MT@orig@pickupfont{\@ifundefined{CJK@plane}}}%
     \g@addto@macro\MT@orig@pickupfont
-      {{\expandafter\ifx\font@name\relax\define@newfont\fi}}
+      {{\expandafter\ifx\font@name\relax\define@newfont\fi}}%
 %    \end{macrocode}
 % \pkg{CJKutf8} redefines \cmd\pickup@font\ once more (recent versions, in
 % <PDF> mode, as determined by \pkg{ifpdf}, which \pkg{CJKutf8} loads).
 %    \begin{macrocode}
-    \@ifpackageloaded{CJKutf8}
-      {\@ifpackagelater{CJKutf8}{2008/05/22} % 4.8.0
-        {\ifpdf\expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}
-        {\@firstoftwo}}
-      {\@firstoftwo}
+    \@ifpackageloaded{CJKutf8}%
+      {\@ifpackagelater{CJKutf8}{2008/05/22}% 4.8.0
+        {\ifpdf\expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}%
+        {\@firstoftwo}}%
+      {\@firstoftwo}%
     {\g@addto@macro\MT@orig@pickupfont{%
       {\expandafter\ifx\csname\curr@fontshape/\f@size/\CJK@plane\endcsname\relax
          \define@newfont\else\xdef\font@name{%
-           \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}
+           \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}%
     {\g@addto@macro\MT@orig@pickupfont{%
       {\expandafter\ifx\csname \curr@fontshape/\f@size/\CJK@plane\endcsname\relax
          \define@newfont\def\CJK@temp{v}%
@@ -7902,10 +7967,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
            \else\csname CJK@cmap@\f@family\CJK@plane\endcsname\fi
          \else \CJK@addcmap\CJK@plane \fi
        \else\xdef\font@name{%
-         \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}
-  }{
-    \def\MT@orig@pickupfont{\expandafter\ifx\font@name\relax\define@newfont\fi}
-  }
+         \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}%
+  }{%
+    \def\MT@orig@pickupfont{\expandafter\ifx\font@name\relax\define@newfont\fi}%
+  }%
 %    \end{macrocode}
 % Check whether \cmd\pickup@font\ is defined as expected.
 % The warning issued by \cmd{\CheckCommand*} would be a bit too generic.
@@ -7919,7 +7984,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MessageBreak applied to the document.%
       \MessageBreak (Hint: Turn on `verbose' mode)%
 %</package>
-    }
+    }%
   \fi
 %    \end{macrocode}
 %\end{macro}
@@ -7927,13 +7992,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Then we append our stuff. Everything is done inside a group.
 %\changes{v2.2}{2007/04/15}{\letterspace: setup inside group}
 %    \begin{macrocode}
-  \g@addto@macro\pickup@font{\begingroup}
+  \g@addto@macro\pickup@font{\begingroup}%
 %    \end{macrocode}
 % If the \pkg{trace} package is loaded, we turn off tracing of \microtype's
 % setup, which is extremely noisy.
 %\changes{v1.9e}{2006/05/25}{no tracing with \pkg{trace} package}
 %    \begin{macrocode}
-  \MT@with@package@T{trace}{\g@addto@macro\pickup@font{\conditionally@traceoff}}
+  \MT@with@package@T{trace}{\g@addto@macro\pickup@font{\conditionally@traceoff}}%
   \g@addto@macro\pickup@font{%
       \escapechar\m@ne
 %<*package>
@@ -7960,7 +8025,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</package>
 %<letterspace>      \MT@tracking
     \endgroup
-  }
+  }%
 %<*package>
 %    \end{macrocode}
 %\end{macro}
@@ -7983,7 +8048,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \g@addto@macro\do@subst@correction
     {\edef\MT@font{\csname\curr@fontshape/\f@size\endcsname}%
-     \MT@glet@nc{MT@subst@\expandafter\string\font@name}\MT@font}
+     \MT@glet@nc{MT@subst@\expandafter\string\font@name}\MT@font}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\add@accent}
@@ -8002,7 +8067,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\pickup@font\MT@orig@pickupfont
     \MT@orig@add@accent{#1}{#2}%
     \let\pickup@font\MT@pickupfont
-  }
+  }%
 %</package>
 }
 %<plain>}\relax
@@ -9147,7 +9212,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@define@code@key@size     {cfg}
 \MT@define@code@key@font     {cfg}
 %    \end{macrocode}
-%\todo{use \pkg{xkeyval} instead of \pkg{keyval}? or \pkg{kvoptions}?}
 %\begin{macro}{\MT@define@opt@key}
 %    \begin{macrocode}
 \def\MT@define@opt@key#1#2{%
@@ -9219,7 +9283,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
             {Either move the settings inside the preamble,\MessageBreak
              or load the package with the `copyfonts' option.}%
         \fi
-      }
+      }%
     }
 %    \end{macrocode}
 % Protrusion contexts \emph{may} also work without copying the font, so we
@@ -9242,7 +9306,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
           \MT@warning@nl{If protrusion contexts don't work as expected,
             \MessageBreak load the package with the `copyfonts' option}%
         \fi
-      }
+      }%
     }
 %<lua>  }
 }{
@@ -10426,7 +10490,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Now we can take the appropriate actions. We also tell the log file which
 % options the user has chosen (in case it's interested).
 %    \begin{macrocode}
-\MT@addto@setup{
+\MT@addto@setup{%
 \ifMT@draft
 %    \end{macrocode}
 % We disable most of what we've just defined in the \arabic{CodelineNo} lines
@@ -10435,12 +10499,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \MT@warning@nl{`draft' option active.\MessageBreak
                  Disabling all micro-typographic extensions.\MessageBreak
-                 This might lead to different line and page breaks}
+                 This might lead to different line and page breaks}%
   \let\MT@setupfont\relax
-  \renewcommand*\LoadMicrotypeFile[1]{}
-  \renewcommand*\microtypesetup[1]{}
-  \renewcommand*\microtypecontext[1]{}
-  \renewcommand*\lsstyle{}
+  \renewcommand*\LoadMicrotypeFile[1]{}%
+  \renewcommand*\microtypesetup[1]{}%
+  \renewcommand*\microtypecontext[1]{}%
+  \renewcommand*\lsstyle{}%
 \else
 %    \end{macrocode}
 % For <DVI> output, the user must have explicitly passed the \opt{expansion}
@@ -10479,16 +10543,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Protrusion.
 %    \begin{macrocode}
   \ifMT@protrusion
-    \edef\MT@active@features{\MT@active@features,pr}
+    \edef\MT@active@features{\MT@active@features,pr}%
     \pdfprotrudechars\MT@pr@level
     \MT@info@nl{Character protrusion enabled (level \number\MT@pr@level)%
       \ifnum\MT@pr@factor=\MT@factor@default \else,\MessageBreak
         factor: \number\MT@pr@factor\fi
-      \ifx\MT@pr@unit\@empty \else,\MessageBreak unit: \MT@pr@unit\fi}
-    \MT@check@active@set{pr}
+      \ifx\MT@pr@unit\@empty \else,\MessageBreak unit: \MT@pr@unit\fi}%
+    \MT@check@active@set{pr}%
   \else
     \let\MT@protrusion\relax
-    \MT@info@nl{No character protrusion}
+    \MT@info@nl{No character protrusion}%
   \fi
 %    \end{macrocode}
 % Expansion.
@@ -10519,7 +10583,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % rounded off, minimum value 1.
 %\changes{v1.9}{2005/07/08}{warning if user requested zero \opt{step}}
 %    \begin{macrocode}
-    \MT@requires@pdftex6{\def\MT@step{1 }}{
+    \MT@requires@pdftex6{\def\MT@step{1 }}{%
       \ifnum\MT@step=\m@ne
         \ifnum\MT@stretch>\MT@shrink
           \ifnum\MT@shrink=\z@
@@ -10543,7 +10607,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \fi
       \fi
       \ifnum\@tempcnta=\z@ \@tempcnta=\@ne \fi
-      \edef\MT@step{\number\@tempcnta\space}}
+      \edef\MT@step{\number\@tempcnta\space}}%
 %    \end{macrocode}
 %\begin{macro}{\MT@auto}
 % Automatic expansion of the font? This new feature of \pdftex\ 1.20 makes the
@@ -10566,11 +10630,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
               However, you are creating a DVI file}
              {If you have created expanded fonts instances, remove `auto' from%
               \MessageBreak the package options. Otherwise, you have to switch
-              off expansion\MessageBreak completely.}
+              off expansion\MessageBreak completely.}%
           \fi
           \MT@autofalse
         \else
-          \def\MT@auto{autoexpand}
+          \def\MT@auto{autoexpand}%
         \fi
 %    \end{macrocode}
 % Also, if \pdftex\ is too old.
@@ -10584,17 +10648,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
           automatic font expansion}%
          {If you have created expanded fonts instances, remove `auto' from\MessageBreak
           the package options. Otherwise, you have to switch off expansion\MessageBreak
-          completely, or upgrade pdftex to version 1.20 or newer.}
+          completely, or upgrade pdftex to version 1.20 or newer.}%
         \MT@autofalse
-        \def\MT@auto{1000 }
-      }
+        \def\MT@auto{1000 }%
+      }%
     \else
 %    \end{macrocode}
 % No automatic expansion.
 %    \begin{macrocode}
-      \MT@requires@pdftex4\relax{
-        \def\MT@auto{1000 }
-      }
+      \MT@requires@pdftex4\relax{%
+        \def\MT@auto{1000 }%
+      }%
     \fi
 %    \end{macrocode}
 % Choose the appropriate macro for selected expansion.
@@ -10612,7 +10676,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \ifnum\MT@shrink=\z@
         \MT@warning@nl{%
           Both the stretch and shrink limit are set to zero.\MessageBreak
-          Disabling font expansion}
+          Disabling font expansion}%
         \MT@expansionfalse
       \fi
     \fi
@@ -10623,7 +10687,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@info@nl{\ifMT@auto A\else Non-a\fi utomatic font expansion enabled
                 (level \number\MT@ex@level),\MessageBreak
                 stretch: \number\MT@stretch, shrink: \number\MT@shrink,
-                step: \number\MT@step, \ifMT@selected\else non-\fi selected}
+                step: \number\MT@step, \ifMT@selected\else non-\fi selected}%
 %    \end{macrocode}
 %\changes{v2.2}{2007/01/28}{warning if \opt{stretch} or \opt{shrink} aren't multiples of \opt{step}}
 %\begin{macro}{\MT@check@step}
@@ -10636,12 +10700,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \ifnum\@tempcnta=\csname MT@#1\endcsname\else
         \MT@warning@nl{The #1 amount is not a multiple of step.\MessageBreak
                        The effective maximum #1 is \the\@tempcnta\space
-                       (step \number\MT@step)}
+                       (step \number\MT@step)}%
       \fi
-    }
-    \MT@check@step{stretch}
-    \MT@check@step{shrink}
-    \MT@check@active@set{ex}
+    }%
+    \MT@check@step{stretch}%
+    \MT@check@step{shrink}%
+    \MT@check@active@set{ex}%
 %    \end{macrocode}
 %\end{macro}
 %\changes{v1.7}{2005/03/02}{modify \cmd\showhyphens}
@@ -10650,7 +10714,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \CheckCommand*\showhyphens[1]{\setbox0\vbox{%
       \color@begingroup\everypar{}\parfillskip\z@skip
       \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
-      \hbadness\z@\showboxdepth\z@\ #1\color@endgroup}}
+      \hbadness\z@\showboxdepth\z@\ #1\color@endgroup}}%
 %    \end{macrocode}
 %\begin{macro}{\showhyphens}
 % I wonder why it's defined globally (in \file{ltfssbas.dtx})?
@@ -10658,23 +10722,25 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \gdef\showhyphens#1{\setbox0\vbox{%
       \color@begingroup\pdfadjustspacing\z@\everypar{}\parfillskip\z@skip
       \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
-      \hbadness\z@\showboxdepth\z@\ #1\color@endgroup}}
+      \hbadness\z@\showboxdepth\z@\ #1\color@endgroup}}%
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
   \else
     \let\MT@expansion\relax
-    \MT@info@nl{No font expansion}
+    \MT@info@nl{No font expansion}%
   \fi
 }
 \MT@requires@pdftex6{
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@lua}
+% Switch off the features that don't work with \luatex.
 %    \begin{macrocode}
 %<*lua>
   \def\MT@warn@lua#1{%
     \MT@error{The `#1' feature doesn't currently work\MessageBreak with luatex}
              {Use pdftex instead.}%
+    \csname MT@#1false\endcsname
     \MT@let@nc{MT@#1}\relax
   }
 %</lua>
@@ -10688,42 +10754,42 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Tracking, spacing and kerning.
 %    \begin{macrocode}
     \ifMT@tracking
-%<lua>      \MT@requires@luatex{\MT@warn@lua{tracking}}{
-        \edef\MT@active@features{\MT@active@features,tr}
-        \MT@info@nl{Tracking enabled}
-        \MT@check@active@set{tr}
+%<lua>      \MT@requires@luatex{\MT@warn@lua{tracking}}{%
+        \edef\MT@active@features{\MT@active@features,tr}%
+        \MT@info@nl{Tracking enabled}%
+        \MT@check@active@set{tr}%
 %    \end{macrocode}
 % Enable protrusion for compensation at the line edges.
 %\changes{v2.3}{2007/07/27}{enable protrusion when tracking is enabled}
 %    \begin{macrocode}
         \ifMT@protrusion\else\pdfprotrudechars\@ne\fi
-%<lua>      }
+%<lua>      }%
     \else
       \let\MT@tracking\relax
-      \MT@info@nl{No tracking}
+      \MT@info@nl{No tracking}%
     \fi
     \ifMT@spacing
-%<lua>      \MT@requires@luatex{\MT@warn@lua{spacing}}{
-        \edef\MT@active@features{\MT@active@features,sp}
+%<lua>      \MT@requires@luatex{\MT@warn@lua{spacing}}{%
+        \edef\MT@active@features{\MT@active@features,sp}%
         \pdfadjustinterwordglue\@ne
-        \MT@info@nl{Adjustment of interword spacing enabled}
-        \MT@check@active@set{sp}
-%<lua>      }
+        \MT@info@nl{Adjustment of interword spacing enabled}%
+        \MT@check@active@set{sp}%
+%<lua>      }%
     \else
       \let\MT@spacing\relax
-      \MT@info@nl{No adjustment of interword spacing}
+      \MT@info@nl{No adjustment of interword spacing}%
     \fi
     \ifMT@kerning
-%<lua>      \MT@requires@luatex{\MT@warn@lua{kerning}}{
-        \edef\MT@active@features{\MT@active@features,kn}
+%<lua>      \MT@requires@luatex{\MT@warn@lua{kerning}}{%
+        \edef\MT@active@features{\MT@active@features,kn}%
         \pdfprependkern\@ne
         \pdfappendkern\@ne
-        \MT@info@nl{Adjustment of character kerning enabled}
-        \MT@check@active@set{kn}
-%<lua>      }
+        \MT@info@nl{Adjustment of character kerning enabled}%
+        \MT@check@active@set{kn}%
+%<lua>      }%
     \else
       \let\MT@kerning\relax
-      \MT@info@nl{No adjustment of character kerning}
+      \MT@info@nl{No adjustment of character kerning}%
     \fi
 %</package>
 %    \end{macrocode}
@@ -10741,12 +10807,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
             processing program (dvips, dvipdfm(x), ...) is\MessageBreak
             able to create the virtual fonts on the fly}%
         \MT@glet\MT@warn@tracking@DVI\relax
-      }
+      }%
     \else
       \def\MT@warn@tracking@DVI{%
         \ifnum\pdfprotrudechars<\@ne \global\pdfprotrudechars\@ne \fi
         \MT@glet\MT@warn@tracking@DVI\relax
-      }
+      }%
     \fi
 %    \end{macrocode}
 %\end{macro}
@@ -10756,7 +10822,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \else
       \MT@ls@too@large\MT@letterspace
     \fi
-  }
+  }%
 %    \end{macrocode}
 % If \pdftex\ is too old, we disable tracking, spacing and kerning,
 %\changes{v2.3a}{2008/02/16}{error messages if \pdftex\ is too old for extensions}
@@ -10769,19 +10835,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@error{Tracking only works with pdftex version 1.40\MessageBreak
         or newer. Switching it off}{Upgrade pdftex.}%
     \else
-      \MT@info@nl{No tracking (pdftex too old)}
+      \MT@info@nl{No tracking (pdftex too old)}%
     \fi
     \ifMT@spacing
       \MT@error{Adjustment of interword spacing only works with\MessageBreak
         pdftex version 1.40 or newer. Switching it off}{Upgrade pdftex.}%
     \else
-      \MT@info@nl{No adjustment of interword spacing (pdftex too old)}
+      \MT@info@nl{No adjustment of interword spacing (pdftex too old)}%
     \fi
     \ifMT@kerning
       \MT@error{Character kerning only works with\MessageBreak
         pdftex version 1.40 or newer. Switching it off}{Upgrade pdftex.}%
     \else
-      \MT@info@nl{No adjustment of character kerning (pdftex too old)}
+      \MT@info@nl{No adjustment of character kerning (pdftex too old)}%
     \fi
   }
 }
@@ -10803,7 +10869,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \MT@addto@setup{%
   \ifx\MT@active@features\@empty \else
-    \edef\MT@active@features{\expandafter\@gobble\MT@active@features}
+    \edef\MT@active@features{\expandafter\@gobble\MT@active@features}%
   \fi
   \MT@documenttrue
 }
@@ -10843,17 +10909,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@addto@setup{%
   \ifMT@babel
     \@ifpackageloaded{babel}{%
-      \MT@info@nl{Redefining babel's language switching commands}
+      \MT@info@nl{Redefining babel's language switching commands}%
       \let\MT@orig@select@language\select@language
       \def\select@language#1{%
         \MT@orig@select@language{#1}%
         \MT@set@babel@context{#1}%
-      }
+      }%
       \let\MT@orig@foreign@language\foreign@language
       \def\foreign@language#1{%
         \MT@orig@foreign@language{#1}%
         \MT@set@babel@context{#1}%
-      }
+      }%
       \ifMT@kerning
 %    \end{macrocode}
 %\todo{make switching off of babel's shorthands configurable}
@@ -10885,8 +10951,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@set@babel@context\languagename
     }{%
       \MT@warning@nl{You did not load the babel package.\MessageBreak
-        The `babel' option won't have any effect}
-    }
+        The `babel' option won't have any effect}%
+    }%
   \fi
 }
 %    \end{macrocode}
@@ -10985,25 +11051,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.9}{2005/08/17}{add <OT4> encoding to text sets}
 %\changes{v1.9}{2005/08/17}{add <T5> encoding to text sets}
 %\changes{v1.9d}{2006/04/20}{add <QX> encoding to text sets}
+%\changes{v2.3e}{2009/10/28}{add <T2A> encoding}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{allmath}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1,OML,OMS,U} }
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,OML,OMS,U} }
 
 \DeclareMicrotypeSet{alltext}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1} }
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1} }
 
 %    \end{macrocode}
 %\changes{v1.9d}{2006/02/22}{\texttt{md*} instead of \texttt{m} series in basic sets}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{basicmath}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,OML,OMS},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,OML,OMS},
      family   = {rm*,sf*},
      series   = {md*},
      size     = {normalsize,footnotesize,small,large}
    }
 
 \DeclareMicrotypeSet{basictext}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5},
      family   = {rm*,sf*},
      series   = {md*},
      size     = {normalsize,footnotesize,small,large}
@@ -11011,22 +11078,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 
 %    \end{macrocode}
 %\changes{v2.0}{2006/12/28}{add \texttt{smallcaps} set}
+%\changes{v2.3e}{2009/06/01}{\texttt{sc*} instead of \texttt{sc} in \texttt{smallcaps} set}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{smallcaps}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1},
-     shape    = {sc}
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1},
+     shape    = {sc*}
    }
 
 %    \end{macrocode}
 %\changes{v2.0}{2006/12/21}{add \texttt{footnotesize} and \texttt{scriptsize} sets}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{footnotesize}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1},
      size     = {-small}
    }
 
 \DeclareMicrotypeSet{scriptsize}
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1},
      size     = {-footnotesize}
    }
 
@@ -11349,7 +11417,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>)}
 %                                                     ^^A private mail, 2006/04/19
 % The Central European <QX> encoding.\footnote{
-%   Thanks to \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>.}
+%   Contributed by \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>.}
 % Ligatures: |009|~(`fk'), |012|~(`fi'), |013|~(`fl'), |014|~(`ffi'),
 % |015|~(`ffl'), \AE, \ae, \OE, \oe.
 %    \begin{macrocode}
@@ -11488,7 +11556,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \SetTracking
   [ name         = default,
     no ligatures = {f} ]
-  { encoding     = {OT1,T1,LY1,OT4,QX} }
+  { encoding     = {OT1,T1,T2A,LY1,OT4,QX} }
   { }
 
 %    \end{macrocode}
@@ -11532,6 +11600,74 @@ time will almost certainly lead to undesired results. Have your choice!}%
      6 = 700,
      8 = 700,
      9 = 700
+   }
+
+%    \end{macrocode}
+% Settings for Cyrillic <T2A> encoding.\footnote{Contributed by
+%                                           \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
+%\changes{v2.3e}{2009/10/28}{settings for <T2A> encoding
+%                            (contributed by \contributor Karl Karlsson <karl-karlsson\at yandex.ru>)}
+%    \begin{macrocode}
+\SetExpansion
+   [ name     = T2A ]
+   { encoding = T2A }
+   {
+     A = 500,     a = 700,
+     B = 700,     b = 700,
+     C = 700,     c = 700,
+     D = 500,     d = 700,
+     E = 700,     e = 700,
+     F = 700,
+     G = 500,     g = 700,
+     H = 700,     h = 700,
+     K = 700,     k = 700,
+     M = 700,     m = 700,
+     N = 700,     n = 700,
+     O = 500,     o = 700,
+     P = 700,     p = 700,
+     Q = 500,     q = 700,
+     R = 700,
+     S = 700,     s = 700,
+     U = 700,     u = 700,
+     W = 700,     w = 700,
+     Z = 700,     z = 700,
+     2 = 700,
+     3 = 700,
+     6 = 700,
+     8 = 700,
+     9 = 700,
+     \CYRA = 500,     \cyra = 700,
+     \CYRB = 700,     \cyrb = 700,
+     \CYRV = 700,     \cyrv = 700,
+     \CYRG = 700,     \cyrg = 700,
+     \CYRD = 700,     \cyrd = 700,
+     \CYRE = 700,     \cyre = 700,
+     \CYRZH = 700,    \cyrzh = 700,
+     \CYRZ = 700,     \cyrz = 700,
+     \CYRI = 700,     \cyri = 700,
+     \CYRISHRT = 700, \cyrishrt = 700,
+     \CYRK = 700,     \cyrk = 700,
+     \CYRL = 700,     \cyrl = 700,
+     \CYRM = 700,     \cyrm = 700,
+     \CYRN = 700,     \cyrn = 700,
+     \CYRO = 500,     \cyro = 700,
+     \CYRP = 700,     \cyrp = 700,
+     \CYRR = 700,     \cyrr = 700,
+     \CYRS = 700,     \cyrs = 700,
+     \CYRT = 700,     \cyrt = 700,
+     \CYRU = 700,     \cyru = 700,
+     \CYRF = 700,     \cyrf = 700,
+     \CYRH = 700,     \cyrh = 700,
+     \CYRC = 700,     \cyrc = 700,
+     \CYRCH = 700,    \cyrch = 700,
+     \CYRSH = 700,    \cyrsh = 700,
+     \CYRSHCH = 700,  \cyrshch = 700,
+     \CYRHRDSN = 700, \cyrhrdsn = 700,
+     \CYRERY = 700,   \cyrery = 700,
+     \CYRSFTSN = 700, \cyrsftsn = 700,
+     \CYREREV = 700,  \cyrerev = 700,
+     \CYRYU = 700,    \cyryu = 700,
+     \CYRYA = 700,    \cyrya = 700
    }
 
 %    \end{macrocode}
@@ -11621,7 +11757,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   }
 %\end{verbatim}
 %
-%\subsubsection{Default}
+%\subsubsection{Normal}
 %
 % The default settings always use the most moderate value.
 %
@@ -11650,7 +11786,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<pad>   [ name     = pad-default ]
 %    \end{macrocode}
-%  \item Minion\footnote{Contributed by Harald Harders (\mailto{h.harders@tu-bs.de}).}
+%  \item Minion\footnote{Contributed by \contributor Harald Harders <h.harders\at tu-bs.de>.}
 %        (|pmnx|, |pmnj|)
 %\changes{v1.1}{2004/09/14}{settings for Adobe Minion (contributed by
 %                           \contributor Harald Harders <h.harders\at tu-bs.de>)}
@@ -11671,8 +11807,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{itemize}
 %    \begin{macrocode}
 %<ugm>   [ name     = ugm-default ]
-%<m-t>   { encoding = OT1     }
-%<cmr>   { }
+%<m-t|cmr>   { }
 %<bch|blg|pad|pmn|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch }
@@ -11685,7 +11820,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
    {
 %<m-t|bch|blg|cmr|pad|pmn|ppl|ptm>     A = {50,50},
 %<ugm>     A = {50,100},
-%<m-t|pad|ptm>   \AE = {50,  },
+%<pad|ptm>   \AE = {50,  },
 %<ugm>   \AE = {150,50},
 %<ugm>     B = {  ,50},
 %<bch|pad|pmn|ugm>     C = {50,  },
@@ -11877,14 +12012,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Greek uppercase letters are in <OT1> encoding only.
 %\changes{v1.9}{2005/07/10}{fix: remove uppercase Greek letters from <T1> encoded <CMR>}
 %    \begin{macrocode}
-%<*cmr>
+%<*m-t|cmr>
 \SetProtrusion
-   [ name     = cmr-OT1,
-     load     = cmr-default ]
-   { encoding = {OT1,OT4},
-     family   = cmr  }
+%<m-t>   [ name     = OT1-default,
+%<cmr>   [ name     = cmr-OT1,
+%<m-t>     load     = default ]
+%<cmr>     load     = cmr-default ]
+%<m-t>   { encoding = OT1 }
+%<cmr>   { encoding = {OT1,OT4},
+%<cmr>     family   = cmr  }
    {
-     \AE = { 50,   },
+     \AE = {50,   },
+%<*cmr>
      "00 = {   ,150}, % \Gamma
      "01 = {100,100}, % \Delta
      "02 = { 50, 50}, % \Theta
@@ -11901,9 +12040,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    "0A = {   ,   }, % \Omega
 %\fi
 %    \begin{macrocode}
+%</cmr>
    }
 
-%</cmr>
+%</m-t|cmr>
 %    \end{macrocode}
 % <T1> and <LY1> encodings contain some more characters. The default list
 % will be loaded first.
@@ -11940,7 +12080,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ptm>     family   = {ptm,ptmx,ptmj} }
 %<ugm>     family   = ugm }
    {
-%<cmr>     \AE = {50,  },
+%<m-t|cmr>     \AE = {50,  },
 %<bch>     \OE = {50,  },
 %<pmn>     \TH = {  ,50},
 %<blg>     \v L = {   ,250},
@@ -12018,7 +12158,48 @@ time will almost certainly lead to undesired results. Have your choice!}%
 
 %</cmr>
 %    \end{macrocode}
-% Settings for the <QX> encoding (generic and Times).
+% Settings for the <T2A> encoding (generic and Computer Modern Roman).\footnote{Contributed by
+%                            \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
+%\changes{v2.3e}{2009/10/28}{settings for <T2A> encoding (contributed by
+%                            \contributor Karl Karlsson <karl-karlsson\at yandex.ru>)}
+%                                                       ^^A private mail, 2009/10/21
+%    \begin{macrocode}
+%<*m-t|cmr>
+\SetProtrusion
+%<m-t>   [ name     = T2A-default,
+%<cmr>   [ name     = cmr-T2A,
+%<m-t>     load     = default     ]
+%<cmr>     load     = cmr-default ]
+   { encoding = T2A,
+%<m-t>   }
+%<cmr>     family   = cmr }
+   {
+     \CYRA = {50,50},
+     \CYRG = {  ,50},
+     \CYRK = {  ,50},
+     \CYRT = {50,50},
+     \CYRH = {50,50},
+     \CYRU = {50,50},
+     \cyrk = {  ,50},
+     \cyrg = {  ,50},
+     \cyrh = {50,50},
+%<m-t>     \cyru = {50,50},
+%<cmr>     \cyru = {50,70},
+%<m-t>        _  = {100,100},
+%<cmr>        _  = {200,200},
+%<m-t>     \textbackslash    = {100,200},   \quotedblbase      = {400,400},
+%<cmr>     \textbackslash    = {200,300},   \quotedblbase     = {400,400},
+%<cmr>     \textquotedbl     = {300,300},   \textquotedblleft  = {200,600},
+%<m-t>     \guillemotleft    = {200,200},   \guillemotright    = {200,200},
+%<cmr>     \guillemotleft    = {300,200},   \guillemotright    = {100,400},
+     \textbraceleft    = {400,200},   \textbraceright    = {200,400},
+     \textless         = {200,100},   \textgreater       = {100,200}
+   }
+
+%</m-t|cmr>
+%    \end{macrocode}
+% Settings for the <QX> encoding (generic and Times).\footnote{Contributed by
+%                            \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>.}
 %\changes{v1.9d}{2006/04/20}{settings for <QX> encoding (contributed by
 %                            \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>)}
 %                                                     ^^A private mail, 2006/04/19
@@ -12034,6 +12215,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ptm>   { encoding = QX,
 %<ptm>     family   = {ptm,ptmx,ptmj} }
    {
+     \AE = {50,  },
 %<ptm>      *  = {200,200},
      {=} = {100,100},
      \textunderscore   = {100,100},
@@ -12490,6 +12672,64 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<pmn>     \textvisiblespace = {100,100}
   }
 
+%<*m-t|cmr>
+\SetProtrusion
+%<m-t>   [ name     = T2A-it-default,
+%<cmr>   [ name     = cmr-it-T2A,
+%<m-t>     load     = OT1-it   ]
+%<cmr>     load     = cmr-it   ]
+   { encoding = T2A,
+%<m-t>     shape    = {it,sl}  }
+%<cmr>     family   = cmr,
+%<cmr>     shape    = it       }
+   {
+%<*cmr>
+     \CYRA = {100,50},
+     \CYRB = {50,  },
+     \CYRV = {50,  },
+     \CYRG = {100, },
+     \CYRD = {50,  },
+     \CYRE = {50,  },
+     \CYRZH = {50,  },
+     \CYRZ = {50,  },
+     \CYRI = {50,  },
+     \CYRISHRT = {50,  },
+     \CYRK = {50,  },
+     \CYRL = {50,  },
+     \CYRM = {50,  },
+     \CYRN = {50,  },
+     \CYRO = {100, },
+     \CYRP = {50,  },
+     \CYRR = {50,  },
+     \CYRS = {100, },
+     \CYRT = {100, },
+     \CYRU = {100, },
+     \CYRF = {100, },
+     \CYRH = {50,  },
+     \CYRC = {50,  },
+     \CYRCH = {100, },
+     \CYRSH = {50,  },
+     \CYRSHCH = {50,  },
+     \CYRHRDSN = {100, },
+     \CYRERY = {50,  },
+     \CYRSFTSN = {50,  },
+     \CYREREV = {50,  },
+     \CYRYU = {50,  },
+     \CYRYA = {50,  },
+     _ = {100,200},
+%</cmr>
+%<m-t>     _ = {  ,100},
+%<m-t>     \textbackslash    = {100,200},   \quotedblbase      = {400,500},
+%<cmr>     \textbackslash    = {300,300},   \quotedblbase      = {200,600},
+%<m-t>     \guillemotleft    = {300,300},   \guillemotright    = {300,300},
+%<cmr>     \guillemotleft    = {400,100},   \guillemotright    = {200,300},
+%<m-t>     \textbraceleft    = {200,100},   \textbraceright    = {200,200},
+%<cmr>     \textbraceleft    = {400,100},   \textbraceright    = {200,200},
+%<cmr>     \textquotedblleft = {500,300},
+%<cmr>     \textless         = {300,100},   \textgreater       = {200,100}
+  }
+
+%</m-t|cmr>
 %<*m-t|ptm>
 \SetProtrusion
 %<m-t>   [ name     = QX-it-default,
@@ -12579,6 +12819,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
    [ name     = cmr-sl-T1,
      load     = cmr-it-T1 ]
    { encoding = {T1,LY1},
+     family   = cmr,
+     shape    = sl  }
+   {
+      L = {  ,50},
+      f = { ,-50},
+      - = {300, },
+     \textendash = {400,  },  \textemdash = {300,  }
+   }
+
+\SetProtrusion
+   [ name     = cmr-sl-T2A,
+     load     = cmr-it-T2A ]
+   { encoding = T2A,
      family   = cmr,
      shape    = sl  }
    {
@@ -12795,6 +13048,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
    }
 
 %</!(blg|ugm)>
+%<*m-t|cmr>
+\SetProtrusion
+%<m-t>   [ name     = T2A-sc,
+%<cmr>   [ name     = cmr-sc-T2A,
+%<m-t>     load     = T2A-default ]
+%<cmr>     load     = cmr-T2A     ]
+   { encoding = T2A,
+%<cmr>     family   = cmr,
+     shape    = sc }
+   {
+     \cyra = {50,50},
+     \cyrg = {  ,50},
+     \cyrt = {50,50},
+     \cyry = {  ,50}
+   }
+
+%</m-t|cmr>
 %<*m-t>
 \SetProtrusion
    [ name     = QX-sc,
@@ -13343,8 +13613,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \cmd\mathbf\ alphabets) is |OT1/cmr|, which we've already set up above.
 % It's declared as:
 %\begin{verbatim}
-%\DeclareSymbolFont{operators}   {OT1}{cmr} {m}{n}
-%\SetSymbolFont{operators}{bold}{OT1}{cmr} {bx}{n}
+%\DeclareSymbolFont{operators}  {OT1}{cmr}{m} {n}
+%\SetSymbolFont{operators}{bold}{OT1}{cmr}{bx}{n}
 %\end{verbatim}
 %
 % \cmd\mathit\ (|OT1/cmr/m/it|) is also already set up.
@@ -13353,8 +13623,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %
 % Math font `|letters|' (also used as \cmd\mathnormal) is declared as:
 %\begin{verbatim}
-%\DeclareSymbolFont{letters}     {OML}{cmm} {m}{it}
-%\SetSymbolFont{letters}  {bold}{OML}{cmm} {b}{it}
+%\DeclareSymbolFont{letters}    {OML}{cmm}{m}{it}
+%\SetSymbolFont{letters}  {bold}{OML}{cmm}{b}{it}
 %\end{verbatim}
 %\changes{v1.6}{2004/12/26}{tune <CMR> math letters (<OML> encoding)}
 %    \begin{macrocode}
@@ -13464,7 +13734,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Math font `|symbols|' (also used for the \cmd\mathcal\ alphabet) is declared
 % as:
 %\begin{verbatim}
-%\DeclareSymbolFont{symbols}     {OMS}{cmsy}{m}{n}
+%\DeclareSymbolFont{symbols}    {OMS}{cmsy}{m}{n}
 %\SetSymbolFont{symbols}  {bold}{OMS}{cmsy}{b}{n}
 %\end{verbatim}
 %    \begin{macrocode}
@@ -14389,12 +14659,43 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %  ^^A dctt, `myheadings, markboth', 2008/10/06, MID: <200810062134.a58193@b.maus.de>
 %\todo{report \pdftex\ bug}
 %\begin{verbatim}
-%\parfillskip0pt \rightskip0pt plus 1em \spaceskip\fontdimen2\font
+%\parfillskip0pt
+%\rightskip0pt plus 1em
+%\spaceskip\fontdimen2\font
 % test test\par
-%\pdfadjustinterwordglue2 \stbscode\font`t=-50
+%\pdfadjustinterwordglue2
+%\stbscode\font`t=-50
 % test test
 %\bye
 %\end{verbatim}
+% Some more characters in <T2A>.\footnote{Contributed by
+%                     \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
+%\changes{v2.3e}{2009/10/28}{settings for <T2A> encoding (contributed by
+%                            \contributor Karl Karlsson <karl-karlsson\at yandex.ru>)}
+%                                                       ^^A private mail, 2009/10/21
+%    \begin{macrocode}
+%<*m-t>
+\SetExtraSpacing
+   [ name     = T2A,
+     load     = default ]
+   { encoding = T2A,
+     family   = cmr }
+   {
+      \cyrg  = { ,-300,300},
+      \cyrb  = { ,-200,200},
+      \cyrk  = { ,-200,200},
+      \cyrs  = { ,-100,100},
+      \cyrr  = { ,-100,100},
+      \cyrh  = { ,-100,100},
+      \cyru  = { ,-100,100},
+      \cyrt  = { , 50, -50},
+      \cyrp  = { , 50, -50},
+      \cyri  = { , 50, -50},
+      \cyrishrt  = { , 50, -50},
+   }
+
+%</m-t>
+%    \end{macrocode}
 %
 % \subsubsection{Nonfrenchspacing}
 % The following settings simulate \cmd\nonfrenchspacing\ (since space factors
@@ -14493,7 +14794,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \SetExtraKerning
    [ name = empty ]
-   { encoding = {OT1,T1,LY1,OT4,QX,T5,TS1} }
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1} }
    { }
 
 %    \end{macrocode}
@@ -14702,7 +15003,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{9370}
+% \CheckSum{9553}
 %
 % \Finale
 %
