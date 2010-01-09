@@ -2,13 +2,13 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.3e"
+% !DTXversion:: "2.4"
 % ------------------------------------------------------------------------
-% $Id: microtype.dtx,v 1.59 2009-11-09 06:01:14+01 schlicht Exp schlicht $
+% $Id: microtype.dtx,v 1.60 2010-01-10 02:00:23+01 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %        An interface to the micro-typographic extensions of pdfTeX
-%           Copyright (c) 2004--2009  R Schlicht <w.m.l@gmx.net>
+%           Copyright (c) 2004--2010  R Schlicht <w.m.l@gmx.net>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3c of this license or (at
@@ -19,7 +19,7 @@
 % This work has the LPPL maintenance status `author-maintained'.
 %
 % This work consists of the files microtype.dtx and microtype.ins and the
-% derived files microtype.sty and letterspace.sty.
+% derived files microtype.sty, microtype.lua and letterspace.sty.
 %
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -36,7 +36,7 @@
 %<letterspace>  {letterspace}
 %<m-t>  {microtype.cfg}
 %<*package|letterspace|m-t>
-  [2009/11/09 v2.3e
+  [2010/01/10 v2.4
 %<package>   Micro-typography with pdfTeX
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -47,7 +47,7 @@
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
 %<cmr>  {mt-cmr.cfg}[2009/11/09 v2.0 microtype config. file: Computer Modern Roman (RS)]
 %<pad>  {mt-pad.cfg}[2005/11/07 v1.5 microtype config. file: Adobe Garamond (RS)]
-%<pmn>  {mt-pmn.cfg}[2004/11/07 v1.2 microtype config. file: Adobe Minion (HH)]
+%<pmn>  {mt-pmn.cfg}[2009/11/14 v1.3 microtype config. file: Adobe Minion (HH/KK)]
 %<ppl>  {mt-ppl.cfg}[2005/11/16 v1.6 microtype config. file: Palatino (RS)]
 %<ptm>  {mt-ptm.cfg}[2006/04/20 v1.7 microtype config. file: Times (RS)]
 %<ugm>  {mt-ugm.cfg}[2006/01/26 v1.0 microtype config. file: URW Garamond (RS)]
@@ -72,7 +72,7 @@
 % \def\rmdefault{bch} % not scaled
 % \def\ttdefault{blg}
 \usepackage{ifpdf,ifluatex}
-\usepackage[latin1]{\ifluatex lua-inputenc,\fi inputenc}
+\usepackage[latin1]{\ifluatex luainputenc,\fi inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
 \GetFileInfo{\jobname.dtx}
@@ -458,7 +458,7 @@
   \IfFileExists{hyperxmp.sty}{
     \usepackage{hyperxmp}
     \hypersetup{%
-      pdfcopyright={\textcopyright\ 2004--2009 R Schlicht\012%
+      pdfcopyright={\textcopyright\ 2004--2010 R Schlicht\012%
         This work may be distributed and/or modified under the conditions
         of the LaTeX Project Public License, either version 1.3c of this
         license or (at your option) any later version.\&\#xA;%
@@ -593,6 +593,7 @@
 \fi
 \hyphenation{An-dre-as Ber-nard Ha-rald Mi-cha-el Pe-ter Ste-phan Wolf-ram
              Har-ders Hop-pe Jac-kow-ski Ku-char-czyk Mei-er Mu-the-si-us Zed-ler
+             Sveinung % ?
              with-out}
 \def\fallbacktext#1{{\centering\itshape[#1]\par}}
 % abbreviations
@@ -689,7 +690,7 @@
 % other extensions (see section~\ref{sec:lettersp}).
 %
 %\bigskip\noindent
-% This package is copyright \textcopyright\ 2004\kern.09em--2009 R Schlicht.
+% This package is copyright \textcopyright\ 2004\kern.09em--2010 R Schlicht.
 % It may be distributed and/or modified under the conditions of the
 % \IfFileExists{lppl.tex}{\hyperref[LPPL:LPPL]}{\href{http://www.latex-project.org/lppl/}}
 %   {\LaTeX\ Project Public License},
@@ -1340,11 +1341,11 @@
 %    & |-|/\cmd\footnotesize/\\
 %\cmidrule(r){1-1}
 % |normalfont|
-%    &  /\cmd\encoding|*|/
-%    &  /\cmd\family|*|/
-%    &  /\cmd\series|*|/
-%    &  /\cmd\shape|*|/
-%    &  /\cmd\normalsize/ \\
+%    & /\cmd\encoding|*|/
+%    & /\cmd\family|*|/
+%    & /\cmd\series|*|/
+%    & /\cmd\shape|*|/
+%    & /\cmd\normalsize/\\
 %\bottomrule
 %\end{tabular}
 %\vskip4pt\footnotesize
@@ -1976,7 +1977,7 @@
 %      & <OT1>, <T1>, <TS1>
 %      & n, it \\
 % Adobe Minion (|pmnx|, |pmnj|)
-%      & <OT1>, <T1>, <LY1>, <TS1>
+%      & <OT1>, <T1>, <T2A>, <LY1>, <TS1>
 %      & n, it, (sl)\fnref{fn:it-sl}, sc, si\\
 % Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
 %                                           \pkg{qfonts}/QuasiPalatino, \TeX\ Gyre Pagella (|qpl|),
@@ -2287,7 +2288,7 @@
 %\end{verbatim}
 %
 %\changes{v1.9}{2005/07/10}{add hint about \texttt{verbatim} environment}
-%\todo{introduce option to patch \texttt{verbatim}}
+%\todo{introduce option to patch \texttt{verbatim}} ^^A for Karl
 %\paragraph{You might want to disable protrusion in \texttt{verbatim} environments.}
 % As you know by now, \microtype\ will by default activate character protrusion
 % for all fonts contained in the font set `|alltext|'. This also includes the
@@ -2496,6 +2497,8 @@
 % for contributing settings for the <QX> encoding, as well as to
 % \contributor Karl Karlsson <karl-karlsson\at yandex.ru> for providing
 % settings for the Cyrillic <T2A> encoding.
+% I am indebted to \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>,
+% who contributed the |lua| module.
 %
 % I thank \contributor Philipp Lehman <plehman\at gmx.net> for adding to his
 % \pkg{csquotes} package the possibility to restore the original meanings of
@@ -2540,10 +2543,9 @@
 %  \contributor Colin Rourke      <gt\at msp.warwick.ac.uk>,
 %  \contributor Maverick Woo      <maverick\at cs.cmu.edu>,
 %  \contributor Silas~S. Brown    <ssb22\at cam.ac.uk>,
-%  \contributor Christian Stark   <cstark\at gmx.de>,
-%  \contributor Marcin Borkowski  <mbork\at atos.wmid.amu.edu.pl>
+%  \contributor Christian Stark   <cstark\at gmx.de>
 % and
-%  \contributor \'Elie Roux       <elie.roux\at telecom-bretagne.eu>.
+%  \contributor Marcin Borkowski  <mbork\at atos.wmid.amu.edu.pl>.
 %
 %
 %\begin{thebibliography}{}
@@ -2651,6 +2653,10 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item |lua| functions moved to a dedicated file
+%  \item Protrusion settings for <T2A> encoded Minion
+%
+%\Version{2.3e}{2009/11/09}
 %  \item Support for the Cyrillic <T2A> encoding (protrusion, expansion, spacing)
 %
 %\Version{2.3d}{2009/03/27}
@@ -2943,7 +2949,7 @@
 %^^A  \tagcode,\letterspacefont,\pdfcopyfont,\pdffontexpand,\pdfnoligatures,
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(app,prep)endkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
-%\DoNotIndex{\directlua,\luaescapestring,\luatexluaescapestring,\luatexversion}^^A luatex
+%\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
@@ -3740,15 +3746,56 @@
 \else
   \def\MT@lua{\directlua}
 \fi
+%    \end{macrocode}
+%\end{macro}
+% Some functions are loaded from a dedicated |lua| file. This avoids character
+% escaping problems and incompatibilities between versions of \luatex.
+% If available, we'll use the \pkg{luatextra} package to load the module.
+%    \begin{macrocode}
+\MT@lua{
+  if (luatextra and luatextra.use_module) then
+    luatextra.use_module("microtype")
+  else
+    dofile(kpse.find_file("microtype.lua"))
+  end}
 }\relax
 %</lua>
 %</package>
+%</package|letterspace>
 %    \end{macrocode}
-%\end{macro}
+% Here it begins. The module was contributed by \'Elie Roux.
+%\changes{v2.4}{2009/11/12}{new file \file{microtype.lua} containing the \texttt{lua} functions
+%                           (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
+%    \begin{macrocode}
+%<*luafile>
+if microtype then
+  -- we simply don't load
+else
+
+microtype = {}
+
+microtype.module = {
+  name         = "microtype",
+  version      = 2.4,
+  date         = "2010/01/10",
+  description  = "microtype module.",
+  author       = "R Schlicht",
+  copyright    = "R Schlicht",
+  license      = "LPPL",
+}
+
+if luatextra and luatextra.provides_module then
+  luatextra.provides_module(microtype.module)
+end
+
+%</luafile>
+%    \end{macrocode}
+% To be continued, but first back to primitives.
 %\begin{macro}{\MT@glet}
 %\changes{v1.9f}{2006/08/09}{new macro}
-% The forgotten primitive.
+% Here's the forgotten one.
 %    \begin{macrocode}
+%<*package|letterspace>
 \def\MT@glet{\global\let}
 %    \end{macrocode}
 %\end{macro}
@@ -3927,18 +3974,6 @@
 %<*package>
 %    \end{macrocode}
 %\end{macro}
-% In \texlive\ 2009 all \luatex\ primitives are prefixed with `|luatex|'.
-%\changes{v2.3e}{2009/10/22}{compatibility fix for \texlive\ 2009 \luatex\
-%                            (reported by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
-%                             ^^A private mail, 2009/10/21
-%    \begin{macrocode}
-%<*lua>
-\MT@requires@luatex{
-  \MT@ifdefined@c@TF\luatexluaescapestring\relax
-    {\let\luatexluaescapestring\luaescapestring}
-}\relax
-%</lua>
-%    \end{macrocode}
 %\begin{macro}{\MT@ifint}
 % Test whether argument is an integer, using an old trick by Mr. Arseneau,
 %\changes{v1.9a}{2005/11/03}{use \cmd\pdfmatch\ if available}
@@ -3950,14 +3985,7 @@
 \MT@requires@pdftex6{
 %<*lua>
   \MT@requires@luatex{
-    \def\MT@ifint#1{%
-      \csname \MT@lua{
-        if string.find("\luatexluaescapestring{#1}","^-*[0-9]+ *$")
-          then tex.write("@firstoftwo")
-          else tex.write("@secondoftwo")
-        end}%
-      \endcsname
-    }
+    \def\MT@ifint#1{\csname\MT@lua{microtype.ifint([[#1]])}\endcsname}
   }{
 %</lua>
 %</package>
@@ -3979,6 +4007,18 @@
     \fi
   }
 }
+%</package>
+%</package|letterspace>
+%<*luafile>
+function microtype.ifint(s)
+  if string.find(s,"^-*[0-9]+ *$") then
+    tex.write("@firstoftwo")
+  else
+    tex.write("@secondoftwo")
+  end
+end
+
+%</luafile>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ifdimen}
@@ -3990,20 +4030,13 @@
 %\changes{v1.9b}{2006/01/05}{use \cmd\pdfmatch\ if available}
 % (|nd| and |nc| are new Didot resp. Cicero, added in \pdftex\ 1.30; |px| is a pixel.)
 %\changes{v2.2}{2007/05/10}{employ \luatex\ features if available}
-%\todo{fix lua expression}
+%\todo{fix \texttt{lua} expression}
 %    \begin{macrocode}
+%<*package>
 \MT@requires@pdftex6{
 %<*lua>
   \MT@requires@luatex{
-    \def\MT@ifdimen#1{%
-      \csname \MT@lua{
-        if (string.find("\luatexluaescapestring{#1}","^-*[0-9]+(\@percentchar a*) *$") or
-            string.find("\luatexluaescapestring{#1}","^-*[0-9]*[.,][0-9]+(\@percentchar a*) *$"))
-          then tex.write("@firstoftwo")
-          else tex.write("@secondoftwo")
-        end}%
-      \endcsname
-    }
+    \def\MT@ifdimen#1{\csname\MT@lua{microtype.ifdimen([[#1]])}\endcsname}
   }{
 %</lua>
     \def\MT@ifdimen#1{%
@@ -4027,11 +4060,24 @@
     }%
   }
 }
+%</package>
+%<*luafile>
+function microtype.ifdimen(s)
+  if (string.find(s, "^-*[0-9]+(%a*) *$") or
+      string.find(s, "^-*[0-9]*[.,][0-9]+(%a*) *$")) then
+    tex.write("@firstoftwo")
+  else
+    tex.write("@secondoftwo")
+  end
+end
+
+%</luafile>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ifdim}
 % Test floating point numbers.
 %    \begin{macrocode}
+%<*package>
 \def\MT@ifdim#1#2#3{%
   \ifdim #1\p@ #2 #3\p@
     \expandafter\@firstoftwo
@@ -4052,14 +4098,7 @@
 \MT@requires@pdftex5{
 %<*lua>
   \MT@requires@luatex{
-    \def\MT@ifstreq#1#2{%
-      \csname \MT@lua{
-        if "\luatexluaescapestring{#1}" == "\luatexluaescapestring{#2}"
-          then tex.write("@firstoftwo")
-          else tex.write("@secondoftwo")
-        end}%
-      \endcsname
-    }
+    \def\MT@ifstreq#1#2{\csname\MT@lua{microtype.ifstreq([[#1]],[[#2]])}\endcsname}
   }{
 %</lua>
     \def\MT@ifstreq#1#2{%
@@ -4081,12 +4120,28 @@
     \fi
   }
 }
+%</package>
+%<*luafile>
+function microtype.ifstreq(s1, s2)
+  if s1 == s2 then
+    tex.write("@firstoftwo")
+  else
+    tex.write("@secondoftwo")
+  end
+end
+
+%    \end{macrocode}
+% And here we end the |lua| file.
+%    \begin{macrocode}
+end
+%</luafile>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@xadd}
 %\changes{v1.8}{2005/04/17}{simplified}
 % Add item to a list.
 %    \begin{macrocode}
+%<*package>
 \def\MT@xadd#1#2{%
   \ifx#1\relax
     \xdef#1{#2}%
@@ -4106,6 +4161,7 @@
     \xdef#1{#2#1}%
   \fi
 }
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@map@clist@n}
@@ -4118,7 +4174,7 @@
 % Run \meta{\#2} on all elements of the comma list \meta{\#1}. This and the
 % following is modelled after \LaTeX3 commands.
 %    \begin{macrocode}
-%</package>
+%<*package|letterspace>
 \def\MT@map@clist@n#1#2{%
   \ifx\@empty#1\else
     \def\MT@clist@function##1{#2}%
@@ -11786,7 +11842,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<pad>   [ name     = pad-default ]
 %    \end{macrocode}
-%  \item Minion\footnote{Contributed by \contributor Harald Harders <h.harders\at tu-bs.de>.}
+%  \item Minion\footnote{Contributed by \contributor Harald Harders <h.harders\at tu-bs.de>
+%                        and \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
 %        (|pmnx|, |pmnj|)
 %\changes{v1.1}{2004/09/14}{settings for Adobe Minion (contributed by
 %                           \contributor Harald Harders <h.harders\at tu-bs.de>)}
@@ -11807,13 +11864,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{itemize}
 %    \begin{macrocode}
 %<ugm>   [ name     = ugm-default ]
-%<m-t|cmr>   { }
-%<bch|blg|pad|pmn|ugm>   { encoding = OT1,
+%<m-t|cmr|pmn>   { }
+%<bch|blg|pad|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch }
 %<blg>     family   = blg }
 %<pad>     family   = {pad,padx,padj} }
-%<pmn>     family   = pmnj }
 %<ppl>     family   = {ppl,pplx,pplj} }
 %<ptm>     family   = {ptm,ptmx,ptmj} }
 %<ugm>     family   = ugm }
@@ -11841,7 +11897,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ptm>     L = {  ,80},
 %<ugm>     L = {  ,120},
 %<bch|pad|pmn|ugm>     O = {50,50},
-%<pad|pmn>   \OE = {50,  },
+%<pad>   \OE = {50,  },
 %<ugm>   \OE = {50,50},
 %<blg>     P = {  ,100},
 %<ugm>     P = {  ,50},
@@ -12012,17 +12068,22 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Greek uppercase letters are in <OT1> encoding only.
 %\changes{v1.9}{2005/07/10}{fix: remove uppercase Greek letters from <T1> encoded <CMR>}
 %    \begin{macrocode}
-%<*m-t|cmr>
+%<*m-t|cmr|pmn>
 \SetProtrusion
 %<m-t>   [ name     = OT1-default,
 %<cmr>   [ name     = cmr-OT1,
+%<pmn>   [ name     = pmnj-OT1,
 %<m-t>     load     = default ]
 %<cmr>     load     = cmr-default ]
+%<pmn>     load     = pmnj-default ]
 %<m-t>   { encoding = OT1 }
 %<cmr>   { encoding = {OT1,OT4},
+%<pmn>   { encoding = OT1,
 %<cmr>     family   = cmr  }
+%<pmn>     family   = pmnj }
    {
-     \AE = {50,   },
+%<m-t|cmr>     \AE = {50,   },
+%<pmn>     \OE = {50,  }
 %<*cmr>
      "00 = {   ,150}, % \Gamma
      "01 = {100,100}, % \Delta
@@ -12043,7 +12104,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</cmr>
    }
 
-%</m-t|cmr>
+%</m-t|cmr|pmn>
 %    \end{macrocode}
 % <T1> and <LY1> encodings contain some more characters. The default list
 % will be loaded first.
@@ -12081,7 +12142,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ugm>     family   = ugm }
    {
 %<m-t|cmr>     \AE = {50,  },
-%<bch>     \OE = {50,  },
+%<bch|pmn>     \OE = {50,  },
 %<pmn>     \TH = {  ,50},
 %<blg>     \v L = {   ,250},
 %<blg>     \v d = {   ,250},
@@ -12158,21 +12219,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 
 %</cmr>
 %    \end{macrocode}
-% Settings for the <T2A> encoding (generic and Computer Modern Roman).\footnote{Contributed by
+% Settings for the <T2A> encoding (generic, Computer Modern Roman, and Minion).\footnote{Contributed by
 %                            \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
 %\changes{v2.3e}{2009/10/28}{settings for <T2A> encoding (contributed by
 %                            \contributor Karl Karlsson <karl-karlsson\at yandex.ru>)}
 %                                                       ^^A private mail, 2009/10/21
+%\changes{v2.4}{2009/11/15}{settings for <T2A> encoded Minion (contributed by
+%                           \contributor Karl Karlsson <karl-karlsson\at yandex.ru>)}
+%                                                       ^^A private mail, 2009/11/14
 %    \begin{macrocode}
-%<*m-t|cmr>
+%<*m-t|cmr|pmn>
 \SetProtrusion
 %<m-t>   [ name     = T2A-default,
 %<cmr>   [ name     = cmr-T2A,
+%<pmn>   [ name     = pmnj-T2A,
 %<m-t>     load     = default     ]
 %<cmr>     load     = cmr-default ]
+%<pmn>     load     = pmnj-default ]
    { encoding = T2A,
 %<m-t>   }
 %<cmr>     family   = cmr }
+%<pmn>     family   = pmnj }
    {
      \CYRA = {50,50},
      \CYRG = {  ,50},
@@ -12180,23 +12247,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
      \CYRT = {50,50},
      \CYRH = {50,50},
      \CYRU = {50,50},
+%<pmn>     \CYRS = {50,  },
+%<pmn>     \CYRO = {50,50},
      \cyrk = {  ,50},
      \cyrg = {  ,50},
      \cyrh = {50,50},
-%<m-t>     \cyru = {50,50},
+%<m-t|pmn>     \cyru = {50,50},
 %<cmr>     \cyru = {50,70},
 %<m-t>        _  = {100,100},
 %<cmr>        _  = {200,200},
 %<m-t>     \textbackslash    = {100,200},   \quotedblbase      = {400,400},
-%<cmr>     \textbackslash    = {200,300},   \quotedblbase     = {400,400},
+%<cmr>     \textbackslash    = {200,300},   \quotedblbase      = {400,400},
+%<pmn>     \textbackslash    = {100,200},   \quotedblbase      = {300,300},
 %<cmr>     \textquotedbl     = {300,300},   \textquotedblleft  = {200,600},
 %<m-t>     \guillemotleft    = {200,200},   \guillemotright    = {200,200},
 %<cmr>     \guillemotleft    = {300,200},   \guillemotright    = {100,400},
-     \textbraceleft    = {400,200},   \textbraceright    = {200,400},
-     \textless         = {200,100},   \textgreater       = {100,200}
+%<pmn>     \guillemotleft    = {200,200},   \guillemotright    = {150,300},
+%<m-t|cmr>     \textbraceleft    = {400,200},   \textbraceright    = {200,400},
+%<pmn>     \textbraceleft    = {200,   },   \textbraceright    = {   ,300},
+%<m-t|cmr>     \textless         = {200,100},   \textgreater       = {100,200}
+%<pmn>     \textless         = {100,   },   \textgreater       = {   ,100}
    }
 
-%</m-t|cmr>
+%</m-t|cmr|pmn>
 %    \end{macrocode}
 % Settings for the <QX> encoding (generic and Times).\footnote{Contributed by
 %                            \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>.}
@@ -12276,6 +12349,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
    }
 
 %</cmr|bch>
+%    \end{macrocode}
+% Minion with lining numbers.
+%    \begin{macrocode}
 %<*pmn>
 \SetProtrusion
    [ name     = pmnx-OT1,
@@ -12290,6 +12366,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
    [ name     = pmnx-T1,
      load     = pmnj-T1  ]
    { encoding = {T1,LY1},
+     family   = pmnx     }
+   {
+     1 = {230,180}
+   }
+
+\SetProtrusion
+   [ name     = pmnx-T2A,
+     load     = pmnj-T2A  ]
+   { encoding = {T2A},
      family   = pmnx     }
    {
      1 = {230,180}
@@ -12370,18 +12455,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ppl>   [ name     = ppl-it   ]
 %<ptm>   [ name     = ptm-it   ]
 %<ugm>   [ name     = ugm-it   ]
-%<m-t|bch|blg|pad|pmn|ugm>   { encoding = OT1,
+%<m-t|bch|blg|pad|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch,
 %<blg>     family   = blg,
 %<pad>     family   = {pad,padx,padj},
-%<pmn>     family   = pmnj,
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
 %<ugm>     family   = ugm,
-%<m-t|bch|pad|pmn|ppl|ptm>     shape    = {it,sl}  }
+%<m-t|bch|pad|ppl|ptm>     shape    = {it,sl}  }
 %<blg|ugm>     shape    = it  }
-%<cmr>   { }
+%<cmr|pmn>   { }
    {
 %<cmr|ptm>     A = {100,50},
 %<pad|pmn>     A = {50,  },
@@ -12389,7 +12473,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ppl>     A = {50,50},
 %<ptm>   \AE = {100,  },
 %<pad|ppl>   \AE = {50,  },
-%<pmn>   \AE = {  ,-50},
 %<cmr|pad|ppl|ptm>     B = {50,  },
 %<pmn>     B = {20,-50},
 %<bch|ppl|ptm|ugm>     C = {50,  },
@@ -12423,7 +12506,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<bch|pmn|ppl|ptm>     O = {50,  },
 %<cmr|pad>     O = {100, },
 %<ugm>     O = {70,50},
-%<pmn|ppl|ptm>   \OE = {50,  },
+%<ppl|ptm>   \OE = {50,  },
 %<pad>   \OE = {100, },
 %<cmr|pad|ppl|ptm>     P = {50,  },
 %<pmn>     P = {20,-50},
@@ -12565,16 +12648,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<ugm>     \textquotedblleft = {600,200},   \textquotedblright = {600,200}
    }
 
-%<*cmr>
+%<*cmr|pmn>
 \SetProtrusion
-   [ name     = cmr-it-OT1,
-     load     = cmr-it   ]
-   { encoding = {OT1,OT4},
-     family   = cmr,
-     shape    = it       }
+%<cmr>   [ name     = cmr-it-OT1,
+%<pmn>   [ name     = pmnj-it-OT1,
+%<cmr>     load     = cmr-it   ]
+%<pmn>     load     = pmnj-it  ]
+%<cmr>   { encoding = {OT1,OT4},
+%<pmn>   { encoding = OT1,
+%<cmr>     family   = cmr,
+%<pmn>     family   = pmnj,
+%<cmr>     shape    = it       }
+%<pmn>     shape    = {it,sl}  }
    {
-     \AE = {100,   },
-     \OE = {100,   },
+%<cmr>     \AE = {100,   },
+%<pmn>     \AE = {  ,-50},
+%<cmr>     \OE = {100,   },
+%<pmn>     \OE = {50,   }
+%<*cmr>
      "00 = {200,150}, % \Gamma
      "01 = {150,100}, % \Delta
      "02 = {150, 50}, % \Theta
@@ -12586,9 +12677,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
      "08 = {150, 50}, % \Phi
      "09 = {150,100}, % \Psi
      "0A = { 50, 50}  % \Omega
+%</cmr>
    }
 
-%</cmr>
+%</cmr|pmn>
 \SetProtrusion
 %<m-t>   [ name     = T1-it-default,
 %<bch>   [ name     = bch-it-T1,
@@ -12628,7 +12720,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<blg>     . = {400,600},
 %<blg>    {,}= {300,500},
 %<cmr>     \AE = {100,   },
-%<bch>     \OE = { 50,   },
+%<pmn>     \AE = {  ,-50},
+%<bch|pmn>     \OE = { 50,   },
 %<cmr>     \OE = {100,   },
 %<pmn>     031 = { ,-100}, % ffl
 %<cmr|ptm>     156 = {100, },  % IJ
@@ -12672,64 +12765,86 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<pmn>     \textvisiblespace = {100,100}
   }
 
-%<*m-t|cmr>
+%<*m-t|cmr|pmn>
 \SetProtrusion
 %<m-t>   [ name     = T2A-it-default,
 %<cmr>   [ name     = cmr-it-T2A,
+%<pmn>   [ name     = pmnj-it-T2A,
 %<m-t>     load     = OT1-it   ]
 %<cmr>     load     = cmr-it   ]
+%<pmn>     load     = pmnj-it  ]
    { encoding = T2A,
-%<m-t>     shape    = {it,sl}  }
 %<cmr>     family   = cmr,
+%<pmn>     family   = pmnj,
+%<m-t|pmn>     shape    = {it,sl}  }
 %<cmr>     shape    = it       }
    {
-%<*cmr>
-     \CYRA = {100,50},
-     \CYRB = {50,  },
-     \CYRV = {50,  },
-     \CYRG = {100, },
-     \CYRD = {50,  },
-     \CYRE = {50,  },
-     \CYRZH = {50,  },
-     \CYRZ = {50,  },
-     \CYRI = {50,  },
-     \CYRISHRT = {50,  },
-     \CYRK = {50,  },
-     \CYRL = {50,  },
-     \CYRM = {50,  },
-     \CYRN = {50,  },
-     \CYRO = {100, },
-     \CYRP = {50,  },
-     \CYRR = {50,  },
-     \CYRS = {100, },
-     \CYRT = {100, },
-     \CYRU = {100, },
-     \CYRF = {100, },
-     \CYRH = {50,  },
-     \CYRC = {50,  },
-     \CYRCH = {100, },
-     \CYRSH = {50,  },
-     \CYRSHCH = {50,  },
-     \CYRHRDSN = {100, },
-     \CYRERY = {50,  },
-     \CYRSFTSN = {50,  },
-     \CYREREV = {50,  },
-     \CYRYU = {50,  },
-     \CYRYA = {50,  },
-     _ = {100,200},
-%</cmr>
-%<m-t>     _ = {  ,100},
+%<cmr>     \CYRA = {100,50},
+%<pmn>     \CYRA = {50,  },
+%<cmr>     \CYRB = {50,  },
+%<cmr>     \CYRV = {50,  },
+%<pmn>     \CYRV = {20,-50},
+%<cmr>     \CYRG = {100, },
+%<pmn>     \CYRG = {10,  },
+%<cmr>     \CYRD = {50,  },
+%<cmr>     \CYRE = {50,  },
+%<pmn>     \CYRE = {20,-50},
+%<cmr>     \CYRZH = {50,  },
+%<cmr>     \CYRZ = {50,  },
+%<pmn>     \CYRZ = {20,-50},
+%<cmr>     \CYRI = {50,  },
+%<pmn>     \CYRI = {  ,-30},
+%<cmr>     \CYRISHRT = {50,  },
+%<cmr>     \CYRK = {50,  },
+%<pmn>     \CYRK = {20,  },
+%<cmr>     \CYRL = {50,  },
+%<cmr>     \CYRM = {50,  },
+%<pmn>     \CYRM = {  ,-30},
+%<cmr>     \CYRN = {50,  },
+%<cmr>     \CYRO = {100, },
+%<pmn>     \CYRO = {50,  },
+%<cmr>     \CYRP = {50,  },
+%<cmr>     \CYRR = {50,  },
+%<pmn>     \CYRR = {20,-50},
+%<cmr>     \CYRS = {100, },
+%<pmn>     \CYRS = {50,  },
+%<cmr>     \CYRT = {100, },
+%<pmn>     \CYRT = {70,  },
+%<cmr>     \CYRU = {100, },
+%<pmn>     \CYRU = {50,  },
+%<cmr>     \CYRF = {100, },
+%<cmr>     \CYRH = {50,  },
+%<cmr>     \CYRC = {50,  },
+%<cmr>     \CYRCH = {100, },
+%<cmr>     \CYRSH = {50,  },
+%<cmr>     \CYRSHCH = {50,  },
+%<cmr>     \CYRHRDSN = {100, },
+%<cmr>     \CYRERY = {50,  },
+%<cmr>     \CYRSFTSN = {50,  },
+%<cmr>     \CYREREV = {50,  },
+%<cmr>     \CYRYU = {50,  },
+%<cmr>     \CYRYA = {50,  },
+%<pmn>     \CYRYA = {  ,20},
+%<pmn>     \cyrr = {-50,  },
+%<m-t|pmn>      _ = {  ,100},
+%<cmr>      _ = {100,200},
+%<pmn>      031 = { ,-100}, % ffl
+%<pmn>     \v t = { ,100},
 %<m-t>     \textbackslash    = {100,200},   \quotedblbase      = {400,500},
 %<cmr>     \textbackslash    = {300,300},   \quotedblbase      = {200,600},
+%<pmn>     \textbackslash    = {100,150},   \quotedblbase      = {150,500},
 %<m-t>     \guillemotleft    = {300,300},   \guillemotright    = {300,300},
 %<cmr>     \guillemotleft    = {400,100},   \guillemotright    = {200,300},
+%<pmn>     \guillemotleft    = {200,300},   \guillemotright    = {150,400},
 %<m-t>     \textbraceleft    = {200,100},   \textbraceright    = {200,200},
 %<cmr>     \textbraceleft    = {400,100},   \textbraceright    = {200,200},
+%<pmn>     \textbraceleft    = {200,   },   \textbraceright    = {   ,200},
 %<cmr>     \textquotedblleft = {500,300},
 %<cmr>     \textless         = {300,100},   \textgreater       = {200,100}
+%<pmn>     \textless         = {100,   },   \textgreater       = {   ,100}
   }
 
-%</m-t|cmr>
+%</m-t|cmr|pmn>
 %<*m-t|ptm>
 \SetProtrusion
 %<m-t>   [ name     = QX-it-default,
@@ -12901,6 +13016,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
    [ name     = pmnx-it-T1,
      load     = pmnj-it-T1 ]
    { encoding = {T1,LY1},
+     family   = pmnx,
+     shape    = {it,sl} }
+   {
+     1 = {100,150}
+   }
+
+\SetProtrusion
+   [ name     = pmnx-it-T2A,
+     load     = pmnj-it-T2A ]
+   { encoding = {T2A},
      family   = pmnx,
      shape    = {it,sl} }
    {
@@ -15003,7 +15128,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{9553}
+% \CheckSum{9578}
 %
 % \Finale
 %

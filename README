@@ -3,7 +3,7 @@
                         The `microtype' package
         An interface to the micro-typographic extensions of pdfTeX
                   ===================================
-                         v2.3e      2009/11/09
+                         v2.4      2010/01/10
 
 
 * Overview
@@ -37,7 +37,7 @@ The documentation can be found in microtype.pdf.
  --------------
 
  - Run latex on microtype.ins to generate the package and configuration files
- - Move all files into a directory where LaTeX will find them,
+ - Move all generated files into a directory where LaTeX will find them,
    e.g., TEXMF/tex/latex/microtype/
 
  - Run (pdf)latex twice on microtype.dtx to create the documentation
@@ -59,12 +59,12 @@ all distributions of LaTeX version 2005/12/01 or later.
 This work has the LPPL maintenance status `author-maintained'.
 
 This work  consists of the files `microtype.dtx' and `microtype.ins'  and the
-derived files `microtype.sty' and `letterspace.sty'.
+derived files `microtype.sty', `microtype.lua' and `letterspace.sty'.
 
 Modified versions  of the  configuration  files  (*.cfg)  may be  distributed
 provided  that  (1)  the original  copyright statement  is not  removed,  and
 (2) the identification string is changed.
 
          ----------------------------------------------------
-         Copyright (c) 2004--2009  R Schlicht <w.m.l@gmx.net>
+         Copyright (c) 2004--2010  R Schlicht <w.m.l@gmx.net>
          ----------------------------------------------------

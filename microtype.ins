@@ -1,16 +1,17 @@
 % !Mode:: "TeX:STY:UK"
-% $Id: microtype.ins,v 1.19 2009-11-09 05:57:07+01 schlicht Exp schlicht $
+% $Id: microtype.ins,v 1.20 2010-01-10 02:00:43+01 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
 \input docstrip
 \keepsilent
 \askonceonly
+\let\MetaPrefix\relax
 \preamble
 
 ------------------------------------------------------------------------
 
                       The `microtype' package
        An interface to the micro-typographic extensions of pdfTeX
-          Copyright (c) 2004--2009  R Schlicht <w.m.l@gmx.net>
+          Copyright (c) 2004--2010  R Schlicht <w.m.l@gmx.net>
 
 This work may be distributed and/or modified under the conditions of the
 LaTeX Project Public License, either version 1.3c of this license or (at
@@ -20,8 +21,8 @@ of all distributions of LaTeX version 2005/12/01 or later.
 
 This work has the LPPL maintenance status `author-maintained'.
 
-This work consists of the files  microtype.dtx and microtype.ins and the
-derived files microtype.sty and letterspace.sty.
+This work consists of the files microtype.dtx and microtype.ins and the
+derived files microtype.sty, microtype.lua and letterspace.sty.
 
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -43,6 +44,10 @@ derived files microtype.sty and letterspace.sty.
   This is a stand-alone version that only provides the letterspacing
   commands. Do not use this package together with the `microtype' package.
   Please refer to section 7 of the `microtype' documentation.
+\endpreamble
+\declarepreamble\luapreamble
+  This file contains auxiliary lua functions.
+  It was contributed by Elie Roux <elie.roux{at}telecom-bretagne.eu>.
 \endpreamble
 \declarepreamble\cfgpreamble
   This is the main configuration file for the `microtype' package.
@@ -77,15 +82,20 @@ derived files microtype.sty and letterspace.sty.
 \endpreamble
 \let\firstpreamblepart\contribpreamble
 \let\lastpreamblepart \defaultlastpreamblepart
-\declarepreamble\haraldpreamble
- Harald Harders <h.harders{at}tu-bs.de>.^^M
+\declarepreamble\haraldandkarlpreamble^^M
+      Harald Harders <h.harders{at}tu-bs.de> and
+      Karl Karlsson <karl-karlsson{at}yandex.ru>.^^M
 \endpreamble
+\declarepostamble\luapostamble
+\endpostamble
 
 \def\makefile#1#2{\file{#1}{\from{microtype.dtx}{#2}}}
 \def\makecfg#1#2{\makefile{mt-#2.cfg}{config,cfg-#1,#2}}
 
 % ------------------------------------------------------------------------
 
+\usedir{tex/latex/microtype}
+\let\MetaPrefix\DoubleperCent
 \generate{
     \makefile{microtype.sty}{package,lua}
   \usepreamble\lsppreamble
@@ -108,10 +118,17 @@ derived files microtype.sty and letterspace.sty.
     \makecfg{e}{zpeu}
     \makecfg{e}{euroitc}
     \makecfg{e}{mvs}
-  \usepreamble\haraldpreamble
+  \usepreamble\haraldandkarlpreamble
     \makecfg{t}{pmn}
   \usepreamble\testpreamble
     \makefile{test-microtype.tex}{test}
+}
+
+\def\MetaPrefix{--}
+\generate{
+  \usepreamble \luapreamble
+  \usepostamble\luapostamble
+    \makefile{microtype.lua}{luafile}
 }
 
 \obeyspaces
