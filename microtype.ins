@@ -1,5 +1,5 @@
 % !Mode:: "TeX:STY:UK"
-% $Id: microtype.ins,v 1.20 2010-01-10 02:00:43+01 schlicht Exp schlicht $
+% $Id: microtype.ins,v 1.22 2013-03-13 05:07:23+01 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
 \input docstrip
 \keepsilent
@@ -10,8 +10,8 @@
 ------------------------------------------------------------------------
 
                       The `microtype' package
-       An interface to the micro-typographic extensions of pdfTeX
-          Copyright (c) 2004--2010  R Schlicht <w.m.l@gmx.net>
+        Subliminal refinements towards typographical perfection
+          Copyright (c) 2004--2013 R Schlicht <w.m.l@gmx.net>
 
 This work may be distributed and/or modified under the conditions of the
 LaTeX Project Public License, either version 1.3c of this license or (at
@@ -22,7 +22,8 @@ of all distributions of LaTeX version 2005/12/01 or later.
 This work has the LPPL maintenance status `author-maintained'.
 
 This work consists of the files microtype.dtx and microtype.ins and the
-derived files microtype.sty, microtype.lua and letterspace.sty.
+derived files microtype.sty, microtype-pdftex.def, microtype-xetex.def,
+microtype-luatex.def, microtype.lua and letterspace.sty.
 
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -44,6 +45,9 @@ derived files microtype.sty, microtype.lua and letterspace.sty.
   This is a stand-alone version that only provides the letterspacing
   commands. Do not use this package together with the `microtype' package.
   Please refer to section 7 of the `microtype' documentation.
+\endpreamble
+\declarepreamble\defpreamble
+  This file contains enginge-specific definitions.
 \endpreamble
 \declarepreamble\luapreamble
   This file contains auxiliary lua functions.
@@ -97,7 +101,11 @@ derived files microtype.sty, microtype.lua and letterspace.sty.
 \usedir{tex/latex/microtype}
 \let\MetaPrefix\DoubleperCent
 \generate{
-    \makefile{microtype.sty}{package,lua}
+    \makefile{microtype.sty}{package}
+  \usepreamble\defpreamble
+    \makefile{microtype-pdftex.def}{pdftex-def}
+    \makefile{microtype-luatex.def}{luatex-def}
+    \makefile{microtype-xetex.def} {xetex-def}
   \usepreamble\lsppreamble
     \makefile{letterspace.sty}{letterspace,plain}
   \usepreamble\cfgpreamble

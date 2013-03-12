@@ -1,33 +1,34 @@
 
 
                         The `microtype' package
-        An interface to the micro-typographic extensions of pdfTeX
+         Subliminal refinements towards typographical perfection
                   ===================================
-                         v2.4      2010/01/10
+                         v2.5      2013/03/13
 
 
 * Overview
  ----------
 
-The `microtype' package  provides a LaTeX interface to the  micro-typographic
-extensions  of  pdfTeX:  most  prominently,  character  protrusion  and  font
-expansion, furthermore the adjustment of  interword  spacing  and  additional
-kerning, as well as hyphenatable letterspacing (tracking) and the possibility
-to disable all or selected ligatures.
-It allows  to apply these features  to  customisable  sets  of fonts,  and to
-configure all micro-typographic aspects of the fonts in a straightforward and
-flexible way. Settings for various fonts are provided.
+The `microtype' package provides a LaTeX interface to the micro-typographic
+extensions that were introduced by pdfTeX and have since also propagated to
+XeTeX and LuaTeX: most prominently, character protrusion and font expansion,
+furthermore the adjustment of interword spacing and additional kerning, as
+well as hyphenatable letterspacing (tracking) and the possibility to disable
+all or selected ligatures.
+These features may be applied to customisable sets of fonts, and all micro-
+typographic aspects of the fonts can be configured in a straight-forward
+and flexible way. Settings for various fonts are provided.
 
-Note that font expansion and character protrusion will only work with pdfTeX,
-at least  version 0.14f.  Automatic font expansion  requires  version 1.20 or
-newer.  Disabling  ligatures  requires  pdfTeX 1.30,  letterspacing  and  the
-adjustment  of interword spacing  and of kerning  requires version 1.40.  The
-package will by default enable protrusion and expansion if they can safely be
-assumed  to work.  These two features  are also  available  with luaTeX.  The
-`microtype' package does not work with XeTeX.
+Note that character protrusion requires pdfTeX (version 0.14f or later),
+LuaTeX, or XeTeX (at least version 0.9997). Font expansion works with pdfTeX
+(version 1.20 for automatic expansion) or LuaTeX. The package will by default
+enable protrusion and expansion if they can safely be assumed to work.
+Disabling ligatures requires pdfTeX (at least version 1.30) or LuaTeX, while
+the adjustment of interword spacing and of kerning only works with pdfTeX
+(at least 1.40). Letterspacing is available with pdfTeX (1.40) or LuaTeX (0.62).
 
-The alternative package  `letterspace',  which  also  works  with  plain  TeX,
-provides the user commands  for letter-spacing only,  omitting support for all
+The alternative package `letterspace', which also works with plain TeX,
+provides the user commands for letterspacing only, omitting support for all
 other extensions.
 
 The documentation can be found in microtype.pdf.
@@ -50,21 +51,22 @@ The documentation can be found in microtype.pdf.
 * License
  ---------
 
-This work  may be distributed and/or  modified  under the  conditions  of the
+This work may be distributed and/or modified under the conditions of the
 LaTeX Project Public License, either version 1.3c of this license or (at your
-option)  any later version.  The  latest  version  of  this  license  is  in:
-http://www.latex-project.org/lppl.txt,  and version 1.3c or later  is part of
+option) any later version. The latest version of this license is in:
+http://www.latex-project.org/lppl.txt, and version 1.3c or later is part of
 all distributions of LaTeX version 2005/12/01 or later.
 
 This work has the LPPL maintenance status `author-maintained'.
 
-This work  consists of the files `microtype.dtx' and `microtype.ins'  and the
-derived files `microtype.sty', `microtype.lua' and `letterspace.sty'.
+This work consists of the files `microtype.dtx' and `microtype.ins' and the
+derived files `microtype.sty', `microtype-pdftex.def', `microtype-xetex.def',
+`microtype-luatex.def', `microtype.lua' and `letterspace.sty'.
 
-Modified versions  of the  configuration  files  (*.cfg)  may be  distributed
-provided  that  (1)  the original  copyright statement  is not  removed,  and
+Modified versions of the configuration files (*.cfg) may be distributed
+provided that (1) the original copyright statement is not removed, and
 (2) the identification string is changed.
 
          ----------------------------------------------------
-         Copyright (c) 2004--2010  R Schlicht <w.m.l@gmx.net>
+         Copyright (c) 2004--2013  R Schlicht <w.m.l@gmx.net>
          ----------------------------------------------------
