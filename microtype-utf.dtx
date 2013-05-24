@@ -1,0 +1,1191 @@
+%\iffalse meta-comment
+% ^^A messages to WinEdt:
+% !Mode:: "TeX:DTX:UK"
+% !smartQuote:: "English"
+% !DTXversion:: "2.5a"
+% ------------------------------------------------------------------------
+%                       The `microtype' package
+%         Subliminal refinements towards typographical perfection
+%           Copyright (c) 2004--2013 R Schlicht <w.m.l@gmx.net>
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3c of this license or (at
+% your option) any later version. The latest version of this license is in:
+% http://www.latex-project.org/lppl.txt, and version 1.3c or later is part
+% of all distributions of LaTeX version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `author-maintained'.
+%
+% This work consists of the files microtype.dtx and microtype.ins and the
+% derived files microtype.sty, microtype-pdftex.def, microtype-xetex.def,
+% microtype-luatex.def, microtype.lua and letterspace.sty.
+%
+% Modified versions of the configuration files (*.cfg) may be distributed
+% provided that: (1) the original copyright statement is not removed, and
+% (2) the identification string is changed.
+% ------------------------------------------------------------------------
+%
+\ProvidesFile
+%<*driver>
+    {\jobname.dtx}[2013/05/23 v2.5a]
+%</driver>
+%<CharisSIL>  {mt-CharisSIL.cfg}[2013/03/13 v1.0 microtype config. file: Charis SIL (RS)]
+%<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2013/03/13 v1.0 microtype config. file: Latin Modern Roman (RS)]
+%<PalatinoLinotype>  {mt-PalatinoLinotype.cfg}[2012/03/10 v1.0 microtype config. file: Palatino Linotype and similar fonts (LBD)]
+%<*driver>
+\documentclass[10pt,a4paper]{ltxdoc}
+\usepackage{fontspec}
+\usepackage{microtype-doc} % there will be errors with luatex because of the non-utf \nobreakspace -- just ignore them!
+\makeatletter
+ \def\setmacrofont#1{\def\macro@font{#1}}
+ \newfontface\LMR{Latin Modern Roman}
+ \newfontface\CharisSIL{Charis SIL}
+ \newfontface\PalatinoLinotype{TeX Gyre Pagella}
+\linespread{1.07} % this isn't set correctly for some reason
+\textheight=626pt
+\DisableCrossrefs
+\begin{document}
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%\StopEventually{}
+%
+%\GeneralChanges*
+%\ImplementationSettings
+%\InputIfFileExists{microtype-utf.tmp}\relax\relax
+%\edef\startpage{\thepage}
+%\stepcounter{page}
+%
+%\newwrite\utftmp
+%\immediate\openout\utftmp=microtype.tmp
+%
+%\section{OpenType configuration files}
+%
+% These are the configuration files for the following OpenType fonts:\footnote{This is file \file{microtype-utf.dtx}.}
+%
+%\begin{itemize}
+%   \item {\LMR
+%           Latin Modern Roman}
+%   \item {\CharisSIL
+%           Charis <SIL>}\footnote{This font is available at
+%                                \url{http://scripts.sil.org/CharisSILfont}.}
+%   \item {\PalatinoLinotype
+%           Palatino Linotype}\footnote{These settings have been contributed by
+%                                       \contributor Loren Davis <davislo\at eecs.oregonstate.edu>.}
+%\end{itemize}
+%
+%\noindent
+% The settings are typeset in the respective font.
+%
+%\subsection{Character inheritance}
+%\GeneralChanges{Inheritance}
+%\edef\x{\string\def\string\utfsectioni{\number\numexpr\thepage-\startpage\relax}}
+%\immediate\write\expandafter\utftmp\expandafter{\x}
+%
+% OpenType fonts may differ considerably in how complete their arsenal of glyphs is.
+% Therefore, each font family should have their own inheritance settings.
+%
+%\NoIndexing
+%    \begin{macrocode}
+
+%%% -----------------------------------------------------------------------
+%%% INHERITANCE
+
+%% for xetex (EU1) and luatex (EU2)
+%<*LatinModernRoman>
+\DeclareCharacterInheritance
+   { encoding = {EU1,EU2},
+     family   = Latin Modern Roman }
+%    \end{macrocode}
+%{\setmacrofont\LMR
+%    \begin{macrocode}
+   { A = {À,Á,Â,Ã,Ä,Å,Ā,Ă,Ą,Ǻ,Ȁ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ặ,
+          Α},  % Greek
+     Æ = {Ǽ},
+     B = {฿,
+          Β},  % Greek
+     C = {Ç,Ć,Ĉ,Ċ,Č},
+     D = {Ð,Ď,Đ,Ḍ,Ḏ},
+     E = {È,É,Ê,Ë,Ē,Ĕ,Ė,Ę,Ě,Ȅ,Ẹ,Ẻ,Ẽ,Ề,Ế,Ễ,Ể,Ệ,
+          Ε},  % Greek
+     G = {Ĝ,Ğ,Ġ,Ģ,Ǧ,Ǵ},
+     H = {Ĥ,Ħ,Ḥ,Ḧ,Ḫ,
+          Η},  % Greek
+     I = {Ì,Í,Î,Ï,Ĩ,Ī,Ĭ,Į,İ,Ȉ,Ỉ,Ị,
+          Ι},  % Greek
+     J = {Ĵ},
+     K = {Ķ,
+          Κ},  % Greek
+     L = {Ĺ,Ļ,Ł,Ḷ}, % Ľ,Ŀ,Ḹ
+     M = {Μ},  % Greek
+     N = {Ñ,Ń,Ņ,Ň,Ṅ,Ṇ,
+          Ν},  % Greek
+     O = {Ò,Ó,Ô,Õ,Ö,Ø,Ō,Ŏ,Ő,Ọ,Ơ,Ǫ,Ǿ,Ȍ,Ỏ,Ố,Ồ,Ổ,Ỗ,Ộ,Ớ,Ờ,Ỡ,Ở,Ợ,
+          Ο},  % Greek
+     P = {Ρ},  % Greek
+     R = {Ŕ,Ŗ,Ř,Ȑ,Ṛ,Ṙ,Ṝ},
+     S = {Ś,Ŝ,Ş,Š,Ș,Ṣ},
+     T = {Ţ,Ť,Ț,Ṭ,Ṯ,
+          Τ},  % Greek
+     U = {Ù,Ú,Û,Ü,Ũ,Ū,Ŭ,Ů,Ű,Ų,Ư,Ȕ,Ụ,Ủ,Ứ,Ừ,Ử,Ữ,Ự},
+     W = {Ŵ,Ẁ,Ẃ,Ẅ},
+     X = {Χ},  % Greek
+     Y = {Ý,Ŷ,Ÿ,Ỵ,Ỷ,Ỹ},
+     Z = {Ź,Ż,Ž,Ẓ,
+          Ζ},  % Greek
+     a = {à,á,â,ã,ä,å,ā,ă,ą,ǻ,ȁ,ạ,ả,ấ,ầ,ẩ,ẫ,ậ,ắ,ằ,ẳ,ẵ},
+     æ = {ǽ},
+     c = {ç,ć,ĉ,ċ,č},
+     d = {đ,ḍ,ḏ},
+     e = {è,é,ê,ë,ē,ĕ,ė,ę,ě,ȅ,ẹ,ẻ,ẽ,ế,ề,ể,ễ,ệ},
+     f = {/f_f},
+     g = {ĝ,ğ,ġ,ģ,ǧ,ǵ},
+     h = {ĥ,ħ,ḥ,ḧ,ḫ},
+     i = {ì,í,î,ï,ĩ,ī,ĭ,į,ı,ȉ,ỉ,ị},
+     j = {ĵ},
+     k = {ķ},
+     l = {ĺ,ļ,ł,ḷ,ḹ}, % ľ,l·
+     n = {ñ,ń,ņ,ň,ṅ,ṇ},
+     o = {ò,ó,ô,õ,ö,ø,ō,ŏ,ő,ọ,ơ,ǫ,ǿ,ȍ,ỏ,ố,ồ,ổ,ỗ,ộ,ớ,ờ,ỡ,ở,ợ},
+     r = {ŕ,ŗ,ř,ȑ,ṛ,ṙ,ṝ},
+     s = {ś,ŝ,ş,š,ș,ṣ},
+     t = {ţ,ț,ṭ,ṯ,ẗ}, % ť
+     u = {ù,ú,û,ü,ũ,ū,ŭ,ů,ű,ų,ư,ȕ,ụ,ủ,ứ,ừ,ử,ữ,ự},
+     w = {ŵ,ẁ,ẃ,ẅ},
+     y = {ý,ŷ,ÿ,ỳ,ỵ,ỷ,ỹ},
+     z = {ź,ż,ž,ẓ},
+   }
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+%</LatinModernRoman>
+%<*CharisSIL>
+\DeclareCharacterInheritance
+   { encoding = {EU1,EU2},
+     family   = Charis SIL }
+%    \end{macrocode}
+%{\setmacrofont\CharisSIL
+%    \begin{macrocode}
+   { A = {À,Á,Â,Ã,Ä,Å,Ā,Ă,Ą,Ǎ,Ǟ,Ǡ,Ȧ,Ǻ,Ȁ,Ȃ,Ḁ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ẵ,Ặ,Ꜳ,
+          А,Ӑ,Ӓ}, % Cyrillic
+     Æ = {Ǣ,
+          Ǽ,Ӕ}, % Cyrillic
+     B = {Ḃ,Ḅ,Ḇ,
+          В}, % Cyr
+     C = {Ç,Ć,Ĉ,Ḉ,Ċ,Č,
+          С,Ҫ}, % Cyr
+     D = {Ď,Ḋ,Ḍ,Ḏ,Ḑ,Ḓ,Đ},
+     E = {È,É,Ê,Ë,Ē,Ĕ,Ė,Ę,Ě,Ȅ,Ȩ,Ȇ,Ḕ,Ḗ,Ḙ,Ḛ,Ḝ,Ẹ,Ẻ,Ẽ,Ế,Ề,Ể,Ễ,Ệ,
+          Е,Ѐ,Ё,Ӗ}, % Cyr
+     F = {Ḟ},
+     G = {Ĝ,Ğ,Ġ,Ģ,Ǧ,Ǵ,Ḡ,Ԍ},
+     H = {Ĥ,Ȟ,Ḣ,Ḥ,Ḧ,Ḩ,Ḫ,
+          Н,Ң,Ҥ,Ӈ,Ӊ}, % Cyr
+     I = {Ì,Í,Î,Ȉ,Ï,Į,Ĩ,Ị,Ī,İ,Ǐ,Ỉ,Ȋ,Ĭ,Ḭ,Ï,
+          І,Ї,Ӏ,ӏ}, % Cyr
+     J = {Ĵ,
+          Ј}, % Cyr
+     K = {Ķ,Ǩ,Ḱ,Ḳ,Ḵ,
+          К,Ќ,Қ,Ҝ,Ҟ,Ҡ,Ӄ,Ԟ}, % Cyr
+     L = {Ĺ,Ļ,Ľ,Ḷ,Ḹ,Ḻ,Ḽ}, % L·
+     M = {Ḿ,Ṁ,Ṃ,
+          М,Ӎ}, % Cyr
+     N = {Ñ,Ń,Ņ,Ň,Ǹ,Ṅ,Ṇ,Ṉ,Ṋ,
+          И,Й,Ѝ,Ҋ,Ӣ,Ӥ}, % Cyr
+     O = {Ò,Ó,Ô,Õ,Ö,Ō,Ŏ,Ő,Ǒ,Ǫ,Ǭ,Ȍ,Ȏ,Ȫ,Ȭ,Ȯ,Ȱ,Ṍ,Ṏ,Ṑ,Ṓ,Ọ,Ỏ,Ố,Ồ,Ổ,Ỗ,Ộ,Ớ,Ờ,Ở,Ỡ,Ơ,
+          О,Ѳ,Ӧ,Ө,Ӫ, % Cyr
+          Θ}, % Greek
+     P = {Ṕ,Ṗ,
+          Р,Ҏ},  % Cyr
+     Q = {Ԛ}, % Cyr
+     R = {Ŕ,Ŗ,Ř,Ȑ,Ȓ,Ṙ,Ṛ,Ṝ,Ṟ},
+     S = {Ś,Ŝ,Ş,Š,Ș,Ṡ,Ṣ,Ṥ,Ṧ,Ṩ,
+          Ѕ}, % Cyr
+     T = {Ţ,Ť,Ț,Ṫ,Ṭ,Ṯ,Ṱ,
+          Т,Ҭ}, % Cyr
+     U = {Ù,Ú,Û,Ü,Ũ,Ū,Ŭ,Ů,Ű,Ų,Ǔ,Ǖ,Ǘ,Ǚ,Ǜ,Ȕ,Ȗ,Ṳ,Ṵ,Ṷ,Ṹ,Ṻ,Ụ,Ủ,Ứ,Ừ,Ử,Ữ,Ự},
+     V = {Ṽ,Ṿ},
+     W = {Ŵ,Ẁ,Ẃ,Ẅ,Ẇ,Ẉ,
+          Ԝ}, % Cyr
+     X = {Ẋ,Ẍ,
+          Х,Ҳ,Ӽ,Ӿ},  % Cyr
+     Y = {Ý,Ŷ,Ÿ,Ȳ,Ẏ,Ỳ,Ỵ,Ỷ,Ỹ,
+          Ү,Ұ}, % Cyr
+     Z = {Ź,Ż,Ž,Ẑ,Ẓ,Ẕ},
+     a = {à,á,â,ã,ä,å,ā,ă,ą,ǎ,ǟ,ǡ,ȧ,ǻ,ȁ,ȃ,ḁ,ạ,ả,ầ,ấ,ẩ,ẫ,ậ,ắ,ằ,ẳ,ẵ,ặ, % aʾ
+          а,ӑ,ӓ}, % Cyr
+     æ = {ǽ,
+          ӕ}, % Cyr
+     b = {ḃ,ḅ,ḇ},
+     c = {ç,ć,ĉ,ċ,č,ḉ,
+          с,ҫ}, % Cyr
+     d = {ď,ḋ,ḍ,ḏ,ḑ,ḓ},
+     e = {è,é,ê,ë,ē,ĕ,ė,ę,ě,ȅ,ȩ,ȇ,ḕ,ḗ,ḙ,ḛ,ḝ,ẹ,ẻ,ẽ,ề,ế,ể,ễ,ệ,
+          е,ѐ,ё,ӗ}, % Cyr
+     f = {ḟ,ﬀ}, % /f_f
+     g = {ĝ,ğ,ġ,ģ,ǧ,ǵ,ḡ},
+     h = {ĥ,ȟ,ḣ,ḥ,ḧ,ḩ,ḫ,ẖ,
+          Һ,һ}, % Cyr
+     i = {ı,ì,í,î,ȉ,ǐ,ï,į,ī,ị,ĩ,ḭ,ḯ,ỉ,ȋ,ĭ,
+          і,ї}, % Cyr
+     j = {ĵ,ǰ,
+          ј}, % Cyr
+     k = {ķ,ǩ,ḱ,ḳ,ḵ},
+     l = {ĺ,ļ,ḻ,ḷ,ḹ,ḽ}, % ľ,l·
+     m = {ḿ,ṁ,ṃ},
+     n = {ñ,ń,ņ,ň,ǹ,ṅ,ṇ,ṉ,ṋ}, % ʼn
+     o = {ò,ó,ô,õ,ö,ō,ŏ,ő,ǒ,ǫ,ǭ,ȍ,ȏ,ȫ,ȭ,ȯ,ȱ,ṍ,ṏ,ṑ,ṓ,ọ,ỏ,ồ,ố,ổ,ỗ,ộ,ớ,ờ,ở,ỡ,ợ,
+          о,ѳ,ӧ,ө,ӫ}, % Cyr
+     p = {ṕ,ṗ,
+          р,ҏ}, % Cyr
+     q = {ԛ}, % Cyr
+     r = {ŕ,ŗ,ř,ȑ,ȓ,ṙ,ṛ,ṝ,ṟ},
+     s = {ś,ŝ,ş,š,ș,ṡ,ṣ,ṥ,ṧ,ṩ,
+          ѕ}, % Cyr
+     t = {ţ,ț,ṫ,ṭ,ṯ,ṱ,ẗ}, % ť
+     u = {ù,ú,û,ü,ũ,ū,ŭ,ů,ű,ų,ǔ,ǖ,ǘ,ǚ,ǜ,ȕ,ȗ,ṳ,ṵ,ṷ,ṹ,ṻ,ụ,ủ,ứ,ừ,ử,ữ,ự},
+     v = {ṽ,ṿ},
+     w = {ŵ,ẁ,ẃ,ẅ,ẇ,ẉ,ẘ,
+          ԝ},  % Cyr
+     x = {ẋ,ẍ,
+          х,ҳ}, % Cyr
+     y = {ý,ÿ,ŷ,ȳ,ẏ,ẙ,ỳ,ỵ,ỷ,ỹ,
+          у,ў,ӯ,ӱ,ӳ}, % Cyr
+     z = {ź,ż,ž,ẑ,ẓ,ẕ},
+    % Cyrillic
+     Г = {Ѓ,Ґ,Ғ,Ӷ,Ӻ},
+     Ж = {Җ,Ӝ,Ӂ},
+     З = {Ӟ,Ҙ},
+     Л = {Ӆ},
+     П = {Ԥ},
+     У = {Ў,Ӯ,Ӱ,Ӳ},
+     Ч = {Ҷ,Ҹ,Ӌ,Ӵ},
+     Ы = {Ӹ},
+     Ә = {Ӛ},
+     Ҽ = {Ҿ},
+     г = {ѓ,ґ,ғ,ӷ,ӻ},
+     ж = {җ,ӂ,ӝ},
+     з = {ҙ,ӟ},
+     и = {й,ѝ,ҋ,ӣ,ӥ},
+     к = {ќ,қ,ҝ,ҟ,ҡ,ӄ,ԟ},
+     л = {ӆ},
+     м = {ӎ},
+     н = {ң,ҥ,ӈ,ӊ},
+     п = {ԥ},
+     т = {ҭ},
+     х = {ӽ,ӿ},
+     ч = {ҷ,ҹ,ӌ,ӵ},
+     ш = {щ},
+     ы = {ӹ},
+     э = {ӭ},
+     ҽ = {ҿ},
+     ә = {ӛ},
+     ү = {ұ},
+     Г = {Γ}, % Greek
+     П = {Π}, % Greek
+   }
+
+   % missing: tipa, math, symbols, ...
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+%</CharisSIL>
+%<*PalatinoLinotype>
+\DeclareCharacterInheritance
+   { encoding = {EU1,EU2},
+     family = {PalatinoLinotype} }
+%    \end{macrocode}
+% Unfortunately, I don't have a Palatino variant containing all of the following
+% glyphs, which will therefore not show up here. The following is typeset in
+% \TeX\ Gyre Pagella.
+% To see the real settings, consult \file{mt-PalatinoLinotype.cfg}.
+%{\setmacrofont\PalatinoLinotype
+%    \begin{macrocode}
+   { A = {À,Á,Â,Ã,Ä,Ā,Ă,Ą,Ǎ,Ǟ,Ǡ,Ȧ,Ǻ,Ȁ,Ȃ,Ḁ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ẵ,Ặ,Ꜳ},
+     B = {Ḃ,Ḅ,Ḇ},
+     C = {Ç,Ć,Ĉ,Ḉ,Ċ,Č},
+     D = {Ď,Ḋ,Ḍ,Ḏ,Ḑ,Ḓ},
+     E = {È,É,Ê,Ë,Ē,Ĕ,Ė,Ę,Ě,Ȅ,Ȩ,Ȇ,Ḕ,Ḗ,Ḙ,Ḛ,Ḝ,Ẹ,Ẻ,Ẽ,Ế,Ề,Ể,Ễ,Ệ},
+     F = {Ḟ},
+     G = {Ĝ,Ğ,Ġ,Ģ,Ǧ,Ǵ,Ḡ},
+     H = {Ĥ,Ȟ,Ḣ,Ḥ,Ḧ,Ḩ,Ḫ},
+     I = {Ì,Í,Î,Ȉ,Ï,Į,Ĩ,Ị,Ī,İ,Ǐ,Ỉ,Ȋ,Ĭ,Ḭ,Ï},
+     J = {Ĵ},
+     K = {Ķ,Ǩ,Ḱ,Ḳ,Ḵ},
+     L = {Ĺ,Ļ,Ľ,Ḷ,Ḹ,Ḻ,Ḽ,Ỻ,Ŀ,Ł}, % L·
+     M = {Ḿ,Ṁ,Ṃ},
+     N = {Ñ,Ń,Ņ,Ň,Ǹ,Ṅ,Ṇ,Ṉ,Ṋ},
+     O = {Ò,Ó,Ô,Õ,Ö,Ō,Ŏ,Ő,Ǒ,Ǫ,Ǭ,Ȍ,Ȏ,Ȫ,Ȭ,Ȯ,Ȱ,Ṍ,Ṏ,Ṑ,Ṓ,Ọ,Ỏ,Ố,Ồ,Ổ,Ỗ,Ộ,Ớ,Ờ,Ở,Ỡ,Ơ},
+     P = {Ṕ,Ṗ},
+     R = {Ŕ,Ŗ,Ř,Ȑ,Ȓ,Ṙ,Ṛ,Ṝ,Ṟ},
+     S = {Ś,Ŝ,Ş,Š,Ș,Ṡ,Ṣ,Ṥ,Ṧ,Ṩ},
+     T = {Ţ,Ť,Ț,Ṫ,Ṭ,Ṯ,Ṱ},
+     U = {Ù,Ú,Û,Ü,Ũ,Ū,Ŭ,Ů,Ű,Ų,Ǔ,Ǖ,Ǘ,Ǚ,Ǜ,Ȕ,Ȗ,Ṳ,Ṵ,Ṷ,Ṹ,Ṻ,Ụ,Ủ,Ứ,Ừ,Ử,Ữ,Ự},
+     V = {Ṽ,Ṿ},
+     W = {Ŵ,Ẁ,Ẃ,Ẅ,Ẇ,Ẉ},
+     X = {Ẋ,Ẍ},
+     Y = {Ý,Ŷ,Ÿ,Ȳ,Ẏ,Ỳ,Ỵ,Ỷ,Ỹ},
+     Z = {Ź,Ż,Ž,Ẑ,Ẓ,Ẕ},
+     a = {à,á,â,ã,ä,å,ā,ă,ą,ǎ,ǟ,ǡ,ȧ,ǻ,ȁ,ȃ,ḁ,ạ,ả,ầ,ấ,ẩ,ẫ,ậ,ắ,ằ,ẳ,ẵ,ặ}, % aʾ
+     b = {ḃ,ḅ,ḇ},
+     c = {ç,ć,ĉ,ċ,č,ḉ},
+     d = {ď,ḋ,ḍ,ḏ,ḑ,ḓ},
+     e = {è,é,ê,ë,ē,ĕ,ė,ę,ě,ȅ,ȩ,ȇ,ḕ,ḗ,ḙ,ḛ,ḝ,ẹ,ẻ,ẽ,ề,ế,ể,ễ,ệ},
+     f = {ḟ,ﬀ},
+     g = {ĝ,ğ,ġ,ģ,ǧ,ǵ,ḡ},
+     h = {ĥ,ȟ,ḣ,ḥ,ḧ,ḩ,ḫ,ẖ},
+     i = {ı,ì,í,î,ȉ,ǐ,ï,į,ī,ị,ĩ,ḭ,ḯ,ỉ,ȋ,ĭ},
+     j = {ĵ,ǰ},
+     k = {ķ,ǩ,ḱ,ḳ,ḵ},
+     l = {ĺ,ļ,ḻ,ḷ,ḹ,ḽ}, % ľ,l·
+     m = {ḿ,ṁ,ṃ},
+     n = {ñ,ń,ņ,ň,ǹ,ṅ,ṇ,ṉ,ṋ}, % ʼn
+     o = {ò,ó,ô,õ,ö,ō,ŏ,ő,ǒ,ǫ,ǭ,ȍ,ȏ,ȫ,ȭ,ȯ,ȱ,ṍ,ṏ,ṑ,ṓ,ọ,ỏ,ồ,ố,ổ,ỗ,ộ,ớ,ờ,ở,ỡ,ợ},
+     p = {ṕ,ṗ},
+     r = {ŕ,ŗ,ř,ȑ,ȓ,ṙ,ṛ,ṝ,ṟ},
+     s = {ś,ŝ,ş,š,ș,ṡ,ṣ,ṥ,ṧ,ṩ},
+     t = {ţ,ț,ṫ,ṭ,ṯ,ṱ,ẗ}, % ť
+     u = {ù,ú,û,ü,ũ,ū,ŭ,ů,ű,ų,ǔ,ǖ,ǘ,ǚ,ǜ,ȕ,ȗ,ṳ,ṵ,ṷ,ṹ,ṻ,ụ,ủ,ứ,ừ,ử,ữ,ự},
+     v = {ṽ,ṿ},
+     w = {ŵ,ẁ,ẃ,ẅ,ẇ,ẉ,ẘ},
+     x = {ẋ,ẍ},
+     y = {ý,ÿ,ŷ,ȳ,ẏ,ẙ,ỳ,ỵ,ỷ,ỹ},
+     z = {ź,ż,ž,ẑ,ẓ,ẕ},
+   }
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+%</PalatinoLinotype>
+%    \end{macrocode}
+%
+%\subsection{Character protrusion}
+%\GeneralChanges{Protrusion}
+%\edef\x{\string\def\string\utfsectionii{\number\numexpr\thepage-\startpage\relax}}
+%\immediate\write\expandafter\utftmp\expandafter{\x}
+%
+%    \begin{macrocode}
+
+%%% -----------------------------------------------------------------------
+%%% PROTRUSION
+
+%<*LatinModernRoman>
+\SetProtrusion
+   [ name     = LMR-default ]
+   { encoding = {EU1,EU2},
+     family   = Latin Modern Roman }
+   {
+%    \end{macrocode}
+%{\setmacrofont\LMR
+%    \begin{macrocode}
+     A = {50,50},
+     Æ = {50,  },
+     F = {  ,50},
+     J = {50,  },
+     K = {  ,50},
+     L = {  ,50},
+     T = {50,50},
+     V = {50,50},
+     W = {50,50},
+     X = {50,50},
+     Y = {50,50},
+     k = {  ,50},
+     r = {  ,50},
+     t = {  ,70},
+     v = {50,50},
+     w = {50,50},
+     x = {50,50},
+     y = {50,70},
+     0 = {  ,50},
+     1 = {100,200},
+     2 = {50,50},
+     3 = {50,50},
+     4 = {70,70},
+     5 = {  ,50},
+     6 = {  ,50},
+     7 = {50,100},
+     8 = {  ,50},
+     9 = {  ,50},
+     . = { ,700},
+    {,}= { ,500},
+     : = { ,500},
+     ; = { ,500},
+     ! = { ,100},
+     ? = { ,200},
+     @ = {50,50},
+     ~ = {200,250},
+    \% = {50,50},
+     * = {300,300},
+     + = {250,250},
+     - = {400,500},  % /hyphen
+     – = {400,300},  % /endash
+     — = {300,200},  % /emdash
+     _ = {200,200},  % /underscore
+     / = {200,300},
+    /backslash    = {200,300},
+     ' = {300,400}, % /quotesingle
+     ‘ = {500,700},  ’ = {500,600},
+     “ = {500,300},  ” = {200,600},
+     ‚ = {400,400},  „ = {400,400},
+     ‹ = {400,400},  › = {300,500},
+     « = {300,200},  » = {100,400},
+     ¡ = {100,   },  ¿ = {100,   },
+     ( = {300,   },  ) = {   ,300},
+     <  = {200,100}, > = {100,200}, 
+    /braceleft = {400,200}, /braceright = {200,400},
+    /angleleft = {400,   }, /angleright = {   ,400},
+     † = {100,100},
+     ‡ = { 80, 80},
+     • = {200,200},
+     · = {400,450}, % / periodcentered
+     ℃ = { 80, 50},
+     ₡ = {   , 50},
+     ° = {400,400},
+     ™ = {100,200},
+     © = {100,100},
+     ® = {100,100},
+     ª = {100,200},
+     º = {100,200},
+     ¹ = {200,250},
+     ² = { 50,100},
+     ³ = { 50,100},
+     ¬ = {200,   },
+     − = {300,300},
+     ± = {150,200},
+     × = {150,250},
+     ÷ = {150,250},
+     € = {100,   },
+    /one.oldstyle   = {100,100},
+    /two.oldstyle   = { 50, 50},
+    /three.oldstyle = { 30, 80},
+    /four.oldstyle  = { 50, 50},
+    /seven.oldstyle = { 50, 80},
+     Γ = {   ,180}, % /Gamma
+     Δ = {100,100}, % /Delta
+     Θ = { 50, 50}, % /Theta
+     Λ = {100,100}, % /Lambda
+%    Ξ = {,},       % /Xi
+%    Π = {,},       % /Pi
+     Σ = { 50, 50}, % /Sigma
+     Υ = {100,100}, % /Upsilon
+     Φ = { 50, 50}, % /Phi
+     Ψ = { 50, 50}, % /Psi
+%    Ω = {,},       % /Omega
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+
+\SetProtrusion
+   [ name     = LMR-it ]
+   { encoding = {EU1,EU2},
+     family   = Latin Modern Roman,
+     shape    = {it,sl}       }
+   {
+%    \end{macrocode}
+%{\setmacrofont\LMR
+%    \begin{macrocode}
+     A = {125,100},
+     Æ = {125,-55},
+     B = {90,-40},
+     C = {145,-75},
+     D = {75, -28},
+     E = {80,-55},
+     F = {85,-80},
+     G = {153,-15},
+     H = {73,-60},
+     I = {140,-120},
+     Ĳ = {140,-80},
+     J = {135,-80},
+     K = {70,-30},
+     L = {87, 40},
+     M = {67,-45},
+     N = {75,-55},
+     O = {150,-30},
+     Œ = {150,-55},
+     P = {82,-50},
+     Q = {150,-30},
+     R = {75, 15},
+     S = {90,-65},
+     $ = {100,-20},
+     T = {220,-85},
+     U = {230,-55},
+     V = {260,-60},
+     W = {185,-55},
+     X = {70,-30},
+     Y = {250,-60},
+     Z = {90,-60},
+     a = {150,-10},
+     b = {170,   },
+     c = {173,-10},
+     d = {150,-55},
+     e = {180, },
+     f = {  ,-250},
+     g = {150,-10},
+     h = {100, },
+     i = {210, },
+     ĳ = {210,-40},
+     j = {  ,-40},
+     k = {110,-50},
+     l = {240,-110},
+     m = {80, },
+     n = {115, },
+     o = {155, },
+     q = {170,-40},
+     r = {155,-40},
+     s = {130, },
+     t = {230,-10},
+     u = {120, },
+     v = {140,-25},
+     w = {98,-20},
+     x = {65,-40},
+     y = {130,-20},
+     z = {110,-80},
+     0 = {170,-85},
+     1 = {230,110},
+     2 = {130,-70},
+     3 = {140,-70},
+     4 = {130,80},
+     5 = {160, },
+     6 = {175,-30},
+     7 = {250,-150},
+     8 = {130,-40},
+     9 = {155,-80},
+     . = { ,500},
+    {,}= { ,450},
+     : = { ,300},
+     ; = { ,300},
+     & = {130,30},
+    \% = {180,50},
+     * = {380,20},
+     + = {180,200},
+     @ = {180,10},
+     ~ = {200,150},
+     ( = {300, },    ) = {  ,70},
+     / = {100,100},
+     - = {500,300}, % /hyphen
+     – = {500,300}, % /endash
+     — = {400,170}, % /emdash
+     _ = {100,200}, % /underscore
+     ' = {300,400}, % /quotesingle
+     " = {500,300},
+     ‘ = {800,200},  ’ = {800,-20},
+     “ = {540,100},  ” = {500,100},
+     ‚ = {300,700},  „ = {200,600},
+     ‹ = {500,300},  › = {400,400},
+     « = {400,100},  » = {200,300},
+     ¡ = {200,   },  ¿ = {200,   },
+     < = {300,100},  > = {200,100},
+    /backslash   = {300,300},
+    /braceleft   = {400,100},   /braceright    = {200,200},
+     † = {200, 80},
+     ‡ = {120, 80},
+     • = {220,100},
+     · = {550,300}, % / periodcentered
+     ℃ = {170,   },
+     ₡ = {100, 50},
+     ¶ = {200,   },
+     ° = {500,300},
+     ™ = {200, 70},
+     © = { 50, 70},
+     ® = { 50, 70},
+     ª = {140,100},
+     º = {140,100},
+     ¹ = {400,150},
+     ² = {250, 80},
+     ³ = {250, 80},
+     ¬ = {250, 80},
+     − = {300,200},
+     ± = {150,170},
+     × = {200,200},
+     ÷ = {200,200},
+     € = {150,   },
+    /one.oldstyle   = {100,100},
+    /two.oldstyle   = {100, 80},
+    /three.oldstyle = { 80, 50},
+    /four.oldstyle  = { 80, 80},
+    /five.oldstyle  = { 50,   },
+    /six.oldstyle   = { 50,   },
+    /seven.oldstyle = { 80, 80},
+    /eight.oldstyle = { 50,   },
+     Γ = {100,120}, % /Gamma
+     Δ = {120,100}, % /Delta
+     Θ = {120, 50}, % /Theta
+     Λ = {130,100}, % /Lambda
+     Ξ = {100,},    % /Xi
+     Π = {100,},    % /Pi
+     Σ = {100, 50}, % /Sigma
+     Υ = {180,100}, % /Upsilon
+     Φ = {130, 70}, % /Phi
+     Ψ = {130, 50}, % /Psi
+     Ω = { 50,},    % /Omega
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+%</LatinModernRoman>
+%<*CharisSIL>
+\SetProtrusion
+   [ name     = Charis-default ]
+   { encoding = {EU1,EU2},
+     family   = Charis SIL }
+   {
+%    \end{macrocode}
+%{\setmacrofont\CharisSIL
+%    \begin{macrocode}
+     A = {50,50},
+     Æ = {50,50},
+     C = {50,  },
+     D = {  ,50},
+     F = {  ,50},
+     G = {50,  },
+     J = {100, },
+     K = {  ,50},
+     L = {  ,50},
+     Ŀ = {  ,100},
+     O = {50,50},
+     Œ = {50,  },
+     P = {  ,50},
+     Q = {50,70},
+     R = {  ,50},
+     ẞ = {  ,40}, % capital sharp s
+     T = {50,50},
+     V = {50,50},
+     W = {50,50},
+     X = {50,50},
+     Y = {50,50},
+     k = {  ,50},
+     ŀ = {  ,150},
+     r = {  ,50},
+     t = {  ,50},
+     v = {50,50},
+     w = {50,50},
+     x = {50,50},
+     y = {  ,50},
+     1 = {150,150},
+     2 = {50,50},
+     3 = {50,  },
+     4 = {100,50},
+     6 = {50,  },
+     7 = {50,80},
+     9 = {50,50},
+     . = { ,600},
+    {,}= { ,500},
+     : = { ,400},
+     ; = { ,300},
+     ! = { ,100},
+     ? = { ,200},
+     @ = {50,50},
+     ~ = {200,250},
+    \% = {  ,50},
+     * = {300,300},
+     + = {200,250},
+     / = { ,200},
+    /backslash = {150,200},
+     | = {200,200},
+     - = {400,500}, % hyphen
+     – = {200,300}, % endash
+     — = {150,250}, % emdash
+     ― = {200,200}, % Horizontal Bar = \texttwelveudash
+     ‒ = {150,150}, % Figure Dash = \textthreequartersemdash
+     _ = {100,100},
+    {=} = {100,100},
+     ‘ = {300,400},  ’ = {300,400},
+     “ = {300,300},  ” = {300,300},
+     ‚ = {400,400},  „ = {300,300},
+     ‹ = {400,300},  › = {300,400},
+     « = {200,200},  » = {150,300},
+     ¡ = {100,   },  ¿ = {100,   },
+     ( = {200,   },  ) = {   ,200},
+     < = {200,150},  > = {100,200}, 
+     [ = {100,   },  ] = {   ,100},
+    /braceleft = {200,   }, /braceright = {   ,300},
+     † = { 80, 80},
+     ‡ = {100,100},
+     • = {200,200},
+     ° = {150,200},
+     ™ = {150,150},
+     ¢ = { 50,   },
+     £ = { 50,   },
+     ¦ = {200,200},
+     © = {100,100},
+     ® = {100,100},
+     ª = {100,200},
+     º = {200,200},
+     ¬ = {200, 50},
+     µ = {   ,100},
+     ¶ = {   ,100},
+     · = {300,400},
+     ¹ = {200,300},
+     ² = {100,200},
+     ³ = {100,200},
+     € = {100,   },
+     ± = {150,200},
+     × = {200,200},
+     ÷ = {250,250},
+    /minus = {200,200},
+     − = {200,200},
+    % Cyrillic
+     Б = {  ,50},
+     Г = {  ,130},
+     Ж = {50,50},
+     З = {30,50},
+     Л = {50,  },
+     У = {50,50},
+     Ф = {50,50},
+     Ч = {100, },
+     Ъ = {  ,50},
+     Ь = {  ,50},
+     Э = {50,50},
+     Ю = {  ,40},
+     Я = {50,  },
+     Ѵ = {50,50},
+     Ҽ = {50,  },
+     Ђ = {50,100},
+     Є = {50,  },
+     Љ = {50,50},
+     Њ = {  ,50},
+     Ћ = {50,50},
+     Ԅ = {100,100},
+     Ԇ = {50,50},
+     Ѣ = {  ,50},
+     Ҍ = {  ,50},
+     Ԉ = {50,80},
+     Ԋ = {  ,80},
+     Ԏ = {50,50},
+     Ԓ = {50,  },
+     Ԕ = {50,40},
+     Ԗ = {  ,50},
+     Ԙ = {50,  },
+     Ԡ = {  ,50},
+     Ԣ = {  ,50},
+     Ԃ = {  ,100},
+     б = {50,50},
+     г = {  ,70},
+     к = {  ,50},
+     л = {50,  },
+     т = {50,50},
+     ф = {50,50},
+     ч = {50,  },
+     ъ = {  ,50},
+     ь = {  ,50},
+     э = {  ,50},
+     я = {50,  },
+     љ = {50,  },
+     њ = {  ,50},
+     ѣ = {  ,50},
+     ѵ = {50,50},
+     ҽ = {50,  },
+     ҍ = {  ,50},
+     ү = {50,50},
+     ҕ = {  ,50},
+     ҧ = {  ,50},
+     ԃ = {  ,100},
+     ԅ = {100,100},
+     ԇ = {50,50},
+     ԉ = {50,70},
+     ԋ = {  ,70},
+     ԙ = {50,30},
+     ԡ = {  ,50},
+     ԣ = {  ,50},
+     %     Д П Ц Ш Щ Ы Ҕ Ҧ Ҩ Ә Ҵ Џ Ӭ Ӡ Ԑ Ԁ
+     %     в д ж з и м н п ц ш ы ю ђ є ћ џ ә ԑ ҩ ҵ ӡ ԁ ԍ ԏ ԓ ԕ ԗ
+    % Greek
+     Δ = {50,50},
+     Ψ = {50,50},
+     γ = {70,70},
+     λ = {40,70},
+     π = {40,50},
+     ρ = {  ,50},
+     σ = {  ,50},
+     χ = {50,50},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+}
+
+\SetProtrusion
+   [ name     = Charis-it   ]
+   { encoding = {EU1,EU2},
+     family   = Charis SIL,
+     shape    = {it,sl}  }
+   {
+%    \end{macrocode}
+%{\setmacrofont\CharisSIL
+%    \begin{macrocode}
+     C = {50,  },
+     G = {50,  },
+     J = {50,  },
+     L = {50,50},
+     O = {50,  },
+     Œ = {50,  },
+     Q = {50,  },
+     S = {50,  },
+     $ = {50,  },
+     T = {70,  },
+     o = {50,50},
+     p = {  ,50},
+     q = {50,  },
+     t = {  ,50},
+     w = {  ,50},
+     y = {  ,50},
+     1 = {150,100},
+     3 = {50,  },
+     4 = {100, },
+     6 = {50,  },
+     7 = {100, },
+     . = { ,700},
+    {,}= { ,600},
+     : = { ,400},
+     ; = { ,400},
+     ? = { ,150},
+     & = {  ,80},
+    \% = {50,50},
+     * = {300,200},
+     + = {250,250},
+     @ = {80,50},
+     ~ = {150,150},
+     / = {  ,150},
+    /backslash = {150,150},
+     - = {300,400}, % hyphen
+     – = {200,300}, % endash
+     — = {150,200}, % emdash
+     _ = {  ,100},
+    {=} = {200,200},
+     ± = {150,200},
+     × = {250,250},
+     ÷ = {250,250},
+     ° = {150,200},
+     · = {300,400},
+     ‘ = {400,200},  ’ = {400,200},
+     “ = {300,200},  ” = {400,200},
+     ‚ = {200,500},  „ = {150,500},
+     ‹ = {300,400},  › = {200,500},
+     « = {200,300},  » = {150,400},
+     ( = {200,   },  ) = {   ,200},
+     < = {200,200},  > = {200,200}, 
+    /braceleft = {300,   }, /braceright = {   ,200},
+   % Cyrillic
+     Ж = {50,30},
+     Л = {50,  },
+     У = {50,30},
+     Ф = {50,  },
+     Ч = {100, },
+     Ъ = {  ,50},
+     Ь = {  ,50},
+     Э = {50,50},
+     Я = {50,  },
+     Ѵ = {50,50},
+     Љ = {50,50},
+     Ԅ = {140,100},
+     Ԇ = {70,50},
+     Ԉ = {50,80},
+     Ԋ = {  ,80},
+     Ԏ = {50,50},
+     г = {50,50},
+     д = {50,30},
+     м = {50,  },
+     ф = {50,  },
+     ч = {50,  },
+     ъ = {  ,50},
+     ь = {  ,50},
+     э = {  ,50},
+     я = {50,  },
+     љ = {50,50},
+     њ = {  ,50},
+     ѵ = {50,50},
+     ҍ = {  ,50},
+     ԅ = {140,100},
+     ԇ = {70,50},
+     ԉ = {50,70},
+     ԋ = {  ,70},
+    % Greek
+     Γ = {  ,130},
+     Δ = {50,50},
+     Ψ = {50,50},
+     γ = {70,70},
+     λ = {40,70},
+     π = {40,50},
+     ρ = {  ,50},
+     σ = {  ,50},
+     χ = {50,50},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+
+\SetProtrusion
+   [ name     = Charis-sc,
+     load     = Charis-default   ]
+   { encoding = {EU1,EU2},
+     family   = Charis SIL,
+     shape    = {sc}  }
+   {
+%    \end{macrocode}
+%{\setmacrofont\CharisSIL
+%    \begin{macrocode}
+    % ᴀ = {100,100}, % etc., doesn't work with \textsc
+     /a.SC = {100,100},
+     /c.SC = {50,  },
+     /d.SC = {  ,50},
+     /f.SC = {  ,50},
+     /g.SC = {50,  },
+     /j.SC = {100, },
+     /k.SC = {  ,50},
+     /l.SC = {  ,50},
+   /f_l.SC = {  ,50},
+     /o.SC = {50,50},
+    /oe.SC = {50,  },
+     /q.SC = {50,70},
+     /r.SC = {  ,50},
+     /t.SC = {50,100},
+     /v.SC = {50,50},
+     /w.SC = {50,50},
+     /x.SC = {50,50},
+     /y.SC = {50,50}
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+%</CharisSIL>
+%<*PalatinoLinotype>
+\SetProtrusion
+   [ name     = palatino-default ]
+   { encoding = {EU1,EU2},
+     family   = {PalatinoLinotype} }
+   {
+%    \end{macrocode}
+%{\setmacrofont\PalatinoLinotype
+%    \begin{macrocode}
+     A = {50,50},
+     D = {  ,50},
+     J = {50,  },
+     K = {  ,50},
+     L = {  ,50},
+     O = {25,  },
+     T = {50,50},
+     V = {50,50},
+     W = {50,50},
+     X = {50,50},
+     Y = {50,50},
+     b = {  ,25},
+     d = {25,30},
+     f = {  ,50},
+     g = {  ,100},
+     k = {  ,50},
+     p = {  ,50},
+     q = {50,  },
+     r = {  ,50},
+     t = {  ,50}, ﬆ = { ,50}, ﬅ = {  ,50},
+     v = {75,50},
+     w = {50,50},
+     x = {50,50},
+     y = {50,70},
+     1 = {100,50},
+     2 = {25,50},
+     4 = {50,  },
+     6 = {50,  },
+     9 = {25,  },
+     Æ = {100, },
+     Œ = {25,  },
+     . = { ,700},      ‥ = { ,350},    … = {,150},
+    {,}= { ,500},
+     : = { ,500},
+     ; = { ,500},
+     ! = { ,100},      ‼ = { ,100},
+     ? = { ,200},      ‽ = { ,200},
+     @ = {50,50},
+     ~ = {200,250},
+     & = {50,100},
+    \% = {100,100},
+     * = {200,200},
+     + = {250,250},
+     ( = {100,   },    ) = {   ,300},
+     / = {200,300},
+     - = {400,500},
+     \textendash       = {300,300},   \textemdash        = {200,200},
+     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
+     \textquotedblleft = {300,400},   \textquotedblright = {300,400},
+     \textbackslash    = {200,300},
+     \quotesinglbase   = {400,400},   \quotedblbase      = {400,400},
+     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
+     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
+     \textexclamdown   = {100,   },   \textquestiondown  = {100,   },
+     \textbraceleft    = {400,200},   \textbraceright    = {200,400},
+     \textless         = {200,100},   \textgreater       = {100,200},
+     ≤                 = {200,100},   ≥                  = {100,200},
+     \textminus                = {300,300},
+     \texttrademark            = {200,200},
+     \textcopyright            = {200,200},
+     \textregistered           = {200,200},
+     \textdegree               = {300,300},
+     ¦                = {450,500},    ¬                  = {250,150},
+     ⌐                = {150,250},
+     ·                         = {850, 700},
+     ¶                         = {100,0},
+     ×                         = {150, 300},
+     ª                 = {300,300},   º                  = {300,300},
+     ⁰ = {200,400},
+     ¹ = {400,350},          ² = {200,300},            ³ = {250,400},
+     ⁴ = {250,350},          ⁵ = {200,300},            ⁶ = {250,400},
+     ⁷ = {200,450},          ⁸ = {250,400},            ⁹ = {200,350},
+     ₀ = {200,400},
+     ₁ = {400,250},          ₂ = {200,300},            ₃ = {250,400},
+     ₄ = {250,350},          ₅ = {200,300},            ₆ = {250,400},
+     ₇ = {200,450},          ₈ = {250,400},            ₉ = {200,350},
+     ± = {150,100},                                    ÷ = {300,300},
+     þ = {  ,25},
+     ₊ = {300,450},          ₋ = {300,450},
+     ⁺ = {300,450},          ⁻ = {300,450},
+     †                = {200,250},    ‡                  = {200,250},
+     π = {50,  },
+     ſ = {  ,50},
+     № = {100,150},
+     \textservicemark          = {100,200},
+     ‐ = {400,500},          ‑ = {400,500},            ‒ = {200,300},
+     – = {205,305},          — = {200,300},            ― = {50,150},
+     • = {125,200},
+%     /a.sc = {50,50},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+
+\SetProtrusion
+   [ name     = palatino-it   ]
+   { encoding = {EU1,EU2},
+     family   = {PalatinoLinotype},
+     shape    = {it,sl}  }
+   {
+%    \end{macrocode}
+%{\setmacrofont\PalatinoLinotype
+%    \begin{macrocode}
+     A = {50,50},
+     Æ = {50,  },
+     B = {50,  },
+     C = {50,  },
+     D = {50,50},
+     E = {50,  },
+     F = {50,  },
+     G = {50,  },
+     H = {50,  },
+     K = {50,  },
+     L = {50,  },
+     O = {50,  },
+     Œ = {50,  },
+     P = {50,  },
+     Q = {50,  },
+     R = {50,  },
+     S = {50,  },
+     $ = {50,  },
+     T = {100, },
+     U = {50,  },
+     V = {100,50},
+     W = {50,  },
+     X = {50,  },
+     Y = {100,50},
+     b = {  ,50},
+     c = {25,  },
+     g = {75,  },
+     i = {25,  },
+     m = {  ,50},
+     n = {  ,50},
+     p = {  ,25},
+     q = {25,  },
+     x = {  ,50},
+     1 = {100, },
+     2 = {50,  },
+     4 = {50,  },
+     7 = {50,  },
+     . = { ,500},      ‥ = { ,350},    … = { ,200},
+    {,}= { ,500},
+     : = { ,300},
+     ; = { ,300},
+     ? = { ,300},      ‽ = { ,300},
+     & = {50,50},
+    \% = {100,100},
+     * = {200,200},
+     + = {150,200},
+     @ = {50,50},
+     ~ = {200,150},
+     ( = {200, },    ) = {  ,200},
+     / = {100,200},
+     - = {300,500},
+     \textendash       = {300,300},   \textemdash        = {200,200},
+     \textquoteleft    = {700,400},   \textquoteright    = {700,400},
+     \textquotedblleft = {500,300},   \textquotedblright = {500,300},
+     _ = {100,100},
+     \textbackslash    = {100,200},
+     \quotesinglbase   = {500,500},   \quotedblbase      = {400,400},
+     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
+     \guillemotleft    = {300,300},   \guillemotright    = {300,300},
+     \textexclamdown   = {100,   },   \textquestiondown  = {200,   },
+     \textbraceleft    = {200,100},   \textbraceright    = {200,200},
+     \textless         = {300,100},   \textgreater       = {200,100},
+     ≤                 = {200,100},   ≥                  = {100,200},
+     ¦                 = {450,500},   ¬                  = {250,150},
+     ·                         = {850, 700},
+     ¶                         = {100,0},
+     ×                         = {150, 300},
+     ª = {300,250},          ° = {300,300},            º = {300,250},
+     ⁰ = {300,200},
+     ¹ = {300,150},          ² = {350,200},            ³ = {250,150},
+     ⁴ = {350,100},          ⁵ = {300, 50},            ⁶ = {400,100},
+     ⁷ = {400, 50},          ⁸ = {250, 50},            ⁹ = {300, 50},
+     ₀ = {300,300},
+     ₁ = {300,350},          ₂ = {300,150},            ₃ = {250,250},
+     ₄ = {400,200},          ₅ = {300,100},            ₆ = {450,200},
+     ₇ = {450,150},          ₈ = {400,250},            ₉ = {400,200},
+     ± = {150,100},                                    ÷ = {300,300},
+     þ = { 50,   },
+     †                = {250,200},    ‡                  = {250,200},
+     ₊ = {300,450},          ₋ = {300,450},
+     ⁺ = {300,450},          ⁻ = {300,450},
+     ‐ = {300,500},          ‑ = {300,500},            ‒ = {100,300},
+     – = {125,305},          — = {200,300},            ― = {125,150},
+     • = {125,200}
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+
+\SetProtrusion
+   [ name     = palatino-sc,
+     load     = palatino-default ]
+   { encoding = {EU1,EU2},
+     family   = {PalatinoLinotype},
+     shape    = sc }
+   {
+%    \end{macrocode}
+%{\setmacrofont\PalatinoLinotype
+%    \begin{macrocode}
+     a = {50,50},
+     æ = {50,  },
+     b = { 0, 0},
+     d = { 0, 0},
+     f = { 0, 0},
+     g = { 0, 0},
+     j = {50,  },
+     l = {  ,50},
+     o = { 0, 0},
+     p = { 0, 0},
+     q = { 0,  },
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50},
+     ﬂ = { 0,50},
+     ﬄ = { 0,50},
+     ﬅ = { 0,50},
+     ﬆ  = { 0,50}
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+   }
+%</PalatinoLinotype>
+
+%    \end{macrocode}
+%\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
+%\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
+%\immediate\closeout\utftmp
+%
+\endinput
