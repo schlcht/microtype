@@ -1,0 +1,493 @@
+%
+\ProvidesFile{microtype-logo.dtx}[2009/06/08]
+%
+%\iffalse meta-comment
+% ^^A ========================================================================
+% You can treat this file in three different ways:
+%\begin{itemize}
+%  \item compile it by itself
+%  \item \verb|\input| it in the body of a \file{dtx} file
+%  \item \verb|\input| it in the preamble: it then provides the command
+%     \verb|\printlogo|, which will do just that
+%\end{itemize}
+%
+% The first two cases require the style file \file{microtype-doc.sty}, which can
+% be generated from \file{microtype.ins} with:
+%\begin{verbatim}
+%\makefile{microtype-doc.sty}{docsty}
+%\end{verbatim}
+% ^^A ========================================================================
+%\fi
+%
+% ^^A don't count the backslashes in this document
+%\makeatletter
+%\let\orig@step@checksum\step@checksum
+%\let\step@checksum\relax
+%\makeatother
+%
+% \section{The title logo}
+% \label{sec:title-logo}
+%
+%    \begin{macrocode}
+%<*logo>
+%    \end{macrocode}
+% Here's how the logo on the title page was created.\footnote{
+%     Note that the |logo| module will not be created when installing
+%     \microtype. Instead, I've included the source in the \acronym{PDF} file
+%     as an attachment. If your \acronym{PDF} reader supports this, you can
+%       \textattachfile
+%        [color={0.02 0.04 0.48},mimetype=text/plain]{microtype-logo.dtx}
+%        {click here}
+%     to extract it; alternatively, you may us the |pdftk| tool.}
+% It has nothing to do with \microtype, actually, but uses \pkg{fontinst}. It is
+% based on an experiment I posted to the \url{de.comp.text.tex} newsgroup.\footnote{
+%     Message ID: \nolinkurl{42aa3687$0$24366$9b4e6d93@newsread2.arcor-online.net}}
+% It will show:
+%\begin{itemize}
+%  \item the character
+%  \item the \TeX\ box
+%  \item the bounding box
+%  \item kerns
+%\end{itemize}
+%
+% \subsection{Macros}
+%
+% To run this file, \TeX\ needs to find the \file{afm} file (either in the
+% |TEXINPUTS| path, or in the current working directory).
+%
+% First input \pkg{fontinst}.
+%    \begin{macrocode}
+\input fontinst.sty
+%    \end{macrocode}
+% \file{bbox.sty} is an addition to \pkg{fontinst}, which makes dimensions of
+% the bounding boxes available (and was written by \thanh, by the way). These
+% dimensions are specified in the \file{afm} file, but not used by \TeX, which
+% is why \pkg{fontinst} will discard them otherwise.
+%    \begin{macrocode}
+\input bbox.sty
+%    \end{macrocode}
+%\begin{macro}{\tempdim}
+% Allocate some dimen registers.
+%    \begin{macrocode}
+\newdimen\tempdim
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\fboxrulei}
+% Frame width of the box as \TeX\ sees it.
+%    \begin{macrocode}
+\newdimen\fboxrulei
+\fboxrulei=0.1pt
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\fboxruleii}
+% Frame width of the bounding box.
+%    \begin{macrocode}
+\newdimen\fboxruleii
+\fboxruleii=0.1pt
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\kernboxheight}
+% Height of the box indicating the kern.
+%    \begin{macrocode}
+\newdimen\kernboxheight
+\kernboxheight=5pt
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\scaletoem}
+% An auxiliary macro. Return a dimension relative to the |em|-width of the font.
+% Requires \etex.
+%    \begin{macrocode}
+\setcommand\scaletoem#1{\dimexpr #1 sp*\fontdimen6\font/1000\relax}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\showlogo}
+% A \pkg{fontinst} incantation whose sole purpose is to produce the logo.
+% Its argument is a string (letters only).
+%    \begin{macrocode}
+\fontinstcc
+\def\showlogo#1{%
+%    \end{macrocode}
+% Some fonts do not specify the \fontdim6 (width of an |em|) in the |afm|
+% file. In this case, use the font size, which is correct in most cases.
+%    \begin{macrocode}
+   \ifdim\fontdimen6\font = 0pt
+      \typeout{***~Warning:~no~fontdimen~6~specified~***^^J%
+               ***~setting~it~to~\pdffontsize\font \ifnum\pdftexversion < 130 pt\fi~***}
+      \fontdimen6\font=\pdffontsize\font \ifnum\pdftexversion < 130 pt\fi\relax
+   \fi
+  \installfonts
+    \input_metrics{}{\logofont,\metrics\printbbs{#1}\relax}
+  \endinstallfonts
+}
+\normalcc
+%    \end{macrocode}
+%\end{macro}
+% Layers.
+%    \begin{macrocode}
+\makeatletter
+\def\mtl@layer#1#2{\pdfliteral{/OC/#1 BDC}#2\pdfliteral{EMC}}
+\ifx\mt@objects\@undefined\let\mt@objects\@empty\fi
+\ifx\mt@order  \@undefined\let\mt@order  \@empty\fi
+\xdef\mt@order{\mt@order[(Logo)}
+\let\mtl@resources\@empty
+\def\mtl@register#1{%
+  \immediate\pdfobj{<< /Type/OCG /Name(#1) >>}
+  \expandafter\xdef\csname mtl@#1\endcsname{\the\pdflastobj\space 0 R }
+  \xdef\mt@objects{\mt@objects\csname mtl@#1\endcsname}
+  \xdef\mt@order{\mt@order\csname mtl@#1\endcsname}
+  \xdef\mtl@resources{\mtl@resources/#1 \csname mtl@#1\endcsname}}
+\mtl@register{canvas}
+\mtl@register{characters}
+\mtl@register{bounding-boxes}
+\mtl@register{TeX-boxes}
+\xdef\mt@order{\mt@order]}
+\global\let\mtl@objects\mt@objects
+\ifx\pdfcolorstack\@undefined
+  \pdfcatalog{/OCProperties <<
+                /OCGs [\mt@objects]
+                /D << /Order [\mt@order] >> >>}
+\fi
+\def\togglelayer#1#2{%
+  \pdfstartlink width \wd\logobox height \ht\logobox depth \dp\logobox
+    user{/Subtype/Link
+         /BS << /Type/Border/W 0 >> /H/O
+         /A << /S/SetOCGState
+               /State[/Toggle \csname mtl@#1\endcsname] >>
+  }#2\pdfendlink
+}
+%    \end{macrocode}
+%\begin{macro}{\printbbs}
+% Preparation.
+%    \begin{macrocode}
+\setcommand\printbbs#1{%
+  \setbox0\hbox{#1}%
+  \leavevmode
+  \kern-\fboxrulei
+%    \end{macrocode}
+% The canvas in the natural width of the text minus protrusion, in color
+% |bgcolor|.
+%    \begin{macrocode}
+  \mtl@layer{canvas}{%
+    \getboundarychars#1\relax
+    \tempdim=\dimexpr\wd0 - (\scaletoem{\lpcode\font\firstchar}+
+                             \scaletoem{\rpcode\font\lastchar})\relax
+    \kern\dimexpr\scaletoem{\lpcode\font\firstchar}\relax
+    \lower\dimexpr\dp0+0.05em \relax \vbox{\color{bgcolor}%
+          \hrule width  \tempdim
+                 height \dimexpr\dp0+\ht0+0.15em\relax}%
+    \kern-\tempdim
+%    \end{macrocode}
+% The baseline, in color |blcolor|.
+%    \begin{macrocode}
+    \vbox{\color{blcolor}%
+          \hrule width  \tempdim
+                 height \fboxrulei}%
+  }%
+  \kern-\dimexpr\wd0 -\scaletoem{\rpcode\font\lastchar}\relax
+%    \end{macrocode}
+% The string.
+%    \begin{macrocode}
+  \printbbss #1\relax\relax
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\getboundarychars}
+% Get first~\dots.
+%    \begin{macrocode}
+\def\getboundarychars#1#2\relax{%
+   \def\firstchar{`#1}%
+   \getlastchar#1#2\relax
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\getlastchar}
+% \dots~and last character.
+%    \begin{macrocode}
+\def\getlastchar#1#2{%
+   \ifx\relax#2\relax
+      \def\lastchar{`#1}%
+   \else
+      \expandafter\getlastchar
+   \fi
+   #2%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\printbbss}
+% Loop over all characters of the string.
+%    \begin{macrocode}
+\def\printbbss#1#2#3\relax{%
+   \ifx\relax#1\relax
+   \else
+      \ifx\relax#2\relax
+         \printbb{#1}{}%
+      \else
+         \printbb{#1}{#2}%
+      \fi
+      \expandafter\printbbss
+   \fi
+   #2#3\relax
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\printbb}
+% Record the kern between the current and the following character, then print the
+% character. \cmd{\kerning} is a \pkg{fontinst} command.
+%    \begin{macrocode}
+\setcommand\printbb#1#2{%
+   \setbox0\hbox{\kerning{#1}{#2}\xdef\thekern{\number\result}}%
+   \showboxes{#1}%
+%    \end{macrocode}
+% This could be another application.
+%    \begin{macrocode}
+%      \quad
+%     w: \the\scaletoem{\width{#1}},
+%     bb: \the\scaletoem{\bbleft{#1}}/%
+%         \the\scaletoem{\bbright{#1}},
+%         \the\scaletoem{\number\numexpr\width{#1}-\bbright{#1}\relax}
+%     h: \height{#1}/\bbtop{#1}, \bbbottom{#1}/\depth{#1}\par
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\showboxes}
+% Print the boxes for character \meta{\#1}. This will not work if \meta{\#1} is
+% not also the PostScript name of the glyph (\eg, `comma' =\llap{/\,} `,').
+%    \begin{macrocode}
+\setcommand\showboxes#1{%
+  \leavevmode
+  \color{texcolor}%
+%    \end{macrocode}
+% We have to record the width of the glyph.
+%    \begin{macrocode}
+  \setbox0\hbox{{\color{textcolor}#1}}%
+  \global\tempdim=\wd0\relax
+  \kern-\fboxrulei
+%    \end{macrocode}
+%\begin{enumerate}
+%\item \textit{The \TeX\ box:}
+% Print a frame in color |texcolor|. This frame shows the glyph as \TeX\ sees
+% it.
+%    \begin{macrocode}
+  \mtl@layer{TeX-boxes}{%
+    \hbox{%
+      \lower\dimexpr \dp0 + \fboxrulei\relax
+      \hbox{%
+        \vbox{%
+          \hrule height\fboxrulei
+          \hbox{%
+            \vrule width\fboxrulei height \dimexpr\ht0 + 2\fboxrulei\relax
+            \phantom{\unhcopy0}%
+            \vrule width\fboxrulei
+          }%
+          \hrule height\fboxrulei}}}%
+  }%
+%    \end{macrocode}
+%\item \textit{The character:}
+% Now we step back and print the actual glyph. We hold it back until now, so
+% that it will be printed \emph{on top} of its box.
+%    \begin{macrocode}
+  \kern-\wd0
+  \mtl@layer{characters}{%
+    \hbox{\box0}%
+  }%
+%    \end{macrocode}
+% Step back by the amount that the character's bounding box differs from the
+% \TeX\ box on the left side.
+%    \begin{macrocode}
+  \kern\dimexpr\scaletoem{\bbleft{#1}}-\tempdim-\fboxruleii\relax
+%    \end{macrocode}
+%\item \textit{The bounding box:}
+%  will be printed in color |bbcolor|.
+%    \begin{macrocode}
+  \mtl@layer{bounding-boxes}{%
+    {\color{bbcolor}%
+    \hbox{%
+      \lower\dimexpr-\scaletoem{\bbbottom{#1}}+\fboxruleii\relax
+      \hbox{%
+        \vbox{%
+          \hrule height\fboxruleii
+          \hbox to \dimexpr\scaletoem{\numexpr
+                       \bbright{#1}-\bbleft{#1}\relax}+2\fboxruleii\relax{%
+            \vrule height \dimexpr\scaletoem{\numexpr
+                              \bbtop{#1}-\bbbottom{#1}\relax}%
+                   width\fboxruleii
+            \hfill
+            \vrule width\fboxruleii}%
+          \hrule height\fboxruleii}}}%
+    }%
+    \kern-\dimexpr\fboxruleii+\fboxrulei\relax
+  }%
+%    \end{macrocode}
+%\item \textit{The kern:}
+% We also print a small box in color |kerncolor| indicating the kerning between
+% the current and the next character; filled for negative kerns, empty for
+% positive kerns.
+%    \begin{macrocode}
+  \kern\scaletoem{\numexpr\width{#1}-\bbright{#1}\relax}%
+  \mtl@layer{TeX-boxes}{%
+    {\ifnum\thekern<0
+       \color{kerncolor}%
+       \kern\scaletoem{\thekern}%
+       \lower\kernboxheight\hbox{\vrule width -\dimexpr\scaletoem{\thekern}\relax
+                                        height \kernboxheight}%
+       \kern\scaletoem{\thekern}%
+     \else
+       \color{texcolor}%
+       \ifnum\thekern=0 \else
+         \lower\kernboxheight
+         \hbox{%
+           \vbox{%
+%            \hrule height\fboxrulei
+             \hbox{%
+               \vrule height \kernboxheight width\fboxrulei
+               \kern\dimexpr\scaletoem{\thekern}-2\fboxrulei\relax
+               \vrule width\fboxrulei
+             }%
+           \hrule height\fboxrulei}}%
+       \fi
+     \fi
+    }%
+  }%
+%  \kern-\fboxrulei
+}
+%    \end{macrocode}
+%\end{enumerate}
+%\end{macro}
+%    \begin{macrocode}
+\newbox\logobox
+\def\printlogo{%
+  \setbox\logobox=\hbox{\vbox{%
+    \MakePercentComment
+%    \end{macrocode}
+% This is the Kepler MM font used in the logo.
+%    \begin{macrocode}
+    \def\logofont{pkpri9e10}
+    \transformfont{\logofont}{\reencodefont{8r}{\fromafm{pkpmmri8a10}}}
+    \font\thelogofont=\logofont\space at 82pt
+%    \end{macrocode}
+% This would load the italic Palatino font instead.
+%    \begin{macrocode}
+%\def\logofont{pplri}
+%\transformfont{\logofont8r}{\reencodefont{8r}{\fromafm{\logofont8a}}}
+%\edef\logofont{\logofont8r}
+%\font\thelogofont=\logofont\space at 78pt
+%    \end{macrocode}
+% Load the font.
+%    \begin{macrocode}
+    \thelogofont
+%    \end{macrocode}
+% Protrusion values (overdone for didactic reasons).
+%    \begin{macrocode}
+    \lpcode\font`M=96
+    \rpcode\font`e=46
+%    \end{macrocode}
+% Now we can generate the logo.
+%    \begin{macrocode}
+    \pdfliteral direct{/SXS gs}%
+    \showlogo{Microtype}%
+%    \rlap{\normalfont\normalsize\raisebox{55pt}{\footnotemark[1]}}%
+%    \kern5pt\\[3\baselineskip]
+%  \long\def\@makefntext##1{%
+%    \leftskip 0pt
+%    \parindent 0pt
+%    \everypar{\parindent 0pt}%
+%    \leavevmode\hbox to 15pt{\@thefnmark\hss}##1}
+%  \footnotetext[1]{This graphic display on a
+%    \togglelayer{canvas}{canvas} the \togglelayer{characters}{characters},
+%    their \togglelayer{bounding-boxes}{bounding boxes}
+%    and \togglelayer{TeX-boxes}{\TeX\ boxes}.}
+  }}%
+  \edef\logodimens{width \the\wd\logobox height \the\ht\logobox depth \the\dp\logobox}
+  \immediate\pdfobj{<</Type/ExtGState /CA 0.6 /ca 0.6 /BM/Normal >>}%
+  \immediate\pdfxform
+            attr {/Group <</Type/Group /S/Transparency /I true /CS/DeviceRGB >>}
+            resources {/Properties <<\mtl@resources>>
+                       /ExtGState << /SXS \the\pdflastobj\space 0 R >>
+                      }
+            \logobox
+%  \vskip-2.5\baselineskip
+%  \leavevmode
+%  \togglelayer{characters}{%
+%    \pdfrefxform\pdflastxform
+%  }%
+   \pdfannot\logodimens{%
+       /Subtype/Widget /FT/Btn /T(Logo)
+       %/F 4 % why did I say this?
+       /AP << /N \the\pdflastxform\space 0 R >>
+       /AA << /E << /S/SetOCGState /State[/Toggle \mtl@characters] >>
+              /X << /S/SetOCGState /State[/Toggle \mtl@characters] >>
+              /D << /S/SetOCGState /State[/Toggle \csname mtl@bounding-boxes\endcsname] >>
+              /U << /S/SetOCGState /State[/Toggle \csname mtl@TeX-boxes\endcsname] >>
+           >>
+  }%
+  \vspace{3\baselineskip}
+}
+%    \end{macrocode}
+% Our font.
+%    \begin{macrocode}
+\pdfmapline{+pkpmmri8r10 KeplMM-It_385_575_10_ " TeXBase1Encoding ReEncodeFont " <8r.enc <pkpmmri8a10.pfb}
+%    \end{macrocode}
+% Define colours (|thered| and |thegreen| are copied from \file{microtype.dtx}).
+%    \begin{macrocode}
+\def\mtdefinecolors{
+ \definecolor{thered}{rgb}{0.65,0.04,0.07}
+ \definecolor{thegreen}{rgb}{0.06,0.44,0.08}
+ \colorlet{texcolor}{thegreen!50}  % TeX boxes
+ \colorlet{kerncolor}{texcolor}    % negative kerns
+ \colorlet{bbcolor}{thered!50}     % bounding box
+ \colorlet{bgcolor}{black!8}       % canvas
+ \colorlet{blcolor}{black!50}      % baseline
+ \colorlet{textcolor}{black!40}    % text
+}
+%    \end{macrocode}
+% Use with \file{microtype.dtx}
+%    \begin{macrocode}
+\ifx\documentclass\@twoclasseserror
+  \usepackage[xcdraw]{xcolor}
+  \mtdefinecolors
+\else
+%    \end{macrocode}
+%
+%\subsection{Document}
+%
+% Now we can start the document.
+%    \begin{macrocode}
+\documentclass[10pt,a4paper]{ltxdoc}
+\providecommand\MakePercentComment{\relax}
+\expandafter\def\csname ver@microtype.dtx\endcsname{2999/99/99}
+%    \end{macrocode}
+% Re-use the preamble from \file{microtype.dtx}.
+%    \begin{macrocode}
+\usepackage{microtype-doc}
+\usepackage{attachfile}
+\makeatletter
+\pdfcatalog{/OCProperties << /OCGs [\mt@objects] /D << /Order [\mt@order] >> >>}
+\makeatother
+\begin{document}
+%    \end{macrocode}
+% You are currently reading this.
+%    \begin{macrocode}
+\DocInput{microtype-logo.dtx}
+%    \end{macrocode}
+% And here's the logo.
+%    \begin{macrocode}
+\vfill
+\begin{center}
+  \printlogo \null
+\end{center}
+\vfill
+\expandafter\enddocument
+\fi
+%    \end{macrocode}
+% That's it.
+%
+%^^A resume counting backslashes
+%\makeatletter
+%\let\step@checksum\orig@step@checksum
+%^^A\makeatother
+%
+%    \begin{macrocode}
+%</logo>
+%    \end{macrocode}
+%
+\endinput

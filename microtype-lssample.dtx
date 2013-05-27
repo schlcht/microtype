@@ -1,0 +1,358 @@
+%
+\ProvidesFile{microtype-lssample.dtx}[2009/06/08]
+%
+%\iffalse meta-comment
+% ^^A ========================================================================
+% You can treat this file in three different ways:
+%\begin{itemize}
+%  \item compile it by itself
+%  \item \verb|\input| it in the body of a \file{dtx} file
+%  \item \verb|\input| it in the preamble: it then provides the commands
+%  \begin{itemize}
+%   \item \verb|\lssample|: prints the letterspacing illustration
+%   \item \verb|\anchorarrow|: anchors an arrow for layer \meta{\#1}
+%   \item \verb|\showarrow|: toggles layer \meta{\#1} or \meta{\#2}, and prints \meta{\#2}
+%  \end{itemize}
+%\end{itemize}
+%
+% The first two cases require the style file \file{microtype-doc.sty}, which can
+% be generated from \file{microtype.ins} with:
+%\begin{verbatim}
+%\makefile{microtype-doc.sty}{docsty}
+%\end{verbatim}
+% ^^A ========================================================================
+%\fi
+%
+% ^^A don't count the backslashes in this document
+%\makeatletter
+%\let\orig@step@checksum\step@checksum
+%\let\step@checksum\relax
+%\makeatother
+%
+% \section{The letterspacing illustration}
+% \label{sec:letterspace-ill}
+%
+%    \begin{macrocode}
+\ifx\lssample\undefined
+%<*lssample>
+%    \end{macrocode}
+% Upon popular request, here's how I've created the letterspacing illustration.\footnote{
+%     Note that the |lssample| module will not be created when installing
+%     \microtype. Instead, I've included the source in the \acronym{PDF} file
+%     as an attachment. If your \acronym{PDF} reader supports this, you can
+%       \textattachfile
+%        [color={0.02 0.04 0.48},mimetype=text/plain]{microtype-lssample.dtx}
+%        {click here}
+%     to extract it; alternatively, may can us the |pdftk| tool.}
+%
+% \subsection{Macros}
+%
+% Rule width and image height and depth.
+%    \begin{macrocode}
+\makeatletter
+\newdimen\lsamount
+\newdimen\lsrule
+\lsrule=0.2pt
+\def\lsheight{8pt}
+\def\lsdepth{12pt}
+%    \end{macrocode}
+% Our font (Adobe Caslon).
+%    \begin{macrocode}
+\def\lsfont{\fontfamily{paca}\selectfont}
+%    \end{macrocode}
+% Loop over all letters in \meta{\#2}, letterspacing them by \meta{\#1}.
+%    \begin{macrocode}
+\def\dols#1#2{\lsamount=#1\relax \dolss#2\enddols}
+\def\dolss#1#2\enddols{%
+  \ifx\empty#2\empty\divide\lsamount 2\fi
+  \ls{#1}%
+  \ifx\empty#2\empty\else \dolss#2\enddols \fi
+}
+%    \end{macrocode}
+% One \pkg{tikz} picture for each letter.
+%    \begin{macrocode}
+\def\ls#1{%
+  \begin{tikzpicture}[remember picture,line width=\lsrule]
+    \tikzstyle{every node}=[inner sep=0pt]
+%    \end{macrocode}
+% The bounding box.
+%    \begin{macrocode}
+    \mts@layer{stuff}{%
+      \node[draw=thegrey,
+            fill=theshade,
+            outer sep=\lsrule,
+            anchor=base,
+            font=\lsfont]{\phantom{#1}};
+    }
+%    \end{macrocode}
+% The letter.
+%    \begin{macrocode}
+    \node[anchor=base,font=\lsfont](#1){#1};
+%    \end{macrocode}
+% Two auxiliary coordinates.
+%    \begin{macrocode}
+    \path (#1.south west) ++(+.5\lsrule,-.5\lsrule) coordinate (#1L);
+    \path (#1.base east)  ++(-.5\lsrule,-\lsdepth)  coordinate (#1R);
+    \mts@layer{stuff}{%
+%    \end{macrocode}
+% Now draw the normal character width,
+%    \begin{macrocode}
+      \draw[color=thered!75,
+            fill=thered!30,
+            outer sep=\lsrule]
+            (#1L) rectangle (#1R);
+      \ifdim\lsamount>0pt
+        \path (#1.base east) ++(+.5\lsamount,-6pt) coordinate (#1_ls);
+        \path (#1R) ++(\lsamount+\lsrule,+\lsdepth) coordinate (#1E);
+%    \end{macrocode}
+% and the letter space.
+%    \begin{macrocode}
+        \draw[color=thered,
+              fill=thered!50,
+              outer sep=\lsrule]
+              (#1R) ++(+\lsrule,+0pt) rectangle (#1E);
+      \fi
+    }
+  \end{tikzpicture}%
+  \ignorespaces
+}
+%    \end{macrocode}
+% Draw the interword space.
+%    \begin{macrocode}
+\def\lssp#1#2#3#4{%
+  \mts@layer{stuff}{%
+    \begin{tikzpicture}[remember picture,line width=\lsrule,inner sep=0pt]
+      \tikzstyle{every draw}=[anchor=bottom]
+      \coordinate(#1space) at (#2/2,\lsdepth/2);
+      \coordinate(#1stretch) at (#2+#3/2,+0pt);
+      \coordinate(#1shrink) at (#2-#4/2,+0pt);
+      \draw[color=thegreen,fill=thegreen!50,use as bounding box]
+            (0,0) rectangle ++(+#2,+\lsdepth);
+      \draw[color=thegreen,fill=thegreen!30]
+            (+#2,-\lsrule) rectangle ++(+#3,-4pt+\lsrule);
+      \draw[color=thegreen,fill=thegreen!50]
+            (+#2,-\lsrule) rectangle ++(-#4,-4pt+\lsrule);
+      \draw[->,line width=0.3pt,shorten <=0.5\lsrule,color=thegreen!50]
+            (+#2,-2pt-.5\lsrule) -- ++(+#3,+0pt);
+      \draw[->,line width=0.3pt,shorten <=0.5\lsrule,color=thegreen!30]
+            (+#2,-2pt-.5\lsrule) -- ++(-#4,+0pt);
+    \end{tikzpicture}%
+  }\ignorespaces
+}
+%    \end{macrocode}
+% Layers.
+%    \begin{macrocode}
+\def\mts@layer#1#2{\pdfliteral{/OC/#1 BDC}#2\pdfliteral{EMC}}
+\def\mtsx@layer#1#2{\pdfliteral{/OC/stuff BDC /OC/#1 BDC}#2\pdfliteral{EMC EMC}}
+\ifx\mt@objects\@undefined\let\mt@objects\@empty\fi
+\ifx\mt@order  \@undefined\let\mt@order  \@empty\fi
+\xdef\mt@order{\mt@order[(Sheep)}
+\let\mts@resources\@empty
+\def\mts@register#1{%
+  \immediate\pdfobj{<< /Type/OCG /Name(#1) >>}
+  \expandafter\xdef\csname mts@#1\endcsname{\the\pdflastobj\space 0 R }
+  \xdef\mt@objects{\mt@objects\csname mts@#1\endcsname}
+  \xdef\mt@order{\mt@order\csname mts@#1\endcsname}
+  \xdef\mts@resources{\mts@resources/#1 \csname mts@#1\endcsname}}
+\mts@register{stuff}
+\mts@register{tracking}
+\mts@register{ispace}
+\mts@register{ospace}
+\mts@register{istretch}
+\mts@register{ishrink}
+\mts@register{ostretch}
+\mts@register{oshrink}
+\mts@register{okern}
+\mts@register{ligature}
+\mts@register{_compatibility}
+\xdef\mt@order{\mt@order]}
+%    \end{macrocode}
+% Anchor point for the arrow in the code.
+%    \begin{macrocode}
+\newcommand\anchorarrow[1]{%
+  \tikz[remember picture,overlay]\node(#1_c){};}
+%    \end{macrocode}
+% Add an arrow from code to image.
+%    \begin{macrocode}
+\newcommand\add@arrow[5][left]{%
+  \tikz[remember picture,overlay,bend angle=14,looseness=0.75,>=latex]{%
+    \mtsx@layer{#3}{%
+      \draw[->,thick,color=the#2](#4) to[bend #1] (#5);}}%
+}
+%    \end{macrocode}
+% Toggle layer.
+%    \begin{macrocode}
+\def\toggle@layer#1#2#3{%
+  \pdfstartlink
+    user{/Subtype/Link
+         /BS << /Type/Border/W 0 >> /H/O
+%         /BS << /Type/Border/W 1 /S/D /D[4 1] >>
+%         /C[0.7 0.7 0.7] /H/O
+         /Contents(Click to Toggle!)
+         /A << /S/SetOCGState
+               /State[/Toggle \csname mts@#1\endcsname] >>
+  }%
+  \rlap{#2}%
+  {\fboxsep=0pt \fboxrule=0pt
+   \mtsx@layer{stuff}{%
+     \rlap{\fcolorbox{white}{white}{\vphantom{kg}\color{the#3}#2}}}%
+   \mtsx@layer{#1}{%
+     \fcolorbox{white}{the#3!50}{\vphantom{kg}\color{white}#2}}%
+  }%
+  \pdfendlink
+}
+\newcommand\showarrow[2][]{%
+  \ifx\relax#1\relax\def\@tempa{#2}\else\def\@tempa{#1}\fi
+  \toggle@layer{\@tempa}{{\itshape #2}}}
+%    \end{macrocode}
+% The environment for our illustration.
+%    \begin{macrocode}
+\def\ls@sample#1{{%
+  \parskip  4pt \parindent 0pt
+  \par
+  \vskip4pt
+  {\leftskip 15pt
+   \mt@pseudo@marg{\color{theblue}Click on the image to show the kerns
+      and spacings involved. Click on emphasised words in the text below
+      to reveal the relation of image and code.}
+   \mt@layer{_compatibility}{%
+      \mt@place{\rlap{\hskip-\marginparwidth \color{white}%
+        \vrule width\dimexpr\hsize+\marginparwidth\relax height\mt@unvdimen}}
+      \mt@pseudo@marg{\color{thered}%
+        If you had a \acronym{PDF} viewer that understands
+        \acronym{PDF}\,{\smaller1.5}, you could hide the arrows selectively.}}
+   \vskip-\mt@unvdimen}%
+  \vskip-4pt
+  \setlength\fboxsep{4pt}%
+  \leavevmode
+  \pdfstartlink
+    user{/Subtype/Link
+         /BS << /Type/Border/W 0 >> /H/O
+         /A << /S/SetOCGState
+               /State[/Toggle \mts@stuff] >>
+    }%
+    \fcolorbox{theframe}{theshade}%
+      {\fontsize{34}{38}\selectfont #1}%
+  \pdfendlink
+  \par\medskip
+  }%
+  \edef\x{\pdfpageresources{/Properties <<\mts@resources>>}}\x
+}
+%    \end{macrocode}
+% Now define the illustration to be used in the document.
+%    \begin{macrocode}
+\def\lssample{%
+  \ls@sample{%
+    \dols{0pt}{Stop}
+      \lssp{o}{0.45em}{0.25em}{0.15em}
+    \dols{0.16em}{{st}ealing}\hskip-\dimexpr 0.08em+\lsrule\relax
+      \lssp{i}{13.82pt}{4.65pt}{2.08pt}
+    \dols{0.16em}{sheep}
+    \dols{0pt}{!}
+  }%
+%    \end{macrocode}
+% Don't forget to add the arrows.
+%    \begin{macrocode}
+  \vspace{-\baselineskip}
+  \add@arrow{red}      {tracking}{lsamount_c.east}{a_ls}
+  \add@arrow{red}      {okern}   {okernend_c.east}{p_ls}
+  \add@arrow{green}    {ospace}  {ospace_c.east}  {ospace}
+  \add@arrow{green}    {ispace}  {ispace_c.center}{ispace}
+  \add@arrow{green!75} {istretch}{istretch_c.east}{istretch.north}
+  \add@arrow{green!75} {ishrink} {ishrink_c.west} {ishrink.north}
+  \add@arrow{green!75} {ostretch}{ostretch_c.east}{ostretch.north}
+  \add@arrow{green!75} {oshrink} {oshrink_c.east} {oshrink.north}
+  \add@arrow[right]{grey}{ligature}{nolig_c.east} {st.center}
+}
+\fi
+%    \end{macrocode}
+% This is for use with \file{microtype.dtx}
+%    \begin{macrocode}
+\ifx\documentclass\@twoclasseserror
+  \usepackage{tikz}
+\else
+%    \end{macrocode}
+%
+%\subsection{Document}
+%
+%    \begin{macrocode}
+\documentclass[10pt,a4paper]{ltxdoc}
+\expandafter\def\csname ver@microtype.dtx\endcsname{2999/99/99}
+%    \end{macrocode}
+% Re-use the preamble from \file{microtype.dtx}.
+%    \begin{macrocode}
+\usepackage{microtype-doc}
+\usepackage{attachfile}
+\usepackage{tikz}
+\makeatletter
+\pdfcatalog{/OCProperties <<
+               /OCGs [\mt@objects]
+               /D << /Order [\mt@order] /BaseState/OFF >>
+            >> }
+\makeatother
+\begin{document}
+%    \end{macrocode}
+% You are currently reading this.
+%    \begin{macrocode}
+\DocInput{microtype-lssample.dtx}
+%    \end{macrocode}
+% Now show what we are able to do.
+%    \begin{macrocode}
+\noindent
+ Since a picture is worth a thousand words, probably even more if, in our
+ case, it depicts a couple of letterspaced words, let's bring one to sum up
+ these somewhat confusing options. Suppose you had the following settings
+ (which I would in no way recommend; they are only for illustrative purposes):
+\begin{verbatim}
+\SetTracking
+  [ no ligatures  = {"\anchorarrow{nolig}"f},
+    spacing       = {60"\anchorarrow{ispace}"0*,"%
+                      "-1"\anchorarrow{istretch}"00*, "\anchorarrow{ishrink}"},
+    outer spacing = {4"\anchorarrow{ospace}"50,"%
+                      "2"\anchorarrow{ostretch}"50,1"\anchorarrow{oshrink}"50},
+    outer kerning = {"\anchorarrow{okernbegin}"*,"%
+                      \anchorarrow{okernend}"*} ]
+  { encoding = * }
+  { 1"\anchorarrow{lsamount}"60 }
+\end{verbatim}
+ and then write:
+\begin{verbatim}
+Stop \textls{stealing sheep}!
+\end{verbatim}
+ this is the (typographically dubious) outcome:
+
+ \lssample
+
+\noindent
+ While the word `Stop' is not letterspaced, the space between the letters in
+ the other two words is expanded by the \showarrow[tracking]{tracking~amount}{red}
+ of 160/1000\,em\,=\allowbreak\,0.16\,em.
+ The \showarrow[ispace]{inner~space}{green} within the letterspaced text is
+ increased by 60\%, while its \showarrow[istretch]{stretch}{green} amount is
+ decreased by 10\% and the \showarrow[ishrink]{shrink}{green} amount is left
+ untouched.
+ The \showarrow[ospace]{outer~space}{green} (of 0.45\,em) immediately before the
+ piece of text may \showarrow[ostretch]{stretch}{green} by 0.25\,em and
+ \showarrow[oshrink]{shrink}{green} by 0.15\,em.
+ Note that there is no outer space after the text, since the exclamation mark
+ immediately follows; instead, the default \showarrow[okern]{outer~kern}{red}
+ of half the letterspace amount (0.08\,em) is added.
+ Furthermore, one \showarrow{ligature}{grey} wasn't broken up, because we
+ neglected to specify the `|s|' in the |no ligatures| key.
+
+\expandafter\enddocument
+\fi
+%    \end{macrocode}
+%
+%^^A resume counting backslashes
+%\makeatletter
+%\let\step@checksum\orig@step@checksum
+%^^A\makeatother
+%
+%    \begin{macrocode}
+%</lssample>
+%    \end{macrocode}
+%
+%\newpage
+%
+\endinput
