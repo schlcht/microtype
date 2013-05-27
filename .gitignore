@@ -15,4 +15,6 @@ test-microtype.tex
 microtype.zip
 microtype.pdf
 
+dummy-space.*
+
 tests/*
