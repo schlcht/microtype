@@ -137,7 +137,6 @@
   % bonus material
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
   \InputIfFileExists{microtype-lssample.dtx}\relax\relax
-  \usepackage{pdfpages}
 \else
   \let\lsstyle\relax
 \fi
@@ -510,18 +509,18 @@
              {hyperref}
   \usepackage{hyperxmp}
   \usepackage{attachfile}
-  %\usepackage{pdfpages}
+  \usepackage{pdfpages}
   \hypersetup{
     pdftitle={The microtype package},
     pdfauthor={R Schlicht <w.m.l@gmx.net>},
     pdfsubject={Subliminal refinements towards typographical perfection},
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
       character protrusion, margin kerning, optical alignment, font expansion,
-      font scaling, hz, kerning, spacing, glue, letterspacing, tracking, ligatures}
+      font scaling, hz, kerning, spacing, glue, letterspacing, tracking, ligatures},
     pdfcopyright={\textcopyright\ 2004--2013 R Schlicht\012%
       This work may be distributed and/or modified under the conditions
       of the LaTeX Project Public License, either version 1.3c of this
-      license or (at your option) any later version.\&\#xA;%
+      license or (at your option) any later version.\012%
       This work has the LPPL maintenance status `author-maintained'.},
     pdflicenseurl={http://www.latex-project.org/lppl/}
   }
