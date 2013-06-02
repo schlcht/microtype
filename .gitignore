@@ -1,20 +1,32 @@
 # .gitignore for microtype
 
+# generated files
 microtype.sty
-microtype.lua
 microtype-luatex.def
 microtype-pdftex.def
 microtype-xetex.def
 letterspace.sty
+microtype.lua
 test-microtype.tex
 
-*.cfg
-*.log
+# auxiliary files
 *.aux
+*.cfg
+*.glo
+*.idx
+*.log
+*.lot
+*.out
+*.tmp
+*.toc
 
-microtype.zip
-microtype.pdf
-
+*.mtx
+*.pl
 dummy-space.*
+
+# distribution
+microtype.pdf
+microtype-utf.pdf
+microtype.zip
 
 tests/*
