@@ -27,7 +27,7 @@ microtype-doc.sty
 *.mtx
 *.pl
 dummy-space.*
-justification.jpg
+justification.png
 
 # distribution
 *.pdf
