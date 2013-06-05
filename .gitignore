@@ -8,12 +8,16 @@ microtype-xetex.def
 letterspace.sty
 microtype.lua
 test-microtype.tex
+microtype-doc.sty
 
 # auxiliary files
 *.aux
 *.cfg
 *.glo
+*.gls
 *.idx
+*.ind
+*.ilg
 *.log
 *.lot
 *.out
@@ -23,10 +27,10 @@ test-microtype.tex
 *.mtx
 *.pl
 dummy-space.*
+justification.jpg
 
 # distribution
-microtype.pdf
-microtype-utf.pdf
-microtype.zip
+*.pdf
+*.zip
 
 tests/*
