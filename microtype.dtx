@@ -2675,7 +2675,7 @@
 %  \contributor Hendrik Vogt <hendrik.vogt\at tu-dresden.de>,
 % who made substantial improvements to the Computer Modern Roman italic settings.
 % I thank
-%  \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>
+%  \contributor Loren~B. Davis <davislo\at eecs.oregonstate.edu>
 % for providing protrusion settings for OpenType versions of Palatino Linotype.
 % I am also very much indebted to
 %  \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>,
@@ -16369,12 +16369,10 @@ makeindex -s gind.ist microtype
 makeindex -s gglo.ist -o microtype.gls microtype.glo
 #  7) Run
 lualatex microtype-utf.dtx
-#     * There will be some errors (15, to be exact) about `invalid utf-8 sequences',
-#       which you should just ignore.
 #     * The following fonts are required:
 #       - Bitstream Charter (Type 1)
 #       - Bitstream LetterGothic (Type 1)
-#       - Adobe Source Sans Pro (Type 1 or OpenType)
+#       - Adobe Source Sans Pro (Type 1)
 #       - Latin Modern Roman (OpenType)
 #       - Charis SIL (OpenType)
 #       - TeX Gyre Pagella (OpenType)

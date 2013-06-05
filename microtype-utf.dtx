@@ -35,8 +35,12 @@
 %<*driver>
 \documentclass[10pt,a4paper]{ltxdoc}
 \usepackage{fontspec}
-\usepackage{microtype-doc} % there will be errors with luatex because of the non-utf \nobreakspace -- just ignore them!
+\RequireLuaModule{luainputenc}
 \makeatletter
+% microtype-doc.sty is 8-bit
+\luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
+\usepackage{microtype-doc}
+\luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
  \def\setmacrofont#1{\def\macro@font{#1}}
  \newfontface\LMR{Latin Modern Roman}
  \newfontface\CharisSIL{Charis SIL}
@@ -72,7 +76,7 @@
 %                                \url{http://scripts.sil.org/CharisSILfont}.}
 %   \item {\PalatinoLinotype
 %           Palatino Linotype}\footnote{These settings have been contributed by
-%                                       \contributor Loren Davis <davislo\at eecs.oregonstate.edu>.}
+%                                       \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
 %\end{itemize}
 %
 %\noindent
