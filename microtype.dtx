@@ -2,7 +2,7 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.5a"
+% !DTXversion:: "2.5b"
 % ------------------------------------------------------------------------
 % $Id: microtype.dtx,v 1.72 2013-05-23 20:35:08+02 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
@@ -40,7 +40,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2013/05/23 v2.5a
+  [2013/06/06 v2.5b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -8759,9 +8759,9 @@ end
 %<plain>\MT@requires@latex2{
 \MT@addto@setup{%
 %    \end{macrocode}
+%\begin{macro}{\MT@orig@pickupfont}
 %\changes{v2.1}{2007/01/15}{compatibility with \pkg{CJK}: also check for its definition}
 %\changes{v2.3b}{2008/05/26}{compatibility with \pkg{CJKutf8}: also check for its definition}
-%\begin{macro}{\MT@orig@pickupfont}
 % \microtype\ also works with \pkg{CJK} in the sense that nothing will break
 % when both packages are used at the same time. However, since \pkg{CJK} has
 % its own way of encoding, it is currently not possible to create
@@ -8772,36 +8772,49 @@ end
 % Like us, \pkg{CJK} redefines \cmd\pickup@font.
 %    \begin{macrocode}
   \@ifpackageloaded{CJK}{%
-    \@ifpackagelater{CJK}{2006/10/17}% 4.7.0
-      {\def\MT@orig@pickupfont{\CJK@ifundefined\CJK@plane}}%
-      {\def\MT@orig@pickupfont{\@ifundefined{CJK@plane}}}%
-    \g@addto@macro\MT@orig@pickupfont
-      {{\expandafter\ifx\font@name\relax\define@newfont\fi}}%
+%    \end{macrocode}
+%\changes{v2.5b}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
+% The \pkg{xeCJK} package pretends that \pkg{CJK} was loaded, but does not
+% change the definition of \cmd\pickup@font.
+% With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters,
+% I haven't tried, though.
+%^^A also, \XeTeXinterchartoks probably interferes ...
+%    \begin{macrocode}
+    \@ifpackageloaded{xeCJK}{\@firstofone}{%
+      \@ifpackagelater{CJK}{2006/10/17}% 4.7.0
+        {\def\MT@orig@pickupfont{\CJK@ifundefined\CJK@plane}}%
+        {\def\MT@orig@pickupfont{\@ifundefined{CJK@plane}}}%
+      \g@addto@macro\MT@orig@pickupfont
+        {{\expandafter\ifx\font@name\relax\define@newfont\fi}}%
 %    \end{macrocode}
 % \pkg{CJKutf8} redefines \cmd\pickup@font\ once more (recent versions, in
 % <PDF> mode, as determined by \pkg{ifpdf}, which \pkg{CJKutf8} loads).
 %    \begin{macrocode}
-    \@ifpackageloaded{CJKutf8}%
-      {\@ifpackagelater{CJKutf8}{2008/05/22}% 4.8.0
-        {\ifpdf\expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}%
-        {\@firstoftwo}}%
-      {\@firstoftwo}%
-    {\g@addto@macro\MT@orig@pickupfont{%
-      {\expandafter\ifx\csname\curr@fontshape/\f@size/\CJK@plane\endcsname\relax
-         \define@newfont\else\xdef\font@name{%
+      \@ifpackageloaded{CJKutf8}%
+        {\@ifpackagelater{CJKutf8}{2008/05/22}% 4.8.0
+          {\ifpdf\expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}%
+          {\@firstoftwo}}%
+        {\@firstoftwo}%
+      {\g@addto@macro\MT@orig@pickupfont{%
+        {\expandafter\ifx\csname\curr@fontshape/\f@size/\CJK@plane\endcsname\relax
+           \define@newfont\else\xdef\font@name{%
+             \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}%
+      {\g@addto@macro\MT@orig@pickupfont{%
+        {\expandafter\ifx\csname \curr@fontshape/\f@size/\CJK@plane\endcsname\relax
+           \define@newfont\def\CJK@temp{v}%
+           \ifx\CJK@temp\CJK@plane
+             \expandafter\ifx\csname CJK@cmap@\f@family\CJK@plane\endcsname\relax
+             \else\csname CJK@cmap@\f@family\CJK@plane\endcsname\fi
+           \else \CJK@addcmap\CJK@plane \fi
+         \else\xdef\font@name{%
            \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}%
-    {\g@addto@macro\MT@orig@pickupfont{%
-      {\expandafter\ifx\csname \curr@fontshape/\f@size/\CJK@plane\endcsname\relax
-         \define@newfont\def\CJK@temp{v}%
-         \ifx\CJK@temp\CJK@plane
-           \expandafter\ifx\csname CJK@cmap@\f@family\CJK@plane\endcsname\relax
-           \else\csname CJK@cmap@\f@family\CJK@plane\endcsname\fi
-         \else \CJK@addcmap\CJK@plane \fi
-       \else\xdef\font@name{%
-         \csname \curr@fontshape/\f@size/\CJK@plane\endcsname}\fi}}}%
-  }{%
-    \def\MT@orig@pickupfont{\expandafter\ifx\font@name\relax\define@newfont\fi}%
-  }%
+      \@gobble
+    }%
+  }{\@firstofone}%
+%    \end{macrocode}
+% This is the normal \LaTeX\ definition.
+%    \begin{macrocode}
+  {\def\MT@orig@pickupfont{\expandafter\ifx\font@name\relax\define@newfont\fi}}%
 %    \end{macrocode}
 % Check whether \cmd\pickup@font\ is defined as expected.
 % The warning issued by \cmd{\CheckCommand*} would be a bit too generic.
@@ -16329,7 +16342,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10288}
+% \CheckSum{10292}
 %
 % \Finale
 %
