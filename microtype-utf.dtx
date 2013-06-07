@@ -41,7 +41,7 @@
 \luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
 \usepackage{microtype-doc}
 \luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
- \def\setmacrofont#1{\def\macro@font{#1}}
+ \def\setmacrofont#1{\def\macro@font{#1}\footnotesize}
  \newfontface\LMR{Latin Modern Roman}
  \newfontface\CharisSIL{Charis SIL}
  \newfontface\PalatinoLinotype{TeX Gyre Pagella}
