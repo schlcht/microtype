@@ -97,7 +97,7 @@ microtype-luatex.def, microtype.lua and letterspace.sty.
   Palatino is a registered trademark of Linotype GmbH.
   Used without permission.
 \endpreamble
-\declarepostamble\luapostamble
+\declarepostamble\emptypostamble
 \endpostamble
 
 \def\makefile#1#2{\file{#1}{\from{microtype.dtx}{#2}}}
@@ -145,14 +145,17 @@ microtype-luatex.def, microtype.lua and letterspace.sty.
     \makefile{test-microtype.tex}{test}
 }
 
-%% for the extra documentation
+\usepostamble\emptypostamble
+
+%% makeindex style
+%\generate{\makefile{microtype-gind.ist}{docist}}
+%% package for the extra documentation
 %% (microtype-utf.dtx, microtype-logo.dtx, microtype-lssample.dtx):
 %\generate{\makefile{microtype-doc.sty}{docsty}}
 
 \def\MetaPrefix{--}
 \generate{
-  \usepreamble \luapreamble
-  \usepostamble\luapostamble
+  \usepreamble\luapreamble
     \makefile{microtype.lua}{luafile}
 }
 

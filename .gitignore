@@ -9,6 +9,7 @@ letterspace.sty
 microtype.lua
 test-microtype.tex
 microtype-doc.sty
+microtype-gind.ist
 
 # auxiliary files
 *.aux
@@ -28,6 +29,9 @@ microtype-doc.sty
 *.pl
 dummy-space.*
 justification.png
+
+make-normal-sty
+make-doc-sty
 
 # distribution
 *.pdf

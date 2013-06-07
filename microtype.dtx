@@ -40,7 +40,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2013/06/06 v2.5b
+  [2013/06/07 v2.5b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -345,8 +345,9 @@
     \end{multicols}
     \vspace*{-2\baselineskip}%
     \begin{multicols}{2}
-         \llap{\sffamily\mdseries\color{thegrey}\footnotesize
-               \hbox to 1em{\hss#1\hss}\hskip\marginparsep}%
+	 \setbox0\hbox{\sffamily\hss#1}%
+	 \ifdim\wd0<1em \setbox0\hbox to 1em{\sffamily\hss#1\hss}\fi
+         \llap{\color{thegrey}\box0\hskip\marginparsep}%
     \vspace*{-\baselineskip}%
     \IndexParms %\rightskip 15pt
     \let\item\@idxitem
@@ -421,16 +422,31 @@
 \def\OptionSep{{\rmfamily, }} \def\MacroSep{\,} \def\EnvironmentSep{\,}
 \def\PrintValues[#1]{{\MacroFont\expandafter\@gobble\@tempa\hfill #1}\\*[.25\baselineskip]}
 \def\CatIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar hyperpage}}
-\def\SpecialOptionIndex#1{\@bsphack\CatIndex{#1}{option}%
-  \index{\quotechar!Options % the `!' will be sorted first
-    \actualchar{\protect\bfseries Options:}%
-    \levelchar{\protect\ttfamily#1}\encapchar usage}\@esphack}
-\def\SpecialUsageIndex#1{\@bsphack{\index{\quotechar!User Commands
-    \actualchar{\protect\bfseries User Commands:}%
-    \levelchar\expandafter\@gobble\string#1\actualchar\string\verb
+\def\SpecialOptionIndex#1{\@bsphack
+  \index{\quotechar/#1% sort options as `Symbols'
+    \actualchar{\protect\ttfamily#1}\encapchar usage}%
+  \CatIndex{#1}{option}\@esphack}
+\def\SpecialUsageIndex#1{\@bsphack
+  \index{\quotechar1% sort commands as `Numbers'
+    \actualchar\string\verb
       \quotechar*\verbatimchar\string#1\verbatimchar\encapchar usage}%
-   \let\special@index\index\SpecialIndex@{#1}{\encapchar usage}}\@esphack}
+  {\let\special@index\index\SpecialIndex@{#1}{\encapchar usage}}\@esphack}
 \def\SpecialEnvIndex#1{\CatIndex{#1}{environment}}
+%</driver|docsty>
+%<docist>actual '='
+%<docist>quote '!'
+%<docist>level '>'
+%<docist>preamble  "\n \\begin{theindex} \n \\makeatletter\\scan@allowedfalse\n\\indexspace"
+%<docist>postamble "\n\n \\end{theindex}\n"
+%<docist>item_x1   "\\efill \n \\subitem "
+%<docist>delim_0   "\\pfill "
+%<docist>delim_1   "\\pfill "
+%<docist>heading_prefix    "{\\bfseries\\hfil "
+%<docist>heading_suffix    "\\hfil}\\nopagebreak\n"
+%<docist>headings_flag      1
+%<docist>symhead_positive  "Options"
+%<docist>numhead_positive  "Commands"
+%<*driver|docsty>
 \def\PrintDescribeMacro#1{\strut\MacroFont\color{thegreen}\string #1}
 \def\PrintDescribeEnv#1{\strut\MacroFont\bslash begin\{{\color{thegreen}#1}\}%
   \\*[.25\baselineskip]\strut\bslash end\{{\color{thegreen}#1}\}}
@@ -2621,6 +2637,7 @@
 % For the source code of the logo on the title page and of the letterspacing
 % sample from section~\ref{sub:tracking}, see appendix~\ref{sec:title-logo} and
 % \ref{sec:letterspace-ill}.
+%\changes{v2.5a}{2013/05/23}{add comments on typesetting the documentation}
 % If you want to re-typeset the documentation, read the comments at the end of
 % \file{microtype.dtx}.
 %
@@ -2889,6 +2906,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{2.5a}{2013/05/23}
 %
 %\Version{2.5}{2013/03/13}
 %  \item Support for the \pkg{fontspec} package, viz.
@@ -16357,7 +16376,9 @@ normal, and shrunk by 5\%:
  If you still want to do that, there are some requirements to consider.
  Follow these steps:
 
-#  1) In microtype.ins, uncomment the line:
+#  1) In microtype.ins, uncomment the lines:
+%\generate{\makefile{microtype-gind.ist}{docist}}
+#     and
 %\generate{\makefile{microtype-doc.sty}{docsty}}
 #  2) Install the package by running:
 pdflatex microtype.ins
@@ -16376,7 +16397,7 @@ pdflatex microtype.dtx
 #       - Adobe Kepler MM (for microtype-logo.dtx, input by microtype.dtx)
 #       - Adobe Caslon (for microtype-lssample.dtx, input by microtype.dtx)
 #  5) Run
-makeindex -s gind.ist microtype
+makeindex -s microtype-gind.ist microtype
 #  6) Run
 makeindex -s gglo.ist -o microtype.gls microtype.glo
 #  7) Run
@@ -16391,7 +16412,7 @@ lualatex microtype-utf.dtx
 #  8) Run
 pdflatex microtype.dtx
 #  9) Run
-makeindex -s gind.ist microtype
+makeindex -s microtype-gind.ist microtype
 # 10) Run
 makeindex -s gglo.ist -o microtype.gls microtype.glo
 # 11) Run
