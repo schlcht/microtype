@@ -37,16 +37,15 @@
 \usepackage{fontspec}
 \RequireLuaModule{luainputenc}
 \makeatletter
-% microtype-doc.sty is 8-bit
+% microtype-doc.sty is 8-bit, and the following is a hack
 \luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
 \usepackage{microtype-doc}
 \luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
- \def\setmacrofont#1{\def\macro@font{#1}\footnotesize}
+ \def\setmacrofont#1{\par\def\macro@font{#1}\footnotesize}
  \newfontface\LMR{Latin Modern Roman}
  \newfontface\CharisSIL{Charis SIL}
  \newfontface\PalatinoLinotype{TeX Gyre Pagella}
-\linespread{1.07} % this isn't set correctly for some reason
-\textheight=626pt
+\textheight=626pt % this isn't set correctly for some reason
 \DisableCrossrefs
 \begin{document}
   \DocInput{\jobname.dtx}
@@ -72,8 +71,7 @@
 %   \item {\LMR
 %           Latin Modern Roman}
 %   \item {\CharisSIL
-%           Charis <SIL>}\footnote{This font is available at
-%                                \url{http://scripts.sil.org/CharisSILfont}.}
+%           Charis <SIL>}\footnote{Available at \url{http://scripts.sil.org/CharisSILfont}.}
 %   \item {\PalatinoLinotype
 %           Palatino Linotype}\footnote{These settings have been contributed by
 %                                       \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
