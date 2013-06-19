@@ -40,7 +40,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2013/06/07 v2.5b
+  [2013/06/19 v2.5b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -2527,9 +2527,6 @@
 %        the naming, the above lines have nothing to do with this
 %        package.\footnote{^^A
 %             They make use of features provided by \pkg{luaotfload} (via \pkg{fontspec}).}
-%\changes{v2.5a}{2013/05/21}{add hint about \pkg{fontspec} having to be loaded first}
-%  \item With \luatex, load \pkg{fontspec} before \microtype.
-%        ^^A otherwise the \pkg{luaotfload} function luaotfload.aux.slot_of_name wouldn't be picked up
 %\changes{v2.3c}{2008/11/11}{add hint about partial incompatibility with \pkg{CJK}}
 %  \item It is currently not possible to create character-specific settings for
 %        Chinese\slash Japanese\slash Korean fonts. Therefore, the only
@@ -4080,6 +4077,14 @@
 %    \begin{macrocode}
 %<*luatex-def>
 \RequirePackage{luatexbase}
+%    \end{macrocode}
+% Additionally, we load \pkg{luaotfload}, because some of its functions are
+% required in \file{microtype.lua}. This eliminates the need for the user to
+% load \pkg{fontspec} before \microtype.
+% There will hardly be any \luatex\ documents that don't load this package, anyway.
+%\changes{v2.5b}{2013/06/19}{load \pkg{luaotfload} with \luatex}
+%    \begin{macrocode}
+\RequirePackage{luaotfload}
 \RequireLuaModule{microtype}
 %</luatex-def>
 %    \end{macrocode}
@@ -8277,7 +8282,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Beginning with v2.2, \pkg{luaotfload} provides this function in an <API>, which
 % we use if available, but (for now, at least) keep the old code for backward
 % compatibility.
-%\changes{v2.5a}{2013/04/19}{adapted to \pkg{luaotfload} v2.2
+%\changes{v2.5a}{2013/04/19}{adapt to \pkg{luaotfload} v2.2
 %                            (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %                            ^^A MID: <516AAF6B.8040605@telecom-bretagne.eu>
 %    \begin{macrocode}
@@ -16364,7 +16369,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10292}
+% \CheckSum{10293}
 %
 % \Finale
 %
