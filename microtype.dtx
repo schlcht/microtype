@@ -195,15 +195,15 @@
 \def\section{\@startsection {section}{1}{\z@}%
   {-3.5ex \@plus -1ex \@minus -.2ex}%
   {2.3ex \@plus.2ex}%
-  {\normalfont\Large\fontseries{k}\sffamily\color{sectioning}}}
+  {\normalfont\Large\ifcmr\fontseries{bx}\else\fontseries{k}\fi\sffamily\color{sectioning}}}
 \def\subsection{\@startsection{subsection}{2}{\z@}%
   {-3.25ex\@plus -1ex \@minus -.2ex}%
   {1.5ex \@plus .2ex}%
-  {\normalfont\large\fontseries{k}\sffamily\color{sectioning}}}
+  {\normalfont\large\ifcmr\fontseries{bx}\else\fontseries{k}\fi\sffamily\color{sectioning}}}
 \def\subsubsection{\@startsection{subsubsection}{3}{\z@}%
   {-3.25ex\@plus -1ex \@minus -.2ex}%
   {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\fontseries{k}\sffamily\color{sectioning}}}
+  {\normalfont\normalsize\ifcmr\fontseries{bx}\else\fontseries{k}\fi\sffamily\color{sectioning}}}
 \def\paragraph{\@startsection{paragraph}{4}%
   {0pt}{8pt plus 2pt minus 1pt}{-1em}%
   {\normalfont\normalsize\itshape}}
@@ -358,7 +358,7 @@
     \begin{multicols}{2}[\subsubsection*{\if##1v\relax
          \llap{\mdseries\color{thegrey}\footnotesize
                \csname MTversiondate##2\endcsname\hskip\marginparsep}%
-         Version ##2\else ##2\fi}][5\baselineskip]
+         Version ##2\else ##2\fi}][6\baselineskip]
       \ifpdf \phantomsection \pdfbookmark[2]{\if##1v\relax ##2
           (\csname MTversiondate##2\endcsname)\else ##2\fi}{subsection##2}\fi
     \GlossaryParms \rightskip 15pt plus 5pt
@@ -433,6 +433,7 @@
   {\let\special@index\index\SpecialIndex@{#1}{\encapchar usage}}\@esphack}
 \def\SpecialEnvIndex#1{\CatIndex{#1}{environment}}
 %</driver|docsty>
+% microtype's index style (microtype-gind.ist):
 %<docist>actual '='
 %<docist>quote '!'
 %<docist>level '>'
@@ -781,7 +782,7 @@
 %
 %\newpage
 %\emptypdfpageresources ^^A layers of the logo
-%{\sffamily\def\familydefault{\sfdefault}\def\bfdefault{sb}
+%{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\def\bfdefault{sb}\fi
 % \tableofcontents
 % \listoftables
 %}
@@ -2637,7 +2638,7 @@
 % For the source code of the logo on the title page and of the letterspacing
 % sample from section~\ref{sub:tracking}, see appendix~\ref{sec:title-logo} and
 % \ref{sec:letterspace-ill}.
-%\changes{v2.5a}{2013/05/23}{add comments on typesetting the documentation}
+%\changes{v2.5a}{2013/05/23}{add notes on typesetting the documentation}
 % If you want to re-typeset the documentation, read the comments at the end of
 % \file{microtype.dtx}.
 %
@@ -3745,7 +3746,7 @@
 %          \cmd\pdfnoligatures;
 %          \cmd\pdfstrcmp;
 %          \cmd\pdfescapestring\ ($\geq$~1.30)
-%\changes{v2.0}{2005/08/20}{(beta:1) case 6: \pdftex\ 1.40}
+%\changes{v2.0}{2005/08/20}{case 6: \pdftex\ 1.40} ^^A (beta:1)
 %  \item + adjustment of interword spacing;
 %          extra kerning;
 %          \cmd\letterspacefont;
@@ -4973,9 +4974,9 @@ microtype.if_str_eq = if_str_eq
 %</pdftex-def>
 %    \end{macrocode}
 %\end{macro}
-% The \pkg{shapepar} package fixes this in a similar manner by itself, so we don't
-% have to bother.
-% ^^A fix protrusion with \pkg{shapepar} (reported by \contributor Giuseppe Palma <pippi.palma\at gmail.com>)}
+% The \pkg{shapepar} package (v2.2) fixes this in a similar manner by itself,
+% so we don't have to bother.
+% ^^A missing protrusion with \pkg{shapepar} (reported by \contributor Giuseppe Palma <pippi.palma\at gmail.com>)}
 % ^^A                                     ^^A private mail, 2013/03/22
 % ^^A fixed in shapepar v2.2 (Mar 2013)
 %\begin{macro}{\MT@restore@p@h}
@@ -5189,7 +5190,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }%
 %    \end{macrocode}
-%\changes{v2.0}{2005/12/21}{(beta:3) compatibility with \pkg{soul}: register \cs{textls} and \cs{lsstyle}}
+%\changes{v2.0}{2005/12/21}{compatibility with \pkg{soul}: register \cs{textls} and \cs{lsstyle}} ^^A (beta:3)
 % Of course, using both \pkg{soul}'s and \microtype's letterspacing mechanisms
 % at the same time doesn't make much sense. But \pkg{soul} can do more, \eg,
 % underlining. The optional argument to \cs{textls} may not be used.
@@ -7050,9 +7051,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\lsstyle}
-%\changes{v2.0}{2005/09/21}{(beta:1) new command: letterspacing}
-%\changes{v2.0}{2006/09/19}{(beta:8) fix: font switches don't pose a problem anymore}
-%\changes{v2.0}{2006/09/21}{(beta:8) fix: letterspacing commands may be nested}
+%\changes{v2.0}{2005/09/21}{new command: letterspacing} ^^A (beta:1)
+%\changes{v2.0}{2006/09/19}{fix: font switches don't pose a problem anymore} ^^A (beta:8)
+%\changes{v2.0}{2006/09/21}{fix: letterspacing commands may be nested} ^^A (beta:8)
 %\changes{v2.0}{2006/12/28}{totally redone, using the new \cmd\letterspacefont}
 %\changes{v2.3d}{2008/11/16}{make invalid in math mode}
 %\changes{v2.3d}{2009/01/07}{disable for \luatex}
@@ -7492,7 +7493,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</xetex-def>
 %    \end{macrocode}
 %\begin{macro}{\textls}
-%\changes{v2.0}{2005/09/21}{(beta:1) new command: letterspacing}
+%\changes{v2.0}{2005/09/21}{new command: letterspacing} ^^A (beta:1)
 %\changes{v2.0}{2006/12/28}{starred version: remove spaces around text}
 %\changes{v2.1}{2007/01/19}{fix: use \cmd\hmode@bgroup}
 %\changes{v2.3d}{2008/11/16}{make math mode aware}
@@ -8273,10 +8274,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</pdftex-def|luatex-def|xetex-def>
 %    \end{macrocode}
 % This is the lua function to translate glyph name into slot number.
-% Beginning with v2.2, \pkg{luaotfload} provides this function in an API, which
+% Beginning with v2.2, \pkg{luaotfload} provides this function in an <API>, which
 % we use if available, but (for now, at least) keep the old code for backward
 % compatibility.
-%\changes{v2.5a}{2013/04/19}{adapted for \pkg{luaotfload} v2.2
+%\changes{v2.5a}{2013/04/19}{adapted to \pkg{luaotfload} v2.2
 %                            (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %                            ^^A MID: <516AAF6B.8040605@telecom-bretagne.eu>
 %    \begin{macrocode}
@@ -8795,8 +8796,8 @@ end
 %\changes{v2.5b}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
 % The \pkg{xeCJK} package pretends that \pkg{CJK} was loaded, but does not
 % change the definition of \cmd\pickup@font.
-% With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters,
-% I haven't tried, though.
+% With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters;
+% I haven't tried it, though.
 %^^A also, \XeTeXinterchartoks probably interferes ...
 %    \begin{macrocode}
     \@ifpackageloaded{xeCJK}{\@firstofone}{%
@@ -9442,7 +9443,7 @@ end
 % The \pkg{relsize} solution of parsing \cmd\@setfontsize\ does not work with the
 % <AMS> classes, among others. I hope my hijacking doesn't do any harm.
 %\changes{v1.2}{2004/09/26}{hijack \cmd\set@fontsize\ instead of \cmd\@setfontsize}
-% We redefine \cmd\set@fontsize, and not \cmd\@setfontsize\ because some classes
+% We redefine \cmd\set@fontsize\ instead of \cmd\@setfontsize\ because some classes
 % might define the size selection commands by simply using \cmd\fontsize\
 % (\eg, the \pkg{a0poster} class).
 %\changes{v2.3b}{2008/03/07}{grouping}
@@ -9806,7 +9807,7 @@ end
 % Declare the context that should be loaded when a \pkg{babel} language
 % is selected. The command will not check whether a previous declaration will
 % be overwritten.
-%\changes{v2.0}{2005/10/04}{(beta:1) new command: interaction with \pkg{babel}}
+%\changes{v2.0}{2005/10/04}{new command: interaction with \pkg{babel}} ^^A (beta:1)
 %    \begin{macrocode}
 %<*package>
 \def\DeclareMicrotypeBabelHook#1#2{%
@@ -9960,7 +9961,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\SetExtraSpacing}
-%\changes{v2.0}{2005/09/28}{(beta:1) new command: adjustment of interword spacing}
+%\changes{v2.0}{2005/09/28}{new command: adjustment of interword spacing} ^^A (beta:1)
 %    \begin{macrocode}
 %<*pdftex-def>
 \def\SetExtraSpacing{%
@@ -9990,7 +9991,7 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\SetExtraKerning}
-%\changes{v2.0}{2005/09/28}{(beta:1) new command: additional kerning}
+%\changes{v2.0}{2005/09/28}{new command: additional kerning} ^^A (beta:1)
 %    \begin{macrocode}
 \def\SetExtraKerning{%
   \MT@begin@catcodes
@@ -10231,7 +10232,7 @@ end
     }%
   }
 %    \end{macrocode}
-% Protrusion contexts \emph{may} also work without copying the font, so we
+% Protrusion contexts \emph{might} also work without copying the font, so we
 % don't issue an error but only a warning. The problem is that \pdftex\ only
 % allows one set of protrusion factors for a given font within one paragraph
 % (those that are in effect at the end of the paragraph will be in effect for
@@ -10909,9 +10910,10 @@ end
 %\changes{v1.5}{2004/12/02}{new option: \opt{selected}, by default false
 %               (suggested by \contributor \thanh{} <hanthethanh\at gmx.net>)}
 %                                               ^^A private mail, 2004/11/30
-%\changes{v2.0}{2005/10/04}{(beta:1) new option: \opt{babel}, by default false
+%\changes{v2.0}{2005/10/04}{new option: \opt{babel}, by default false
 %               (language-dependent setup suggested by \contributor Ulrich Dirr <ud\at art-satz.de>)}
 %                                               ^^A private mail, 2005/08/27
+%                                               ^^A (beta:1)
 %\begin{macro}{\MT@def@bool@opt}
 % The |true|/|false| options:
 % \opt{draft}, \opt{final} (may be inherited from the class options),
@@ -11064,7 +11066,7 @@ end
 %               (suggested by \contributor \thanh{} <hanthethanh\at gmx.net>)}
 %                                               ^^A private mail, 2004/11/30
 %\changes{v1.6}{2004/12/18}{new option: \opt{factor}, by default 1000}
-%\changes{v2.0}{2005/09/21}{(beta:1) new option: \opt{letterspace}, by default 100}
+%\changes{v2.0}{2005/09/21}{new option: \opt{letterspace}, by default 100} ^^A (beta:1)
 %^^A\changes{v2.0}{2007/01/05}{option `\texttt{letterspacing}' renamed to `\opt{letterspace}'}
 % Options with numerical keys:
 %   \opt{factor},
@@ -12057,10 +12059,11 @@ end
 %    \end{macrocode}
 %\todo{make switching off of babel's shorthands configurable}
 % Disable French \pkg{babel}'s active characters.
-%\changes{v2.0}{2006/10/10}{(beta:8) option `\opt{babel}': fix: switch off French
+%\changes{v2.0}{2006/10/10}{option `\opt{babel}': fix: switch off French
 %                           \pkg{babel}'s shorthands properly
 %                           (reported by \contributor Daniel Flipo <daniel.flipo\at univ-lille1.fr>)}
 %                                                      ^^A private mail, 2006/10/09
+%                                                      ^^A (beta:8)
 %    \begin{macrocode}
         \MT@if@false
         \MT@with@babel@and@T{french}  \MT@if@true
@@ -12071,7 +12074,7 @@ end
         \ifMT@if@\MT@shorthandoff{French}{:;!?}\fi
 %    \end{macrocode}
 % Disable Turkish \pkg{babel}'s active characters.
-%\changes{v2.0}{2006/10/10}{(beta:8) option `\opt{babel}': switch off Turkish \pkg{babel}'s shorthands}
+%\changes{v2.0}{2006/10/10}{option `\opt{babel}': switch off Turkish \pkg{babel}'s shorthands} ^^A (beta:8)
 %\changes{v2.3}{2007/10/03}{fix: really switch off Turkish shorthands}
 %    \begin{macrocode}
         \MT@if@false
@@ -12247,7 +12250,7 @@ end
 % Fonts that are `the same':
 % The \pkg{fontspec} package will use |lmr| by default, whose EU1/2 encoding
 % is declared in \file{mt-LatinModernRoman.cfg}.
-%\changes{v2.5}{2012/08/23}{declare \texttt{lmr} as alias of \texttt{Latin Modern Roman}
+%\changes{v2.5}{2012/08/23}{declare \texttt{lmr} as alias of Latin Modern Roman
 %                           (OpenType version)}
 %    \begin{macrocode}
 \ifMT@fontspec
@@ -12298,7 +12301,7 @@ end
 % The OpenType versions:
 %
 %\changes{v2.5}{2012/03/29}{declare TeX Gyre Pagella, Asana Math, Palatino <LT> Std, and Palatino
-%                           as aliases of \texttt{Palatino Linotype} (OpenType version)}
+%                           as aliases of Palatino Linotype (OpenType version)}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{TeX Gyre Pagella}{Palatino Linotype}
 \DeclareMicrotypeAlias{Palatino LT Std} {Palatino Linotype}
@@ -16371,10 +16374,11 @@ normal, and shrunk by 5\%:
 
  *** Typesetting the documentation ***
 
- The documentation (microtype.pdf) can be found on CTAN, if it isn't already
- on your computer, so there should be no need to re-typeset it.
- If you still want to do that, there are some requirements to consider.
- Follow these steps:
+ The documentation of this package (microtype.pdf) can be found on CTAN, if
+ it isn't already installed in your TeX system, so there should be no need to
+ re-typeset it.
+ If you still want to do that, there are some requirements to consider
+ and some steps to follow:
 
 #  1) In microtype.ins, uncomment the lines:
 %\generate{\makefile{microtype-gind.ist}{docist}}
@@ -16393,7 +16397,7 @@ pdflatex microtype.dtx
 #       - Bitstream LetterGothic
 #       - Adobe Source Sans Pro
 #       - Adobe Wittenberger Fraktur MT (alternatively yfrak)
-#       - Adobe Zapf Chancery
+#       - Adobe Zapf Chancery (alternatively URW Zapf Chancery)
 #       - Adobe Kepler MM (for microtype-logo.dtx, input by microtype.dtx)
 #       - Adobe Caslon (for microtype-lssample.dtx, input by microtype.dtx)
 #  5) Run
@@ -16418,6 +16422,6 @@ makeindex -s gglo.ist -o microtype.gls microtype.glo
 # 11) Run
 pdflatex microtype.dtx
 #
-# That's it, although I still may have forgotten some things...
+# That's it, although I still may have forgotten some things ...
 %
-% --
+% -- RS
