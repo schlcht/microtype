@@ -19,8 +19,8 @@
 % This work has the LPPL maintenance status `author-maintained'.
 %
 % This work consists of the files microtype.dtx and microtype.ins and the
-% derived files microtype.sty, microtype-pdftex.def, microtype-xetex.def,
-% microtype-luatex.def, microtype.lua and letterspace.sty.
+% derived files microtype.sty, microtype-pdftex.def, microtype-luatex.def,
+% microtype-xetex.def, microtype.lua and letterspace.sty.
 %
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -48,7 +48,7 @@
 %<pdftex-def>   pdftex
 %<luatex-def>   luatex
 %<xetex-def>   xetex
-  (RS)]
+   (RS)]
 %</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
 %<*config>
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
@@ -176,10 +176,10 @@
 \else
   \def\bfdefault{b}
   \def\Module#1{{\color{theblue}\textoractual{$\langle$}{<}\textit{#1}\textoractual{$\rangle$}{>}}}
-  \def\TeX{\textoractual{T\kern-.1667em\lower.4ex\hbox{E}\kern-.125emX\@}{TeX}}
+  \def\TeX{\textoractual{T\kern-.1em\lower.4ex\hbox{E}\kern-.075emX\@}{TeX}}
   \DeclareRobustCommand\LaTeX{\textoractual{L\kern-.26em{\sbox\z@ T\vbox to\ht\z@{%
      \hbox{\check@mathfonts\fontsize\sf@size\z@\math@fontsfalse\selectfont A}%
-    \vss}}}{La}\kern-.1em\TeX}
+    \vss}}}{La}\kern-.075em\TeX}
   \def\PackageFont{\ttfamily}
   \def\match{{\large\raisebox{-.15em}{\textbullet}}}
   {\catcode`\`=\active % indiscernible from ' in Bitstream Letter Gothic
@@ -228,7 +228,7 @@
   \let\@oddfoot\@empty
   \let\@mkboth\markboth
   \def\sectionmark##1{\markboth{\textls*[70]{\MakeUppercase{##1}}}{}}
-  \def\subsectionmark##1{\markright{: ##1}}}
+  \def\subsectionmark##1{\markright{\,: ##1}}}
 \pagestyle{MTheadings}
 % toc
 \let\l@section@\l@section
@@ -250,7 +250,7 @@
 \fi
 \def\defspecial@toc#1#2#3{\long\def#1{%
   \ifpdf\phantomsection\specialoutline\pdfbookmark[1]{#2}{#3}\normaloutline\fi
-  \section*{#2}\@mkboth{\textls*[60]{\MakeUppercase{#2}}}{}%
+  \section*{#2}\@mkboth{\textls*[70]{\MakeUppercase{#2}}}{}%
   \@starttoc{#3}}}
 \defspecial@toc\tableofcontents\contentsname{toc}
 \defspecial@toc\listoftables\listtablename{lot}
@@ -610,7 +610,7 @@
       \mt@layer{Protrusion#1}{%
         \mt@layer{Expansion#2}{%
           \mt@place{\microtypesetup{protrusion=#1,expansion=#2}%
-            \mt@sample@text}}}}
+            \mt@sample@text\strut}}}}
     \def\mt@toggle@sample#1{%
       \pdfstartlink user{/Subtype/Link
         /BS << /Type/Border/W 1 /S/D /D[4 1] >>
@@ -684,16 +684,17 @@
      \ifx\eTeXversion\undefined \llap{\raisebox{0.5ex}{\'{}}}
      \else \llap{\raisebox{0.45ex}{\'{}\kern\dimexpr.05em-2\fontdimen1\font\relax}}
      \fi Th\`anh}
-\def\pdftex{\texorpdfstring{pdf\kern.05em\TeX}{pdfTeX}}
-\def\luatex{\texorpdfstring{Lua\kern-.05em\TeX}{LuaTeX}}
-\def\etex{\mbox{e-\TeX}}
-\def\nonetex{\mbox{\rlap{\kern.05em/}e-\TeX}} % aka. \TeX
+\DeclareRobustCommand\pdftex{\texorpdfstring{pdf\kern.05em\TeX}{pdfTeX}}
+\DeclareRobustCommand\luatex{\texorpdfstring{Lua\kern-.05em\TeX}{LuaTeX}}
+\DeclareRobustCommand\etex{\mbox{e-\kern-.075em\TeX}}
+\DeclareRobustCommand\nonetex{\rlap{\kern.05em/}\etex} % aka. \TeX
 \def\@reflect#1{\ifdim\fontdimen1\font=0pt \reflectbox{#1}%
   \else \rotatebox[origin=c]{180}{#1}\fi}
-\DeclareRobustCommand\xetex{% also reflect the initial `X'?
-  \textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.12em\@reflect{E}}}{Xe}%
-  \kern-.16em\TeX}
+\def\xe{% also reflect the initial `X'?
+  \textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}
+\DeclareRobustCommand\xetex{\xe\kern-.1em\TeX}
 \def\texlive{\TeX~Live}
+\def\miktex{MiK\TeX}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -737,7 +738,7 @@
 %
 % \GetFileInfo{microtype.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
-%        \textls[70]{The \microtype\ package}\\[.3\baselineskip]\large
+%        \textls[40]{The \microtype\ package}\\[.3\baselineskip]\large
 %        Subliminal refinements towards typographical perfection}
 % \author{R Schlicht\\\mailtoRS}
 % \date{\fileversion\\\filedate}
@@ -1056,7 +1057,7 @@
 %\end{table}
 %
 %\medskip\noindent
-% In table~\ref{tab:available-features}, you find an overview of which
+% Table~\ref{tab:available-features} presents an overview of which
 % micro-typographic features are available and enabled by default for the
 % relevant \TeX\ versions and output modes.
 %
@@ -1538,7 +1539,7 @@
 % The characters may be specified either as a single character (|A|),
 % as a text symbol command (\cmd\textquoteleft), or as a slot number (resp.
 % Unicode number for \luatex\ or \xetex): three or more  digits for decimal
-% notation, prefixed with~|"| for hexadecimal, with~|'| for octal (\eg, the
+% notation, prefixed with~|"| for hexadecimal, with~|'| for octal numerals (\eg, the
 % `fl' ligature in <T1> encoding:~|029|, |"1D|, |'35|).
 % \mbox{8-bit} (and even <UTF-8>) characters may be entered directly or in
 % \LaTeX's traditional \mbox{7-bit} notation: both |\"A| and \expandafter|\"A|
@@ -1848,7 +1849,7 @@
 %\fi
 %                            example, suppose you want to space out all small
 % capitals by \EM{50/1000}, fonts smaller than \cmd\small\ by \EM{0.02}, and to
-% decrease the tracking of large type by \EM{0.02}. You can achieve this with
+% decrease the tracking of large type by \EM{0.02}. This could be achieved with
 % the following settings:
 %^^A there's a \nobreakspace ahead!
 %\begin{verbatim}
@@ -1985,7 +1986,7 @@
 % after this character if it appears before an interword space, second, the
 % additional stretch amount, and third, the additional shrink amount. All
 % values may also be negative, in which case the dimensions will be decreased.
-% Not all values have to be specified, however, the settings must contain the
+% Not all values have to be specified, but the settings must always contain the
 % two separating commas.
 %
 %\paragraph{Options:}
@@ -2078,7 +2079,7 @@
 %       \footnotesize Font family (<NFSS> code)
 %      & \multicolumn{2}{l}{\footnotesize Features}\\
 %\cmidrule{2-3}
-%      & \footnotesize Encodings
+%      & \footnotesize Encodings [Scripts]
 %      & \footnotesize Shapes\\
 %\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
 % Generic
@@ -2117,15 +2118,15 @@
 % Latin Modern Roman
 %      & <EU1>, <EU2> [Latin, Greek]
 %      & n, it, (sl)\fnref{fn:it-sl}\\
-% Charis SIL
+% Charis <SIL>
 %      & <EU1>, <EU2> [Latin, Cyrillic, Greek]
 %      & n, it, sc\\
 %\iffalse ^^A provided with the EB Garamond package
-% EB Garamond
+% <EB> Garamond
 %      & <EU1>, <EU2> [Latin, Cyrillic, Greek]
 %      & n, it, sc, si\\
 %\fi
-% Palatino Linotype\footnote{Alias: \TeX\ Gyre Pagella, Palatino LT Std, Palatino}
+% Palatino Linotype\footnote{Aliases: \TeX\ Gyre Pagella, Palatino <LT> Std, Palatino}
 %      & <EU1>, <EU2> [Latin]
 %      & n, it, sc\\
 % Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|)}
@@ -2612,7 +2613,7 @@
 % fonts, \pdftex\ may be running out of some kind of memory. It can be
 % increased by setting the respective parameter to a larger value. For
 % web2c-based systems, \eg, \texlive, change the settings in \file{texmf.cnf},
-% for MiK\TeX, in the file \file{miktex.ini} (2.4 or older) resp.
+% for \miktex, in the file \file{miktex.ini} (2.4 or older) resp.
 % \file{pdflatex.ini} (2.5 or newer).
 %
 %\changes{v2.0}{2007/01/05}{add hint about warning when tracking \emph{and}
@@ -2665,7 +2666,7 @@
 % Furthermore, I thank him for helping me to improve this package, and not
 % least for promoting it in \cite{ThanhPracTeX}, \cite{ThanhEuroTeX07} and ^^A comma, to avoid the Three Ands Falls
 % elsewhere. I also thank him and the rest of the \pdftex\ team, and more
-% recently also of the \luatex\ team, for refuting the idea that \TeX\ is dead,
+% recently also the \luatex\ team, for refuting the idea that \TeX\ is dead,
 % and for fixing the bugs I find.
 %
 %  \contributor Harald Harders <h.harders\at tu-bs.de>
@@ -2866,8 +2867,9 @@
 %   \newblock (\ctanurl{macros/latex/contrib/oberdiek/})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
-%   Will Robertson, Khaled Hosny, \emph{The \pkg{fontspec} package},
-%    \newblock 16 March 2013.
+%   Will Robertson, Khaled Hosny,
+%    \emph{The \pkg{fontspec} package. Font selection for \xe\LaTeX\ and Lua\LaTeX},
+%    \newblock 20 May 2013.
 %    \newblock (\ctanurl{macros/latex/contrib/fontspec/})
 %\end{thebibliography}
 %
@@ -3193,7 +3195,6 @@
 %  \fi
 %  \if@tempswa\@newiftrue\else\@newiffalse\fi
 %}
-%
 %
 %\DoNotIndex{\!,\",\',\(,\),\*,\+,\,,\-,\.,\/,\:,\;,\<,\=,\>,\?,\[,\\,\],\`,
 %  \#,\$,\&,\^,\_,\|,\~,\ ,
@@ -4098,8 +4099,8 @@ local microtype = microtype
 
 local microtype_module = {
   name         = "microtype",
-  version      = 2.5,
-  date         = "2013/05/15",
+  version      = 2.5b,
+  date         = "2013/06/19",
   description  = "microtype module.",
   author       = "E. Roux, R. Schlicht and P. Gesang",
   copyright    = "E. Roux, R. Schlicht and P. Gesang",
