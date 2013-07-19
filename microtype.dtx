@@ -2,7 +2,7 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.5b"
+% !DTXversion:: "2.6"
 % ------------------------------------------------------------------------
 % $Id: microtype.dtx,v 1.72 2013-05-23 20:35:08+02 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
@@ -40,7 +40,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2013/06/19 v2.5b
+  [2013/07/15 v2.6
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -987,8 +987,6 @@
 % the active font set (by default, all small capitals).
 % It is not available with \xetex\ (you may use the `|LetterSpace|'
 % option of the \pkg{fontspec} package instead).
-% With \luatex, you need to load the fonts with the \pkg{fontspec} option
-% `|Renderer=Basic|`. See the \cite{fontspec} manual for details.
 %
 %\medskip
 %\Describe{Option}{kerning}{true,!false,:font set name}
@@ -2905,7 +2903,9 @@
 %
 %\begin{History}
 %
-%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item Improvements for tracking/letterspacing with \luatex\
+%        (|Renderer=Basic| no longer required)
 %
 %\VersionDate{2.5a}{2013/05/23}
 %
@@ -3243,11 +3243,13 @@
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
 %^^A  \f@size,\font@name,\glb@currsize,\normalfont,\pickup@font,\selectfont,
 %^^A  \set@fontsize,\showhyphens}                                            ^^A latex
+%\DoNotIndex{\ExplSyntaxOn,\ExplSyntaxOff}                                   ^^A latex3
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
+%\DoNotIndex{\fontspec}                                                      ^^A fontspec (actually \fontspec_if_fontspec_font:TF)
 %\DoNotIndex{\pdfstringdefDisableCommands,\pdfstringdefWarn}                 ^^A hyperref
 %\DoNotIndex{\ifpdf}                                                         ^^A ifpdf
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
@@ -4083,7 +4085,7 @@
 % required in \file{microtype.lua}. This eliminates the need for the user to
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
-%\changes{v2.5b}{2013/06/19}{load \pkg{luaotfload} with \luatex}
+%\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
 %    \begin{macrocode}
 \RequirePackage{luaotfload}
 \RequireLuaModule{microtype}
@@ -4099,8 +4101,8 @@ local microtype = microtype
 
 local microtype_module = {
   name         = "microtype",
-  version      = 2.5b,
-  date         = "2013/06/19",
+  version      = 2.6,
+  date         = "2013/07/15",
   description  = "microtype module.",
   author       = "E. Roux, R. Schlicht and P. Gesang",
   copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -4113,6 +4115,10 @@ end
 
 local find = string.find
 local tex_write = tex.write
+
+function microtype.sprint (...)
+    tex.sprint(luatexbase.catcodetables['latex-package'], ...)
+end
 
 %</luafile>
 %    \end{macrocode}
@@ -4664,25 +4670,52 @@ microtype.if_str_eq = if_str_eq
     \advance\@tempcnta \@ne
     \ifnum\@tempcnta < #2\MT@repeat
 }
+%</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@do@font}
 % Execute \meta{\#1} 256 times,
 %    \begin{macrocode}
-%</package|letterspace>
-%<*pdftex-def|luatex-def|letterspace>
-\def\MT@do@font{\MT@while@num\z@
-%<pdftex-def|letterspace>  \@cclvi
+%<pdftex-def>\def\MT@do@font{\MT@while@num\z@\@cclvi}
 %    \end{macrocode}
-% resp. 1114111 times for \luatex\ (this is going to be slow, but \luatex\ is
-% slow anyway -- still, there ought to be a better way!)
+% resp. for the whole font for \luatex, if loaded by \pkg{fontspec}/\pkg{luaotfload}.
 %\changes{v2.5}{2010/08/14}{adapt for \luatex}
+%\changes{v2.6}{2013/07/14}{speed up for \luatex}
 %    \begin{macrocode}
-%<luatex-def>  \MT@max@slot
+%<*luatex-def|letterspace>
+\def\MT@do@font#1{%
+  \MT@if@fontspec@font{%
+    \def\MT@dofont@function{#1}%
+    \MT@lua{microtype.do_font()}%
+  }{\MT@while@num\z@\@cclvi{#1}}%
 }
-%</pdftex-def|luatex-def|letterspace>
+%</luatex-def|letterspace>
 %    \end{macrocode}
-% resp. for the whole font.
+% This is the |lua| function, which is much faster than looping through all glyphs.
+%    \begin{macrocode}
+%<*luafile>
+local function do_font()
+  if fonts then
+    local thefont
+    if fonts.ids then       --- legacy luaotfload
+      thefont = fonts.ids[font.current()]
+    else                    --- new location
+      thefont = fonts.hashes.identifiers[font.current()]
+    end
+    if thefont then
+      for i in next,thefont.characters do
+        if type(i) == "number" then
+          microtype.sprint([[\@tempcnta=]]..i..[[\relax\MT@dofont@function]])
+        end
+      end
+    end
+  end
+end
+microtype.do_font = do_font
+
+%</luafile>
+%    \end{macrocode}
+% The \xetex\ variant.
 %\changes{v2.5}{2010/05/18}{adapt for \xetex}
 %    \begin{macrocode}
 %<*xetex-def>
@@ -4998,11 +5031,29 @@ microtype.if_str_eq = if_str_eq
 % Two new conditionals for use with \xetex\ or \luatex.
 %    \begin{macrocode}
 \newif\ifMT@xunicode
-\newif\ifMT@fontspec
 \MT@with@package@T{xunicode}\MT@xunicodetrue
+%</package>
+\newif\ifMT@fontspec
 \MT@with@package@T{fontspec}\MT@fontspectrue
+%</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@if@fontspec@font}
+% For fonts loaded by \pkg{fontspec} (or, rather, \pkg{luaotfload}) we can
+% use some of the features the latter package provides.
+%    \begin{macrocode}
+%<*luatex-def|letterspace>
+\let\MT@if@fontspec@font\@secondoftwo
+\ifMT@fontspec
+\ExplSyntaxOn
+  \@ifpackagelater{luaotfload}{2013/05/23}{
+    \let\MT@if@fontspec@font\fontspec_if_fontspec_font:TF
+  }\relax
+\ExplSyntaxOff
+\fi
+%</luatex-def|letterspace>
+%    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setupfont@hook}
 % This hook will be executed every time a font is set up (inside a group).
@@ -5017,6 +5068,8 @@ microtype.if_str_eq = if_str_eq
 % (This is no longer needed, since the complete setup is now deferred until the
 % end of the preamble. However, it is still necessary for \opt{defersetup}|=false|.)
 %    \begin{macrocode}
+%<*package|letterspace>
+%<*package>
 \def\MT@setupfont@hook{%
 %    \end{macrocode}
 %\iffalse
@@ -6829,7 +6882,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % the base font again.
 %    \begin{macrocode}
       \MT@get@ls@basefont
+%    \end{macrocode}
+%\changes{v2.6}{2013/07/15}{use \pkg{luaotfload}'s \texttt{letterspace} font feature if available}
+% \pkg{luaotfload} provides the faux font feature |letterspace|, which we will
+% use when dealing with non-legacy fonts, as it is less problematic and faster
+% than the \pdftex\ primitive \cmd\letterspacefont.
+%    \begin{macrocode}
+%<*luatex-def|letterspace>
+      \MT@if@fontspec@font{%
+%<luatex-def&debug>\MT@dinfo@nl{1}{... fontspec font: \MessageBreak
+%<luatex-def&debug>         \MT@exp@two@c\meaning\csname\MT@@font\endcsname}%
+        \global\expandafter\font\MT@lsfont=%
+          \expandafter\MT@exp@two@c\expandafter\MT@ls@fontspec@font
+            \expandafter\meaning\expandafter\csname\MT@@font\endcsname\@nil
+      }{%
+%</luatex-def|letterspace>
+%<luatex-def&debug>\MT@dinfo@nl{1}{... legacy font}%
       \global\expandafter\letterspacefont\MT@lsfont\font@name\MT@letterspace@
+%<luatex-def|letterspace>      }%
 %    \end{macrocode}
 %\changes{v2.2}{2007/06/16}{possibility to customise interword spacing}
 % Scale interword spacing (not configurable in \letterspace).
@@ -6870,8 +6940,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</letterspace>
 %    \end{macrocode}
 % Adjust protrusion values now, and maybe later (in \cs{MT@pr@split@val})
-% (not for \luatex, though, where the letterspaced font inherits the protrusion
-% values from the base font).
+% (not for \luatex, though, where letterspacing does not interfere with protrusion).
 %\changes{v2.3}{2007/07/27}{also adjust tracking if protrusion is not enabled,
 %                           and even for \letterspace\
 %                           (reported by \contributor Stephan Hennig <stephanhennig\at arcor.de>)}
@@ -6880,19 +6949,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Wolfram Schaalo <schaalo\at gmx.net>)}
 %                                                              ^^A private mail, 2008/05/12
 %    \begin{macrocode}
+%<luatex-def|letterspace>      \MT@if@fontspec@font\relax{%
 %<debug>\MT@dinfo@nl{2}{... compensating for tracking (\number\MT@letterspace@)}%
       \MT@do@font{\lpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax
                   \rpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax}%
-%<pdftex-def>      \let\MT@the@pr@code\MT@the@pr@code@tr
+      \let\MT@the@pr@code\MT@the@pr@code@tr
+%<luatex-def|letterspace>     }%
     \fi
 %    \end{macrocode}
-% Finally, let the letterspaced font propagate. With \luatex, we also need to
-% load.
+% Finally, let the letterspaced font propagate.
+% With \luatex, we also need to load.
 %\changes{v2.5a}{2013/05/15}{fix: load font for \pkg{fontspec}} ^^A for MT@get@slot
 %    \begin{macrocode}
     \aftergroup\MT@set@lsfont
 %<pdftex-def|luatex-def>    \let\MT@font\MT@lsfont
-%<luatex-def>    \ifMT@fontspec\MT@font\fi
+%<luatex-def>    \MT@if@fontspec@font\MT@font\relax
 %    \end{macrocode}
 %\begin{macro}{\MT@set@curr@ls}
 %\begin{macro}{\MT@curr@ls}
@@ -6962,11 +7033,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
 %</pdftex-def|luatex-def>
   \fi
-%    \end{macrocode}
-% Since protrusion values are inherited in \luatex, we switch off the setup for
-% this font.
-%    \begin{macrocode}
-%<luatex-def>  \MT@protrusionfalse
 %<pdftex-def|luatex-def>  }%
 }
 %    \end{macrocode}
@@ -6986,6 +7052,22 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }%
 }
 %</pdftex-def|luatex-def|letterspace>
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@ls@fontspec@font}
+% Add the |letterspacing| feature to a font loaded by \pkg{fontspec}.
+% The required \pkg{luaotfload} version always encloses the font name
+% in quotation marks (unlike previous versions).
+%    \begin{macrocode}
+%<*luatex-def|letterspace>
+\def\MT@ls@fontspec@font#1"#2"#3\@nil{%
+  "#2letterspace=0.%
+     \ifnum\MT@letterspace@<100 0\fi
+     \ifnum\MT@letterspace@<10  0\fi
+     \number\MT@letterspace@;"%
+  \ifx\\#3\\ at \f@size pt\else#3\fi
+}
+%</luatex-def|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@get@tr@opt}
@@ -8799,7 +8881,7 @@ end
 %    \begin{macrocode}
   \@ifpackageloaded{CJK}{%
 %    \end{macrocode}
-%\changes{v2.5b}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
+%\changes{v2.6}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
 % The \pkg{xeCJK} package pretends that \pkg{CJK} was loaded, but does not
 % change the definition of \cmd\pickup@font.
 % With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters;
@@ -16370,7 +16452,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10293}
+% \CheckSum{10360}
 %
 % \Finale
 %
