@@ -16,6 +16,7 @@ microtype-gind.ist
 *.cfg
 *.glo
 *.gls
+*.glg
 *.idx
 *.ind
 *.ilg
