@@ -2,7 +2,7 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.5b"
+% !DTXversion:: "2.6"
 % ------------------------------------------------------------------------
 % $Id: microtype.dtx,v 1.72 2013-05-23 20:35:08+02 schlicht Exp schlicht $
 % ------------------------------------------------------------------------
@@ -40,7 +40,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2013/06/19 v2.5b
+  [2013/06/19 v2.6
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -1491,6 +1491,7 @@
 % three arguments; the first one is optional and may contain additional
 % options; in the second argument, you specify the set of fonts to which the
 % settings should apply; the third argument contains the actual settings.
+% Here, as in all configuration commands, all spaces are ignored.
 %
 % The set of fonts to which the settings should apply is declared using the
 % same syntax of \meta{font axis}\,|=|\,\meta{value list} pairs as for the
@@ -2761,9 +2762,10 @@
 %  \contributor Jonas Hogstrom    <hjb981\at gmail.com>,
 %  \contributor Gabriel Kerneis   <gabriel\at kerneis.info>,
 %  \contributor RazorXsr          <@\at @>, ^^A http://tex.stackexchange.com/users/17609/razorxsr
-%  \contributor Dave              <@\at @>  ^^A http://tex.stackexchange.com/users/15562/dave
+%  \contributor Dave              <@\at @>, ^^A http://tex.stackexchange.com/users/15562/dave
+%  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>
 % and
-%  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>.
+%  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>.
 %
 %
 %\iffalse
@@ -3529,7 +3531,8 @@
 % \fallbacktext{If \file{microtype.sty} had been generated with the `|debug|'
 %   option,\\this method would be demonstrated here.}
 %\else
-% Let's see how it works~\dots
+% Let's see how it works~\dots\ (if you don't see anything special on this page,
+% your <PDF> viewer doesn't support annotations).
 %\begin{verbatim}
 %\tracingmicrotypeinpdf=2
 %\end{verbatim}
@@ -4083,7 +4086,7 @@
 % required in \file{microtype.lua}. This eliminates the need for the user to
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
-%\changes{v2.5b}{2013/06/19}{load \pkg{luaotfload} with \luatex}
+%\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
 %    \begin{macrocode}
 \RequirePackage{luaotfload}
 \RequireLuaModule{microtype}
@@ -4094,12 +4097,13 @@
 %                           (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %    \begin{macrocode}
 %<*luafile>
+
 microtype = microtype or {}
 local microtype = microtype
 
 local microtype_module = {
   name         = "microtype",
-  version      = 2.5b,
+  version      = 2.6,
   date         = "2013/06/19",
   description  = "microtype module.",
   author       = "E. Roux, R. Schlicht and P. Gesang",
@@ -4818,16 +4822,16 @@ microtype.if_str_eq = if_str_eq
 % Whenever an optional argument accepts a list of features, we can use this
 % command to check whether a feature exists in order to prevent a rather
 % confusing `|Missing \endcsname inserted|' error message. The feature (long
-% form) must be in \cmd\@tempa, the type of list to ignore in \meta{\#1},
+% form) must be in \meta{\#1}, the type of list to ignore in \meta{\#2},
 % then comes the action.
 %    \begin{macrocode}
-\def\MT@is@feature#1{%
-  \MT@exp@one@n\MT@in@clist\@tempa\MT@features@long
+\def\MT@is@feature#1#2{%
+  \MT@in@clist{#1}\MT@features@long
   \ifMT@inlist@
     \expandafter\@firstofone
   \else
-    \MT@error{`\@tempa' is not an available micro-typographic\MessageBreak
-      feature. Ignoring #1}{Available features are: `\MT@features@long'.}%
+    \MT@error{`#1' is not an available micro-typographic\MessageBreak
+      feature. Ignoring #2}{Available features are: `\MT@features@long'.}%
     \expandafter\@gobble
   \fi
 }
@@ -7826,10 +7830,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@begin@catcodes}
-% This will be used before reading the files as well as in the configuration
-% commands \cs{Set...}, and \cs{DeclareCharacterInheritance}, so that the
-% catcodes are also harmless when these commands are used outside the
-% configuration files.
+% This will be used before reading the files as well as in all configuration
+% commands, so that catcodes are also harmless when these commands are used
+% outside the configuration files.
 %\changes{v1.7}{2005/02/17}{also use inside configuration commands}
 %\changes{v2.3}{2007/11/20}{fix: don't disable \cmd\KV@@sp@def}
 %    \begin{macrocode}
@@ -8799,7 +8802,7 @@ end
 %    \begin{macrocode}
   \@ifpackageloaded{CJK}{%
 %    \end{macrocode}
-%\changes{v2.5b}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
+%\changes{v2.6}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
 % The \pkg{xeCJK} package pretends that \pkg{CJK} was loaded, but does not
 % change the definition of \cmd\pickup@font.
 % With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters;
@@ -9198,6 +9201,8 @@ end
 %\todo{allow for \texttt{load}ing and extending another set; or using more than one set?}
 %
 %\begin{macro}{\DeclareMicrotypeSet}
+%^^A \changes{v1.1}{2004/09/15}{remove spaces around first argument}
+%\changes{v2.6}{2013/08/05}{ignore spaces}
 %\begin{macro}{\DeclareMicrotypeSet*}
 % Calling this macro will create a comma list for every font attribute of the
 % form: |\MT|\meta{feature}|list@|\meta{attribute}|@|\meta{set name}. If the
@@ -9208,6 +9213,7 @@ end
 % does not constitute a constraint.
 %    \begin{macrocode}
 \def\DeclareMicrotypeSet{%
+  \MT@begin@catcodes
   \@ifstar
     \MT@DeclareSetAndUseIt
     \MT@DeclareSet
@@ -9216,23 +9222,21 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@DeclareSet}
-%\changes{v1.1}{2004/09/15}{remove spaces around first argument}
 %    \begin{macrocode}
 \newcommand\MT@DeclareSet[3][]{%
-  \KV@@sp@def\@tempa{#1}%
-  \MT@ifempty\@tempa{%
+  \MT@ifempty{#1}{%
     \MT@map@clist@c\MT@features{{\MT@declare@sets{##1}{#2}{#3}}}%
   }{%
-    \MT@map@clist@c\@tempa{{%
-      \KV@@sp@def\@tempa{##1}%
-      \MT@ifempty\@tempa\relax{%
-        \MT@is@feature{set declaration `#2'}{%
+    \MT@map@clist@n{#1}{{%
+      \MT@ifempty{##1}\relax{%
+        \MT@is@feature{##1}{set declaration `#2'}{%
           \MT@exp@one@n\MT@declare@sets
-            {\csname MT@rbba@\@tempa\endcsname}{#2}{#3}%
+            {\csname MT@rbba@##1\endcsname}{#2}{#3}%
         }%
       }%
     }}%
   }%
+  \MT@end@catcodes
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9258,7 +9262,7 @@ end
 %\todo{share one set between features}
 %    \begin{macrocode}
 \def\MT@declare@sets#1#2#3{%
-  \KV@@sp@def\MT@curr@set@name{#2}%
+  \def\MT@curr@set@name{#2}%
   \MT@ifdefined@n@T{MT@#1@set@@\MT@curr@set@name}{%
     \MT@warning{Redefining \@nameuse{MT@abbr@#1} set `\MT@curr@set@name'}%
     \MT@glet@nc{MT@#1list@size@\MT@curr@set@name}\@empty
@@ -9355,7 +9359,7 @@ end
 \def\MT@define@set@key@size#1{%
   \define@key{MT@#1@set}{size}[]{%
     \MT@map@clist@n{##1}{%
-      \KV@@sp@def\MT@val{####1}%
+      \def\MT@val{####1}%
       \expandafter\MT@get@range\MT@val--\@nil
       \ifx\MT@val\relax \else
         \MT@exp@cs\MT@xadd
@@ -9482,7 +9486,7 @@ end
   \define@key{MT@#1@set}{font}[]{%
     \MT@glet@nc{MT@#1list@font@\MT@curr@set@name}\@empty
     \MT@map@clist@n{##1}{%
-      \KV@@sp@def\MT@val{####1}%
+      \def\MT@val{####1}%
       \MT@ifstreq\MT@val*{\def\MT@val{*/*/*/*/*}}\relax
       \expandafter\MT@get@font\MT@val/////\@nil
       \MT@exp@two@n\g@addto@macro
@@ -9566,23 +9570,31 @@ end
 % To use a particular set we simply redefine |MT@|\meta{feature}|@setname|.
 % If the optional argument is empty, set names for all features will be
 % redefined.
-%\changes{v1.1}{2004/09/20}{remove spaces around first argument}
+%^^A \changes{v1.1}{2004/09/20}{remove spaces around first argument}
+%\changes{v2.6}{2013/08/05}{ignore spaces}
 %    \begin{macrocode}
-\renewcommand*\UseMicrotypeSet[2][]{%
-  \KV@@sp@def\@tempa{#1}%
-  \MT@ifempty\@tempa{%
+\def\UseMicrotypeSet{%
+  \MT@begin@catcodes
+  \MT@UseMicrotypeSet
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@UseMicrotypeSet}
+%    \begin{macrocode}
+\newcommand*\MT@UseMicrotypeSet[2][]{%
+  \MT@ifempty{#1}{%
     \MT@map@clist@c\MT@features{{\MT@use@set{##1}{#2}}}%
   }{%
-    \MT@map@clist@c\@tempa{{%
-      \KV@@sp@def\@tempa{##1}%
-      \MT@ifempty\@tempa\relax{%
-        \MT@is@feature{activation of set `#2'}{%
+    \MT@map@clist@n{#1}{{%
+      \MT@ifempty{##1}\relax{%
+        \MT@is@feature{##1}{activation of set `#2'}{%
           \MT@exp@one@n\MT@use@set
-            {\csname MT@rbba@\@tempa\endcsname}{#2}%
+            {\csname MT@rbba@##1\endcsname}{#2}%
         }%
       }%
     }}%
   }%
+  \MT@end@catcodes
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9599,15 +9611,14 @@ end
 %\changes{v1.8}{2005/05/15}{fix: remove braces in first line}
 %    \begin{macrocode}
 \def\MT@use@set#1#2{%
-  \KV@@sp@def\@tempa{#2}%
-  \MT@ifdefined@n@TF{MT@#1@set@@\@tempa}{%
-    \MT@xdef@n{MT@#1@setname}{\@tempa}%
+  \MT@ifdefined@n@TF{MT@#1@set@@#2}{%
+    \MT@xdef@n{MT@#1@setname}{#2}%
   }{%
     \MT@ifdefined@n@TF{MT@#1@setname}\relax{%
       \MT@xdef@n{MT@#1@setname}{\@nameuse{MT@default@#1@set}}%
     }%
     \MT@error{%
-      The \@nameuse{MT@abbr@#1} set `\@tempa' is undeclared.\MessageBreak
+      The \@nameuse{MT@abbr@#1} set `#2' is undeclared.\MessageBreak
       Using set `\@nameuse{MT@#1@setname}' instead}{}%
   }%
 }
@@ -9620,24 +9631,32 @@ end
 %\end{macro}
 %\begin{macro}{\DeclareMicrotypeSetDefault}
 %\changes{v1.8}{2005/05/15}{new command: set default font set}
+%\changes{v2.6}{2013/08/05}{ignore spaces}
 % This command can be used in the main configuration file to declare the
 % default font set, in case no set is specified in the package options.
 %    \begin{macrocode}
-\renewcommand*\DeclareMicrotypeSetDefault[2][]{%
-  \KV@@sp@def\@tempa{#1}%
-  \MT@ifempty\@tempa{%
+\def\DeclareMicrotypeSetDefault{%
+  \MT@begin@catcodes
+  \MT@DeclareMicrotypeSetDefault
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@DeclareMicrotypeSetDefault}
+%    \begin{macrocode}
+\newcommand*\MT@DeclareMicrotypeSetDefault[2][]{%
+  \MT@ifempty{#1}{%
     \MT@map@clist@c\MT@features{{\MT@set@default@set{##1}{#2}}}%
   }{%
-    \MT@map@clist@c\@tempa{{%
-      \KV@@sp@def\@tempa{##1}%
-      \MT@ifempty\@tempa\relax{%
-        \MT@is@feature{declaration of default set `#2'}{%
+    \MT@map@clist@n{#1}{{%
+      \MT@ifempty{##1}\relax{%
+        \MT@is@feature{##1}{declaration of default set `#2'}{%
           \MT@exp@one@n\MT@set@default@set
-            {\csname MT@rbba@\@tempa\endcsname}{#2}%
+            {\csname MT@rbba@##1\endcsname}{#2}%
         }%
       }%
     }}%
   }%
+  \MT@end@catcodes
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9649,13 +9668,12 @@ end
 %\begin{macro}{\MT@set@default@set}
 %    \begin{macrocode}
 \def\MT@set@default@set#1#2{%
-  \KV@@sp@def\@tempa{#2}%
-  \MT@ifdefined@n@TF{MT@#1@set@@\@tempa}{%
-%<debug>\MT@dinfo{1}{declaring default \@nameuse{MT@abbr@#1} set `\@tempa'}%
-    \MT@xdef@n{MT@default@#1@set}{\@tempa}%
+  \MT@ifdefined@n@TF{MT@#1@set@@#2}{%
+%<debug>\MT@dinfo{1}{declaring default \@nameuse{MT@abbr@#1} set `#2'}%
+    \MT@xdef@n{MT@default@#1@set}{#2}%
   }{%
     \MT@error{%
-      The \@nameuse{MT@abbr@#1} set `\@tempa' is not declared.\MessageBreak
+      The \@nameuse{MT@abbr@#1} set `#2' is not declared.\MessageBreak
       Cannot make it the default set. Using set\MessageBreak `all' instead}{}%
     \MT@xdef@n{MT@default@#1@set}{all}%
   }%
@@ -9672,12 +9690,14 @@ end
 %
 %\begin{macro}{\DeclareMicrotypeVariants}
 %\changes{v2.2}{2007/02/04}{new command}
+%\changes{v2.6}{2013/08/05}{ignore spaces}
 %\begin{macro}{\MT@variants}
 % Specify suffixes for variants (see \file{fontname/variants.map}).
 % The starred version appends to the list.
 %    \begin{macrocode}
 \let\MT@variants\@empty
 \def\DeclareMicrotypeVariants{%
+  \MT@begin@catcodes
   \@ifstar
     \MT@DeclareVariants
     {\let\MT@variants\@empty\MT@DeclareVariants}%
@@ -9689,10 +9709,11 @@ end
 %    \begin{macrocode}
 \def\MT@DeclareVariants#1{%
   \MT@map@clist@n{#1}{%
-    \KV@@sp@def\@tempa{##1}%
+    \def\@tempa{##1}%
     \@onelevel@sanitize\@tempa
     \xdef\MT@variants{\MT@variants{\@tempa}}%
   }%
+  \MT@end@catcodes
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9701,17 +9722,24 @@ end
 % settings for the aliased font will be loaded.
 %\changes{v1.5}{2004/12/03}{remove spaces around arguments}
 %\changes{v1.8}{2005/05/09}{warning when overriding an alias font}
-%\changes{v2.5}{2010/05/17}{remove spaces in font name}
+%\changes{v2.5}{2010/05/17}{ignore spaces}
 %    \begin{macrocode}
-\renewcommand*\DeclareMicrotypeAlias[2]{%
-  \edef\@tempa{\zap@space#1 \@empty}%
-  \edef\@tempb{\zap@space#2 \@empty}%
+\def\DeclareMicrotypeAlias{%
+  \MT@begin@catcodes
+  \MT@DeclareMicrotypeAlias
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@DeclareMicrotypeAlias}
+%    \begin{macrocode}
+\newcommand*\MT@DeclareMicrotypeAlias[2]{%
+  \def\@tempb{#2}%
   \@onelevel@sanitize\@tempb
-  \MT@ifdefined@n@T{MT@\@tempa @alias}{%
+  \MT@ifdefined@n@T{MT@#1@alias}{%
     \MT@warning{Alias font family `\@tempb' will override
-      alias `\@nameuse{MT@\@tempa @alias}'\MessageBreak
-      for font family `\@tempa'}}%
-  \MT@xdef@n{MT@\@tempa @alias}{\@tempb}%
+      alias `\@nameuse{MT@#1@alias}'\MessageBreak
+      for font family `#1'}}%
+  \MT@xdef@n{MT@#1@alias}{\@tempb}%
 %    \end{macrocode}
 % If we encounter this command while a font is being set up, we also set the
 % alias for the current font so that if \cs{DeclareMicrotypeAlias} has been
@@ -9723,6 +9751,7 @@ end
 %<debug>\MT@dinfo{1}{Activating alias font `\@tempb' for `\MT@family'}%
     \MT@glet\MT@familyalias\@tempb
   }%
+  \MT@end@catcodes
 }
 %    \end{macrocode}
 %\end{macro}
@@ -16370,7 +16399,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10293}
+% \CheckSum{10264}
 %
 % \Finale
 %
