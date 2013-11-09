@@ -292,7 +292,7 @@
     \expandafter\list
       \csname\@itemitem\endcsname
       {\ifnum\@itemdepth=\@ne\leftmargin 0pt\fi
-       \def\makelabel##1{\hss\llap{##1}}}%
+	      \def\makelabel##1{\hss\llap{\color{sectioning}##1}}}%
    \fi}
   {\endlist}
 \newenvironment{enum}[1][0]
@@ -2635,8 +2635,8 @@
 % \href{http://mirror.ctan.org/macros/latex/contrib/microtype/}
 %      {\acronym{CTAN}}.
 % For the source code of the logo on the title page and of the letterspacing
-% sample from section~\ref{sub:tracking}, see appendix~\ref{sec:title-logo} and
-% \ref{sec:letterspace-ill}.
+% sample from section~\ref{sub:tracking}, see the appendices~\ref{sec:title-logo}
+% and \ref{sec:letterspace-ill}.
 %\changes{v2.5a}{2013/05/23}{add notes on typesetting the documentation}
 % If you want to re-typeset the documentation, read the comments at the end of
 % \file{microtype.dtx}.
@@ -2893,13 +2893,13 @@
 %   {\leftmargin 0pt
 %    \parsep 0pt
 %    \def\refsection##1{[##1]}
-%    \def\makelabel##1{\hss\llap{##1}}}}
+%    \def\makelabel##1{\hss\llap{\color{sectioning}##1}}}}
 %  {\endlist}
 %\newcommand\Version[2]{
 %  \VersionDate{#1}{#2}
 %  \vskip\topsep
 %  \pagebreak[2]
-%  \item[\textsf{#1}]\textsf{(#2)}
+%  \item[\textsf{\color{black}#1}]\textsf{(#2)}
 %  \vskip\topsep
 %  \nopagebreak}
 %\newcommand\VersionDate[2]{^^A needed in the Change history
