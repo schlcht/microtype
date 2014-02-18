@@ -1385,7 +1385,7 @@
 %\fcolorbox{theframe}{white}{^^A
 %\begin{minipage}{\textwidth}
 %\def\arraystretch{1.2}
-%\begin{tabular}{@{}L{65pt}L{80pt}*3{L{41pt}}L{67pt}@{}}
+%\begin{tabular}{@{}L{65pt}L{80pt}*2{L{40pt}}L{43pt}L{67pt}@{}}
 %      \footnotesize Set name
 %    & \multicolumn{5}{l}{\footnotesize Font attributes}\\
 %\cmidrule{2-6}
@@ -1421,7 +1421,7 @@
 %    & Text encodings
 %    & !
 %    & !
-%    & /\cmd\sc|*|/
+%    & /\cmd\sc|*|/,/si/,/scit/
 %    & ! \\
 %\cmidrule(r){1-1}
 % |footnotesize|
@@ -2761,9 +2761,10 @@
 %  \contributor Gabriel Kerneis   <gabriel\at kerneis.info>,
 %  \contributor RazorXsr          <@\at @>, ^^A http://tex.stackexchange.com/users/17609/razorxsr
 %  \contributor Dave              <@\at @>, ^^A http://tex.stackexchange.com/users/15562/dave
-%  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>
+%  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
+%  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>
 % and
-%  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>.
+%  \contributor uli               <@\at @>. ^^A http://tex.stackexchange.com/users/9391/uli
 %
 %
 %\iffalse
@@ -12307,10 +12308,13 @@ end
 %    \end{macrocode}
 %\changes{v2.0}{2006/12/28}{add \texttt{smallcaps} set}
 %\changes{v2.3e}{2009/06/01}{\texttt{sc*} instead of \texttt{sc} in \texttt{smallcaps} set}
+%\changes{v2.6}{2014/02/18}{add \texttt{si} and \texttt{scit} to \texttt{smallcaps} set
+%                           (reported by \contributor uli <@\at @>)}
+%                           ^^A http://tex.stackexchange.com/questions/157397
 %    \begin{macrocode}
 \DeclareMicrotypeSet{smallcaps}
    { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
-     shape    = {sc*}
+     shape    = {sc*,si,scit}
    }
 
 %    \end{macrocode}
@@ -16481,7 +16485,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10360}
+% \CheckSum{10331}
 %
 % \Finale
 %
