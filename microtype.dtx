@@ -2762,9 +2762,10 @@
 %  \contributor RazorXsr          <@\at @>, ^^A http://tex.stackexchange.com/users/17609/razorxsr
 %  \contributor Dave              <@\at @>, ^^A http://tex.stackexchange.com/users/15562/dave
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
-%  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>
-% and
+%  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
 %  \contributor uli               <@\at @>. ^^A http://tex.stackexchange.com/users/9391/uli
+% and
+%  \contributor Sam Mason         <sam\at samason.me.uk> ^^A http://tex.stackexchange.com/users/16433/sam-mason
 %
 %
 %\iffalse
@@ -5163,8 +5164,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{fontspec}\MT@fontspectrue
 %    \end{macrocode}
 % We can clean up \cs{MT@setupfont@hook} now.
+%\changes{v2.6}{2014/03/17}{redefine \cs{MT@setupfont@hook} globally
+%                           for problem with \pkg{tikzposter}
+%                           (reported by \contributor Sam Mason <sam\at samason.me.uk>)}
+%                           ^^A http://tex.stackexchange.com/questions/165846/
 %    \begin{macrocode}
-  \let\MT@setupfont@hook\@empty
+  \MT@glet\MT@setupfont@hook\@empty
   \ifMT@fontspec
     \g@addto@macro\MT@setupfont@hook{\MT@font}%
   \fi
