@@ -2203,9 +2203,9 @@
 %\Describe{Macro}{\microtypecontext}{context assignments}
 % This command may be used anywhere in the document (also in the preamble) to
 % change the micro-typographic context in the current group. To each feature
-% (\key{protrusion}, \key{expansion}, \key{tracking}, \key{spacing} and
-% \key{kerning}), one context may be assigned. Consequently, only settings with
-% the corresponding `|context|' keyword will be applied.
+% (\key{protrusion}, \key{expansion}, (or \key{activate} as a shortcut for both),
+% \key{tracking}, \key{spacing} and \key{kerning}), one context may be assigned.
+% Consequently, only settings with the corresponding `|context|' keyword will be applied.
 %
 %\medskip
 %\Describe{Env}{microtypecontext}{context assignments}
@@ -9153,6 +9153,8 @@ end
 %\changes{v1.9}{2005/10/03}{new command: change setup context in the document}
 %\changes{v2.3}{2007/08/05}{made robust (reported by \contributor Stephan Hennig <stephanhennig\at arcor.de>)}
 %                                           ^^A MID: <46ab4fbb$0$31632$9b4e6d93@newsspool3.arcor-online.net>
+%\changes{v2.6}{2014/03/26}{allow \texttt{activate} shortcut (reported by \contributor Karl Berry <karl\at freefriends.org>)}
+%                                           ^^A private mail, 2014/03/21
 % The user may change the context, so that different setups are possible. This
 % is especially useful for multi-lingual documents.
 %
@@ -9250,6 +9252,13 @@ end
       \fi
     \fi
   }%
+}
+%    \end{macrocode}
+% We also allow the |activate| shortcut.
+%    \begin{macrocode}
+\define@key{MTC}{activate}[]{%
+  \setkeys{MT}{protrusion={#1}}%
+  \setkeys{MT}{expansion={#1}}%
 }
 %    \end{macrocode}
 %\begin{macro}{\MT@pr@context}
@@ -16490,7 +16499,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10331}
+% \CheckSum{10334}
 %
 % \Finale
 %
