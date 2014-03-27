@@ -986,7 +986,7 @@
 % This option will systematically change the tracking of the fonts specified in
 % the active font set (by default, all small capitals).
 % It is not available with \xetex\ (you may use the `|LetterSpace|'
-% option of the \pkg{fontspec} package instead).
+% option of the \cite{fontspec} package instead).
 %
 %\medskip
 %\Describe{Option}{kerning}{true,!false,:font set name}
@@ -2195,7 +2195,7 @@
 % settings to the fonts depending on the context in which they occur. This
 % opens up the space for infinite possibilities of tweaking the document's
 % appearance.\footnote{
-%   With \luatex, you have to load the fonts with the \pkg{fontspec} option
+%   With \luatex, you have to load the fonts with the \cite{fontspec} option
 %   `|Renderer=Basic|'.}
 %   ^^A Otherwise, OpenType feature will be ignored (+smcp being one of them)
 %
@@ -2393,7 +2393,7 @@
 %\end{verbatim}
 % Only the character that begins the ligature(s) should be specified. This
 % command may only be used in the preamble, and only once.\footnote{
-%   With \luatex, you have to load the fonts with the \pkg{fontspec} option
+%   With \luatex, you have to load the fonts with the \cite{fontspec} option
 %   `|Renderer=Basic|'.}
 %   ^^A Otherwise, it won't work at all
 %
@@ -2516,7 +2516,7 @@
 %        the \pkg{babel} package before \microtype.
 %\changes{v2.5}{2012/09/11}{add hint about \luatex\ compatibility}
 %  \item Before this package was fully compatible with \luatex, the following
-%        method of enabling expansion and protrusion with the \pkg{fontspec}
+%        method of enabling expansion and protrusion with the \cite{fontspec}
 %        package was most often found to be recommended:
 %\begin{verbatim}[deletekeywords={[1]{expansion,protrusion}},belowskip=0pt]
 %\newfontfeature{Microtype}{protrusion=default;expansion=default}
@@ -2526,7 +2526,7 @@
 %        basically override all of the settings made by \microtype\ -- despite
 %        the naming, the above lines have nothing to do with this
 %        package.\footnote{^^A
-%             They make use of features provided by \pkg{luaotfload} (via \pkg{fontspec}).}
+%             They make use of features provided by \cite{luaotfload} (via \cite{fontspec}).}
 %\changes{v2.3c}{2008/11/11}{add hint about partial incompatibility with \pkg{CJK}}
 %  \item It is currently not possible to create character-specific settings for
 %        Chinese\slash Japanese\slash Korean fonts. Therefore, the only
@@ -2763,9 +2763,9 @@
 %  \contributor Dave              <@\at @>, ^^A http://tex.stackexchange.com/users/15562/dave
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
-%  \contributor uli               <@\at @>. ^^A http://tex.stackexchange.com/users/9391/uli
+%  \contributor uli               <@\at @>  ^^A http://tex.stackexchange.com/users/9391/uli
 % and
-%  \contributor Sam Mason         <sam\at samason.me.uk> ^^A http://tex.stackexchange.com/users/16433/sam-mason
+%  \contributor Sam Mason         <sam\at samason.me.uk>. ^^A http://tex.stackexchange.com/users/16433/sam-mason
 %
 %
 %\iffalse
@@ -2840,8 +2840,8 @@
 %   \thanh, Sebastian Rahtz, Hans Hagen, Hartmut Henkel, Pawe\l\ Jackowski, Martin Schr\"oder,
 %   \emph{The \pdftex\ user manual},
 %   \newblock 23 November 2010.
-%   \newblock (\ctanurl{systems/pdftex/};
-%             latest version at \url{http://sarovar.org/projects/pdftex/})
+%   \newblock (\ctanurl{systems/pdftex/})
+%             ^^A latest version at \url{http://sarovar.org/projects/pdftex/}
 %             ^^A or even \url{http://foundry.supelec.fr/scm/?group_id=23}
 %
 % \bibitem[Fontname]{fontname}
@@ -2853,6 +2853,18 @@
 %   \LaTeX3 Project Team, \emph{\LaTeXe\ font selection},
 %   \newblock 27 November 2005.
 %   \newblock (\ctanurl{macros/latex/doc/fntguide.pdf})
+%
+% \bibitem[\pkg{fontspec}]{fontspec}
+%   Will Robertson, Khaled Hosny,
+%    \emph{The \pkg{fontspec} package. Font selection for \xe\LaTeX\ and Lua\LaTeX},
+%    \newblock 20 May 2013.
+%    \newblock (\ctanurl{macros/latex/contrib/fontspec/})
+%
+% \bibitem[\pkg{luaotfload}]{luaotfload}
+%   \'Elie Roux, Khaled Hosny, Philipp Gesang,
+%    \emph{The \pkg{luaotfload} package},
+%    \newblock 5 February 2014.
+%    \newblock (\ctanurl{macros/luatex/generic/luaotfload/})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
 %   Carsten Schurig, Tobias Schlemmer, \emph{The \pkg{pdfcprot}|.sty| package},
@@ -2868,11 +2880,6 @@
 %             \pkg{soulutf8}, which adds Unicode support.
 %   \newblock (\ctanurl{macros/latex/contrib/oberdiek/})
 %
-% \bibitem[\pkg{fontspec}]{fontspec}
-%   Will Robertson, Khaled Hosny,
-%    \emph{The \pkg{fontspec} package. Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 20 May 2013.
-%    \newblock (\ctanurl{macros/latex/contrib/fontspec/})
 %\end{thebibliography}
 %
 %
@@ -2914,7 +2921,7 @@
 %\VersionDate{2.5a}{2013/05/23}
 %
 %\Version{2.5}{2013/03/13}
-%  \item Support for the \pkg{fontspec} package, viz.
+%  \item Support for the \cite{fontspec} package, viz.
 %        for OpenType fonts with \luatex\ and \xetex
 %  \item Support for protrusion with \xetex\ $\geq$ 0.9997
 %  \item Support for tracking/letterspacing with \luatex\ $\geq$ 0.62
