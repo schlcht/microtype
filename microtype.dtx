@@ -1410,6 +1410,13 @@
 %    & !
 %    & ! \\
 %\cmidrule(r){1-1}
+% |alltext-nott|\linebreak(|allmath-nott|)
+%    & Text encodings, <TS1>\linebreak (<OML>, <OMS>, <U>)
+%    & /\cmd\rm|*|,\linebreak/\cmd\sf|*|
+%    & !
+%    & !
+%    & ! \\
+%\cmidrule(r){1-1}
 % |basictext|\linebreak(|basicmath|)
 %    & Text encodings \linebreak (<OML>, <OMS>)
 %    & /\cmd\rm|*|/,\linebreak /\cmd\sf|*|/
@@ -1455,6 +1462,7 @@
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
 %
+%\pagebreak ^^A layout
 %\medskip
 %\Describe{Macro}{\UseMicrotypeSet}{?features,set name}
 % This command activates a font set previously declared by \cs{DeclareMicrotypeSet}.
@@ -1502,10 +1510,8 @@
 % the current family (say, |T1/cmr///|) and settings for italic fonts in the
 % normal weight (|T1//m/it/|) exist, those for the |cmr| family would
 % apply.
-%\changes{v1.7}{2005/03/23}{remove table of match order}^^A
-%^^A \footnote{
-%^^A    For the interested, table~\ref{tab:match-order} on
-%^^A    page~\pageref{tab:match-order} presents the exact order.}
+%\changes{v1.7}{2005/03/23}{remove table of match order
+%                           (now table~\ref{tab:match-order} on page~\pageref{tab:match-order})}
 % The encoding must always match.
 %\iffalse
 %^^A TODO: When using native TrueType\slash OpenType fonts (with \xetex\ or \luatex, and
@@ -2161,7 +2167,6 @@
 %\DeclareMicrotypeVariants{x,j,w,a,d,0,1}
 %\end{verbatim}
 %
-%\pagebreak ^^A layout
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeAlias}{font name,alias font}
 % This command may be used for fonts that are very similar, or actually the
@@ -2318,6 +2323,7 @@
 % the \opt{letterspace} package option, with decreasing significance in this
 % order.
 %
+%\pagebreak ^^A layout
 %\medskip
 %\Describe{Macro}{\lslig}{ligature}
 % Since the commands \cs{textls} and \cs{lsstyle} will also evaluate the
@@ -2597,6 +2603,7 @@
 %! Font T1/cmr/m/n/10=ecrm1000 at 10.0pt not loaded: Not enough room left.
 %\end{verbatim}
 % Memory parameter `|font_mem_size|' too small.
+%\enlargethispage{\baselineskip} ^^A layout
 %  \item
 %\begin{verbatim}
 %! TeX capacity exceeded, sorry [maximum internal font number (font_max)=2000].
@@ -2917,6 +2924,8 @@
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
 %  \item Improvements for tracking/letterspacing with \luatex\
 %        (|Renderer=Basic| no longer required)
+%  \item New font sets: `|alltext-nott|', `|allmath-nott|'
+%        \refsection{\ref{sec:font-sets}, table~\ref{tab:predefined-font-sets}}
 %
 %\VersionDate{2.5a}{2013/05/23}
 %
@@ -12310,6 +12319,21 @@ end
    { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2} }
 
 %    \end{macrocode}
+%\changes{v2.6}{2014/04/07}{new: \texttt{allmath-nott} and \texttt{alltext-nott}
+%                           (reqested by \contributor Karl Berry <karl\at freefriends.org>)}
+%                           ^^A private mail, 2014/03/21
+%    \begin{macrocode}
+\DeclareMicrotypeSet{allmath-nott}
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TS1,OML,OMS,U},
+     family   = {rm*,sf*}
+   }
+
+\DeclareMicrotypeSet{alltext-nott}
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+     family   = {rm*,sf*}
+   }
+
+%    \end{macrocode}
 %\changes{v1.9d}{2006/02/22}{\texttt{md*} instead of \texttt{m} series in basic sets}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{basicmath}
@@ -12327,7 +12351,7 @@ end
    }
 
 %    \end{macrocode}
-%\changes{v2.0}{2006/12/28}{add \texttt{smallcaps} set}
+%\changes{v2.0}{2006/12/28}{new: \texttt{smallcaps}}
 %\changes{v2.3e}{2009/06/01}{\texttt{sc*} instead of \texttt{sc} in \texttt{smallcaps} set}
 %\changes{v2.6}{2014/02/18}{add \texttt{si} and \texttt{scit} to \texttt{smallcaps} set
 %                           (reported by \contributor uli <@\at @>)}
@@ -12339,7 +12363,7 @@ end
    }
 
 %    \end{macrocode}
-%\changes{v2.0}{2006/12/21}{add \texttt{footnotesize} and \texttt{scriptsize} sets}
+%\changes{v2.0}{2006/12/21}{new: \texttt{footnotesize} and \texttt{scriptsize}}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{footnotesize}
    { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
@@ -12370,6 +12394,7 @@ end
 %    \end{macrocode}
 %
 %\subsection{Font variants and aliases}
+%\GeneralChanges{Font aliases}
 %
 %    \begin{macrocode}
 %%% -----------------------------------------------------------------------
@@ -12433,7 +12458,7 @@ end
 \DeclareMicrotypeAlias{qpl} {ppl}  % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
 %    \end{macrocode}
 % The `<FPL> Neu' fonts, a `re-implementation' of Palatino.
-%\changes{v2.2}{2007/05/27}{declare <FPL> Neu as an alias of Palatino}
+%\changes{v2.2}{2007/05/27}{declare \texttt{fp9x}, \texttt{fp9j} (<FPL> Neu) as aliases of \texttt{ppl[xj]}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{fp9x}{pplx} % FPL Neu
 \DeclareMicrotypeAlias{fp9j}{pplj} %   "
@@ -12463,7 +12488,7 @@ end
 \DeclareMicrotypeAlias{zeus}{eus}  %   "
 %    \end{macrocode}
 % MicroPress's Charter version (\pkg{chmath}).
-%\changes{v2.2}{2007/06/08}{declare \texttt{chr} (\pkg{chmath}) as an alias of Charter
+%\changes{v2.2}{2007/06/08}{declare \texttt{chr} (\pkg{chmath}) as an alias of \texttt{bch}
 %                           (reported by \contributor Geoff Vallis <gkv\at Princeton.EDU>)}
 %                                                            ^^A private mail, 2007/06/07
 %    \begin{macrocode}
@@ -12471,7 +12496,7 @@ end
 %    \end{macrocode}
 % The \pkg{mathdesign} package provides math fonts matching Bitstream Charter
 %\changes{v1.9a}{2005/10/31}{declare \texttt{mdbch} (\pkg{mathdesign})
-%                            as an alias of Charter}
+%                            as an alias of \texttt{bch}}
 % and <URW> Garamond.
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{mdbch}{bch} % mathdesign/Charter
@@ -12480,7 +12505,7 @@ end
 % The \pkg{garamondx} package, an extension of <URW> Garamond, providing
 % small caps and oldstyle figures.
 %\changes{v2.5}{2013/02/20}{declare \texttt{zgmx} etc. (\pkg{garamondx})
-%                           as aliases of <URW> Garamond}
+%                           as aliases of \texttt{ugm}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{zgmx}{ugm}  % garamondx
 \DeclareMicrotypeAlias{zgmj}{ugm}  %    "
@@ -16506,7 +16531,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10334}
+% \CheckSum{10336}
 %
 % \Finale
 %
