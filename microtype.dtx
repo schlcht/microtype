@@ -2770,9 +2770,10 @@
 %  \contributor Dave              <@\at @>, ^^A http://tex.stackexchange.com/users/15562/dave
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
-%  \contributor uli               <@\at @>  ^^A http://tex.stackexchange.com/users/9391/uli
+%  \contributor uli               <@\at @>,  ^^A http://tex.stackexchange.com/users/9391/uli
+%  \contributor Sam Mason         <sam\at samason.me.uk> ^^A http://tex.stackexchange.com/users/16433/sam-mason
 % and
-%  \contributor Sam Mason         <sam\at samason.me.uk>. ^^A http://tex.stackexchange.com/users/16433/sam-mason
+%  \contributor kleenstar         <@\at @>. ^^A http://tex.stackexchange.com/users/56468/kleenstar
 %
 %
 %\iffalse
@@ -7051,10 +7052,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 % Stuff to be done after the letterspace group. The \letterspace\ package
 % only adjusts the kerning.
+%\changes{v2.6}{2014/09/07}{fix: ensure to set up math fonts (reported by \contributor kleenstar <@\at @>)}
+%                           ^^A http://tex.stackexchange.com/questions/187655/microtype-gives-wrong-letterspacing-in-math-mode
 %    \begin{macrocode}
     \MT@afteraftergroup{%
       \MT@set@curr@os
       \MT@set@curr@ok
+      \MT@glet\noexpand\glb@currsize\noexpand\@empty
       \noexpand\MT@tr@outer@r
     }%
 %</pdftex-def|luatex-def>
@@ -7177,11 +7181,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % another text switch, of course).
 %\changes{v2.5}{2012/11/14}{fix: ensure to set up math fonts (reported by \contributor RazorXsr <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/82686/settracking-in-the-math-environment
-% Still, we have to ensure that math fonts are set up again.
+% Still, we have to (globally) ensure that math fonts are set up again.
 %    \begin{macrocode}
 \DeclareRobustCommand\lsstyle{%
   \not@math@alphabet\lsstyle\textls
-  \let\glb@currsize\@empty
+  \MT@glet\glb@currsize\@empty
 %<pdftex-def|luatex-def>  \def\MT@feat{tr}%
   \let\MT@tracking\MT@set@tr@codes
   \selectfont
@@ -9187,7 +9191,7 @@ end
 %\changes{v2.5}{2012/11/13}{fix: ensure to set up math fonts (reported by \contributor RazorXsr <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/82556/pdftex-font-expansion-error-setexpansion-in-microtype-package
 %    \begin{macrocode}
-    \let\glb@currsize\@empty
+    \MT@glet\glb@currsize\@empty
     \setkeys{MTC}{#1}%
     \selectfont
     \MT@reset@context
@@ -16531,7 +16535,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10336}
+% \CheckSum{10341}
 %
 % \Finale
 %
