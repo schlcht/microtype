@@ -1,9 +1,19 @@
 %
 \ProvidesFile{microtype-lssample.dtx}[2009/06/08]
 %
-%\iffalse meta-comment
+% ^^A don't count the backslashes in this document
+%\makeatletter
+%\let\orig@step@checksum\step@checksum
+%\let\step@checksum\relax
+%\makeatother
+%
+% \section{The letterspacing illustration}
+% \label{sec:letterspace-ill}
+%
+%^^A\iffalse meta-comment
 % ^^A ========================================================================
-% You can treat this file in three different ways:
+% This is \file{microtype-lssample.dtx}. 
+% You may treat this file in three different ways:
 %\begin{itemize}
 %  \item compile it by itself
 %  \item \verb|\input| it in the body of a \file{dtx} file
@@ -21,16 +31,7 @@
 %\makefile{microtype-doc.sty}{docsty}
 %\end{verbatim}
 % ^^A ========================================================================
-%\fi
-%
-% ^^A don't count the backslashes in this document
-%\makeatletter
-%\let\orig@step@checksum\step@checksum
-%\let\step@checksum\relax
-%\makeatother
-%
-% \section{The letterspacing illustration}
-% \label{sec:letterspace-ill}
+%^^A\fi
 %
 %    \begin{macrocode}
 \ifx\lssample\undefined
@@ -38,8 +39,9 @@
 %    \end{macrocode}
 % Upon popular request, here's how I've created the letterspacing illustration.\footnote{
 %     Note that the |lssample| module will not be created when installing
-%     \microtype. Instead, I've included the source in the \acronym{PDF} file
-%     as an attachment. If your \acronym{PDF} reader supports this, you can
+%     \microtype. Instead, the source file \file{microtype-lssample.dtx}
+%     is included as an attachment in the \acronym{PDF} file.
+%     If your \acronym{PDF} reader supports this, you can
 %       \textattachfile
 %        [color={0.02 0.04 0.48},mimetype=text/plain]{microtype-lssample.dtx}
 %        {click here}

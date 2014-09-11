@@ -1,9 +1,19 @@
 %
 \ProvidesFile{microtype-logo.dtx}[2009/06/08]
 %
-%\iffalse meta-comment
+% ^^A don't count the backslashes in this document
+%\makeatletter
+%\let\orig@step@checksum\step@checksum
+%\let\step@checksum\relax
+%\makeatother
+%
+% \section{The title logo}
+% \label{sec:title-logo}
+%
+%^^A\iffalse meta-comment
 % ^^A ========================================================================
-% You can treat this file in three different ways:
+% This is \file{microtype-logo.dtx}.
+% You may treat this file in three different ways:
 %\begin{itemize}
 %  \item compile it by itself
 %  \item \verb|\input| it in the body of a \file{dtx} file
@@ -17,24 +27,16 @@
 %\makefile{microtype-doc.sty}{docsty}
 %\end{verbatim}
 % ^^A ========================================================================
-%\fi
-%
-% ^^A don't count the backslashes in this document
-%\makeatletter
-%\let\orig@step@checksum\step@checksum
-%\let\step@checksum\relax
-%\makeatother
-%
-% \section{The title logo}
-% \label{sec:title-logo}
+%^^A\fi
 %
 %    \begin{macrocode}
 %<*logo>
 %    \end{macrocode}
 % Here's how the logo on the title page was created.\footnote{
 %     Note that the |logo| module will not be created when installing
-%     \microtype. Instead, I've included the source in the \acronym{PDF} file
-%     as an attachment. If your \acronym{PDF} reader supports this, you can
+%     \microtype. Instead, the source file \file{microtype-logo.dtx}
+%     is included as an attachment in the \acronym{PDF} file.
+%     If your \acronym{PDF} reader supports this, you can
 %       \textattachfile
 %        [color={0.02 0.04 0.48},mimetype=text/plain]{microtype-logo.dtx}
 %        {click here}
