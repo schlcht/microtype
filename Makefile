@@ -131,8 +131,10 @@ $(NAME)-utf.tmp: $(DTX)
 	@echo "Compiling documentation (without Unicode part)"
 	-@$(DO_PDFLATEX)
 	@if ! `grep -i '* Checksum passed *' $(NAME).log > /dev/null` ; then \
-		grep -i ' checksum ' $(NAME).log ; \
-		false ; \
+		if `grep 'has no checksum\|Checksum not passed' $(NAME).log` ; then \
+			grep -i ' checksum ' $(NAME).log ; \
+			false ; \
+		fi ; \
 	fi
 	@echo "Re-compiling documentation"
 	@$(DO_MAKEINDEX)

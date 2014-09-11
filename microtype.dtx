@@ -3178,13 +3178,11 @@
 %\StopEventually{
 %  \GeneralChanges{Documentation}
 %  \newpage
-%  \appendix
-%  \AppendixSettings
+%  \ifx\Finale\relax
+%    \appendix
+%    \AppendixSettings
+%  \fi
 %  \typeout{:?1000} ^^A tell WinEdt not to bother about overfull boxes
-%\changes{v2.5}{2013/02/23}{include \file{microtype-logo.dtx} and \file{microtype-lssample.dtx}}
-%  \InputIfFileExists{microtype-logo.dtx}\relax\relax
-%  \InputIfFileExists{microtype-lssample.dtx}\relax\relax
-%  \PrintChanges
 %  \PrintIndex
 %  \typeout{:?1111}
 %  \InputIfFileExists{lppl.tex}\LPPLSettings\relax
@@ -16515,6 +16513,19 @@ normal, and shrunk by 5\%:
 %    \end{macrocode}
 % Needless to say that things may always be improved. For suggestions, mail to
 % \mailtoRS.
+%
+% ^^A -------------------------------------------------------------------------
+%
+% \newpage
+% \appendix
+% \AppendixSettings
+% \GeneralChanges{Documentation}
+%
+%\changes{v2.5}{2013/02/23}{include \file{microtype-logo.dtx} and \file{microtype-lssample.dtx}}
+% \InputIfFileExists{microtype-logo.dtx}\relax\relax
+% \InputIfFileExists{microtype-lssample.dtx}\relax\relax
+%
+% \PrintChanges
 %
 % ^^A -------------------------------------------------------------------------
 %\makeatother
