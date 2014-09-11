@@ -502,6 +502,7 @@
  \ifpdf \IfFileExists{dummy-space.pfb}{%
    \pdfmapline{=dummy-space <dummy-space.pfb}
    \font\dummyspace=dummy-space
+   \pdfglyphtounicode{space}{0020}
    \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
      \setbox0\hbox{ }\@tempdima\wd0
      \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
@@ -3177,8 +3178,8 @@
 %
 %\StopEventually{
 %  \GeneralChanges{Documentation}
-%  \newpage
 %  \ifx\Finale\relax
+%    \newpage
 %    \appendix
 %    \AppendixSettings
 %  \fi
