@@ -324,8 +324,8 @@
           \vskip\dimexpr\floatsep-4pt+\fboxrule\relax
           \hsize\dimexpr\marginparwidth-\marginparsep-4pt-\fboxrule\relax
           \rightskip\dimexpr\marginparsep+4pt+\fboxrule\relax plus 2.5em
-          \footnotesize {\sffamily#1:}\\[-\dimexpr\aboverulesep+\cmidrulewidth+3.5\fboxrule]
-          \textcolor{theframe}{\vrule width \hsize height\fboxrule}\\[.3\baselineskip]\sffamily#2}}}
+          \footnotesize \sffamily #1:\\[-\dimexpr\aboverulesep+\cmidrulewidth+3.5\fboxrule]
+	  \textcolor{theframe}{\rlap{\vrule width \hsize height\fboxrule}}\\[.3\baselineskip] #2}}}
   \mt@unvdimen\dimexpr\ht\mt@box+\dp\mt@box\relax
   \unvbox\mt@box
   \vskip-\mt@unvdimen}
@@ -2854,7 +2854,7 @@
 %             ^^A or even \url{http://foundry.supelec.fr/scm/?group_id=23}
 %
 % \bibitem[Fontname]{fontname}
-%   Karl Berry, \emph{Fontname. Filenames for \TeX\ fonts},
+%   Karl Berry, \emph{Fontname: Filenames for \TeX\ fonts},
 %   \newblock July 2009.
 %   \newblock (\ctanurl{info/fontname/fontname.pdf})
 %
@@ -2865,14 +2865,14 @@
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson, Khaled Hosny,
-%    \emph{The \pkg{fontspec} package. Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 20 May 2013.
+%    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
+%    \newblock 21 June 2014.
 %    \newblock (\ctanurl{macros/latex/contrib/fontspec/})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 5 February 2014.
+%    \newblock 13 July 2014.
 %    \newblock (\ctanurl{macros/luatex/generic/luaotfload/})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -2915,7 +2915,7 @@
 %  \VersionDate{#1}{#2}
 %  \vskip\topsep
 %  \pagebreak[2]
-%  \item[\textsf{\color{black}#1}]\textsf{(#2)}
+%  \item[\textsf{\bfseries\color{sectioning}#1}]\textsf{\bfseries\color{sectioning}(#2)}
 %  \vskip\topsep
 %  \nopagebreak}
 %\newcommand\VersionDate[2]{^^A needed in the Change history
