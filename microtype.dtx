@@ -2772,9 +2772,10 @@
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
 %  \contributor uli               <@\at @>,  ^^A http://tex.stackexchange.com/users/9391/uli
-%  \contributor Sam Mason         <sam\at samason.me.uk> ^^A http://tex.stackexchange.com/users/16433/sam-mason
+%  \contributor Sam Mason         <sam\at samason.me.uk>, ^^A http://tex.stackexchange.com/users/16433/sam-mason
+%  \contributor kleenstar         <@\at @> ^^A http://tex.stackexchange.com/users/56468/kleenstar
 % and
-%  \contributor kleenstar         <@\at @>. ^^A http://tex.stackexchange.com/users/56468/kleenstar
+%  \contributor Henning           <@\at @>. ^^A http://tex.stackexchange.com/users/64603/henning
 %
 %
 %\iffalse
@@ -7542,7 +7543,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \pkg{xspace} requires special treatment.
 %    \begin{macrocode}
                       \MT@if@outer@next\xspace{%
-                        \def\MT@temp*\xspace{\futurelet\@let@token\MT@xspace}%
+                        \def\MT@temp*\xspace{\MT@xspace}%
                       }{%
 %    \end{macrocode}
 % If there's no outer spacing, there may be outer kerning.
@@ -7573,10 +7574,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5a}{2013/05/15}{fix \texttt{outer spacing} problem with \pkg{xspace}
 %                            (reported by \contributor Dave <@\at @>)}
 %                            ^^A http://tex.stackexchange.com/questions/59655
+%\changes{v2.6}{2014/11/22}{fix \texttt{outer spacing} problem with (not only) \pkg{algorithm}
+%                           (reported by \contributor Henning <@\at @>)}
+%                            ^^A http://tex.stackexchange.com/questions/213164
+%\begin{macro}{\MT@xspace@}
 % If the group is followed by \cmd\xspace, we first feed \cmd\xspace\ with the
 % next token, then check whether it has inserted a space.
+% \cmd\@let@token\ might be something evil, so it should be encapsulated here.
 %    \begin{macrocode}
-\def\MT@xspace{\@xspace@firsttrue\@xspace
+\def\MT@xspace{\futurelet\@let@token\MT@xspace@}
+\def\MT@xspace@{\@xspace@firsttrue\@xspace
   \ifdim\lastskip>5sp
     \unskip \hskip\MT@outer@space
   \else
@@ -7584,6 +7591,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 % For older \pdftex\ versions and \luatex, throw an error.
 %    \begin{macrocode}
@@ -16547,7 +16555,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10341}
+% \CheckSum{10344}
 %
 % \Finale
 %
