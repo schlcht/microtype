@@ -118,12 +118,12 @@
  \IfFileExists{t1mwr.fd}
    {\def\textfrak##1{{\fontfamily{mwr}\selectfont ##1}}
     \ifpdf
-      \SetTracking[no ligatures={f,s,c}]{encoding=T1,family=mwr}{100}
+      \SetTracking[no ligatures={f,s,c}]{encoding=T1,family=mwr}{120}
     \fi}
    {\IfFileExists{yfonts.sty}
      {\usepackage{yfonts}
       \ifpdf
-        \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{100}
+        \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{120}
       \fi}
      {\def\textfrak{\rule{.5em}{1.5ex}\@gobble}}}
 \tolerance=700
@@ -1368,7 +1368,7 @@
 % not allowed.
 %
 %\medskip\noindent
-% Table~\ref{tab:predefined-font-sets} lists the nine predefined font sets.
+% Table~\ref{tab:predefined-font-sets} lists the eleven predefined font sets.
 % They may also be activated by passing their name to the feature options
 % \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{kerning} and
 % \opt{spacing} when loading the package, for example:
@@ -2349,11 +2349,11 @@
 %  ligatures shown in red, inhibited ligatures in green).
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
-%\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{100}
+%\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
 %\textfrak{\lsstyle Aus:s{\kern0pt}ichts:los{\kern0pt}igkeit}
 %\end{verbatim}
 %\begin{verbatim}
-%\SetTracking[no ligatures={f,s,c}]{encoding = LY, family = yfrak}{100}
+%\SetTracking[no ligatures={f,s,c}]{encoding = LY, family = yfrak}{120}
 %\textfrak{\lsstyle Au\lslig{s:}si\lslig{ch}t\lslig{s:}losigkeit}
 %\end{verbatim}
 %
@@ -2773,9 +2773,10 @@
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
 %  \contributor uli               <@\at @>,  ^^A http://tex.stackexchange.com/users/9391/uli
 %  \contributor Sam Mason         <sam\at samason.me.uk>, ^^A http://tex.stackexchange.com/users/16433/sam-mason
-%  \contributor kleenstar         <@\at @> ^^A http://tex.stackexchange.com/users/56468/kleenstar
+%  \contributor kleenstar         <@\at @>, ^^A http://tex.stackexchange.com/users/56468/kleenstar
+%  \contributor Henning           <@\at @> ^^A http://tex.stackexchange.com/users/64603/henning
 % and
-%  \contributor Henning           <@\at @>. ^^A http://tex.stackexchange.com/users/64603/henning
+%  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>.
 %
 %
 %\iffalse
@@ -7575,8 +7576,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Dave <@\at @>)}
 %                            ^^A http://tex.stackexchange.com/questions/59655
 %\changes{v2.6}{2014/11/22}{fix \texttt{outer spacing} problem with (not only) \pkg{algorithm}
-%                           (reported by \contributor Henning <@\at @>)}
+%                           (reported by \contributor Henning <@\at @>
+%                            and \contributor Ronnie Marksch <Ronnie.Marksch\at yahoo.de>)}
 %                            ^^A http://tex.stackexchange.com/questions/213164
+%                            ^^A MID: <mk1sqc$jve$1@speranza.aioe.org>
 %\begin{macro}{\MT@xspace@}
 % If the group is followed by \cmd\xspace, we first feed \cmd\xspace\ with the
 % next token, then check whether it has inserted a space.
@@ -16565,52 +16568,52 @@ normal, and shrunk by 5\%:
 
  *** Typesetting the documentation ***
 
- The documentation of this package (microtype.pdf) can be found on CTAN, if
- it isn't already installed in your TeX system, so there should be no need to
- re-typeset it.
- If you still want to do that, there are some requirements to consider
- and some steps to follow:
+  The documentation of this package (microtype.pdf) can be found on CTAN,
+  if it isn't already installed in your TeX system, so there should be no
+  need to re-typeset it.
+  If you still want to do this, there are some requirements to consider
+  and some steps to follow:
 
-#  1) In microtype.ins, uncomment the lines:
+#  (1) In microtype.ins, uncomment the lines:
 %\generate{\makefile{microtype-gind.ist}{docist}}
-#     and
+#      and
 %\generate{\makefile{microtype-doc.sty}{docsty}}
-#  2) Install the package by running:
+#  (2) Install the package by running:
 pdflatex microtype.ins
-#  3) Extract microtype-lssample.dtx and microtype-logo.dtx from
-#     microtype.pdf (ie., from the file you are going to recreate ...).
-#     This can be done, eg., with Adobe Reader or with the pdftk tool.
-#  4) Run
+#  (3) Extract microtype-lssample.dtx and microtype-logo.dtx from
+#      microtype.pdf (ie., from the file you are about to recreate ...).
+#      This can be done, eg., with Adobe Reader or with the pdftk tool.
+#  (4) Run
 pdflatex microtype.dtx
 pdflatex microtype.dtx
-#     * The following fonts are required:
-#       - Bitstream Charter
-#       - Bitstream LetterGothic
-#       - Adobe Source Sans Pro
-#       - Adobe Wittenberger Fraktur MT (alternatively yfrak)
-#       - Adobe Zapf Chancery (alternatively URW Zapf Chancery)
-#       - Adobe Kepler MM (for microtype-logo.dtx, input by microtype.dtx)
-#       - Adobe Caslon (for microtype-lssample.dtx, input by microtype.dtx)
-#  5) Run
+#      [ The following fonts are required:
+#        - Bitstream Charter
+#        - Bitstream LetterGothic
+#        - Adobe Source Sans Pro
+#        - Adobe Wittenberger Fraktur MT (alternatively yfrak)
+#        - Adobe Zapf Chancery (alternatively URW Zapf Chancery)
+#        - Adobe Kepler MM (for microtype-logo.dtx, input by microtype.dtx)
+#        - Adobe Caslon (for microtype-lssample.dtx, input by microtype.dtx) ]
+#  (5) Run
 makeindex -s microtype-gind.ist microtype
-#  6) Run
+#  (6) Run
 makeindex -s gglo.ist -o microtype.gls microtype.glo
-#  7) Run
+#  (7) Run
 lualatex microtype-utf.dtx
-#     * The following fonts are required:
-#       - Bitstream Charter (Type 1)
-#       - Bitstream LetterGothic (Type 1)
-#       - Adobe Source Sans Pro (Type 1)
-#       - Latin Modern Roman (OpenType)
-#       - Charis SIL (OpenType)
-#       - TeX Gyre Pagella (OpenType)
-#  8) Run
+#      [ The following fonts are required:
+#        - Bitstream Charter (Type 1)
+#        - Bitstream LetterGothic (Type 1)
+#        - Adobe Source Sans Pro (Type 1)
+#        - Latin Modern Roman (OpenType)
+#        - Charis SIL (OpenType)
+#        - TeX Gyre Pagella (OpenType) ]
+#  (8) Run
 pdflatex microtype.dtx
-#  9) Run
+#  (9) Run
 makeindex -s microtype-gind.ist microtype
-# 10) Run
+# (10) Run
 makeindex -s gglo.ist -o microtype.gls microtype.glo
-# 11) Run
+# (11) Run
 pdflatex microtype.dtx
 #
 # That's it, although I still may have forgotten some things ...
