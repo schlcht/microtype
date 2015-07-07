@@ -4533,6 +4533,9 @@ microtype.if_str_eq = if_str_eq
     \MT@map@clist@#1,\@nil,\@nnil
   \fi
 }
+%    \end{macrocode}
+%\todo{think \cs{@nil} should be defined as itself}
+%    \begin{macrocode}
 \def\MT@map@clist@c#1{\MT@exp@one@n\MT@map@clist@n#1}
 \def\MT@map@clist@#1,{%
   \ifx\@nil#1%
@@ -4718,7 +4721,8 @@ microtype.if_str_eq = if_str_eq
 }
 %</luatex-def|letterspace>
 %    \end{macrocode}
-% This is the |lua| function, which is much faster than looping through all glyphs.
+% This is the |lua| function, which is much faster than looping through all glyphs
+% in \TeX.
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
@@ -4730,8 +4734,8 @@ local function do_font()
       thefont = fonts.hashes.identifiers[font.current()]
     end
     if thefont then
-      for i in next,thefont.characters do
-        if type(i) == "number" then
+      for i,v in next,thefont.characters do
+        if v.index > 0 then
           microtype.sprint([[\@tempcnta=]]..i..[[\relax\MT@dofont@function]])
         end
       end
