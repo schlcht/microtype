@@ -319,6 +319,8 @@
 \setlength\arrayrulewidth{0.4pt}
 % tables
 \setlength\tabcolsep{2pt}
+\newbox\mt@box
+\newdimen\mt@unvdimen
 \long\def\@makecaption#1#2{%
   \setbox\mt@box\vbox{\llap{\vbox{% \fboxsep = 4pt
           \vskip\dimexpr\floatsep-4pt+\fboxrule\relax
@@ -596,8 +598,6 @@
                          /BaseState/OFF
                          /ON [\mt@Protrusion@false \mt@Expansion@false
                               \ifx\mtl@objects\@undefined\else\mtl@objects\fi] >> >> }
-    \newbox\mt@box
-    \newdimen\mt@unvdimen
     \def\mt@place#1{%
       \vskip-\mt@unvdimen
       \setbox\mt@box\vbox{#1}%
@@ -666,6 +666,9 @@
   \let\nolinkurl\url
   \let\mailto\texttt
   \def\mailtoRS{\mailto{w.m.l@gmx.net}}
+  \let\href\texttt
+  \newcommand\textattachfile[3][]{#3 \textit{[File \file{#2} not attached,
+        because \file{microtype.dtx} hasn't been compiled with \pdftex.]}}
 \fi
 \ifx\l@ukenglish\@undefined
   \hyphenation{let-ter-spac-ing let-ter-spaced let-ter-space}
@@ -16395,6 +16398,7 @@ end
 %    \end{macrocode}
 %^^A\changes{v2.0}{2006/12/28}{remove \texttt{letterspacing} settings}
 %
+%\ifpdf
 %\GeneralChanges{Documentation}
 %\changes{v2.5a}{2013/05/15}{include OpenType configuration files}
 %^^A The OpenType configuration files are outsourced to an external file,
@@ -16420,8 +16424,12 @@ end
 %       To view the OpenType configuration settings, first typeset
 %       \file{microtype-utf.dtx} with \luatex.}
 %
-%
 %\GeneralChanges*
+%\else
+% \fallbacktext{The original documentation\footnote{
+%     \ctanurl{macros/latex/contrib/microtype/microtype.pdf}.}
+%   also includes the OpenType configuration files.}
+%\fi
 %
 %\section{Auxiliary file for micro fine tuning}
 %
