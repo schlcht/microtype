@@ -1,0 +1,47 @@
+% from Vadim Radionov <@>
+% http://tex.stackexchange.com/questions/149165/microtype-and-word-spacing
+% 2013/12/10
+we have to take \fontdimens from \MT@font, not \MT@lsfont (in tr@set@space...)
+and we must check whether \spaceskip<>0pt
+
+% from Christopher Schramm \contributor <debian\at shakaweb.org>
+% http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=725395#15
+% 2013/10/06
+\documentclass{minimal}
+
+%\usepackage{textcomp}
+\usepackage{microtype}
+\usepackage{siunitx}
+
+\begin{document}
+\SI{1}{\micro\second}
+\end{document}
+(problem with \MT@char being empty)
+
+* warning with minimal class
+* expansion settings for luatex
+* "override" key?
+* let scrubfeatures relax (splitname)
+* proper testsuite
+
+* add this to microtype.ins? -:
+----------------------------------
+% Extracting the Unicode files requires latex, pdf(la)tex, or xe(la)tex,
+% and won't work with tex or lua(la)tex
+\let\wrongengine\relax
+\def\quit{\errmessage{Run latex, pdf(la)tex, or xe(la)tex to extract the files.^^J
+I will quit now}\endinput}
+\ifx\luatexversion\undefined
+  \ifx\pdftexversion\undefined
+    \ifx\XeTeXversion\undefined
+      \def\format{plain}
+      \ifx\fmtname\format
+        \let\wrongengine\quit
+      \fi
+    \fi
+  \fi
+\else
+  \let\wrongengine\quit
+\fi
+\wrongengine
+
