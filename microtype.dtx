@@ -488,7 +488,8 @@
    keywordstyle=[0]\color{thegreen},
    keywords=[1]{protrusion,expansion,activate,DVIoutput,draft,final,verbose,
      config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
-     spacing,letterspace,babel,context,%defersetup,copyfonts, % undocumented
+     spacing,letterspace,babel,context,
+    %defersetup,copyfonts,enable,disable,% undocumented
      no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
    keywordstyle=[1]\color{thered},
    comment=[l]\%,
@@ -852,13 +853,13 @@
 % letterspacing (small) capitals or by decreasing the tracking of very large
 % uppercase type.
 %
-% Setting \emph{additional kerning} for characters of a font is especially
-% useful for languages whose typographical tradition requires certain
+% Setting \emph{additional kerning} for individual characters is especially
+% (but not only) useful for languages whose typographical tradition requires certain
 % characters to be separated by a space. For example, it is customary in French
 % typography to add a small space before question mark, exclamation mark and
 % semi-colon, and a bigger space before the colon and the guillemets. Until
-% now, this could only be achieved by making these characters active (for
-% example by the \pkg{babel} package), which may not always be a robust
+% now, this could only be achieved by making these characters active (as is done,
+% for example, the \pkg{babel} package), which may not always be a robust
 % solution. In contrast to the standard kerning built into the fonts
 % (which will of course apply as usual), this additional kerning relates to
 % single characters, not to character pairs.
@@ -876,8 +877,8 @@
 % improvements. I suggest reading the reasoning behind the settings in
 % section~\ref{sub:conf-spacing}.
 %
-% The possibility, finally, to \emph{disable all ligatures} of a font may be
-% useful for typewriter fonts.
+% The possibility, finally, to \emph{disable all ligatures} in a font is
+% particularly useful for typewriter fonts.
 %
 %\emptypdfpageresources ^^A layers of the sample
 %\bigskip\noindent
@@ -907,7 +908,7 @@
 %
 %\changes{v2.2}{2007/06/06}{add overview}
 %\begin{itemize}
-%  \item Enable the respective micro-typographic feature, either via the
+%  \item Enable the desired micro-typographic features, either via the
 %        respective package option or with the \cs{microtypesetup} command
 %        (section~\ref{sec:options}).
 %  \item Select the fonts to which this feature should be applied by declaring
@@ -993,7 +994,7 @@
 %\Describe{Option}{kerning}{true,!false,:font set name}
 %\DescribeOption{spacing}
 % These features do not unconditionally improve the quality of the typeset text:
-% the `spacing' feature is still considered experimental, while the `kerning'
+% the \opt{spacing} feature is still considered experimental, while the \opt{kerning}
 % feature only makes sense in special cases.
 % Therefore, neither feature is enabled by default. They are not available
 % with \xetex\ or \luatex.
@@ -1674,7 +1675,7 @@
 %       value will be used (that is, no calculation will take place).
 %
 %       As a practical example, suppose you have a paragraph containing a widow
-%       that could easily be avoided by shrinking the font a little bit more.
+%       that could be avoided by shrinking the font a bit more.
 %       In conjunction with the |context| option (see section~\ref{sec:context}
 %       for further details), you could thus allow for more expansion in this
 %       particular paragraph:
@@ -1688,7 +1689,7 @@
 %    { }
 % % ... END PREAMBLE
 % {\microtypecontext{expansion=sloppy}%
-%  This paragraph contains an `unnecessary' widow.}
+%  This paragraph contains a `fussy' widow.}
 %\end{verbatim}
 %       This method of employing contexts to temporarily apply different
 %       expansion parameters only works with \pdftex\ version 1.40.4 or later
@@ -1696,7 +1697,7 @@
 %       section~\ref{ssec:font-setup} on page~\pageref{exp-hack}). Also note
 %       that \pdftex\ prohibits the use of fonts with different expansion
 %       limits or steps (even of different fonts) within one paragraph, hence
-%       the sloppy context has to be applied to complete paragraphs.
+%       the |sloppy| context has to be applied to complete paragraphs.
 %  \item[\key{factor}]
 %       This option provides a different method to alter expansion settings for
 %       certain fonts, working around the restriction just mentioned. The
@@ -1895,11 +1896,11 @@
 %
 %\emptypdfpageresources ^^A layers of letterspacing illustration
 %
-% I should not neglect to mention a limitation of this additional kerning:
+% I should not neglect to mention a limitation of this feature:
 % words \emph{immediately following} such a kern (not separated by a space)
 % will not be hyphenated, unless you insert the breakpoints manually, \eg, for
 % kerning after the apostrophe, `|l'apos\-trophe|'. This restriction of \pdftex\
-% will hopefully be lifted soon.
+% will hopefully be lifted some time.
 %
 %\paragraph{The kerning settings}
 % are specified as pairs of \meta{character}\,|=|\,\meta{kerning values}, where
@@ -11136,7 +11137,7 @@ end
 %\changes{v1.9a}{2005/11/21}{new option: \opt{defersetup}, by default true}
 % Setting the \opt{defersetup} option to false will restore the old behaviour,
 % where the setup took place at the time when the package was loaded. This is
-% undocumented, since I would like to learn about the cases where this is
+% \emph{undocumented}, since I would like to learn about the cases where this is
 % necessary.
 %
 % The only problem with the new deferred setup I can think of is when a box
@@ -11305,6 +11306,9 @@ end
     I will quit now.}
   \MT@clear@options
 \else
+%    \end{macrocode}
+% Otherwise load the engine-specific code (as strewn across this file).
+%    \begin{macrocode}
   \input{microtype-\MT@engine tex.def}
 \fi
 \MT@endinput
@@ -11609,8 +11613,10 @@ end
 %</pdftex-def|luatex-def|xetex-def>
 %    \end{macrocode}
 %\begin{macro}{\MT@saved@setupfont}
-% Disable everything -- may be used as a work-around in case setting up fonts
-% doesn't work in certain environments. \emph{(Undocumented.)}
+% Disable everything -- may be used as a temporary work-around in case
+% setting up fonts doesn't work under certain circumstances, but only until
+% that specific problem is fixed. This is \emph{undocumented}, as it completely
+% deprives us of the possibility to act -- we're blind and paralysed.
 %    \begin{macrocode}
 %<*package>
 \let\MT@saved@setupfont\MT@setupfont
