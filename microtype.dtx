@@ -40,7 +40,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2014/01/10 v2.6
+  [2015/10/10 v2.6
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -3285,7 +3285,7 @@
 %\DoNotIndex{\UTFviii@defined}                                               ^^A inputenc/utf8
 %\DoNotIndex{\PrerenderUnicode,\unicode@charfilter}                          ^^A inputenc/utf8x
 %\DoNotIndex{\define@key,\KV@@sp@def,\setkeys}                               ^^A keyval
-%\DoNotIndex{\l@dunhbox@line}                                                ^^A (e)ledmac,(e)ledpar
+%\DoNotIndex{\l@dunhbox@line}                                                ^^A ((r)e)ledmac,((r)e)ledpar
 %\DoNotIndex{\lst@ProcessLetter}                                             ^^A listings
 %\DoNotIndex{\RequireLuaModule}                                              ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
@@ -4133,7 +4133,7 @@ local microtype = microtype
 local microtype_module = {
   name         = "microtype",
   version      = 2.6,
-  date         = "2014/01/10",
+  date         = "2015/10/10",
   description  = "microtype module.",
   author       = "E. Roux, R. Schlicht and P. Gesang",
   copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -5000,7 +5000,8 @@ microtype.do_font = do_font
 %                           ^^A private mail, 2012/06/30
 % They are also part of recent \xetex.
 %\changes{v2.5a}{2013/03/25}{support for \pkg{eledmac}}
-% The successor package \pkg{eledmac} is also supported.
+%\changes{v2.6}{2015/08/10}{support for \pkg{reledmac}}
+% The successor packages \pkg{eledmac} and \pkg{reledmac} are also supported.
 %    \begin{macrocode}
 %</package>
 %<pdftex-def>\MT@requires@pdftex5{
@@ -5013,7 +5014,7 @@ microtype.do_font = do_font
 % Hook.
 %\changes{v2.5a}{2013/03/27}{simplified}
 %    \begin{macrocode}
-        \MT@info@nl{Patching (e)ledmac to enable character protrusion}%
+        \MT@info@nl{Patching ((r)e)ledmac to enable character protrusion}%
         \let\MT@led@unhbox@line\l@dunhbox@line
         \renewcommand*{\l@dunhbox@line}[1]{%
           \ifhbox##1%
@@ -5028,7 +5029,8 @@ microtype.do_font = do_font
       }{%
         \MT@warning@nl{%
           Character protrusion in paragraphs with line\MessageBreak
-          numbering will only work if you update ledmac}%
+          numbering will only work if you update ledmac,\MessageBreak
+          or use one of its successors eledmac or reledmac}%
       }%
     \fi
   }
@@ -5040,7 +5042,7 @@ microtype.do_font = do_font
       \MT@warning@nl{%
         The pdftex version you are using does not allow\MessageBreak
         character protrusion in paragraphs with line\MessageBreak
-        numbering by the `ledmac' package.\MessageBreak
+        numbering by the `((r)e)ledmac' package.\MessageBreak
         Upgrade pdftex to version 1.30 or later}%
     \fi
   }
@@ -5187,8 +5189,9 @@ The `pdfcprot' package provides an interface to character protrusion.\MessageBre
 So does the `\MT@MT' package. Using both packages at the same\MessageBreak
 time will almost certainly lead to undesired results. Have your choice!}%
   }%
-  \MT@with@package@T{ledmac}\MT@ledmac@setup
-  \MT@with@package@T{eledmac}\MT@ledmac@setup
+  \MT@with@package@T  {ledmac}\MT@ledmac@setup
+  \MT@with@package@T {eledmac}\MT@ledmac@setup
+  \MT@with@package@T{reledmac}\MT@ledmac@setup
   \MT@with@package@T{xunicode}\MT@xunicodetrue
   \MT@with@package@T{fontspec}\MT@fontspectrue
 %    \end{macrocode}
@@ -16579,7 +16582,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10344}
+% \CheckSum{10347}
 %
 % \Finale
 %
