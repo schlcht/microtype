@@ -333,8 +333,8 @@
   \vskip-\mt@unvdimen}
 % index and change log
 \IndexPrologue{\section{Index}%
-  Links (in blue) refer to the page where the corresponding entry is described
-  (bold face) resp. occurs. Plain numbers (in black) refer to the code line
+  Numbers in upright shape refer to the page where the corresponding entry is described
+  (bold face) resp. occurs. Numbers in italics refer to the code line
   where the corresponding entry is defined (underlined) resp. used.}
 \GlossaryPrologue{\section{Change history}\label{sec:changes}\vspace*{-\multicolsep}}
  %\setcounter{finalcolumnbadness}{100}
@@ -556,19 +556,20 @@
         \string\verb\quotechar*\verbatimchar\saved@macroname\verbatimchar\fi
       :\levelchar #3\encapchar hyperpage}}%
     \@tempa\endgroup\@esphack}
-  %\def\theCodelineNo{% % ... and everything else (would double the pdf file size)
-  %  \reset@font\color{thegrey}\scriptsize
-  %  \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
-  %  \hypertarget{L:\number\@tempcnta}{\arabic{CodelineNo}}}
-  %\def\main#1{\underline{\hyperlink{L:#1}{#1}}}
-  %\def\codeline#1{\link@sanitize#1-\@nil{#1}}
-  %\def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
-  %\def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
-  %\def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
-  %    \string#1\actualchar
-  %    \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
-  %    \encapchar codeline}%
-  %  \@esphack}
+  \def\theCodelineNo{% ... and everything else
+    \reset@font\sffamily\color{thegrey}\scriptsize
+    \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
+    \hypertarget{L:\number\@tempcnta}
+      {\textoractual{\arabic{CodelineNo}\ }{}}}% don't copy line numbers
+  \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
+  \def\codeline#1{{\itshape\link@sanitize#1-\@nil{#1}}}
+  \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
+  \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
+  \def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
+      \string#1\actualchar
+      \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
+      \encapchar codeline}%
+    \@esphack}
   \def\ctanurl#1{Available from \acronym{CTAN} at
                  \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
   \DeclareRobustCommand\mailto[1]{\href{mailto:#1}{\nolinkurl{#1}}}
