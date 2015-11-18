@@ -122,7 +122,7 @@ $(DOC): $(DTX) $(UTFDOC)
 	@touch $(DOC)
 
 $(UTFDOC): $(UTFDTX) $(NAME)-utf.tmp 
-	@echo "Compiling (Unicode) documentation"
+	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
 
 # microtype-utf.tmp is used to communicate counters

@@ -347,25 +347,30 @@
     \end{multicols}
     \vspace*{-2\baselineskip}%
     \begin{multicols}{2}
-	 \setbox0\hbox{\sffamily\hss#1}%
-	 \ifdim\wd0<1em \setbox0\hbox to 1em{\sffamily\hss#1\hss}\fi
-         \llap{\color{thegrey}\box0\hskip\marginparsep}%
-    \vspace*{-\baselineskip}%
-    \IndexParms %\rightskip 15pt
-    \let\item\@idxitem
-    \raggedcolumns}}
+      \ifpdf{\let\bfseries\empty\let\hfil\empty\phantomsection\pdfbookmark[2]{#1}{#1}}\fi
+      \setbox0\hbox{\sffamily\hss#1}%
+      \ifdim\wd0<1em \setbox0\hbox to 1em{\sffamily\hss#1\hss}\fi
+      \llap{\color{thegrey}\box0\hskip\marginparsep}%
+      \vspace*{-\baselineskip}%
+      \IndexParms %\rightskip 15pt
+      \let\item\@idxitem
+      \raggedcolumns}}
 \def\GlossaryParms{\IndexParms
+  \let\indexspace\relax
   \def\@idxitem ##1##2\efill{%
     \end{multicols}
-    \begin{multicols}{2}[\subsubsection*{\if##1v\relax
-         \llap{\mdseries\color{thegrey}\footnotesize
-               \csname MTversiondate##2\endcsname\hskip\marginparsep}%
+    \ifpdf \vspace{-3.25ex}%
+      \pdfbookmark[2]{\if##1v\relax ##2
+          (\csname MTversiondate##2\endcsname)\else ##2\fi}
+        {subsection\zap@space ##2 \@empty}\fi
+    \begin{multicols}{2}[%
+        \subsubsection*{\if##1v\relax
+        \llap{\mdseries\color{thegrey}\footnotesize
+              \csname MTversiondate##2\endcsname\hskip\marginparsep}%
          Version ##2\else ##2\fi}][6\baselineskip]
-      \ifpdf \phantomsection \pdfbookmark[2]{\if##1v\relax ##2
-          (\csname MTversiondate##2\endcsname)\else ##2\fi}{subsection##2}\fi
-    \GlossaryParms \rightskip 15pt plus 5pt
-    \let\item\@idxitem
-    \ignorespaces \makeatletter \scan@allowedfalse}%
+      \GlossaryParms \rightskip 15pt plus 5pt
+      \let\item\@idxitem
+      \ignorespaces \makeatletter \scan@allowedfalse}%
   \def\subitem{\par\hangindent 15pt}%
   \def\subsubitem{\subitem\hspace*{7.5pt}}}
 % macro code
@@ -514,7 +519,10 @@
 }{
  \let\lstset\@gobble
 }
-%\def\todo{\changes{zTo Do}{0000/00/00}}
+\def\todo#1{\changes{zTo Do}{0000/00/00}{#1}%
+  \marginpar{\rightskip2\marginparsep plus1em\hangindent1.5em\hangafter-2
+    \smash{\rlap{\raisebox{-3.3ex}{\colorbox{thered}{\Large\color{white}!}}}}%
+    \footnotesize\textcolor{thered}{#1}}}
 \let\todo\@gobble
 \newcommand\microtypesample[1]{\begin{quote}#1\end{quote}}
 \let\emptypdfpageresources\relax
@@ -2542,8 +2550,17 @@
 %\changes{v2.3c}{2008/11/11}{add hint about partial incompatibility with \pkg{CJK}}
 %  \item It is currently not possible to create character-specific settings for
 %        Chinese\slash Japanese\slash Korean fonts. Therefore, the only
-%        micro-typographic extension that can be made to work with the
-%        \pkg{CJK} package is font expansion.
+%        micro-typographic extension that can be made to work with
+%        \pkg{CJK} fonts is font expansion.
+%\changes{v2.6}{2015/11/03}{add hint about partial incompatibility with \pkg{xeCJK}}
+%  \item When used with the \pkg{xeCJK} package, text commands (\eg, |\'A|, |\textless|)
+%        in the configuration will not be understood. You therefore have to ensure
+%        that \microtype\ will encounter none of them. This requires, firstly, that
+%        the glyphs be specified only as single (possibly Unicode) characters, as numbers,
+%        or as glyph names (cf. section~\ref{sec:fine-tuning});
+%        and secondly, if you are using a font for which pre-defined settings do not exist,
+%        that you create these settings yourself (because otherwise, the default settings
+%        will be loaded, which do contain text commands).
 %\end{itemize}
 %
 %\changes{v1.8}{2005/06/23}{add hint about error messages}
@@ -2782,9 +2799,11 @@
 %  \contributor uli               <@\at @>,  ^^A http://tex.stackexchange.com/users/9391/uli
 %  \contributor Sam Mason         <sam\at samason.me.uk>, ^^A http://tex.stackexchange.com/users/16433/sam-mason
 %  \contributor kleenstar         <@\at @>, ^^A http://tex.stackexchange.com/users/56468/kleenstar
-%  \contributor Henning           <@\at @> ^^A http://tex.stackexchange.com/users/64603/henning
+%  \contributor Henning           <@\at @>, ^^A http://tex.stackexchange.com/users/64603/henning
+%  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>,
+%  \contributor David Carlisle    <d.p.carlisle\at gmail.com>
 % and
-%  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>.
+%  \contributor HcN               <@\at @>. ^^A http://tex.stackexchange.com/users/87090/hcn
 %
 %
 %\iffalse
@@ -7323,10 +7342,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@tr@set@space}
-% Adjust interword spacing (\fontdim2--4) for inner and outer space.
+% Adjust interword spacing (\fontdim2,3,4) for inner and outer space.
 % For inner spacing, the font dimensions will be adjusted, the settings for
 % outer spacing will be remembered in a macro.
-%\todo{don't add stretch components if ragged2e is active?} ^^A reported by \contributor Leo ? <sdl.web\at gmail.com>, MID: <wqlfwxsuo6h.fsf@pip.srcf.ucam.org>
+%\todo{don't add stretch components if \pkg{ragged2e} is active?} ^^A reported by \contributor Leo ? <sdl.web\at gmail.com>, MID: <wqlfwxsuo6h.fsf@pip.srcf.ucam.org>
 %^^A or in fact, shouldn't we test whether \spaceskip<>0pt ?
 %    \begin{macrocode}
 \def\MT@tr@set@space#1,#2,#3,#4,#5,#6,{%
@@ -8941,8 +8960,23 @@ end
 % With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters;
 % I haven't tried it, though.
 %^^A also, \XeTeXinterchartoks probably interferes ...
+%\changes{v2.6}{2015/11/03}{(in)compatibility with \pkg{xeCJK}: disable unknown slots warnings
+%                           (reported by \contributor HcN <@\at @>)}
+%                           ^^A http://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
+% Also, \pkg{xeCJK}, or rather its \pkg{xunicode-addon}, modifies the way text symbols
+% are defined, which will result in lots of unknown slot warnings. We won't bother,
+% for the moment at least, and simply issue a warning.
+%\todo{the same will probably be the case with \pkg{luatexja}, but I can't test right now}
 %    \begin{macrocode}
-    \@ifpackageloaded{xeCJK}{\@firstofone}{%
+    \@ifpackageloaded{xeCJK}{%
+      \def\MT@warn@unknown{%
+        \MT@warning@nl{One or more slots in the configuration are unknown.\MessageBreak
+                       Make sure that no text commands are used.\MessageBreak
+                       See the documentation for details (the note\MessageBreak
+                       on `xeCJK' in section 9: `Hints and caveats')}%
+        \MT@glet\MT@warn@unknown\relax}%
+      \@firstofone
+    }{%
       \@ifpackagelater{CJK}{2006/10/17}% 4.7.0
         {\def\MT@orig@pickupfont{\CJK@ifundefined\CJK@plane}}%
         {\def\MT@orig@pickupfont{\@ifundefined{CJK@plane}}}%
@@ -10467,8 +10501,8 @@ end
 %                           to `\texttt{character}' for key \texttt{unit}}
 %\changes{v2.0}{2006/09/30}{option `\opt{unit}', \cs{SetProtrusion}:
 %                           deprecate value `\texttt{relative}' completely}
-% Protrusion codes may be relative to character width, or to any dimension.
 %\todo{new key for unit: \texttt{dimen} (for \texttt{kerning}, especially)}
+% Protrusion codes may be relative to character width, or to any dimension.
 %    \begin{macrocode}
 %<*pdftex-def|xetex-def|luatex-def>
 \define@key{MT@pr@c}{unit}[character]{%
@@ -12239,7 +12273,7 @@ end
       }%
       \ifMT@kerning
 %    \end{macrocode}
-%\todo{make switching off of babel's shorthands configurable}
+%\todo{make switching off of \pkg{babel}'s shorthands configurable}
 % Disable French \pkg{babel}'s active characters.
 %\changes{v2.0}{2006/10/10}{option `\opt{babel}': fix: switch off French
 %                           \pkg{babel}'s shorthands properly
@@ -16583,7 +16617,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10347}
+% \CheckSum{10356}
 %
 % \Finale
 %
