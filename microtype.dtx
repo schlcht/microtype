@@ -85,7 +85,9 @@
   \DeclareFontShape{T1}{blg}{k}{n}{<-> ssub * blg/b/n}{}}
 \usepackage{ifpdf,ifluatex,ifxetex}
 %<*!docsty>
+\ifxetex\else
 \usepackage[latin1]{\ifluatex lua\fi inputenc}
+\fi
 %</!docsty>
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
@@ -128,20 +130,21 @@
      {\def\textfrak{\rule{.5em}{1.5ex}\@gobble}}}
 \tolerance=700
 \ifpdf
+  \ifluatex % microtype.dtx finally compiles with 0.35!
+    \microtypesetup{kerning=false}
+    \def\pdftexversion{200} % in TeX Live 2015, they let this to \luatexversion
+  \fi
   \ifnum\pdftexversion<140 \else % pdftex 1.40, including textmatrix patch,
     \microtypesetup{expansion=alltext,step=1} % hence we can activate expansion ...
     \tolerance=300         % ... and make TeX almost as intolerant as it normally is
     \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
-    \pdfminorversion=5 % for the OCGs
+    \pdfminorversion=5 % for the OCGs (default since TeX Live 2010)
   \fi
   % bonus material
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
   \InputIfFileExists{microtype-lssample.dtx}\relax\relax
 \else
   \let\lsstyle\relax
-\fi
-\ifluatex % microtype.dtx finally compiles with 0.35!
-  \microtypesetup{kerning=false}
 \fi
 \ifxetex
   \microtypesetup{kerning=false}
