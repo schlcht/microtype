@@ -2549,16 +2549,16 @@
 %        package.\footnote{^^A
 %             They make use of features provided by \cite{luaotfload} (via \cite{fontspec}).}
 %\changes{v2.3c}{2008/11/11}{add hint about partial incompatibility with \pkg{CJK}}
-%  \item It is currently not possible to create character-specific settings for
+%  \item With \pdftex, it is currently not possible to create character-specific settings for
 %        Chinese\slash Japanese\slash Korean fonts. Therefore, the only
 %        micro-typographic extension that can be made to work with
-%        \pkg{CJK} fonts is font expansion.
+%        \pkg{CJK} fonts is (non-selected) font expansion.
 %\changes{v2.6}{2015/11/03}{add hint about partial incompatibility with \pkg{xeCJK}}
-%  \item When used with the \pkg{xeCJK} package, text commands (\eg, |\'A|, |\textless|)
-%        in the configuration will not be understood. You therefore have to ensure
-%        that \microtype\ will encounter none of them. This requires, firstly, that
-%        the glyphs be specified only as single (possibly Unicode) characters, as numbers,
-%        or as glyph names (cf. section~\ref{sec:fine-tuning});
+%  \item When used with the \pkg{xeCJK} package or the \pkg{luatexja} package,
+%        text commands (\eg, |\'A|, |\textless|) in the configuration will not be understood.
+%        You therefore have to ensure that \microtype\ will encounter none of them.
+%        This requires, firstly, that the glyphs be specified only as single (possibly Unicode)
+%        characters, as numbers, or as glyph names (cf. section~\ref{sec:fine-tuning});
 %        and secondly, if you are using a font for which pre-defined settings do not exist,
 %        that you create these settings yourself (because otherwise, the default settings
 %        will be loaded, which do contain text commands).
@@ -2801,7 +2801,8 @@
 %  \contributor kleenstar         <@\at @>, ^^A http://tex.stackexchange.com/users/56468/kleenstar
 %  \contributor Henning           <@\at @>, ^^A http://tex.stackexchange.com/users/64603/henning
 %  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>,
-%  \contributor David Carlisle    <d.p.carlisle\at gmail.com>
+%  \contributor David Carlisle    <d.p.carlisle\at gmail.com>,
+%  \contributor Max               <@\at @>  ^^A http://tex.stackexchange.com/users/16809/max
 % and
 %  \contributor HcN               <@\at @>. ^^A http://tex.stackexchange.com/users/87090/hcn
 %
@@ -8873,6 +8874,14 @@ end
 }
 %    \end{macrocode}
 %\end{macro}
+\def\MT@warn@unknown@once#1{%
+  \def\MT@warn@unknown{%
+    \MT@warning@nl{One or more slots in the configuration are unknown.\MessageBreak
+                   Make sure that no text commands are used.\MessageBreak
+                   See the documentation for details (the note\MessageBreak
+                   on `#1' in section 9: `Hints and caveats')}%
+    \MT@glet\MT@warn@unknown\relax}%
+}
 %
 %\subsubsection{Hook into \LaTeX's font selection}\label{sssec:impl.hook}
 %
@@ -8941,13 +8950,24 @@ end
 \MT@addto@setup{%
 %    \end{macrocode}
 %\begin{macro}{\MT@orig@pickupfont}
+% The \pkg{luatexja} package redefines \cmd\char, which will upset our parsing
+% of text symbols and commands; instead of fixing this, we won't bother,
+% at least for the moment, but simply issue a warning and disable all
+% further warnings. The fix is left to the user by not specifying any text
+% commands but only (Unicode) letters.
+%\changes{v2.6}{2015/12/05}{(in)compatibility with \pkg{luatexja}: disable unknown slots warnings
+%                          (reported by \contributor Max <@\at @>)}
+%                           ^^A http://tex.stackexchange.com/questions/272102/luatexja-with-microtype-generates-lots-of-warnings
+%    \begin{macrocode}
+  \MT@with@package@T{luatexja}{\MT@warn@unknown@once{luatexja}}%
+%    \end{macrocode}
 %\changes{v2.1}{2007/01/15}{compatibility with \pkg{CJK}: also check for its definition}
 %\changes{v2.3b}{2008/05/26}{compatibility with \pkg{CJKutf8}: also check for its definition}
 % \microtype\ also works with \pkg{CJK} in the sense that nothing will break
 % when both packages are used at the same time. However, since \pkg{CJK} has
 % its own way of encoding, it is currently not possible to create
 % character-specific settings. That is, the only feature available with
-% \pkg{CJK} fonts is expansion.
+% \pkg{CJK} fonts is (non-selected) expansion.
 % (Tracking doesn't really work for other reasons.)
 %\todo{fix tracking with \pkg{CJK}, if worth the trouble}^^A
 % Like us, \pkg{CJK} redefines \cmd\pickup@font.
@@ -8955,26 +8975,20 @@ end
   \@ifpackageloaded{CJK}{%
 %    \end{macrocode}
 %\changes{v2.6}{2013/06/06}{compatibility with \pkg{xeCJK}: pretend that \pkg{CJK} wasn't loaded}
-% The \pkg{xeCJK} package pretends that \pkg{CJK} was loaded, but does not
+% The \pkg{xeCJK} package in turn pretends that \pkg{CJK} was loaded, but does not
 % change the definition of \cmd\pickup@font.
 % With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters;
 % I haven't tried it, though.
 %^^A also, \XeTeXinterchartoks probably interferes ...
+% The \pkg{xeCJK} package, or rather its \pkg{xunicode-addon}, also modifies the way
+% text symbols are defined (like \pkg{luatexja} but in a different way).
+% Again, we only issue a warning.
 %\changes{v2.6}{2015/11/03}{(in)compatibility with \pkg{xeCJK}: disable unknown slots warnings
 %                           (reported by \contributor HcN <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
-% Also, \pkg{xeCJK}, or rather its \pkg{xunicode-addon}, modifies the way text symbols
-% are defined, which will result in lots of unknown slot warnings. We won't bother,
-% for the moment at least, and simply issue a warning.
-%\todo{the same will probably be the case with \pkg{luatexja}, but I can't test right now}
 %    \begin{macrocode}
     \@ifpackageloaded{xeCJK}{%
-      \def\MT@warn@unknown{%
-        \MT@warning@nl{One or more slots in the configuration are unknown.\MessageBreak
-                       Make sure that no text commands are used.\MessageBreak
-                       See the documentation for details (the note\MessageBreak
-                       on `xeCJK' in section 9: `Hints and caveats')}%
-        \MT@glet\MT@warn@unknown\relax}%
+      \MT@warn@unknown@once{xeCJK}%
       \@firstofone
     }{%
       \@ifpackagelater{CJK}{2006/10/17}% 4.7.0
@@ -16617,7 +16631,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10356}
+% \CheckSum{10350}
 %
 % \Finale
 %
