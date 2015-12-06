@@ -1182,7 +1182,6 @@
 % to +1000.
 %
 %
-%\ifcmr\enlargethispage{\baselineskip}\fi ^^A layout
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
 %\Describe{Option}{DVIoutput}{true,*false}
@@ -1479,7 +1478,7 @@
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
 %
-%\pagebreak ^^A layout
+%\ifcmr\else\pagebreak\fi ^^A layout
 %\medskip
 %\Describe{Macro}{\UseMicrotypeSet}{?features,set name}
 % This command activates a font set previously declared by \cs{DeclareMicrotypeSet}.
@@ -1518,9 +1517,9 @@
 %
 % The set of fonts to which the settings should apply is declared using the
 % same syntax of \meta{font axis}\,|=|\,\meta{value list} pairs as for the
-% command \cs{DeclareMicrotypeSet} (see section~\ref{sec:font-sets}). Values
-% with an asterisk will be translated immediately instead of at the end
-% of the preamble.
+% command \cs{DeclareMicrotypeSet} (see section~\ref{sec:font-sets}), with the
+% only difference that values with an asterisk will be translated immediately
+% instead of at the end of the preamble.
 % To find the matching settings for a given font the package will try all
 % combinations of font encoding, family, series, shape and size,
 % with decreasing significance in this order. For instance, if both settings for
@@ -1535,6 +1534,20 @@
 %^^A the \pkg{fontspec} package), you may additionally restrict the settings to
 %^^A certain |features|.
 %\fi
+%
+% The characters may be specified either as a single letter (|A|),
+% as a text symbol command (\cmd\textquoteleft), or as a slot number (resp.
+% Unicode number for \luatex\ or \xetex): three or more  digits for decimal
+% notation, prefixed with~|"| for hexadecimal, with~|'| for octal numerals (\eg, the
+% `fl' ligature in <T1> encoding:~|029|, |"1D|, |'35|).
+% \mbox{8-bit} (and even <UTF-8>) characters may be entered directly or in
+% \LaTeX's traditional \mbox{7-bit} notation: both |\"A| and \expandafter|\"A|
+% are valid, provided the character is actually declared in both the input and
+% the font encoding.
+% With \luatex\ or \xetex, you may additionally specify a (font-specific)
+% glyph name, prefixed with `|/|' (\eg, the `fl' ligature as |/f_l|).
+% Note that you also have the possibility to declare lists
+% of characters that should inherit settings (see section~\ref{sub:inherit}).
 %
 %\subsection[Character protrusion]
 %           {Character protrusion \requires{\pdftex~0.14f,\luatex~0.30,\xetex~0.9997}}
@@ -1557,21 +1570,6 @@
 %
 %\paragraph{The protrusion settings}
 % consist of \meta{character}\,|=|\,\meta{protrusion factors} pairs.
-%
-% The characters may be specified either as a single character (|A|),
-% as a text symbol command (\cmd\textquoteleft), or as a slot number (resp.
-% Unicode number for \luatex\ or \xetex): three or more  digits for decimal
-% notation, prefixed with~|"| for hexadecimal, with~|'| for octal numerals (\eg, the
-% `fl' ligature in <T1> encoding:~|029|, |"1D|, |'35|).
-% \mbox{8-bit} (and even <UTF-8>) characters may be entered directly or in
-% \LaTeX's traditional \mbox{7-bit} notation: both |\"A| and \expandafter|\"A|
-% are valid, provided the character is actually declared in both the input and
-% the font encoding.
-% With \luatex\ or \xetex, you may additionally specify a (font-specific)
-% glyph name, prefixed with `|/|' (\eg, the `fl' ligature as |/f_l|).
-% Note that you also have the possibility to declare lists
-% of characters that should inherit settings (see section~\ref{sub:inherit}).
-%
 % The protrusion factors designate the amount that a character should be
 % protruded into the left margin (first value) respectively into the right
 % margin (second value). By default, the values are relative to the character
@@ -1579,18 +1577,18 @@
 % fully into the margin, while, for example, with a value of 50 it would be
 % protruded by 5\% of its width. Negative values are admitted, as well as
 % numbers larger than 1000 (but effectively not more than \EM{1} of the font).
-% You can omit either number if the character should not be protruded on that
+% You may omit either number if the character should not be protruded on that
 % side, but must not drop the separating comma.
 %
 %\paragraph{Options:}
 %\begin{options}
 %  \item[\key{name}] You may assign a name to the protrusion settings, so that you
 %       are able to load it by another list.
-%  \item[\key{load}] You can load another list (provided, you previously assigned
+%  \item[\key{load}] You can load another list (provided, you assigned
 %       a name to it) before the current list will be loaded, so that the
 %       fonts will inherit the values from the loaded list.
 %      \par
-%       Thus, the configuration may be simplified considerably. You can for
+%       In this way, the configuration may be simplified considerably. You can for
 %       instance create a default list for a font; settings for other shapes
 %       or series can then load these settings, and extend or overwrite them
 %       (since the value that comes last will take precedence). Font settings
@@ -1655,7 +1653,7 @@
 % If the \opt{selected} option has been set to true, and settings for a font
 % don't exist, font expansion will not be applied to this font at all. Should
 % the extraordinary situation arise that you want to employ selected expansion
-% in general but that all characters of a particular font (set) should be
+% in general but for a particular font (set) all characters should be
 % expanded or shrunk by the same amount, you would have to declare an empty
 % list for these fonts.
 %
@@ -1707,10 +1705,10 @@
 %  This paragraph contains a `fussy' widow.}
 %\end{verbatim}
 %       This method of employing contexts to temporarily apply different
-%       expansion parameters only works with \pdftex\ version 1.40.4 or later
-%       (for older versions, a dirty trick is laid out in
-%       section~\ref{ssec:font-setup} on page~\pageref{exp-hack}). Also note
-%       that \pdftex\ prohibits the use of fonts with different expansion
+%       expansion parameters only works with \pdftex\ version 1.40.4 or later.^^A
+%         \footnote{For older versions, a dirty trick is laid out in
+%                   section~\ref{ssec:font-setup} on page~\pageref{exp-hack}.}
+%       Also note that \pdftex\ prohibits the use of fonts with different expansion
 %       limits or steps (even of different fonts) within one paragraph, hence
 %       the |sloppy| context has to be applied to complete paragraphs.
 %  \item[\key{factor}]
@@ -1785,7 +1783,7 @@
 %       which accepts the same values as \texttt{spacing}, it may be adjusted
 %       independently.
 %  \item[\key{outer kerning}]
-%       If, on the other hand, no interword space precedes of follows, you may
+%       If, on the other hand, no interword space precedes or follows, you may
 %       still want to slightly set off the first and last letter from adjoining
 %       letters. This option expects the kerning amounts for left and right hand
 %       side, separated by a comma, in thousandths of \EM{1} (or the current
@@ -1831,7 +1829,7 @@
 % Since a picture is worth a thousand words, probably even more if, in our
 % case, it depicts a couple of letterspaced words, let's bring one to sum up
 % these somewhat confusing options. Suppose you had the following settings
-% (which I would in no way recommend; they are only for illustrative purposes):
+% (which are in no way recommended; they only serve illustrative purposes):
 %\begin{verbatim}
 %\SetTracking
 %  [ no ligatures  = {"\anchorarrow{nolig}"f},
@@ -1899,7 +1897,7 @@
 %\subsection[Additional kerning]
 %           {Additional kerning \requires{\pdftex~1.40}}
 %           \label{sub:kerning}
-%
+%\todo{Rename to \cs{SetSidebearing}}
 %\Describe{Macro}{\SetExtraKerning}{?options,set of fonts,kerning settings}
 % With this command, you can fine tune the extra kerning. In contrast to
 % standard kerning, which is always associated with a \emph{pair} of
@@ -1911,7 +1909,7 @@
 %
 %\emptypdfpageresources ^^A layers of letterspacing illustration
 %
-% I should not neglect to mention a limitation of this feature:
+% It should not be neglected to mention a limitation of this feature:
 % words \emph{immediately following} such a kern (not separated by a space)
 % will not be hyphenated, unless you insert the breakpoints manually, \eg, for
 % kerning after the apostrophe, `|l'apos\-trophe|'. This restriction of \pdftex\
@@ -2175,7 +2173,7 @@
 % On its search for a configuration file, the package will also try to remove
 % from the font name a suffix of one or more letters that denotes a `variant'
 % of the base font (cf. Karl Berry's \cite{fontname}). It is thus possible to
-% put settings for, \eg, the fonts |padx| (expert set), |padj| (oldstyle
+% put settings for, \eg, the fonts |padx|~(expert set), |padj| (oldstyle
 % numerals) and |pad| (plain) into one and the same file \file{mt-pad.cfg}.
 % This command expects a comma-separated list of variant suffixes. The starred
 % version appends the suffix(es) to the existing list. The default declaration
@@ -2198,7 +2196,6 @@
 % not find settings for it, also try the font |cmr|. In fact, you will find
 % this very line, along with some others, in the default configuration file.
 %
-%\enlargethispage\baselineskip ^^A layout
 %\medskip
 %\Describe{Macro}{\LoadMicrotypeFile}{font name}
 % In rare cases, it might be necessary to load a font configuration file
@@ -2261,6 +2258,7 @@
 %   \leavevmode \ifhmode\edef\@x@sf{\the\spacefactor}\nobreak\fi
 %   \new@makefnmark \ifhmode\spacefactor\@x@sf\fi \relax}
 %\end{verbatim}
+%\ifcmr\else\enlargethispage\baselineskip\fi ^^A layout
 % For the \pkg{memoir} class, you would additionally have to disable
 % auto-detection of multiple footnotes, which prevents protrusion:
 %\begin{verbatim}
@@ -2362,7 +2360,7 @@
 % (namely, `\textls{\def\!#1{\textcolor{thered}{\lslig{#1}}}^^A
 %                   \def\?#1{\textcolor{thegreen}{#1}}^^A
 %  \textfrak{Au\!{s:}\?{si}\!{ch}t\!{s:}lo\?{si}gkeit}}',
-%  ligatures shown in red, inhibited ligatures in green).
+%  with ligatures shown in red, inhibited ligatures in green).
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
 %\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
@@ -2629,7 +2627,6 @@
 %! Font T1/cmr/m/n/10=ecrm1000 at 10.0pt not loaded: Not enough room left.
 %\end{verbatim}
 % Memory parameter `|font_mem_size|' too small.
-%\enlargethispage{\baselineskip} ^^A layout
 %  \item
 %\begin{verbatim}
 %! TeX capacity exceeded, sorry [maximum internal font number (font_max)=2000].
