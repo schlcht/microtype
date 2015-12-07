@@ -5092,7 +5092,9 @@ microtype.do_font = do_font
 \MT@with@package@T{xunicode}\MT@xunicodetrue
 %</package>
 \newif\ifMT@fontspec
+%<letterspace>\MT@requires@latex2{
 \MT@with@package@T{fontspec}\MT@fontspectrue
+%<letterspace>}{\MT@fontspecfalse}
 %</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
