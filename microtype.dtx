@@ -16454,7 +16454,6 @@ end
 %
 %\ifpdf
 %\GeneralChanges{Documentation}
-%\changes{v2.5a}{2013/05/15}{include OpenType configuration files}
 %^^A The OpenType configuration files are outsourced to an external file,
 %^^A since they are typeset with \luatex.
 %
@@ -16633,7 +16632,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10350}
+% \CheckSum{10352}
 %
 % \Finale
 %
@@ -16672,7 +16671,7 @@ pdflatex microtype.dtx
 #  (5) Run
 makeindex -s microtype-gind.ist microtype
 #  (6) Run
-makeindex -s gglo.ist -o microtype.gls microtype.glo
+makeindex -s gglo.ist -o microtype.gls microtype.glo microtype-utf.glo
 #  (7) Run
 lualatex microtype-utf.dtx
 #      [ The following fonts are required:
@@ -16687,7 +16686,7 @@ pdflatex microtype.dtx
 #  (9) Run
 makeindex -s microtype-gind.ist microtype
 # (10) Run
-makeindex -s gglo.ist -o microtype.gls microtype.glo
+makeindex -s gglo.ist -o microtype.gls microtype.glo microtype-utf.glo
 # (11) Run
 pdflatex microtype.dtx
 #

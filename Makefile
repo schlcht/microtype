@@ -74,7 +74,8 @@ ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 DO_PDFLATEX  = pdflatex --interaction=nonstopmode $< $(REDIRECT)
 DO_LUALATEX  = lualatex --interaction=nonstopmode $< $(REDIRECT)
 DO_MAKEINDEX = makeindex -s microtype-gind.ist $(subst .dtx,,$<) $(REDIRECT)  2>&1 && \
-	       makeindex -s gglo.ist -t $(subst .dtx,.glg,$<) -o $(subst .dtx,.gls,$<) $(subst .dtx,.glo,$<) $(REDIRECT)  2>&1 
+	       makeindex -s gglo.ist -t $(subst .dtx,.glg,$<) -o $(subst .dtx,.gls,$<) \
+	                 $(subst .dtx,.glo,$(ALLDTX)) $(REDIRECT)  2>&1
 
 all: $(GENERATED)
 doc:    make-doc-sty $(COMPILED) make-normal-sty

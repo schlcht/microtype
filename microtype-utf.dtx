@@ -48,7 +48,65 @@
  \newfontface\CharisSIL{Charis SIL}
  \newfontface\PalatinoLinotype{TeX Gyre Pagella}
 \textheight=626pt % this isn't set correctly for some reason
+\usepackage{luacode}
+\tracinglostchars2
+% we replace any missing characters (in Palatino) with CharisSIL
+% the lua code is mostly stolen from http://tex.stackexchange.com/a/120529 and http://tex.stackexchange.com/a/119945
+{\CharisSIL\footnotesize\global\expandafter\let\expandafter\fallbackfont\the\font}
+\begin{luacode}
+local fontcharacters = { }
+local nullfont       = 0
+local glyph_t        = nodes.nodecodes.glyph
+local whatsit_t      = nodes.nodecodes.whatsit
+local colorst_t      = node.subtype("pdf_colorstack")
+local color_push     = node.new(whatsit_t,colorst_t)
+local color_pop      = node.new(whatsit_t,colorst_t)
+color_push.stack,  color_pop.stack   = 0,0
+color_push.command,color_pop.command = 1,2
+color_push.data      = "0.97 0.04 0.07 rg" -- red
+local fallbackfont   = font.id("fallbackfont")
+table.setmetatableindex(fontcharacters, function (t, k)
+  if k == true then
+    return fontcharacters[currentfont()]
+  else
+    local tfmdata = fonts.hashes.identifiers[k]
+    if not tfmdata then --- unsafe
+      tfmdata = font.fonts[k]
+      if not (tfmdata and type (tfmdata) == "table") then
+        return false
+      end
+    end
+    local characters = tfmdata.characters
+    t[k] = characters
+    return characters
+  end
+end)
+local nodeprocessor = function (head)
+  local lastfont, characters = nil, nil
+  for n in node.traverse_id(glyph_t, head) do
+    local currfont = n.font
+    local char = n.char
+    if currfont ~= lastfont and currfont ~= nullfont then
+      characters = fontcharacters[currfont]
+    end
+    if characters ~= false then
+      lastfont = currfont
+      if not characters[char] then
+        head = node.insert_before(head,n,node.copy(color_push))
+        node.insert_after(head,n,node.copy(color_pop))
+        n.font = fallbackfont
+        if not fontcharacters[fallbackfont][char] then -- not even in Charis SIL
+          n.char = 0xFFFD
+        end
+      end
+    end
+  end
+  return head, false
+end
+luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missing glyphs")
+\end{luacode}
 \DisableCrossrefs
+\RecordChanges
 \begin{document}
   \DocInput{\jobname.dtx}
 \end{document}
@@ -56,7 +114,9 @@
 % \fi
 %\StopEventually{}
 %
-%\GeneralChanges*
+%\GeneralChanges{Documentation}
+%\changes{v2.5a}{2013/05/15}{include OpenType configuration files}
+%\changes{v2.6}{2015/12/07}{missing characters printed with Charis <SIL>}
 %\ImplementationSettings
 %\InputIfFileExists{microtype-utf.tmp}\relax\relax
 %\edef\startpage{\thepage}
@@ -301,8 +361,8 @@
      family = {PalatinoLinotype} }
 %    \end{macrocode}
 % Unfortunately, I don't have a Palatino variant containing all of the following
-% glyphs, which will therefore not show up here. The following is typeset in
-% \TeX\ Gyre Pagella.
+% glyphs. The settings are typeset in \TeX\ Gyre Pagella;
+% missing glyphs, printed in red, are taken from Charis <SIL>.
 % To see the real settings, consult \file{mt-PalatinoLinotype.cfg}.
 %{\setmacrofont\PalatinoLinotype
 %    \begin{macrocode}
