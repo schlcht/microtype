@@ -697,10 +697,11 @@
              Pa-la-ti-no}
 \def\fallbacktext#1{{\centering\itshape[#1]\par}}
 % abbreviations
-\DeclareRobustCommand\thanh{H\`an Th\^e%
-     \ifx\eTeXversion\undefined \llap{\raisebox{0.5ex}{\'{}}}
-     \else \llap{\raisebox{0.45ex}{\'{}\kern\dimexpr.05em-2\fontdimen1\font\relax}}
-     \fi Th\`anh}
+\DeclareRobustCommand\thanhthe{Th\^e%
+     \ifx\eTeXversion\undefined \llap{\raisebox{0.5ex}{\'{}}}%
+     \else \llap{\raisebox{0.45ex}{\'{}\kern\dimexpr.05em-2\fontdimen1\font\relax}}%
+     \fi}
+\DeclareRobustCommand\thanh{H\`an \thanhthe{} Th\`anh}
 \DeclareRobustCommand\pdftex{\texorpdfstring{pdf\kern.05em\TeX}{pdfTeX}}
 \DeclareRobustCommand\luatex{\texorpdfstring{Lua\kern-.05em\TeX}{LuaTeX}}
 \DeclareRobustCommand\etex{\mbox{e-\kern-.075em\TeX}}
@@ -727,10 +728,13 @@
 {\catcode`\<=\active
  \AtBeginDocument{\catcode`\<=\active
    \def<#1>{\acronym{#1}}
-   \def\contributor#1 <#2\at#3>{\@contributor{#1}{#2@#3}}
-   \DeclareRobustCommand\@contributor[2]{\textit{#1}}
-   %\DeclareRobustCommand\@contributor[2]{\href{mailto:#2}{\textit{#1}}}
-   }}
+   \def\contributor#1 <#2\at#3>{\@contributor{#1}{#2@#3}}}}
+\DeclareRobustCommand\@contributor[2]{\textit{#1}}
+%\DeclareRobustCommand\@contributor[2]{\href{mailto:#2}{\textit{#1}}}
+%\DeclareRobustCommand\@contributor[2]{\textit{#1}%
+%    \expandafter\index\expandafter{\@getlastname#1 \@nil\actualchar %\href{mailto:#2}{#1}
+%          #1 (contributor)\encapchar hyperpage}}
+%\def\@getlastname#1 #2\@nil{\ifx\@nil#2\@nil#1\else\@getlastname#2\@nil\fi}
 %<*driver>
 \CodelineIndex
 \EnableCrossrefs
@@ -2553,7 +2557,7 @@
 %        Chinese\slash Japanese\slash Korean fonts. Therefore, the only
 %        micro-typographic extension that can be made to work with
 %        \pkg{CJK} fonts is (non-selected) font expansion.
-%\changes{v2.6}{2015/11/03}{add hint about partial incompatibility with \pkg{xeCJK}}
+%\changes{v2.6}{2015/11/03}{add hint about partial incompatibility with \pkg{xeCJK} and \pkg{luatexja}}
 %  \item When used with the \pkg{xeCJK} package or the \pkg{luatexja} package,
 %        text commands (\eg, |\'A|, |\textless|) in the configuration will not be understood.
 %        You therefore have to ensure that \microtype\ will encounter none of them.
@@ -2689,7 +2693,7 @@
 %\section{Acknowledgments}
 %
 % This package would be pointless if
-%  \contributor\thanh{} <thanh\at pdftex.org>
+%  \contributor H\`an \thanhthe{} Th\`anh <thanh\at pdftex.org>
 % hadn't created the \pdftex\ programme in the first place, which introduced
 % the micro-typographic extensions and made them available to the \TeX\ world.
 % Furthermore, I thank him for helping me to improve this package, and not
@@ -5249,7 +5253,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We disable \microtype's additions inside \pkg{hyperref}'s \cmd\pdfstringdef,
 % which redefines lots of commands.
 %\changes{v1.9}{2005/09/10}{disable \microtype\ setup inside \pkg{hyperref}'s \cmd\pdfstringdef\
-%               (reported by \contributor\thanh{} <hanthethanh\at gmail.com>)}
+%               (reported by \contributor H\`an \thanhthe{} Th\`anh <hanthethanh\at gmail.com>)}
 %                                                  ^^A private mail, 2005/09/10
 %\changes{v2.3}{2007/11/11}{disable \cs{microtypecontext} in \pkg{hyperref}'s \cmd\pdfstringdef}
 % \pkg{hyperref} doesn't work with plain \TeX, so in that case we don't bother.
@@ -5798,7 +5802,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % (Warnings seem to be too irritating.) ^^A at least one thing I found out in the ridiculously long `beta' phase
 % The switch is set in \cs{MT@next@listname}.
 %\changes{v2.5}{2011/05/28}{info if settings are not family-specific
-%                          (suggested by \contributor\thanh{} <thanh\at river-valley.org>)}
+%                          (suggested by \contributor H\`an \thanhthe{} Th\`anh <thanh\at river-valley.org>)}
 %                          ^^A private mail, 2010/09/07
 %                          ^^A (beta:07)
 %    \begin{macrocode}
@@ -11135,7 +11139,7 @@ end
 }
 %    \end{macrocode}
 %\changes{v1.5}{2004/12/02}{new option: \opt{selected}, by default false
-%               (suggested by \contributor \thanh{} <hanthethanh\at gmx.net>)}
+%               (suggested by \contributor H\`an \thanhthe{} Th\`anh <hanthethanh\at gmx.net>)}
 %                                               ^^A private mail, 2004/11/30
 %\changes{v2.0}{2005/10/04}{new option: \opt{babel}, by default false
 %               (language-dependent setup suggested by \contributor Ulrich Dirr <ud\at art-satz.de>)}
@@ -11290,7 +11294,7 @@ end
 %</package>
 %    \end{macrocode}
 %\changes{v1.5}{2004/12/02}{defaults: \opt{step}: 4
-%               (suggested by \contributor \thanh{} <hanthethanh\at gmx.net>)}
+%               (suggested by \contributor H\`an \thanhthe{} Th\`anh <hanthethanh\at gmx.net>)}
 %                                               ^^A private mail, 2004/11/30
 %\changes{v1.6}{2004/12/18}{new option: \opt{factor}, by default 1000}
 %\changes{v2.0}{2005/09/21}{new option: \opt{letterspace}, by default 100} ^^A (beta:1)
@@ -12873,7 +12877,7 @@ end
 %
 %\subsubsection{<T5>}
 %\changes{v1.9}{2005/08/17}{add list for <T5> (requested by
-%                           \contributor \thanh{} <hanthethanh\at gmail.com>)}
+%                           \contributor H\`an \thanhthe{} Th\`anh <hanthethanh\at gmail.com>)}
 %                                                ^^A private email, 2005/08/16
 % The Vietnamese encoding <T5>. It is so crowded with accented and double-accented
 % characters that there is no room for any ligatures.
