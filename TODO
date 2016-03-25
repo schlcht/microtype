@@ -1,3 +1,7 @@
+* make tracking work with xetex (shouldn't be a problem?)
+
+* there's no max letterspace with luatex (set it to 999)
+ 
 * check with luaotfload 2.6
 ---
 % from Vadim Radionov <@>

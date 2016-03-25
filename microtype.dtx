@@ -4,11 +4,9 @@
 % !smartQuote:: "English"
 % !DTXversion:: "2.6"
 % ------------------------------------------------------------------------
-% $Id: microtype.dtx,v 1.72 2013-05-23 20:35:08+02 schlicht Exp schlicht $
-% ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
-%           Copyright (c) 2004--2013 R Schlicht <w.m.l@gmx.net>
+%           Copyright (c) 2004--2016 R Schlicht <w.m.l@gmx.net>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3c of this license or (at
@@ -40,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2015/10/10 v2.6
+  [2016/04/16 v2.6
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -687,12 +685,10 @@
 \else
   \language=\l@ukenglish
 \fi
-\hyphenation{An-dre-as Ber-nard Ha-rald Mi-cha-el Pe-ter Ste-phan Wolf-ram
-             Har-ders Hop-pe Jac-kow-ski Ku-char-czyk Mei-er Mu-the-si-us Zed-ler
-             Die-te-rich
-             Sveinung % ?
-             Marcin % ?
-             RazorXsr
+\hyphenation{%An-dre-as Ber-nard Ha-rald Mi-cha-el Pe-ter Ste-phan Wolf-ram
+             %Har-ders Hop-pe Jac-kow-ski Ku-char-czyk Mei-er Mu-the-si-us Zed-ler
+             %Die-te-rich Sveinung Marcin RazorXsr
+             Dyballa Maverick
              with-out
              Pa-la-ti-no}
 \def\fallbacktext#1{{\centering\itshape[#1]\par}}
@@ -770,7 +766,7 @@
 %\noindent
 % The \microtype\ package provides a \LaTeX\ interface to the micro-typographic
 % extensions that were introduced by \pdftex\ and have since also propagated to
-% \xetex\ and \luatex: most prominently, character protrusion and font
+% \luatex\ and \xetex: most prominently, character protrusion and font
 % expansion, furthermore the adjustment of interword spacing and additional
 % kerning, as well as hyphenatable letterspacing (tracking) and the possibility
 % to disable all or selected ligatures.
@@ -784,16 +780,16 @@
 % or \luatex.
 % The package will by default enable protrusion and expansion if they can safely
 % be assumed to work.
-% Disabling ligatures requires \pdftex\ ($\geq$~1.30) or \luatex, while the
-% adjustment of interword spacing and of kerning only works with \pdftex\ ($\geq$~1.40).
-% Letterspacing is available with \pdftex\ ($\geq$~1.40) or \luatex\ ($\geq$~0.62).
+% Disabling ligatures requires \pdftex\ ($\geq$\,1.30) or \luatex, while the
+% adjustment of interword spacing and of kerning only works with \pdftex\ ($\geq$\,1.40).
+% Letterspacing is available with \pdftex\ ($\geq$\,1.40) or \luatex\ ($\geq$\,0.62).
 %
 % The alternative package \letterspace, which also works with plain \TeX,
 % provides the user commands for letterspacing only, omitting support for all
 % other extensions (see section~\ref{sec:lettersp}).
 %
 %\bigskip\noindent
-% This package is copyright \textcopyright\ 2004\kern.09em--2013 R Schlicht.
+% This package is copyright \textcopyright\ 2004\kern.09em--2016 R Schlicht.
 % It may be distributed and/or modified under the conditions of the
 % \IfFileExists{lppl.tex}{\hyperref[LPPL:LPPL]}{\href{http://www.latex-project.org/lppl/}}
 %   {\LaTeX\ Project Public License},
@@ -864,9 +860,9 @@
 % Another micro-typographic technique, which has always been extremely
 % difficult to achieve in \TeX, is robust and hyphenatable \emph{letterspacing
 % (tracking)}.\footnote{^^A
-%   The \cite{soul} package undertook great efforts, but could still fail in
+%   The \cite{soul} package undertakes great efforts, but may still fail in
 %   certain circumstances; even to systematically adjust the tracking of a
-%   font throughout the document remained impossible.}
+%   font throughout the document remains impossible.}
 % Whereas letterspacing can easily be, and often is, abused when applying
 % it to lowercase letters, readability may be increased by slightly
 % letterspacing (small) capitals or by decreasing the tracking of very large
@@ -1432,14 +1428,14 @@
 %\cmidrule(r){1-1}
 % |alltext-nott|\linebreak(|allmath-nott|)
 %    & Text encodings, <TS1>\linebreak (<OML>, <OMS>, <U>)
-%    & /\cmd\rm|*|,\linebreak/\cmd\sf|*|
+%    & /\cmd\rm|*|/,\linebreak/\cmd\sf|*|/
 %    & !
 %    & !
 %    & ! \\
 %\cmidrule(r){1-1}
 % |basictext|\linebreak(|basicmath|)
 %    & Text encodings \linebreak (<OML>, <OMS>)
-%    & /\cmd\rm|*|/,\linebreak /\cmd\sf|*|/
+%    & /\cmd\rm|*|/,\linebreak/\cmd\sf|*|/
 %    & /\cmd\md|*|/
 %    & !
 %    & /\cmd\normalsize/, /\cmd\footnotesize/, /\cmd\small/, /\cmd\large/\\
@@ -2356,7 +2352,7 @@
 % least the \pkg{yfonts} package realises the short~s~(`\textfrak{s:}') as the
 % ligature~`|s:|'. On the other hand, the `ct'~ligature and the other `long~s'
 % ligatures often found in Fraktur fonts should be suppressed. There are two
-% ways to solve this problem: either don't disable the `|s|' and/or `|c|'
+% ways of solving this problem: either don't disable the `|s|' and/or `|c|'
 % ligatures and break those that need to be broken up by inserting
 % `|{\kern0pt}|' or \pkg{babel}'s \verb="|= shortcut; or disable them and
 % protect those ligatures that need to be protected by enclosing them in the
@@ -2479,14 +2475,15 @@
 % will solely decide by examining its attributes. Therefore, you have to take
 % care of disabling protrusion in |verbatim| environments for yourself (that
 % is, if you don't want to disable protrusion for the typewriter font
-% altogether, by choosing a different font set). While the \cs{microtypesetup}
-% command has of course been designed for cases like this, you might find it
-% tiresome to repeat it every time if you are using the |verbatim| environment
-% frequently. The following line, added to the document's preamble, would serve
-% the same purpose:
+% altogether, by activating, say, the font set `|alltext-nott|').
+% While the \cs{microtypesetup} command has of course been designed for cases
+% like this, you may find it tiresome to repeat it every time if you are
+% using the |verbatim| environment frequently. The following line (which requires
+% the \pkg{etoolbox} package), added to the document's preamble, would serve the same purpose:
 %\changes{v2.3e}{2009/07/21}{suggest to patch \cmd\@verbatim\ instead of \cmd\verbatim}
+%\changes{v2.6}{2016/03/07}{suggest to use \pkg{etoolbox} to patch \cmd\verbatim}
 %\begin{verbatim}
-%\g@addto@macro\@verbatim{\microtypesetup{activate=false}}
+%\AtBeginEnvironment{verbatim}{\microtypesetup{activate=false}}
 %\end{verbatim}
 % If you are using the \pkg{fancyvrb} or the \pkg{listings} package, this is
 % not necessary, since their implementation of the corresponding environments
@@ -2569,14 +2566,15 @@
 %\end{itemize}
 %
 %\changes{v1.8}{2005/06/23}{add hint about error messages}
-%\paragraph{Possible error messages and how to get rid of them:}
+%\paragraph{Possible error messages and how to get rid of them (\textcolor{thegreen}{specs} may differ):}
 %\begin{itemize}
 %\lstset{deletekeywords={[1]{expansion,auto}},belowskip=-\smallskipamount,frame=none,
-%        xleftmargin=0pt,backgroundcolor=,basicstyle=\MacroFont\footnotesize}
+%        xleftmargin=0pt,backgroundcolor=,basicstyle=\MacroFont\footnotesize,
+%        delim=[is][\itshape\color{thegreen}]{<}{>}}
 %\changes{v1.9a}{2005/11/15}{add explanation for error message in <DVI> mode}
 %  \item
 %\begin{verbatim}
-%! Font csnameendcsname=cmr10+20 at 10.0pt not loadable: Metric (TFM) file not found.
+%! Font csnameendcsname=<cmr10+20 at 10.0pt> not loadable: Metric (TFM) file not found.
 %\end{verbatim}
 % This error message will occur if you are trying to employ font expansion
 % while creating <DVI> output. Remember that \emph{automatic} font expansion
@@ -2600,7 +2598,7 @@
 %                           regard to older \pdftex\ versions}
 %  \item
 %\begin{verbatim}
-%Warning: pdflatex: font ptmr8r cannot be expanded (not an included Type1 font)
+%Warning: pdflatex: font <ptmr8r> cannot be expanded (not an included Type1 font)
 %\end{verbatim}
 % and the <PDF> viewer complains about a missing font, \eg, Adobe Reader thusly:
 %\begin{verbatim}[aboveskip=\smallskipamount]
@@ -2616,7 +2614,7 @@
 %\changes{v1.9a}{2005/11/15}{add explanation for error message with non-Type\,1 fonts}
 %  \item
 %\begin{verbatim}
-%Warning: pdflatex (file ecrm1000+20): Font ecrm1000+20 at 1200 not found
+%Warning: pdflatex (file <ecrm1000+20>): Font <ecrm1000+20 at 1200> not found
 %\end{verbatim}
 % Furthermore, \pdftex\ versions older than 1.40 require Type\,1 fonts for
 % automatic font expansion. When you receive a message like the above, you are
@@ -2628,17 +2626,17 @@
 %                            and \texttt{font\textunderscore mem\textunderscore size}}
 %  \item
 %\begin{verbatim}
-%! Font T1/cmr/m/n/10=ecrm1000 at 10.0pt not loaded: Not enough room left.
+%! Font <T1/cmr/m/n/10>=<ecrm1000 at 10.0pt> not loaded: Not enough room left.
 %\end{verbatim}
 % Memory parameter `|font_mem_size|' too small.
 %  \item
 %\begin{verbatim}
-%! TeX capacity exceeded, sorry [maximum internal font number (font_max)=2000].
+%! TeX capacity exceeded, sorry [maximum internal font number (font_max)=<2000>].
 %\end{verbatim}
 % Memory parameter `|font_max|' too small.
 %  \item
 %\begin{verbatim}
-%! TeX capacity exceeded, sorry [PDF memory size (pdf_mem_size)=65536].
+%! TeX capacity exceeded, sorry [PDF memory size (pdf_mem_size)=<65536>].
 %\end{verbatim}
 % Memory parameter `|pdf_mem_size|' too small (\pdftex\ versions older than 1.30).
 %
@@ -2746,7 +2744,8 @@
 % patched his \pkg{shapepar} package to accommodate protrusion.
 %
 % Additionally, the following people have reported bugs, made suggestions or
-% helped otherwise (in chronological order):
+% helped otherwise (in chronological order, quotes indicate
+%    \href{http://tex.stackexchange.com/users/}{TeX.SX} user names):
 %  \contributor Tom Kink          <kink\at hia.rwth-aachen.de>,
 %  \contributor Herb Schulz       <herbs\at wideopenwest.com>,
 %  \contributor Michael Hoppe     <mh\at michael-hoppe.de>,
@@ -2754,7 +2753,7 @@
 %  \contributor Georg Verweyen    <verweyen\at gmail.com>,
 %  \contributor Christoph Bier    <christoph.bier\at web.de>,
 %  \contributor Peter Muthesius   <Pemu\at gmx.de>,
-%  \contributor Bernard Gaulle    <gaulle\at idris.fr>\,\textdagger,
+%  \contributor Bernard Gaulle    <gaulle\at idris.fr>, ^^A\,\textdagger,
 %  \contributor Adam Kucharczyk   <adamk\at ijp-pan.krakow.pl>,
 %  \contributor Mark Rossi        <mark.rossi\at de.bosch.com>,
 %  \contributor Stephan Hennig    <stephanhennig\at arcor.de>,
@@ -2792,23 +2791,23 @@
 %  \contributor Meho~R            <meho.2005\at gmail.com>,
 %  \contributor Steffen Hoffmann  <speraviro-delenda\at expires-2011-11-30.arcornews.de>,
 %  \contributor Scott Pakin       <scott\at pakin.org>,
-%  \contributor Loren~B. Davis    <davislo\at eecs.oregonstate.edu>,
+%^^A  \contributor Loren~B. Davis    <davislo\at eecs.oregonstate.edu>,
 %  \contributor Ma\"ieul Rouquette <maieul\at maieul.net>,
 %  \contributor Jonas Hogstrom    <hjb981\at gmail.com>,
 %  \contributor Gabriel Kerneis   <gabriel\at kerneis.info>,
-%  \contributor RazorXsr          <@\at @>, ^^A http://tex.stackexchange.com/users/17609/razorxsr
-%  \contributor Dave              <@\at @>, ^^A http://tex.stackexchange.com/users/15562/dave
+% `\contributor RazorXsr         <@\at @>', ^^A http://tex.stackexchange.com/users/17609/razorxsr
+% `\contributor Dave             <@\at @>', ^^A http://tex.stackexchange.com/users/15562/dave
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
-%  \contributor uli               <@\at @>,  ^^A http://tex.stackexchange.com/users/9391/uli
+% `\contributor uli              <@\at @>',  ^^A http://tex.stackexchange.com/users/9391/uli
 %  \contributor Sam Mason         <sam\at samason.me.uk>, ^^A http://tex.stackexchange.com/users/16433/sam-mason
-%  \contributor kleenstar         <@\at @>, ^^A http://tex.stackexchange.com/users/56468/kleenstar
-%  \contributor Henning           <@\at @>, ^^A http://tex.stackexchange.com/users/64603/henning
+% `\contributor kleenstar        <@\at @>', ^^A http://tex.stackexchange.com/users/56468/kleenstar
+% `\contributor Henning          <@\at @>', ^^A http://tex.stackexchange.com/users/64603/henning
 %  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>,
 %  \contributor David Carlisle    <d.p.carlisle\at gmail.com>,
-%  \contributor Max               <@\at @>  ^^A http://tex.stackexchange.com/users/16809/max
+% `\contributor Max              <@\at @>'  ^^A http://tex.stackexchange.com/users/16809/max
 % and
-%  \contributor HcN               <@\at @>. ^^A http://tex.stackexchange.com/users/87090/hcn
+% `\contributor HcN              <@\at @>'. ^^A http://tex.stackexchange.com/users/87090/hcn
 %
 %
 %\iffalse
@@ -2900,13 +2899,13 @@
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson, Khaled Hosny,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 14 March 2015.
+%    \newblock 1 February 2016.
 %    \newblock (\ctanurl{macros/latex/contrib/fontspec/})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 13 July 2014.
+%    \newblock 12 December 2015.
 %    \newblock (\ctanurl{macros/luatex/generic/luaotfload/})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -7133,7 +7132,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*luatex-def|letterspace>
 \def\MT@ls@fontspec@font#1"#2"#3\@nil{%
-  "#2letterspace=0.%
+  "#2kernfactor=0.%
      \ifnum\MT@letterspace@<100 0\fi
      \ifnum\MT@letterspace@<10  0\fi
      \number\MT@letterspace@;"%
@@ -16697,3 +16696,7 @@ pdflatex microtype.dtx
 # That's it, although I still may have forgotten some things ...
 %
 % -- RS
+% -----------------------------------------------------------------------------
+%
+% vim: ts=2:sw=2:et:
+%
