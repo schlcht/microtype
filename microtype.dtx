@@ -3759,8 +3759,13 @@
     \ifx\directlua\@undefined \else
       \ifx\directlua\relax \else
         \def\MT@engine{lua}
+%    \end{macrocode}
+% Since approx. \luatex\ 0.80, \cmd\pdftexversion\ is let to \cmd\luatexversion,
+% so that we would be fooled to think that \pdftex\ is too old.
+%\changes{v2.6}{2016/03/25}{fix test with plain \luatex}
+%    \begin{macrocode}
 %<letterspace>        \let\MT@pdf@or@lua\@secondoftwo
-%<letterspace>        \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}\fi
+%<letterspace>        \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}\else\def\MT@engine@tooold{1}\fi
       \fi
     \fi
   \fi
@@ -16635,7 +16640,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10352}
+% \CheckSum{10355}
 %
 % \Finale
 %

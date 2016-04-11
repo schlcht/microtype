@@ -73,7 +73,8 @@ ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
 DO_PDFLATEX  = pdflatex --interaction=nonstopmode $< $(REDIRECT)
 DO_LUALATEX  = lualatex --interaction=nonstopmode $< $(REDIRECT)
-DO_MAKEINDEX = makeindex -s microtype-gind.ist $(subst .dtx,,$<) $(REDIRECT)  2>&1 && \
+DO_MAKEINDEX = touch $(subst .dtx,.glo,$(ALLDTX)) && \
+	       makeindex -s microtype-gind.ist $(subst .dtx,,$<) $(REDIRECT)  2>&1 && \
 	       makeindex -s gglo.ist -t $(subst .dtx,.glg,$<) -o $(subst .dtx,.gls,$<) \
 	                 $(subst .dtx,.glo,$(ALLDTX)) $(REDIRECT)  2>&1
 
@@ -131,9 +132,8 @@ $(UTFDOC): $(UTFDTX) $(NAME)-utf.tmp
 $(NAME)-utf.tmp: $(DTX) 
 	@echo "Compiling documentation (without Unicode part)"
 	-@$(DO_PDFLATEX)
-	@if ! `grep -i '* Checksum passed *' $(NAME).log > /dev/null` ; then \
-		if `grep 'has no checksum\|Checksum not passed' $(NAME).log` ; then \
-			grep -i ' checksum ' $(NAME).log ; \
+	@if ! grep -i '* Checksum passed *' $(NAME).log > /dev/null ; then \
+		if grep 'has no checksum\|Checksum not passed' $(NAME).log ; then \
 			false ; \
 		fi ; \
 	fi
