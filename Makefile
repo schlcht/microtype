@@ -93,8 +93,7 @@ world:  all ctan
 # as well as microtype-doc.sty and microtype-gind.ist
 make-doc-sty: $(INS) $(DTX) docstrip.cfg  
 	@echo "Creating doc sty"
-	@sed -i '' 's/{\(package\)}/{\1,debug}/' $<
-	@sed -i '' 's/{\(pdftex-def\)}/{\1,debug}/' $<
+	@sed -i '' '/\\def\\DEBUG/s/^%//' $<
 	@sed -i '' '/microtype-gind/s/^%//' $<
 	@sed -i '' '/microtype-doc/s/^%//' $<
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
@@ -103,7 +102,7 @@ make-doc-sty: $(INS) $(DTX) docstrip.cfg
 # undo
 make-normal-sty: $(INS) $(DTX) docstrip.cfg  
 	@echo "Creating normal sty"
-	@sed -i '' 's/,debug}/}/' $<
+	@sed -i '' '/\\def\\DEBUG/s/^\\/%\\/' $<
 	@sed -i '' '/microtype-doc/s/^\\/%\\/' $<
 	@sed -i '' '/microtype-gind/s/^\\/%\\/' $<
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)

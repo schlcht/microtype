@@ -74,6 +74,7 @@
 %</driver>
 % Let's abolish CM! We use Charter and Letter Gothic
 % (for the pre-built documentation on CTAN):
+ \usepackage[T1]{fontenc}
  \usepackage[charter]{mathdesign}
  \def\rmdefault{bch} % not scaled
  \def\sfdefault{SourceSansPro-TLF}
@@ -81,14 +82,13 @@
  \def\ttdefault{blg}
  {\ttfamily\selectfont
   \DeclareFontShape{T1}{blg}{k}{n}{<-> ssub * blg/b/n}{}}
+ \usepackage{textcomp}
 \usepackage{ifpdf,ifluatex,ifxetex}
 %<*!docsty>
 \ifxetex\else
 \usepackage[latin1]{\ifluatex lua\fi inputenc}
 \fi
 %</!docsty>
-\usepackage[T1]{fontenc}
-\usepackage{textcomp}
 \GetFileInfo{\jobname.dtx}
 \usepackage[expansion=false,kerning=true]{microtype}[\filedate]
  \DeclareMicrotypeSet*[protrusion]
@@ -9459,13 +9459,16 @@ end
 %\changes{v1.1}{2004/09/20}{remove spaces around set name}
 %\changes{v1.8}{2005/05/15}{warning when redefining a set}
 %\changes{v2.0}{2006/10/16}{fix: empty size list when redefining set}
+%\changes{v2.6}{2016/04/20}{fix: undefine lists for redefining}
 %\todo{share one set between features}
 %    \begin{macrocode}
 \def\MT@declare@sets#1#2#3{%
   \def\MT@curr@set@name{#2}%
   \MT@ifdefined@n@T{MT@#1@set@@\MT@curr@set@name}{%
     \MT@warning{Redefining \@nameuse{MT@abbr@#1} set `\MT@curr@set@name'}%
-    \MT@glet@nc{MT@#1list@size@\MT@curr@set@name}\@empty
+    \MT@map@clist@n{font,encoding,family,series,shape,size}{%
+      \MT@glet@nc{MT@#1list@##1@\MT@curr@set@name}\@undefined
+    }%
   }%
   \MT@glet@nc{MT@#1@set@@\MT@curr@set@name}\@empty
 %<debug>\MT@dinfo{1}{declaring \@nameuse{MT@abbr@#1} set `\MT@curr@set@name'}%
@@ -9544,11 +9547,13 @@ end
 %    \begin{macrocode}
 \let\MT@font@sets\@empty
 \def\MT@fix@font@set#1{%
-  \xdef#1{#1}%
-  \ifMT@fontspec
-    \xdef#1{\expandafter\MT@scrubfeatures#1()\relax}%
-  \fi
-  \global\@onelevel@sanitize#1%
+  \MT@ifdefined@c@T{#1}{%
+    \xdef#1{#1}%
+    \ifMT@fontspec
+      \xdef#1{\expandafter\MT@scrubfeatures#1()\relax}%
+    \fi
+    \global\@onelevel@sanitize#1%
+  }%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9975,8 +9980,8 @@ end
       \edef\MT@curr@file{mt-\@tempa.cfg}%
       \MT@vinfo{... Loading configuration file \MT@curr@file}%
     }{%
-      \MT@warning{... Configuration file mt-\@tempa.cfg\MessageBreak
-                      does not exist}%
+      \MT@warning{Configuration file mt-\@tempa.cfg\MessageBreak
+                  does not exist}%
     }%
     \MT@end@catcodes
   \fi
@@ -11366,9 +11371,9 @@ end
 %\end{macro}
 %    \begin{macrocode}
 \ifx\MT@engine\relax
-  \MT@warning@nl{You don't seem to be using either pdftex, luatex, or xetex.\MessageBreak
+  \MT@warning@nl{You don't seem to be using pdftex, luatex, or xetex.\MessageBreak
     `\MT@MT' only works with these engines.\MessageBreak
-    I will quit now.}
+    I will quit now}
   \MT@clear@options
 \else
 %    \end{macrocode}
@@ -16640,7 +16645,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10355}
+% \CheckSum{10357}
 %
 % \Finale
 %

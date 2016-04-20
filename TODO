@@ -1,3 +1,9 @@
+* EU1/2 -> TU
+
+* CHANGES: microtype.sty, microtype-luatex.def, microtype.lua
+
+* no inheritance list for tracking
+
 * make tracking work with xetex (shouldn't be a problem?)
 
 * there's no max letterspace with luatex (set it to 999)

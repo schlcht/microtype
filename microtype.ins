@@ -108,13 +108,15 @@ microtype-xetex.def, microtype.lua and letterspace.sty.
 
 \usedir{tex/latex/microtype}
 \let\MetaPrefix\DoubleperCent
+\let\DEBUG\empty
+%\def\DEBUG{,debug}
 
 \generate{
-    \makefile{microtype.sty}{package}
+    \makefile{microtype.sty}{package\DEBUG}
   \usepreamble\defpreamble
-    \makefile{microtype-pdftex.def}{pdftex-def}
-    \makefile{microtype-luatex.def}{luatex-def}
-    \makefile{microtype-xetex.def} {xetex-def}
+    \makefile{microtype-pdftex.def}{pdftex-def\DEBUG}
+    \makefile{microtype-luatex.def}{luatex-def\DEBUG}
+    \makefile{microtype-xetex.def} {xetex-def\DEBUG}
   \usepreamble\lsppreamble
     \makefile{letterspace.sty}{letterspace,plain}
   \usepreamble\cfgpreamble
