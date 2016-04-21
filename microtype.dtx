@@ -1793,8 +1793,8 @@
 %       by default equal to the current letterspace amount. To remove kerning on
 %       both sides, you would write `|outer kerning={0,0}|'.
 %  \item[\key{no ligatures}]
-%       As far as \pdftex\ is concerned, ligatures in letterspaced fonts would
-%       be constructed as usual, which may be advisable when changing the
+%       By default, ligatures in letterspaced fonts will be
+%       constructed as usual, which may be advisable when changing the
 %       tracking by only a small amount. For larger letterspacing amounts, on
 %       the other hand, the normal letter space within ligatures would have
 %       displeasing \textls[150]{e\lslig{ff}ects}.
@@ -1802,10 +1802,9 @@
 %       ligatures should be disabled; only the character that begins a ligature
 %       must be specified.
 %       If the key is given without a value, \emph{all} ligatures of the font
-%       will be disabled. This is not recommended, however, since it also
-%       entails that kerning will be switched off.\footnote{
-%         The inseparable connexion of ligatures and kerns is a limitation of
-%         \TeX\ that will not be lifted before the advent of \luatex.}
+%       will be disabled. With \pdftex, this is not recommended, however,
+%       since it entails that kerning will be switched off, too. With \luatex,
+%       there is no such limitation.
 %       The default settings disable ligatures for the character `|f|' only,
 %       \ie, `ff', `fi', ffi', etc.\footnote{
 %         With \pdftex\ versions older than 1.40.4, \emph{all} ligatures, and
@@ -2018,8 +2017,9 @@
 %       measured. Possible values are: |character|, a \meta{dimension} and,
 %       additionally, |space|. The latter will measure the values in thousandths
 %       of the respective space dimension set by the font. By default, the unit
-%       is measured by the space dimensions. For example, with these
+%       is measured by the space dimensions. For example, with the following
 %       (nonsensical) settings:
+%\pagebreak ^^A layout
 %\begin{verbatim}
 %\SetExtraSpacing
 %   [ unit = space  ] % default
@@ -3275,6 +3275,8 @@
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXcountglyphs,\XeTeXfonttype,\XeTeXglyph,
 %^^A  \XeTeXglyphindex,\XeTeXglyphname,\XeTeXprotrudechars}
 %\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
+%^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
+%^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
@@ -3746,6 +3748,7 @@
 \fi
 %    \end{macrocode}
 %\begin{macro}{\MT@engine}
+%\changes{v2.6}{2016/03/25}{fix test with \luatex\ 0.85}
 %\begin{macro}{\MT@engine@tooold}
 % Old packages might have let \cmd\pdftexversion\ to \cmd\relax.
 %    \begin{macrocode}
@@ -3756,18 +3759,17 @@
     \def\MT@engine{pdf}
 %<letterspace>    \let\MT@pdf@or@lua\@firstoftwo
 %<letterspace>    \ifnum\pdftexversion > 139 \def\MT@engine@tooold{1}\fi
-    \ifx\directlua\@undefined \else
-      \ifx\directlua\relax \else
-        \def\MT@engine{lua}
+  \fi
+\fi
+\ifx\directlua\@undefined \else
+  \ifx\directlua\relax \else
+    \def\MT@engine{lua}
 %    \end{macrocode}
 % Since approx. \luatex\ 0.80, \cmd\pdftexversion\ is let to \cmd\luatexversion,
 % so that we would be fooled to think that \pdftex\ is too old.
-%\changes{v2.6}{2016/03/25}{fix test with plain \luatex}
 %    \begin{macrocode}
-%<letterspace>        \let\MT@pdf@or@lua\@secondoftwo
-%<letterspace>        \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}\else\def\MT@engine@tooold{1}\fi
-      \fi
-    \fi
+%<letterspace>    \let\MT@pdf@or@lua\@secondoftwo
+%<letterspace>    \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}\else\def\MT@engine@tooold{1}\fi
   \fi
 \fi
 %<*package>
@@ -3880,8 +3882,12 @@
 % \item N/A
 % \item \luatex\ ($\less$~0.36)
 % \item + \cmd\directlua\ without state number ($\geq$~0.36)
-% \item + \cmd\letterspacefont\ ($\geq$~0.62).
+% \item + \cmd\letterspacefont\ ($\geq$~0.62)
+% \item + almost all of the \pdftex\ primitives have been renamed ($\geq$~0.85)
+% \item + \cmd\protrusionboundary\ [not yet supported] ($\geq$~0.90)
+%\todo{interface for \cmd\protrusionboundary}
 %\end{enum}
+%\changes{v2.6}{2016/04/22}{update for \luatex\ 0.85 (renamed primitives)}
 %    \begin{macrocode}
 %<*luatex-def>
 %<debug>\MT@dinfo@nl0{this is luatex (\the\luatexversion)}
@@ -3894,12 +3900,15 @@
 %\changes{v2.3d}{2009/03/25}{update for \luatex\ 0.36}
 %    \begin{macrocode}
 \def\MT@lua{\directlua}
-\def\MT@luatex@no{3}
-\ifnum\luatexversion<62
-  \def\MT@luatex@no{2}
-  \ifnum\luatexversion<36
-    \def\MT@lua{\directlua0}
-    \def\MT@luatex@no{1}
+\def\MT@luatex@no{4}
+\ifnum\luatexversion<85
+  \def\MT@luatex@no{3}
+  \ifnum\luatexversion<62
+    \def\MT@luatex@no{2}
+    \ifnum\luatexversion<36
+      \def\MT@lua{\directlua0}
+      \def\MT@luatex@no{1}
+    \fi
   \fi
 \fi
 %    \end{macrocode}
@@ -4123,6 +4132,7 @@
 %<pdftex-def>  \MT@pdftex@no
 %<luatex-def>  \MT@luatex@no
     <#1 \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}
+%<debug+luatex-def>\MT@requires@luatex4{\let\pdftracingfonts\tracingfonts}\relax
 %<debug+pdftex-def>\MT@requires@pdftex6{
 %<debug>\pdftracingfonts=1
 %<debug+pdftex-def>}\relax
@@ -5489,6 +5499,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def>
 \let\MT@copy@font\relax
+%<luatex-def>\MT@requires@luatex4{\let\pdfcopyfont\copyfont}\relax
 %<pdftex-def>\MT@requires@pdftex7{
 \def\MT@copy@font@{%
 %    \end{macrocode}
@@ -6503,6 +6514,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@expandfont}
 % Expand the font.
 %    \begin{macrocode}
+%<luatex-def>\MT@requires@luatex4{\let\pdffontexpand\expandglyphsinfont}\relax
 \def\MT@expandfont{%
   \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ \MT@auto@\relax
 }
@@ -7837,6 +7849,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@noligatures@}
 % This is also used by \cs{MT@set@tr@codes}.
 %    \begin{macrocode}
+%<luatex-def>\MT@requires@luatex4{\let\pdfnoligatures\ignoreligaturesinfont}\relax
 \def\MT@noligatures@#1#2{%
   \MT@ifdefined@c@TF#2{%
 %    \end{macrocode}
@@ -11246,6 +11259,7 @@ end
 %    \begin{macrocode}
 %</package>
 %<*pdftex-def|luatex-def|xetex-def>
+%<luatex-def>\MT@requires@luatex4{\let\pdfoutput\outputmode}\relax
 \MT@def@bool@opt{DVIoutput}{%
   \csname if\@tempa\endcsname
 %<*pdftex-def|luatex-def>
@@ -11427,7 +11441,7 @@ end
 %\end{macro}
 %    \begin{macrocode}
 \ifx\MT@engine\relax
-  \MT@warning@nl{You don't seem to be using pdftex, luatex, or xetex.\MessageBreak
+  \MT@warning@nl{You don't seem to be using pdftex, luatex or xetex.\MessageBreak
     `\MT@MT' only works with these engines.\MessageBreak
     I will quit now}
   \MT@clear@options
@@ -11668,6 +11682,12 @@ end
 %\begin{macro}{\MT@protrudechars}
 %\begin{macro}{\MT@adjustspacing}
 %    \begin{macrocode}
+%<*luatex-def>
+\MT@requires@luatex4{
+  \let\pdfprotrudechars\protrudechars
+  \let\pdfadjustspacing\adjustspacing
+}\relax
+%</luatex-def>
 \let\MT@protrudechars\pdfprotrudechars
 \let\MT@adjustspacing\pdfadjustspacing
 %</pdftex-def|luatex-def>
@@ -11718,9 +11738,11 @@ end
 %    \begin{macrocode}
   \MT@define@optionX@{tracking}{\ifnum\@tempcnta=\z@ \let\MT@tracking\MT@set@tr@zero
                                 \else \let\MT@tracking\MT@tracking@ \fi}
+%<*pdftex>
   \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
   \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta
                                \pdfappendkern \@tempcnta}
+%</pdftex>
 }{
 %</pdftex-def|luatex-def>
 %<*pdftex-def|luatex-def|xetex-def>
@@ -16701,7 +16723,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10367}
+% \CheckSum{10405}
 %
 % \Finale
 %
