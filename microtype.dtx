@@ -38,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2016/04/16 v2.6
+  [2016/05/01 v2.6
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -4156,25 +4156,27 @@
 %    \begin{macrocode}
 %<*luafile>
 
-microtype = microtype or {}
-local microtype = microtype
-
-local microtype_module = {
-  name         = "microtype",
-  version      = 2.6,
-  date         = "2015/10/10",
-  description  = "microtype module.",
-  author       = "E. Roux, R. Schlicht and P. Gesang",
-  copyright    = "E. Roux, R. Schlicht and P. Gesang",
-  license      = "LPPL",
+microtype        = microtype or {}
+local microtype  = microtype
+microtype.module = {
+    name         = "microtype",
+    version      = 2.6,
+    date         = "2016/05/01",
+    description  = "microtype module.",
+    author       = "E. Roux, R. Schlicht and P. Gesang",
+    copyright    = "E. Roux, R. Schlicht and P. Gesang",
+    license      = "LPPL",
 }
 
-if luatexbase and luatexbase.provides_module then
-  luatexbase.provides_module(microtype_module)
-end
+local err, warn, info, log = luatexbase.provides_module(microtype.module)
+microtype.warning = warn
 
-local find = string.find
-local tex_write = tex.write
+local find       = string.find
+local match      = string.match
+local tex_write  = tex.write
+local nodedirect = node.direct
+local getfield   = nodedirect.getfield
+local getfont    = nodedirect.getfont
 
 function microtype.sprint (...)
     tex.sprint(luatexbase.catcodetables['latex-package'], ...)
@@ -5059,7 +5061,7 @@ microtype.do_font = do_font
         \MT@warning@nl{%
           Character protrusion in paragraphs with line\MessageBreak
           numbering will only work if you update ledmac,\MessageBreak
-          or use one of its successors eledmac or reledmac}%
+          or use one of its successors, eledmac or reledmac}%
       }%
     \fi
   }
@@ -7849,7 +7851,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \def\MT@curr@list@name{\@backslashchar DisableLigatures}%
       \MT@map@clist@c#2{%
         \KV@@sp@def\@tempa{##1}\MT@get@slot
-        \ifnum\MT@char>\m@ne \tagcode#1\MT@char=\m@ne \fi}%
+        \ifnum\MT@char>\m@ne
+          \tagcode#1\MT@char=\m@ne
+%    \end{macrocode}
+% With \luatex, we additionally register the ligatures that should be inhibited
+% in a table (used by the \pkg{luaotfload} function |keepligature|).
+%\changes{v2.6}{2016/04/20}{use \pkg{luaotfload} function to keep\slash inhibit ligatures}
+%    \begin{macrocode}
+%<luatex-def>          \MT@if@fontspec@font{\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
+        \fi
+      }%
       \MT@vinfo{... Disabling ligatures for characters: #2}%
     }{%
       \pdfnoligatures#1%
@@ -7859,7 +7870,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }{%
     \pdfnoligatures#1%
-    \MT@vinfo{... Disabling ligatures}%
+%<luatex-def>    \MT@if@fontspec@font{\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
+    \MT@vinfo{... Disabling all ligatures}%
   }%
 }
 %<pdftex-def>}\relax
@@ -7867,6 +7879,52 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+% For each potential ligature, \pkg{luaotfload} will call the
+% |keepligature| function, which expects the first node of the ligature,
+% to check whether they should be kept or inhibited.
+% Here's our concoction of this function. The table |microtype.ligs| will
+% be populated in \cmd\MT@noligatures@.
+%    \begin{macrocode}
+%<*luafile>
+
+microtype.ligs = microtype.ligs or { }
+
+local function noligatures(fontcs,liga)
+  local fontcs = match(fontcs,"([^ ]+)")
+  microtype.ligs[fontcs] = microtype.ligs[fontcs] or { }
+  table.insert(microtype.ligs[fontcs],liga)
+end
+microtype.noligatures = noligatures
+
+local function keepligature(c)
+  local f,ch
+  if type(c) == "userdata" then -- in older luaotfload versions, c was a node
+    f  = c.font
+    ch = c.components.char
+  else                          -- since 2.6, c is a (direct node) number
+    f  = getfont(c)
+    ch = getfield(getfield(c,"components"),"char")
+  end
+--  if ch then -- should always be true
+  local ligs = microtype.ligs[match(tex.fontidentifier(f),"\\([^ ]+)")]
+  if ligs then
+    for _,lig in pairs(ligs) do
+      if lig == "_all_" or tonumber(lig) == ch then
+        return false
+      end
+    end
+  end
+  return true
+--  end
+end
+
+if luaotfload.letterspace.keepligature then
+  microtype.warning("overwriting function `keepligature'")
+end
+luaotfload.letterspace.keepligature = keepligature
+
+%</luafile>
+%    \end{macrocode}
 %
 %\subsubsection{Loading the configuration}
 %
@@ -8968,8 +9026,15 @@ end
 %\changes{v2.6}{2015/12/05}{(in)compatibility with \pkg{luatexja}: disable unknown slots warnings
 %                          (reported by \contributor Max <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/272102/luatexja-with-microtype-generates-lots-of-warnings
+% The \pkg{xeCJK} package, or rather its \pkg{xunicode-addon}, also modifies the way
+% text symbols are defined (like \pkg{luatexja} but in a different way).
+% Again, we only issue a warning.
+%\changes{v2.6}{2015/11/03}{(in)compatibility with \pkg{xeCJK}: disable unknown slots warnings
+%                           (reported by \contributor HcN <@\at @>)}
+%                           ^^A http://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
 %    \begin{macrocode}
   \MT@with@package@T{luatexja}{\MT@warn@unknown@once{luatexja}}%
+  \MT@with@package@T{xeCJK}   {\MT@warn@unknown@once{xeCJK}}%
 %    \end{macrocode}
 %\changes{v2.1}{2007/01/15}{compatibility with \pkg{CJK}: also check for its definition}
 %\changes{v2.3b}{2008/05/26}{compatibility with \pkg{CJKutf8}: also check for its definition}
@@ -8990,17 +9055,8 @@ end
 % With \pkg{xeCJK}, protrusion should be possible also for C/J/K characters;
 % I haven't tried it, though.
 %^^A also, \XeTeXinterchartoks probably interferes ...
-% The \pkg{xeCJK} package, or rather its \pkg{xunicode-addon}, also modifies the way
-% text symbols are defined (like \pkg{luatexja} but in a different way).
-% Again, we only issue a warning.
-%\changes{v2.6}{2015/11/03}{(in)compatibility with \pkg{xeCJK}: disable unknown slots warnings
-%                           (reported by \contributor HcN <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
 %    \begin{macrocode}
-    \@ifpackageloaded{xeCJK}{%
-      \MT@warn@unknown@once{xeCJK}%
-      \@firstofone
-    }{%
+    \@ifpackageloaded{xeCJK}{\@firstofone}{%
       \@ifpackagelater{CJK}{2006/10/17}% 4.7.0
         {\def\MT@orig@pickupfont{\CJK@ifundefined\CJK@plane}}%
         {\def\MT@orig@pickupfont{\@ifundefined{CJK@plane}}}%
@@ -16645,7 +16701,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10357}
+% \CheckSum{10367}
 %
 % \Finale
 %
