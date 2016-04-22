@@ -3768,8 +3768,17 @@
 % Since approx. \luatex\ 0.80, \cmd\pdftexversion\ is let to \cmd\luatexversion,
 % so that we would be fooled to think that \pdftex\ is too old.
 %    \begin{macrocode}
-%<letterspace>    \let\MT@pdf@or@lua\@secondoftwo
-%<letterspace>    \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}\else\def\MT@engine@tooold{1}\fi
+%<*letterspace>
+    \let\MT@pdf@or@lua\@secondoftwo
+    \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}
+    \else
+      \def\MT@engine@tooold{1}
+      \ifnum\luatexversion > 84
+        \let\pdfoutput\outputmode
+        \let\pdfprotrudechars\protrudechars
+      \fi
+    \fi
+%</letterspace>
   \fi
 \fi
 %<*package>
