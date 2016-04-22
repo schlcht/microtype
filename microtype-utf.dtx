@@ -157,10 +157,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %%% -----------------------------------------------------------------------
 %%% INHERITANCE
 
-%% for xetex (EU1) and luatex (EU2)
+%% for xetex (EU1) and luatex (EU2), resp. both (TU)
 %<*LatinModernRoman>
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Latin Modern Roman }
 %    \end{macrocode}
 %{\setmacrofont\LMR
@@ -227,7 +227,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %</LatinModernRoman>
 %<*CharisSIL>
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Charis SIL }
 %    \end{macrocode}
 %{\setmacrofont\CharisSIL
@@ -358,7 +358,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %</CharisSIL>
 %<*PalatinoLinotype>
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family = {PalatinoLinotype} }
 %    \end{macrocode}
 % Unfortunately, I don't have a Palatino variant containing all of the following
@@ -438,7 +438,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<*LatinModernRoman>
 \SetProtrusion
    [ name     = LMR-default ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Latin Modern Roman }
    {
 %    \end{macrocode}
@@ -544,7 +544,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 
 \SetProtrusion
    [ name     = LMR-it ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Latin Modern Roman,
      shape    = {it,sl}       }
    {
@@ -693,7 +693,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<*CharisSIL>
 \SetProtrusion
    [ name     = Charis-default ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Charis SIL }
    {
 %    \end{macrocode}
@@ -872,7 +872,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 
 \SetProtrusion
    [ name     = Charis-it   ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Charis SIL,
      shape    = {it,sl}  }
    {
@@ -983,7 +983,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 \SetProtrusion
    [ name     = Charis-sc,
      load     = Charis-default   ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = Charis SIL,
      shape    = {sc}  }
    {
@@ -1017,7 +1017,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<*PalatinoLinotype>
 \SetProtrusion
    [ name     = palatino-default ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = {PalatinoLinotype} }
    {
 %    \end{macrocode}
@@ -1119,7 +1119,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 
 \SetProtrusion
    [ name     = palatino-it   ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = {PalatinoLinotype},
      shape    = {it,sl}  }
    {
@@ -1218,7 +1218,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 \SetProtrusion
    [ name     = palatino-sc,
      load     = palatino-default ]
-   { encoding = {EU1,EU2},
+   { encoding = {EU1,EU2,TU},
      family   = {PalatinoLinotype},
      shape    = sc }
    {

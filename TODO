@@ -1,4 +1,4 @@
-* EU1/2 -> TU
+* fix \MT@is@char (for four-digit numbers with TU)
 
 * no inheritance list for tracking
 

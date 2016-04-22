@@ -1317,7 +1317,7 @@
 % `|basictext|' in the main configuration file as follows:
 %\begin{verbatim}
 %\DeclareMicrotypeSet{basictext}
-%   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2},
+%   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TU},
 %     family   = {rm*,sf*},
 %     series   = {md*},
 %     size     = {normalsize,footnotesize,small,large}
@@ -1340,7 +1340,7 @@
 % Therefore, the predefined set `|alltext|', which is declared as:
 %\begin{verbatim}
 %\DeclareMicrotypeSet{alltext}
-%   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2} }
+%   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU} }
 %\end{verbatim}
 % is far less restrictive. The only condition here is that the encoding must
 % match.
@@ -1470,7 +1470,7 @@
 %\bottomrule
 %\end{tabular}
 %\vskip4pt\footnotesize
-% `Text encodings' = <OT1>, <T1>, <T2A>, <LY1>, <OT4>, <QX>, <T5>, <EU1>, <EU2>
+% `Text encodings' = <OT1>, <T1>, <T2A>, <LY1>, <OT4>, <QX>, <T5>, <EU1>, <EU2>, <TU>
 %\hfill
 % `/\bslash\,\dots|*|/' = `/\bslash\,\dots|default|/'
 %\vskip3pt
@@ -2136,18 +2136,18 @@
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Latin Modern Roman
-%      & <EU1>, <EU2> [Latin, Greek]
+%      & <EU1/2>, <TU> [Latin, Greek]
 %      & n, it, (sl)\fnref{fn:it-sl}\\
 % Charis <SIL>
-%      & <EU1>, <EU2> [Latin, Cyrillic, Greek]
+%      & <EU1/2>, <TU> [Latin, Cyrillic, Greek]
 %      & n, it, sc\\
 %\iffalse ^^A provided with the EB Garamond package
 % <EB> Garamond
-%      & <EU1>, <EU2> [Latin, Cyrillic, Greek]
+%      & <EU1/2>, <TU> [Latin, Cyrillic, Greek]
 %      & n, it, sc, si\\
 %\fi
 % Palatino Linotype\footnote{Aliases: \TeX\ Gyre Pagella, Palatino <LT> Std, Palatino}
-%      & <EU1>, <EU2> [Latin]
+%      & <EU1/2>, <TU> [Latin]
 %      & n, it, sc\\
 % Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|)}
 %      & <OML>/<OMS>
@@ -2791,23 +2791,23 @@
 %  \contributor Meho~R            <meho.2005\at gmail.com>,
 %  \contributor Steffen Hoffmann  <speraviro-delenda\at expires-2011-11-30.arcornews.de>,
 %  \contributor Scott Pakin       <scott\at pakin.org>,
-%^^A  \contributor Loren~B. Davis    <davislo\at eecs.oregonstate.edu>,
 %  \contributor Ma\"ieul Rouquette <maieul\at maieul.net>,
 %  \contributor Jonas Hogstrom    <hjb981\at gmail.com>,
 %  \contributor Gabriel Kerneis   <gabriel\at kerneis.info>,
-% `\contributor RazorXsr         <@\at @>', ^^A http://tex.stackexchange.com/users/17609/razorxsr
-% `\contributor Dave             <@\at @>', ^^A http://tex.stackexchange.com/users/15562/dave
+% `\contributor RazorXsr          <@\at @>', ^^A http://tex.stackexchange.com/users/17609/razorxsr
+% `\contributor Dave              <@\at @>', ^^A http://tex.stackexchange.com/users/15562/dave
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
-% `\contributor uli              <@\at @>',  ^^A http://tex.stackexchange.com/users/9391/uli
+% `\contributor uli               <@\at @>',  ^^A http://tex.stackexchange.com/users/9391/uli
 %  \contributor Sam Mason         <sam\at samason.me.uk>, ^^A http://tex.stackexchange.com/users/16433/sam-mason
-% `\contributor kleenstar        <@\at @>', ^^A http://tex.stackexchange.com/users/56468/kleenstar
-% `\contributor Henning          <@\at @>', ^^A http://tex.stackexchange.com/users/64603/henning
+% `\contributor kleenstar         <@\at @>', ^^A http://tex.stackexchange.com/users/56468/kleenstar
+% `\contributor Henning           <@\at @>', ^^A http://tex.stackexchange.com/users/64603/henning
 %  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>,
 %  \contributor David Carlisle    <d.p.carlisle\at gmail.com>,
-% `\contributor Max              <@\at @>'  ^^A http://tex.stackexchange.com/users/16809/max
+% `\contributor Max               <@\at @>', ^^A http://tex.stackexchange.com/users/16809/max
+% `\contributor HcN               <@\at @>'  ^^A http://tex.stackexchange.com/users/87090/hcn
 % and
-% `\contributor HcN              <@\at @>'. ^^A http://tex.stackexchange.com/users/87090/hcn
+%  \contributor Will Robertson    <will\at wspr.io>.
 %
 %
 %\iffalse
@@ -7892,7 +7892,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }{%
     \pdfnoligatures#1%
-%<luatex-def>    \MT@if@fontspec@font{\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
+%<luatex-def>    \MT@if@fontspec@font
+%<luatex-def>        {\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
     \MT@vinfo{... Disabling all ligatures}%
   }%
 }
@@ -8777,6 +8778,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@is@char}
+%\todo{numbers can be 4-digit with <TU> encoding}
 %\begin{macro}{\MT@charstring}
 % A helper macro that inspects the \cmd\meaning\ of its argument.
 %    \begin{macrocode}
@@ -12495,12 +12497,15 @@ end
 %\changes{v1.9d}{2006/04/20}{add <QX> encoding to text sets}
 %\changes{v2.3e}{2009/10/28}{add <T2A> encoding}
 %\changes{v2.5}{2010/05/13}{add <EU1> and <EU2> encodings}
+%\changes{v2.6}{2015/04/22}{add <TU> encoding
+%                           (notified by \contributor Will Robertson <will\at wspr.io>)}
+%                           ^^A semi-private mail, 2016/01/28
 %    \begin{macrocode}
 \DeclareMicrotypeSet{allmath}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TS1,OML,OMS,U} }
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TU,TS1,OML,OMS,U} }
 
 \DeclareMicrotypeSet{alltext}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2} }
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU} }
 
 %    \end{macrocode}
 %\changes{v2.6}{2014/04/07}{new: \texttt{allmath-nott} and \texttt{alltext-nott}
@@ -12508,12 +12513,12 @@ end
 %                           ^^A private mail, 2014/03/21
 %    \begin{macrocode}
 \DeclareMicrotypeSet{allmath-nott}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TS1,OML,OMS,U},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TU,TS1,OML,OMS,U},
      family   = {rm*,sf*}
    }
 
 \DeclareMicrotypeSet{alltext-nott}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU},
      family   = {rm*,sf*}
    }
 
@@ -12521,14 +12526,14 @@ end
 %\changes{v1.9d}{2006/02/22}{\texttt{md*} instead of \texttt{m} series in basic sets}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{basicmath}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,OML,OMS},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TU,OML,OMS},
      family   = {rm*,sf*},
      series   = {md*},
      size     = {normalsize,footnotesize,small,large}
    }
 
 \DeclareMicrotypeSet{basictext}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TU},
      family   = {rm*,sf*},
      series   = {md*},
      size     = {normalsize,footnotesize,small,large}
@@ -12542,7 +12547,7 @@ end
 %                           ^^A http://tex.stackexchange.com/questions/157397
 %    \begin{macrocode}
 \DeclareMicrotypeSet{smallcaps}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU},
      shape    = {sc*,si,scit}
    }
 
@@ -12550,12 +12555,12 @@ end
 %\changes{v2.0}{2006/12/21}{new: \texttt{footnotesize} and \texttt{scriptsize}}
 %    \begin{macrocode}
 \DeclareMicrotypeSet{footnotesize}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU},
      size     = {-small}
    }
 
 \DeclareMicrotypeSet{scriptsize}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU},
      size     = {-footnotesize}
    }
 
@@ -12599,7 +12604,7 @@ end
 %
 %\bigskip\noindent
 % Fonts that are `the same':
-% The \pkg{fontspec} package will use |lmr| by default, whose EU1/2 encoding
+% The \pkg{fontspec} package will use |lmr| by default, whose EU1/2/TU encoding
 % is declared in \file{mt-LatinModernRoman.cfg}.
 %\changes{v2.5}{2012/08/23}{declare \texttt{lmr} as alias of Latin Modern Roman
 %                           (OpenType version)}
@@ -13009,16 +13014,18 @@ end
    }
 
 %    \end{macrocode}
-%\subsubsection{<EU1>, <EU2>}
+%\subsubsection{<EU1>, <EU2>, <TU>}
 %\changes{v2.5}{2010/11/05}{add rudimentary list for <EU1> and <EU2>} ^^A (beta:03)
-% The <EU1> and <EU2> encodings are not well-defined as they don't
+%\changes{v2.6}{2015/04/22}{add <TU> encoding}
+% The <EU1> (\xetex), <EU2> (\luatex), and, since \pkg{fontspec} version 2.5,
+% <TU> encodings are not well-defined in the sense that they don't
 % contain a fixed number of glyphs, all of which must be present.
 % OpenType fonts may contain thousands of glyphs, but we only define those
 % that should be present in every font (basically <T1>). This inheritance list
 % should be overridden by font-specific ones.
 %    \begin{macrocode}
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2} }
+   { encoding = {EU1,EU2,TU} }
    { A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A,\u A},
      a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a,\u a},
      C = {\'C,\c C,\v C},
@@ -13086,6 +13093,7 @@ end
 %
 %\changes{v2.2}{2007/02/23}{add ligatures that are to be disabled}
 %\changes{v2.5}{2011/09/07}{add <EU2> encoding to default list} ^^A (beta:09)
+%\changes{v2.6}{2015/04/22}{add <TU> encoding to default list}
 % By default, we only disable the `f*' ligatures, for those fonts that have
 % any. Thus, ligatures and especially kerning for all other characters will be
 % retained.
@@ -13097,7 +13105,7 @@ end
 \SetTracking
   [ name         = default,
     no ligatures = {f} ]
-  { encoding     = {OT1,T1,T2A,LY1,OT4,QX,EU2} }
+  { encoding     = {OT1,T1,T2A,LY1,OT4,QX,EU2,TU} }
   { }
 
 %    \end{macrocode}
@@ -13597,6 +13605,7 @@ end
 % For \xetex\ (<EU1>) and \luatex\ (<EU2>) we simply use the <T1> list as
 % default (for now).
 %\changes{v2.5}{2010/11/05}{add default lists for <EU1> and <EU2>} ^^A (beta:03)
+%\changes{v2.6}{2015/04/22}{add <TU> encoding to lists}
 %    \begin{macrocode}
 \SetProtrusion
 %<m-t>   [ name     = T1-default,
@@ -13617,7 +13626,7 @@ end
 %<ppl>     load     = ppl-default ]
 %<ptm>     load     = ptm-default ]
 %<ugm>     load     = ugm-default ]
-%<m-t>   { encoding = {T1,LY1,EU1,EU2} }
+%<m-t>   { encoding = {T1,LY1,EU1,EU2,TU} }
 %<bch|cmr|pad|pmn|ppl>   { encoding = {T1,LY1},
 %<blg|ptm|ugm>   { encoding = {T1},
 %<bch>     family   = bch }
@@ -16732,7 +16741,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10405}
+% \CheckSum{10414}
 %
 % \Finale
 %
