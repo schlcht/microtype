@@ -8779,7 +8779,6 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@is@char}
-%\todo{numbers can be 4-digit with <TU> encoding; use \cs{ifint}?}
 %\begin{macro}{\MT@charstring}
 % A helper macro that inspects the \cmd\meaning\ of its argument.
 %    \begin{macrocode}
@@ -8805,7 +8804,8 @@ end
               /MT@ifstreq/MT@charstring{##3##4}/relax/MT@norestfalse
             /else
               /edef/MT@char@{/number"##2##3}%
-              /MT@ifstreq/MT@charstring{##4}/relax/MT@norestfalse
+              /MT@ifstreq/MT@charstring{##4}/relax
+                {/MT@is@xchar##2##3|##4\CHAR"/relax}%
             /fi
 %<debug>    /MT@dinfo@nl{3}{> `/the/MT@toks' is a \char (/MT@char@)}%
           /fi
@@ -8813,6 +8813,17 @@ end
       }%
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@is@xchar}
+%\changes{v2.6}{2015/02/23}{update for \pkg{fontspec}'s <TU> encoding}
+% With \pkg{fontspec}'s <TU> encoding, glyphs numbers may be up to four digits.
+%\SpecialEscapechar{\/}
+%    \begin{macrocode}
+      /def/MT@is@xchar##1|##2\CHAR"##3##4/relax{%
+        /MT@ifstreq/MT@charstring{##3##4}%
+          {/edef/MT@char@{/number"##1##2}}/MT@norestfalse
+      }%
+%    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@charxstring}
 %\begin{macro}{\MT@strip@prefix}
@@ -16742,7 +16753,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10414}
+% \CheckSum{10424}
 %
 % \Finale
 %

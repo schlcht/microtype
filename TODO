@@ -1,5 +1,3 @@
-* fix \MT@is@char (for four-digit numbers with TU)
-
 * no inheritance list for tracking
 
 * make tracking work with xetex (shouldn't be a problem?)

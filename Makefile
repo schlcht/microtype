@@ -24,11 +24,11 @@ help:
 	@echo '     sty-install - install the package code only'
 	@echo ' install TEXMFROOT=<texmf> - install the package into the path <texmf>'
 	@echo ' '
-	@echo '      test       - run the test suite'
-	@echo '      testerrors -    ...   or' 
-	@echo '      testslots  -    ...  part' 
-	@echo '      testoutput -    ...   of'  
-	@echo '      testcompat -    ...   it' 
+	@echo '      test        - run the test suite'
+	@echo '      testerrors  -    ...   or'
+	@echo '      testunknown -    ...  part'
+	@echo '      testoutput  -    ...   of'
+	@echo '      testcompat  -    ...   it'
 
 NAME = microtype
 DOC  = $(NAME).pdf
@@ -87,7 +87,7 @@ tds:    $(TDS_ZIP)
 world:  all ctan
 
 .PHONY: help install sty-install manifest mostlyclean clean \
-	test testerrors testslots testoutput testcompat
+	test testerrors testunknown testoutput testcompat
 
 # for the documentation we need the debug version of microtype.sty 
 # as well as microtype-doc.sty and microtype-gind.ist
@@ -212,7 +212,7 @@ clean: mostlyclean
 
 # testing the package
 TESTDIR = ./testsuite
-test: testerrors testslots testoutput testcompat
+test: testerrors testunknown testoutput testcompat
 	@$(RM) $(TESTDIR)/*.log
 	@$(RM) $(TESTDIR)/*.aux
 	@$(RM) $(TESTDIR)/*.pdf
@@ -232,10 +232,10 @@ testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 	        	then $(not-ok) ; \
 		fi
 
-testslots: $(wildcard $(TESTDIR)/unknown-*.tex)
+testunknown: $(wildcard $(TESTDIR)/unknown-*.tex)
 	@echo "* Unknown slots:"
 	@cd $(TESTDIR) && \
-		$(foreach file,$^,$(call run-slots-file,$(notdir $(basename $(file)))))
+		$(foreach file,$^,$(call run-unknown-file,$(notdir $(basename $(file)))))
 
 testoutput: $(wildcard $(TESTDIR)/output-*.tex)
 	@echo "* Output:"
@@ -256,7 +256,7 @@ run-test-file = \
 	fi ;
 
 # there mustn't be unknown slots
-run-slots-file = \
+run-unknown-file = \
 	$(call run-test-file,unknown,$1) \
 	if `grep 'Unknown slot number' $1.log > /dev/null` ; \
 		then $(not-ok) ; \
