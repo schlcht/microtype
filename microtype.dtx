@@ -4141,10 +4141,10 @@
 %<pdftex-def>  \MT@pdftex@no
 %<luatex-def>  \MT@luatex@no
     <#1 \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}
-%<debug+luatex-def>\MT@requires@luatex4{\let\pdftracingfonts\tracingfonts}\relax
-%<debug+pdftex-def>\MT@requires@pdftex6{
+%<luatex-def&debug>\MT@requires@luatex4{\let\pdftracingfonts\tracingfonts}\relax
+%<pdftex-def&debug>\MT@requires@pdftex6{
 %<debug>\pdftracingfonts=1
-%<debug+pdftex-def>}\relax
+%<pdftex-def&debug>}\relax
 %</pdftex-def|luatex-def>
 %    \end{macrocode}
 %\end{macro}
@@ -4193,9 +4193,6 @@ microtype.warning = warn
 local find       = string.find
 local match      = string.match
 local tex_write  = tex.write
-local nodedirect = node.direct
-local getfield   = nodedirect.getfield
-local getfont    = nodedirect.getfont
 
 function microtype.sprint (...)
     tex.sprint(luatexbase.catcodetables['latex-package'], ...)
@@ -7909,7 +7906,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % be populated in \cmd\MT@noligatures@.
 %    \begin{macrocode}
 %<*luafile>
-
 microtype.ligs = microtype.ligs or { }
 
 local function noligatures(fontcs,liga)
@@ -7920,6 +7916,9 @@ end
 microtype.noligatures = noligatures
 
 local function keepligature(c)
+  local nodedirect = node.direct
+  local getfield   = nodedirect.getfield
+  local getfont    = nodedirect.getfont
   local f,ch
   if type(c) == "userdata" then -- in older luaotfload versions, c was a node
     f  = c.font
@@ -7941,10 +7940,12 @@ local function keepligature(c)
 --  end
 end
 
-if luaotfload.letterspace.keepligature then
-  microtype.warning("overwriting function `keepligature'")
+if luaotfload and luaotfload.letterspace then
+  if luaotfload.letterspace.keepligature then
+    microtype.warning("overwriting function `keepligature'")
+  end
+  luaotfload.letterspace.keepligature = keepligature
 end
-luaotfload.letterspace.keepligature = keepligature
 
 %</luafile>
 %    \end{macrocode}
@@ -8778,7 +8779,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@is@char}
-%\todo{numbers can be 4-digit with <TU> encoding}
+%\todo{numbers can be 4-digit with <TU> encoding; use \cs{ifint}?}
 %\begin{macro}{\MT@charstring}
 % A helper macro that inspects the \cmd\meaning\ of its argument.
 %    \begin{macrocode}
