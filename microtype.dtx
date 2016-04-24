@@ -2798,6 +2798,7 @@
 % `\contributor Dave              <@\at @>', ^^A http://tex.stackexchange.com/users/15562/dave
 %  \contributor Giuseppe Palma    <pippi.palma\at gmail.com>,
 %  \contributor Stephan Stiller   <stephan.stiller\at gmail.com>,
+%  \contributor Christopher Schramm <debian\at shakaweb.org>,
 % `\contributor uli               <@\at @>',  ^^A http://tex.stackexchange.com/users/9391/uli
 %  \contributor Sam Mason         <sam\at samason.me.uk>, ^^A http://tex.stackexchange.com/users/16433/sam-mason
 % `\contributor kleenstar         <@\at @>', ^^A http://tex.stackexchange.com/users/56468/kleenstar
@@ -8467,6 +8468,9 @@ end
 % If the user has specified something like `|fi|', or wanted to define a number
 % but forgot to use three digits, we'll have something left of the string. In
 % this case, we issue a warning and forget the complete string.
+%\changes{v2.6}{2015/04/23}{fix: could fail with \xetex\
+%                           (reported by \contributor Christopher Schramm <debian\at shakaweb.org>)}
+%                           ^^A http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=725395#15
 %    \begin{macrocode}
     \ifMT@norest \else
       \MT@warn@rest
@@ -8476,6 +8480,7 @@ end
 %<luatex-def>    \fi
   \else
     \MT@warn@unknown
+%<xetex-def>    \let\MT@char\@empty
   \fi
 %<*xetex-def>
   \else
@@ -16753,7 +16758,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10424}
+% \CheckSum{10427}
 %
 % \Finale
 %

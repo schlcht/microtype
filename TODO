@@ -12,21 +12,6 @@ we have to take \fontdimens from \MT@font, not \MT@lsfont (in tr@set@space...)
 and we must check whether \spaceskip<>0pt
 
 ---
-% from Christopher Schramm \contributor <debian\at shakaweb.org>
-% http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=725395#15
-% 2013/10/06
-\documentclass{minimal}
-
-%\usepackage{textcomp}
-\usepackage{microtype}
-\usepackage{siunitx}
-
-\begin{document}
-\SI{1}{\micro\second}
-\end{document}
-(problem with \MT@char being empty)
-
----
 * warning with minimal class
 * expansion settings for luatex
 * "override" key?
