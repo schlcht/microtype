@@ -3299,13 +3299,11 @@
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
 %^^A  \f@size,\font@name,\glb@currsize,\normalfont,\pickup@font,\selectfont,
 %^^A  \set@fontsize,\showhyphens}                                            ^^A latex
-%\DoNotIndex{\ExplSyntaxOn,\ExplSyntaxOff}                                   ^^A latex3
-%\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live
+%\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
-%\DoNotIndex{\fontspec}                                                      ^^A fontspec (actually \fontspec_if_fontspec_font:TF)
 %\DoNotIndex{\pdfstringdefDisableCommands,\pdfstringdefWarn}                 ^^A hyperref
 %\DoNotIndex{\ifpdf}                                                         ^^A ifpdf
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
@@ -5122,25 +5120,24 @@ microtype.do_font = do_font
 %<letterspace>\MT@requires@latex2{
 \MT@with@package@T{fontspec}\MT@fontspectrue
 %<letterspace>}{\MT@fontspecfalse}
-%</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@if@fontspec@font}
+%\begin{macro}{\MT@fontspec@setup}
+%\changes{v2.6}{2016/04/23}{fix \cs{MT@if@fontspec@font} ABD}
 % For fonts loaded by \pkg{fontspec} (or, rather, \pkg{luaotfload}) we can
 % use some of the features the latter package provides.
 %    \begin{macrocode}
-%<*luatex-def|letterspace>
 \let\MT@if@fontspec@font\@secondoftwo
-\ifMT@fontspec
-\ExplSyntaxOn
-  \@ifpackagelater{luaotfload}{2013/05/23}{
-    \let\MT@if@fontspec@font\fontspec_if_fontspec_font:TF
+\def\MT@fontspec@setup{%
+  \@ifpackagelater{fontspec}{2013/05/23}{
+    \MT@let@cn\MT@if@fontspec@font{fontspec_if_fontspec_font:TF}%
   }\relax
-\ExplSyntaxOff
-\fi
-%</luatex-def|letterspace>
+}
+\ifMT@fontspec\MT@fontspec@setup\fi
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@setupfont@hook}
 % This hook will be executed every time a font is set up (inside a group).
@@ -5155,7 +5152,6 @@ microtype.do_font = do_font
 % (This is no longer needed, since the complete setup is now deferred until the
 % end of the preamble. However, it is still necessary for \opt{defersetup}|=false|.)
 %    \begin{macrocode}
-%<*package|letterspace>
 %<*package>
 \def\MT@setupfont@hook{%
 %    \end{macrocode}
@@ -5243,7 +5239,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T {eledmac}\MT@ledmac@setup
   \MT@with@package@T{reledmac}\MT@ledmac@setup
   \MT@with@package@T{xunicode}\MT@xunicodetrue
-  \MT@with@package@T{fontspec}\MT@fontspectrue
+  \MT@with@package@T{fontspec}{\MT@fontspectrue\MT@fontspec@setup}%
 %    \end{macrocode}
 % We can clean up \cs{MT@setupfont@hook} now.
 %\changes{v2.6}{2014/03/17}{redefine \cs{MT@setupfont@hook} globally
@@ -8468,7 +8464,7 @@ end
 % If the user has specified something like `|fi|', or wanted to define a number
 % but forgot to use three digits, we'll have something left of the string. In
 % this case, we issue a warning and forget the complete string.
-%\changes{v2.6}{2015/04/23}{fix: could fail with \xetex\
+%\changes{v2.6}{2016/04/23}{fix: could fail with \xetex\
 %                           (reported by \contributor Christopher Schramm <debian\at shakaweb.org>)}
 %                           ^^A http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=725395#15
 %    \begin{macrocode}
@@ -8820,7 +8816,7 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@is@xchar}
-%\changes{v2.6}{2015/02/23}{update for \pkg{fontspec}'s <TU> encoding}
+%\changes{v2.6}{2016/04/23}{update for \pkg{fontspec}'s <TU> encoding}
 % With \pkg{fontspec}'s <TU> encoding, glyphs numbers may be up to four digits.
 %\SpecialEscapechar{\/}
 %    \begin{macrocode}
@@ -12514,7 +12510,7 @@ end
 %\changes{v1.9d}{2006/04/20}{add <QX> encoding to text sets}
 %\changes{v2.3e}{2009/10/28}{add <T2A> encoding}
 %\changes{v2.5}{2010/05/13}{add <EU1> and <EU2> encodings}
-%\changes{v2.6}{2015/04/22}{add <TU> encoding
+%\changes{v2.6}{2016/04/22}{add <TU> encoding
 %                           (notified by \contributor Will Robertson <will\at wspr.io>)}
 %                           ^^A semi-private mail, 2016/01/28
 %    \begin{macrocode}
@@ -13033,7 +13029,7 @@ end
 %    \end{macrocode}
 %\subsubsection{<EU1>, <EU2>, <TU>}
 %\changes{v2.5}{2010/11/05}{add rudimentary list for <EU1> and <EU2>} ^^A (beta:03)
-%\changes{v2.6}{2015/04/22}{add <TU> encoding}
+%\changes{v2.6}{2016/04/22}{add <TU> encoding}
 % The <EU1> (\xetex), <EU2> (\luatex), and, since \pkg{fontspec} version 2.5,
 % <TU> encodings are not well-defined in the sense that they don't
 % contain a fixed number of glyphs, all of which must be present.
@@ -13110,7 +13106,7 @@ end
 %
 %\changes{v2.2}{2007/02/23}{add ligatures that are to be disabled}
 %\changes{v2.5}{2011/09/07}{add <EU2> encoding to default list} ^^A (beta:09)
-%\changes{v2.6}{2015/04/22}{add <TU> encoding to default list}
+%\changes{v2.6}{2016/04/22}{add <TU> encoding to default list}
 % By default, we only disable the `f*' ligatures, for those fonts that have
 % any. Thus, ligatures and especially kerning for all other characters will be
 % retained.
@@ -13622,7 +13618,7 @@ end
 % For \xetex\ (<EU1>) and \luatex\ (<EU2>) we simply use the <T1> list as
 % default (for now).
 %\changes{v2.5}{2010/11/05}{add default lists for <EU1> and <EU2>} ^^A (beta:03)
-%\changes{v2.6}{2015/04/22}{add <TU> encoding to lists}
+%\changes{v2.6}{2016/04/22}{add <TU> encoding to lists}
 %    \begin{macrocode}
 \SetProtrusion
 %<m-t>   [ name     = T1-default,
@@ -16758,7 +16754,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10427}
+% \CheckSum{10428}
 %
 % \Finale
 %
