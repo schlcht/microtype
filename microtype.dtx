@@ -6973,7 +6973,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
       \MT@get@ls@basefont
 %    \end{macrocode}
-%\changes{v2.6}{2013/07/15}{use \pkg{luaotfload}'s \texttt{letterspace} font feature if available}
+%\changes{v2.6}{2013/07/15}{use \pkg{luaotfload}'s \texttt{kernfactor} font feature if available}
 % \pkg{luaotfload} provides the faux font feature |letterspace|, which we will
 % use when dealing with non-legacy fonts, as it is less problematic and faster
 % than the \pdftex\ primitive \cmd\letterspacefont.
@@ -6981,10 +6981,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*luatex-def|letterspace>
       \MT@if@fontspec@font{%
 %<luatex-def&debug>\MT@dinfo@nl{1}{... fontspec font: \MessageBreak
-%<luatex-def&debug>         \MT@exp@two@c\meaning\csname\MT@@font\endcsname}%
+%<luatex-def&debug>         \expandafter\fontname\MT@font}%
         \global\expandafter\font\MT@lsfont=%
           \expandafter\MT@exp@two@c\expandafter\MT@ls@fontspec@font
-            \expandafter\meaning\expandafter\csname\MT@@font\endcsname\@nil
+            \expandafter\fontname\expandafter\MT@font\space \@nil
       }{%
 %</luatex-def|letterspace>
 %<luatex-def&debug>\MT@dinfo@nl{1}{... legacy font}%
@@ -7149,16 +7149,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@ls@fontspec@font}
 % Add the |letterspacing| feature to a font loaded by \pkg{fontspec}.
-% The required \pkg{luaotfload} version always encloses the font name
-% in quotation marks (unlike previous versions).
 %    \begin{macrocode}
 %<*luatex-def|letterspace>
-\def\MT@ls@fontspec@font#1"#2"#3\@nil{%
-  "#2kernfactor=0.%
+\def\MT@ls@fontspec@font#1 #2\@nil{%
+  "#1kernfactor=0.%
      \ifnum\MT@letterspace@<100 0\fi
      \ifnum\MT@letterspace@<10  0\fi
-     \number\MT@letterspace@;"%
-  \ifx\\#3\\ at \f@size pt\else#3\fi
+     \number\MT@letterspace@;"
+  \ifx\\#2\\ at \f@size pt\else#2\fi
 }
 %</luatex-def|letterspace>
 %    \end{macrocode}
@@ -16754,7 +16752,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10428}
+% \CheckSum{10425}
 %
 % \Finale
 %
