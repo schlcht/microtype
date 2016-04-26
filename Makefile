@@ -47,7 +47,7 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   mt-ugm.cfg mt-mvs.cfg mt-zpeu.cfg mt-euroitc.cfg \
 	   mt-CharisSIL.cfg mt-LatinModernRoman.cfg mt-PalatinoLinotype.cfg \
 	   test-microtype.tex
-SOURCE    = $(ALLDTX) $(INS) README
+SOURCE    = $(ALLDTX) $(INS) README.md
 GENERATED = $(UNPACKED) $(COMPILED)
 
 CTAN_FILES = $(SOURCE) $(COMPILED)
@@ -55,7 +55,7 @@ CTAN_FILES = $(SOURCE) $(COMPILED)
 # Files grouped by installation location
 UNPACKED_DOC = test-microtype.tex
 RUNFILES = $(filter-out $(UNPACKED_DOC), $(UNPACKED))
-DOCFILES = $(COMPILED) $(UNPACKED_DOC) README 
+DOCFILES = $(COMPILED) $(UNPACKED_DOC) README.md
 SRCFILES = $(ALLDTX) $(INS)
 
 ALL_FILES = $(RUNFILES) $(DOCFILES) $(SRCFILES)
@@ -192,13 +192,13 @@ sty-install: $(RUNFILES)
 
 manifest: $(SOURCE) 
 	@echo "=== Source files ==="
-	@for f in $(SOURCE); do echo "$$f"; \
-		sed -n 's/^.*\$$Id: \(.*\),v \([^ ]*\) \([^ ]*\) \([^ ]*\) .*$$/ >> RCS: v\2 (\3 \4)/p' $$f ; \
-	done
+#	@for f in $(SOURCE); do echo "$$f"; \
+#		sed -n 's/^.*\$$Id: \(.*\),v \([^ ]*\) \([^ ]*\) \([^ ]*\) .*$$/ >> RCS: v\2 (\3 \4)/p' $$f ; \
+#	done
 	@sed -n '/%<\*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
 	@sed -n '/ *version *= *.*$$/{N;s/^.*= *\(.*\),.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
 	@sed -n '/%<\*driver>$$/{N;/{\\jobname\.dtx}/ s/^.*\[\(.*\)\]$$/-- \1 ($(UTFDTX))/p;}' $(UTFDTX)
-	@sed -n 's/^ *\(v[^ ]*\) *\([^ ]*\)$$/-- \2 \1 (README)/p' README
+	@sed -n 's/^ *(\(v[^ ]*\) *-- *\([^ ]*\))$$/-- \2 \1 (README.md)/p' README.md
 	@echo ""
 	@echo "=== Derived files ==="
 	@for f in $(UNPACKED); do echo "$$f"; done
