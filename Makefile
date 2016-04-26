@@ -24,11 +24,11 @@ help:
 	@echo '     sty-install - install the package code only'
 	@echo ' install TEXMFROOT=<texmf> - install the package into the path <texmf>'
 	@echo ' '
-	@echo '      test        - run the test suite'
-	@echo '      testerrors  -    ...   or'
-	@echo '      testunknown -    ...  part'
-	@echo '      testoutput  -    ...   of'
-	@echo '      testcompat  -    ...   it'
+	@echo '     test        - run the test suite'
+	@echo '     testerrors  -    ...   or'
+	@echo '     testunknown -    ...  part'
+	@echo '     testoutput  -    ...   of'
+	@echo '     testcompat  -    ...   it'
 
 NAME = microtype
 DOC  = $(NAME).pdf
