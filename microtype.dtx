@@ -7147,19 +7147,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</pdftex-def|luatex-def|letterspace>
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@ls@fontspec@colon}
 %\begin{macro}{\MT@ls@fontspec@font}
-% Add the |letterspacing| feature to a font loaded by \pkg{fontspec}.
+% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}
+% (we might have to add the colon ourselves).
 %    \begin{macrocode}
 %<*luatex-def|letterspace>
+\def\MT@ls@fontspec@colon#1:#2:#3\@nil{#1:#2}
 \def\MT@ls@fontspec@font#1 #2\@nil{%
-  "#1kernfactor=0.%
-     \ifnum\MT@letterspace@<100 0\fi
-     \ifnum\MT@letterspace@<10  0\fi
-     \number\MT@letterspace@;"
+  "\MT@ls@fontspec@colon#1::\@nil
+     kernfactor=0.\ifnum\MT@letterspace@<100 0\fi
+                  \ifnum\MT@letterspace@<10  0\fi
+                  \number\MT@letterspace@;"
   \ifx\\#2\\ at \f@size pt\else#2\fi
 }
 %</luatex-def|letterspace>
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@get@tr@opt}
 % Various settings (only for the \microtype\ version).
@@ -16752,7 +16756,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10425}
+% \CheckSum{10430}
 %
 % \Finale
 %
