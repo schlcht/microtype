@@ -2213,10 +2213,10 @@
 % The \microtype\ package also allows applying different micro-typographic
 % settings to the fonts depending on the context in which they occur. This
 % opens up the space for infinite possibilities of tweaking the document's
-% appearance.\footnote{
-%   With \luatex, you have to load the fonts with the \cite{fontspec} option
-%   `|Renderer=Basic|'.}
-%   ^^A Otherwise, OpenType feature will be ignored (+smcp being one of them)
+% appearance.
+%  ^^A\footnote{
+%  ^^A With \luatex, you have to load the fonts with the \cite{fontspec} option
+%  ^^A `|Renderer=Basic|'.}  ^^A Otherwise, OpenType feature will be ignored (+smcp being one of them)
 %
 %\medskip
 %\Describe{Macro}{\microtypecontext}{context assignments}
@@ -2958,6 +2958,7 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item Support for \luatex\ 0.85
 %  \item Improvements for tracking/letterspacing with \luatex\
 %        (|Renderer=Basic| no longer required)
 %  \item New font sets: `|alltext-nott|', `|allmath-nott|'
@@ -7156,10 +7157,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@ls@fontspec@colon#1:#2:#3\@nil{#1:#2}
 \def\MT@ls@fontspec@font#1 #2\@nil{%
   "\MT@ls@fontspec@colon#1::\@nil
-     kernfactor=0.\ifnum\MT@letterspace@<100 0\fi
-                  \ifnum\MT@letterspace@<10  0\fi
-                  \number\MT@letterspace@;"
-  \ifx\\#2\\ at \f@size pt\else#2\fi
+    kernfactor=%
+    \ifnum\MT@letterspace@<\z@ -0.%
+      \ifnum-\MT@letterspace@<100 0\fi
+      \ifnum-\MT@letterspace@<10  0\fi
+      \number-\MT@letterspace@
+    \else 0.%
+      \ifnum\MT@letterspace@<100 0\fi
+      \ifnum\MT@letterspace@<10  0\fi
+      \number\MT@letterspace@
+    \fi;"
+  \ifx\\#2\\ at \f@size pt\else#2\fi\relax
 }
 %</luatex-def|letterspace>
 %    \end{macrocode}
@@ -16756,7 +16764,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10430}
+% \CheckSum{10444}
 %
 % \Finale
 %
