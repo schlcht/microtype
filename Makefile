@@ -151,10 +151,14 @@ $(UNPACKED): $(INS) $(DTX) docstrip.cfg
 docstrip.cfg:
 	@echo "\\\\askforoverwritefalse" > docstrip.cfg
 
-$(CTAN_ZIP): $(CTAN_FILES) $(TDS_ZIP) 
+$(CTAN_ZIP): manifest doc $(CTAN_FILES) $(TDS_ZIP)
 	@echo "Making $@ for CTAN upload."
 	@$(RM) -- $@
-	@zip -9 $@ $^ >/dev/null
+	@mkdir ./$(NAME)
+	@cp $(CTAN_FILES) ./$(NAME)
+	@zip -9 -r $@ ./$(NAME) $(TDS_ZIP) $(REDIRECT)
+	@$(RM) -r ./$(NAME)
+	@unzip -l $@
 
 define run-install
 @mkdir -p $(RUNDIR) && cp $(RUNFILES) $(RUNDIR)
@@ -171,7 +175,7 @@ $(TDS_ZIP): $(ALL_FILES)
 	@echo "Making TDS-ready archive $@."
 	@$(RM) -- $@
 	$(run-install)
-	@cd $(TEXMFROOT) && zip -9 ../$@ -r . >/dev/null
+	@cd $(TEXMFROOT) && zip -9 ../$@ -r . $(REDIRECT)
 	@$(RM) -r -- $(TEXMFROOT)
 
 install: $(ALL_FILES)
@@ -196,12 +200,13 @@ manifest: $(SOURCE)
 #		sed -n 's/^.*\$$Id: \(.*\),v \([^ ]*\) \([^ ]*\) \([^ ]*\) .*$$/ >> RCS: v\2 (\3 \4)/p' $$f ; \
 #	done
 	@sed -n '/%<\*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
-	@sed -n '/ *version *= *.*$$/{N;s/^.*= *\(.*\),.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
+	@sed -n '/ *version *= *.*$$/{N;s/^.*= *"\(.*\)",.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
 	@sed -n '/%<\*driver>$$/{N;/{\\jobname\.dtx}/ s/^.*\[\(.*\)\]$$/-- \1 ($(UTFDTX))/p;}' $(UTFDTX)
 	@sed -n 's/^ *(\(v[^ ]*\) *-- *\([^ ]*\))$$/-- \2 \1 (README.md)/p' README.md
 	@echo ""
 	@echo "=== Derived files ==="
 	@for f in $(UNPACKED); do echo "$$f"; done
+	@echo "----------------------------"
 
 mostlyclean:
 	@$(RM) -- *.log *.aux *.toc *.idx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
