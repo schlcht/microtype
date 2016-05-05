@@ -37,6 +37,14 @@
 \usepackage{fontspec}
 \usepackage{luatexbase}
 \RequireLuaModule{luainputenc}
+\ifnum\luatexversion>84
+  \protected\edef\pdfminorversion  {\pdfvariable minorversion}
+  \protected\def\pdfobj            {\pdfextension obj }
+  \protected\def\pdfcatalog        {\pdfextension catalog }
+  \protected\def\pdfmapline        {\pdfextension mapline }
+  \protected\def\pdfglyphtounicode {\pdfextension glyphtounicode }
+  \protected\def\pdflastobj        {\numexpr\pdffeedback lastobj\relax}
+\fi
 \makeatletter
 % microtype-doc.sty is 8-bit, and the following is a hack
 \luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
