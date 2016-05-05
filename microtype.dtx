@@ -2,7 +2,7 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.6"
+% !DTXversion:: "2.6a"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -38,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2016/05/01 v2.6
+  [2016/05/11 v2.6a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -547,7 +547,7 @@
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
       character protrusion, margin kerning, optical alignment, font expansion,
       font scaling, hz, kerning, spacing, glue, letterspacing, tracking, ligatures},
-    pdfcopyright={\textcopyright\ 2004--2013 R Schlicht\012%
+    pdfcopyright={\textcopyright\ 2004--2016 R Schlicht\012%
       This work may be distributed and/or modified under the conditions
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\012%
@@ -581,6 +581,8 @@
     \@esphack}
   \def\ctanurl#1{Available from \acronym{CTAN} at
                  \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
+  \def\ctanpkgurl#1{Available from \acronym{CTAN} at
+                    \href{https://www.ctan.org/pkg/#1}{\nolinkurl{pkg/#1}}}
   \DeclareRobustCommand\mailto[1]{\href{mailto:#1}{\nolinkurl{#1}}}
   \def\mailtoRS{\href % some PDF viewers don't like spaces:
     {mailto:<w.m.l@gmx.net>\%20Robert\%20Schlicht?subject=[microtype\%20\fileversion]}
@@ -673,6 +675,7 @@
   \let\hyperpage\@firstofone
   \let\texorpdfstring\@firstoftwo
   \def\ctanurl{Available from \acronym{CTAN} at \url}
+  \let\ctanpkgurl\ctanurl
   \let\nolinkurl\url
   \let\mailto\texttt
   \def\mailtoRS{\mailto{w.m.l@gmx.net}}
@@ -2712,7 +2715,7 @@
 % interword spacing adjustment and additional character kerning.
 %  \contributor Georg Duffner <g.duffner\at gmail.com> has patiently tested
 % \microtype\ under \xetex\ and \luatex\ with his beautiful OpenType font
-% <EB>~Garamond\footnote{\ctanurl{fonts/ebgaramond}, including configuration
+% <EB>~Garamond\footnote{\ctanpkgurl{ebgaramond}, including configuration
 %   files for \microtype.}.
 % My thanks also go to
 %  \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>
@@ -2882,8 +2885,8 @@
 % \bibitem[\pdftex\ manual]{pdftexman}
 %   \thanh, Sebastian Rahtz, Hans Hagen, Hartmut Henkel, Pawe\l\ Jackowski, Martin Schr\"oder,
 %   \emph{The \pdftex\ user manual},
-%   \newblock 23 November 2010.
-%   \newblock (\ctanurl{systems/pdftex/})
+%   \newblock 25 April 2016.
+%   \newblock (\ctanurl{systems/doc/pdftex/manual/pdftex-a.pdf})
 %             ^^A latest version at \url{http://sarovar.org/projects/pdftex/}
 %             ^^A or even \url{http://foundry.supelec.fr/scm/?group_id=23}
 %
@@ -2901,27 +2904,27 @@
 %   Will Robertson, Khaled Hosny,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
 %    \newblock 1 February 2016.
-%    \newblock (\ctanurl{macros/latex/contrib/fontspec/})
+%    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 12 December 2015.
-%    \newblock (\ctanurl{macros/luatex/generic/luaotfload/})
+%    \newblock 21 April 2016.
+%    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
 %   Carsten Schurig, Tobias Schlemmer, \emph{The \pkg{pdfcprot}|.sty| package},
 %   \newblock 10 June 2005.
-%   \newblock (\ctanurl{macros/latex/contrib/pdfcprot/})
+%   \newblock (\ctanpkgurl{pdfcprot})
 %
 % \bibitem[\pkg{soul}]{soul}
 %   Melchior Franz, \emph{The \pkg{soul} package},
 %   \newblock 17 November 2003.
-%   \newblock (\ctanurl{macros/latex/contrib/soul/}).
+%   \newblock (\ctanpkgurl{soul}).
 %\changes{v2.3a}{2008/01/06}{mention \pkg{soulutf8}}
 %   \newblock See also Heiko Oberdiek's extension of this package,
 %             \pkg{soulutf8}, which adds Unicode support.
-%   \newblock (\ctanurl{macros/latex/contrib/oberdiek/})
+%   \newblock (\ctanpkgurl{soulutf8})
 %
 %\end{thebibliography}
 %
@@ -2957,7 +2960,9 @@
 %
 %\begin{History}
 %
-%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\Version{2.6}{2016/05/01}
 %  \item Support for \luatex\ 0.85
 %  \item Improvements for tracking/letterspacing with \luatex\
 %        (|Renderer=Basic| no longer required)
@@ -4141,7 +4146,7 @@
 %<pdftex-def>  \MT@pdftex@no
 %<luatex-def>  \MT@luatex@no
     <#1 \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}
-%<luatex-def&debug>\MT@requires@luatex4{\let\pdftracingfonts\tracingfonts}\relax
+%<luatex-def&debug>\MT@requires@luatex4{\directlua{tex.enableprimitives('pdf',{'tracingfonts'})}}\relax
 %<pdftex-def&debug>\MT@requires@pdftex6{
 %<debug>\pdftracingfonts=1
 %<pdftex-def&debug>}\relax
@@ -4179,8 +4184,8 @@ microtype        = microtype or {}
 local microtype  = microtype
 microtype.module = {
     name         = "microtype",
-    version      = 2.6,
-    date         = "2016/05/01",
+    version      = "2.6a",
+    date         = "2016/05/11",
     description  = "microtype module.",
     author       = "E. Roux, R. Schlicht and P. Gesang",
     copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -4195,7 +4200,7 @@ local match      = string.match
 local tex_write  = tex.write
 
 function microtype.sprint (...)
-    tex.sprint(luatexbase.catcodetables['latex-package'], ...)
+  tex.sprint(luatexbase.catcodetables['latex-package'], ...)
 end
 
 %</luafile>
@@ -4256,7 +4261,9 @@ end
 %\begin{macro}{\MT@let@cn}
 % \cmd\let\ a command to a \cmd\csname\ sequence.
 %    \begin{macrocode}
+%</package>
 \def\MT@let@cn#1#2{\expandafter\let\expandafter#1\csname #2\endcsname}
+%<*package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@let@nn}
@@ -4754,23 +4761,24 @@ microtype.if_str_eq = if_str_eq
 %</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
+%\changes{v2.6a}{2016/05/03}{fixes for \letterspace\ with \luatex}
 %\begin{macro}{\MT@do@font}
 % Execute \meta{\#1} 256 times,
 %    \begin{macrocode}
-%<pdftex-def>\def\MT@do@font{\MT@while@num\z@\@cclvi}
+%<pdftex-def|letterspace>\def\MT@do@font{\MT@while@num\z@\@cclvi}
 %    \end{macrocode}
 % resp. for the whole font for \luatex, if loaded by \pkg{fontspec}/\pkg{luaotfload}.
 %\changes{v2.5}{2010/08/14}{adapt for \luatex}
 %\changes{v2.6}{2013/07/14}{speed up for \luatex}
 %    \begin{macrocode}
-%<*luatex-def|letterspace>
+%<*luatex-def>
 \def\MT@do@font#1{%
   \MT@if@fontspec@font{%
     \def\MT@dofont@function{#1}%
     \MT@lua{microtype.do_font()}%
   }{\MT@while@num\z@\@cclvi{#1}}%
 }
-%</luatex-def|letterspace>
+%</luatex-def>
 %    \end{macrocode}
 % This is the |lua| function, which is much faster than looping through all glyphs
 % in \TeX.
@@ -5240,7 +5248,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T {eledmac}\MT@ledmac@setup
   \MT@with@package@T{reledmac}\MT@ledmac@setup
   \MT@with@package@T{xunicode}\MT@xunicodetrue
+%</package>
+%<plain>  \MT@requires@latex2{
   \MT@with@package@T{fontspec}{\MT@fontspectrue\MT@fontspec@setup}%
+%<plain>  }\relax
+%<*package>
 %    \end{macrocode}
 % We can clean up \cs{MT@setupfont@hook} now.
 %\changes{v2.6}{2014/03/17}{redefine \cs{MT@setupfont@hook} globally
@@ -6982,10 +6994,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*luatex-def|letterspace>
       \MT@if@fontspec@font{%
 %<luatex-def&debug>\MT@dinfo@nl{1}{... fontspec font: \MessageBreak
-%<luatex-def&debug>         \expandafter\fontname\MT@font}%
+%<luatex-def&debug>         \expandafter\fontname\font@name}%
+        \ifnum\MT@letterspace@<\z@\def\MT@minus{-}\else\let\MT@minus\@empty\fi
         \global\expandafter\font\MT@lsfont=%
           \expandafter\MT@exp@two@c\expandafter\MT@ls@fontspec@font
-            \expandafter\fontname\expandafter\MT@font\space \@nil
+            \expandafter\fontname\expandafter\font@name\space \@nil
       }{%
 %</luatex-def|letterspace>
 %<luatex-def&debug>\MT@dinfo@nl{1}{... legacy font}%
@@ -7150,6 +7163,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@ls@fontspec@colon}
 %\begin{macro}{\MT@ls@fontspec@font}
+%\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
 % Add the |kernfactor| feature to a font loaded by \pkg{fontspec}
 % (we might have to add the colon ourselves).
 %    \begin{macrocode}
@@ -7157,16 +7171,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@ls@fontspec@colon#1:#2:#3\@nil{#1:#2}
 \def\MT@ls@fontspec@font#1 #2\@nil{%
   "\MT@ls@fontspec@colon#1::\@nil
-    kernfactor=%
-    \ifnum\MT@letterspace@<\z@ -0.%
-      \ifnum-\MT@letterspace@<100 0\fi
-      \ifnum-\MT@letterspace@<10  0\fi
-      \number-\MT@letterspace@
-    \else 0.%
-      \ifnum\MT@letterspace@<100 0\fi
-      \ifnum\MT@letterspace@<10  0\fi
-      \number\MT@letterspace@
-    \fi;"
+    kernfactor=\MT@minus \ifnum\MT@letterspace@=1000 1\else 0.%
+         \ifnum\MT@minus\MT@letterspace@<100 0\fi
+         \ifnum\MT@minus\MT@letterspace@<10  0\fi
+        \number\MT@minus\MT@letterspace@ \fi;"
   \ifx\\#2\\ at \f@size pt\else#2\fi\relax
 }
 %</luatex-def|letterspace>
@@ -9080,8 +9088,8 @@ end
 %                           (reported by \contributor HcN <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
 %    \begin{macrocode}
-  \MT@with@package@T{luatexja}{\MT@warn@unknown@once{luatexja}}%
-  \MT@with@package@T{xeCJK}   {\MT@warn@unknown@once{xeCJK}}%
+%<package>  \MT@with@package@T{luatexja}{\MT@warn@unknown@once{luatexja}}%
+%<package>  \MT@with@package@T{xeCJK}   {\MT@warn@unknown@once{xeCJK}}%
 %    \end{macrocode}
 %\changes{v2.1}{2007/01/15}{compatibility with \pkg{CJK}: also check for its definition}
 %\changes{v2.3b}{2008/05/26}{compatibility with \pkg{CJKutf8}: also check for its definition}
@@ -11772,11 +11780,8 @@ end
 %    \begin{macrocode}
   \MT@define@optionX@{tracking}{\ifnum\@tempcnta=\z@ \let\MT@tracking\MT@set@tr@zero
                                 \else \let\MT@tracking\MT@tracking@ \fi}
-%<*pdftex>
-  \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
-  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta
-                               \pdfappendkern \@tempcnta}
-%</pdftex>
+%<pdftex-def>  \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
+%<pdftex-def>  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta \pdfappendkern\@tempcnta}
 }{
 %</pdftex-def|luatex-def>
 %<*pdftex-def|luatex-def|xetex-def>
@@ -16764,7 +16769,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10444}
+% \CheckSum{10449}
 %
 % \Finale
 %
