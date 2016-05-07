@@ -226,6 +226,8 @@ test: testerrors testunknown testoutput testcompat
 	@$(RM) $(TESTDIR)/*.4tc
 	@$(RM) $(TESTDIR)/*.dvi
 	@$(RM) $(TESTDIR)/*.xref
+	@$(RM) $(TESTDIR)/*.1
+	@$(RM) $(TESTDIR)/*.1R
 
 testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 	@echo "* Errors:"
