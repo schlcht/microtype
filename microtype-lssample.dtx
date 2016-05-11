@@ -177,8 +177,7 @@
 %    \begin{macrocode}
 \newcommand\add@arrow[5][left]{%
   \tikz[remember picture,overlay,bend angle=14,looseness=0.75,>=latex]{%
-    \mtsx@layer{#3}{%
-      \draw[->,thick,color=the#2](#4) to[bend #1] (#5);}}%
+    \mtsx@layer{#3}{\draw[->,thick,color=the#2](#4) to[bend #1] (#5);}}%
 }
 %    \end{macrocode}
 % Toggle layer.
@@ -191,8 +190,7 @@
 %         /C[0.7 0.7 0.7] /H/O
          /Contents(Click to Toggle!)
          /A << /S/SetOCGState
-               /State[/Toggle \csname mts@#1\endcsname] >>
-  }%
+               /State[/Toggle \csname mts@#1\endcsname] >> }%
   \rlap{#2}%
   {\fboxsep=0pt \fboxrule=0pt
    \mtsx@layer{stuff}{%
@@ -230,8 +228,7 @@
     user{/Subtype/Link
          /BS << /Type/Border/W 0 >> /H/O
          /A << /S/SetOCGState
-               /State[/Toggle \mts@stuff] >>
-    }%
+               /State[/Toggle \mts@stuff] >> }%
     \fcolorbox{theframe}{theshade}%
       {\fontsize{34}{38}\selectfont #1}%
   \pdfendlink
@@ -286,10 +283,8 @@
 \usepackage{attachfile}
 \usepackage{tikz}
 \makeatletter
-\pdfcatalog{/OCProperties <<
-               /OCGs [\mt@objects]
-               /D << /Order [\mt@order] /BaseState/OFF >>
-            >> }
+\pdfcatalog{/OCProperties << /OCGs [\mt@objects]
+                             /D << /Order [\mt@order] /BaseState/OFF >> >> }
 \makeatother
 \begin{document}
 %    \end{macrocode}

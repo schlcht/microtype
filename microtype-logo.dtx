@@ -209,8 +209,7 @@
       \def\lastchar{`#1}%
    \else
       \expandafter\getlastchar
-   \fi
-   #2%
+   \fi #2%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -226,8 +225,7 @@
          \printbb{#1}{#2}%
       \fi
       \expandafter\printbbss
-   \fi
-   #2#3\relax
+   \fi #2#3\relax
 }
 %    \end{macrocode}
 %\end{macro}
@@ -251,8 +249,8 @@
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\showboxes}
-% Print the boxes for character \meta{\#1}. This will not work if \meta{\#1} is
-% not also the PostScript name of the glyph (\eg, `comma' =\llap{/\,} `,').
+% Print the boxes for char \meta{\#1}. This won't work if \meta{\#1} isn't
+% also the PostScript name of the glyph (\eg, `comma' =\llap{/\,} `,').
 %    \begin{macrocode}
 \setcommand\showboxes#1{%
   \leavevmode
@@ -288,9 +286,7 @@
 % that it will be printed \emph{on top} of its box.
 %    \begin{macrocode}
   \kern-\wd0
-  \mtl@layer{characters}{%
-    \hbox{\box0}%
-  }%
+  \mtl@layer{characters}{\hbox{\box0}}%
 %    \end{macrocode}
 % Step back by the amount that the character's bounding box differs from the
 % \TeX\ box on the left side.
@@ -403,8 +399,7 @@
   \immediate\pdfxform
             attr {/Group <</Type/Group /S/Transparency /I true /CS/DeviceRGB >>}
             resources {/Properties <<\mtl@resources>>
-                       /ExtGState << /SXS \the\pdflastobj\space 0 R >>
-                      }
+                       /ExtGState << /SXS \the\pdflastobj\space 0 R >> }
             \logobox
 %  \vskip-2.5\baselineskip
 %  \leavevmode
@@ -419,8 +414,7 @@
               /X << /S/SetOCGState /State[/Toggle \mtl@characters] >>
               /D << /S/SetOCGState /State[/Toggle \csname mtl@bounding-boxes\endcsname] >>
               /U << /S/SetOCGState /State[/Toggle \csname mtl@TeX-boxes\endcsname] >>
-           >>
-  }%
+           >> }%
   \vspace{3\baselineskip}
 }
 %    \end{macrocode}
