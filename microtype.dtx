@@ -930,7 +930,7 @@
 %        respective package option or with the \cs{microtypesetup} command
 %        (section~\ref{sec:options}).
 %  \item Select the fonts to which this feature should be applied by declaring
-%        and activating `sets of fonts'. Some sets are predefined, which may be
+%        and activating `sets of fonts'. A number of sets are predefined, which may be
 %        activated directly in the package options
 %        (section~\ref{sec:font-sets}).
 %  \item Fine-tune the micro-typographic settings of the fonts or sets of fonts
@@ -949,7 +949,7 @@
 %\section{Options}\label{sec:options}
 %
 % Like many other \LaTeX\ packages, the \microtype\ package accepts options in
-% the well known |key=value| syntax. In the following, you will find a
+% the well-known |key=value| syntax. In the following, you will find a
 % description of all \key{keys} and their possible |values|
 % (`|true|' may be omitted; multiple values, where allowed, must be enclosed in
 % braces; the default value is shown on the right, preceded by an asterisk
@@ -2261,7 +2261,6 @@
 %   \leavevmode \ifhmode\edef\@x@sf{\the\spacefactor}\nobreak\fi
 %   \new@makefnmark \ifhmode\spacefactor\@x@sf\fi \relax}
 %\end{verbatim}
-%\ifcmr\else\enlargethispage\baselineskip\fi ^^A layout
 % For the \pkg{memoir} class, you would additionally have to disable
 % auto-detection of multiple footnotes, which prevents protrusion:
 %\begin{verbatim}
@@ -2565,7 +2564,8 @@
 %        characters, as numbers, or as glyph names (cf. section~\ref{sec:fine-tuning});
 %        and secondly, if you are using a font for which pre-defined settings do not exist,
 %        that you create these settings yourself (because otherwise, the default settings
-%        will be loaded, which do contain text commands).
+%        will be loaded, which do contain text commands). Furthermore, you should
+%        load \microtype\ late.
 %\end{itemize}
 %
 %\changes{v1.8}{2005/06/23}{add hint about error messages}
@@ -4642,7 +4642,7 @@ microtype.if_str_eq = if_str_eq
 %^^A                                    ^^A MID: <BDBFA967.C01F%herbs@wideopenwest.com>
 % Using \cmd\pdfmatch\ would be slower.
 %\changes{v1.9a}{2005/11/03}{fix}
-%\changes{v2.3}{2007/11/14}{fix: don't use \cmd\x\
+%\changes{v2.3}{2007/11/14}{don't use \cmd\x\
 %                           (reported by \contributor Peter Meier <Peter.Meier998\at gmx.de>)}
 %                                                                ^^A private mail, 2007/11/12
 %    \begin{macrocode}
@@ -4761,7 +4761,7 @@ microtype.if_str_eq = if_str_eq
 %</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
-%\changes{v2.6a}{2016/05/03}{fixes for \letterspace\ with \luatex}
+%\changes{v2.6a}{2016/05/03}{fixes for \letterspace\ package with \luatex}
 %\begin{macro}{\MT@do@font}
 % Execute \meta{\#1} 256 times,
 %    \begin{macrocode}
@@ -4770,6 +4770,9 @@ microtype.if_str_eq = if_str_eq
 % resp. for the whole font for \luatex, if loaded by \pkg{fontspec}/\pkg{luaotfload}.
 %\changes{v2.5}{2010/08/14}{adapt for \luatex}
 %\changes{v2.6}{2013/07/14}{speed up for \luatex}
+%\changes{v2.6a}{2015/05/10}{fix \texttt{lua} function
+%                            (reported by \contributor Herbert Vo\ss{} <Herbert.Voss\at FU-Berlin.DE>)}
+%                             ^^A private mail, 2016/05/10
 %    \begin{macrocode}
 %<*luatex-def>
 \def\MT@do@font#1{%
@@ -4781,7 +4784,8 @@ microtype.if_str_eq = if_str_eq
 %</luatex-def>
 %    \end{macrocode}
 % This is the |lua| function, which is much faster than looping through all glyphs
-% in \TeX.
+% in \TeX. Legacy fonts (which this function might be fed with, because \pkg{fontspec}
+% isn't always getting it right) don't contain a |v.index| field.
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
@@ -4794,7 +4798,7 @@ local function do_font()
     end
     if thefont then
       for i,v in next,thefont.characters do
-        if v.index > 0 then
+        if v.index == nil or v.index > 0 then
           microtype.sprint([[\@tempcnta=]]..i..[[\relax\MT@dofont@function]])
         end
       end
@@ -6986,7 +6990,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
       \MT@get@ls@basefont
 %    \end{macrocode}
-%\changes{v2.6}{2013/07/15}{use \pkg{luaotfload}'s \texttt{kernfactor} font feature if available}
+%\changes{v2.6}{2013/07/15}{use \pkg{luaotfload}'s \texttt{kernfactor} feature if available}
 % \pkg{luaotfload} provides the faux font feature |kernfactor|, which we will
 % use when dealing with non-legacy fonts, as it is less problematic and faster
 % than the \pdftex\ primitive \cmd\letterspacefont.
@@ -7892,7 +7896,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % in a table (used by the \pkg{luaotfload} function |keepligature|).
 %\changes{v2.6}{2016/04/20}{use \pkg{luaotfload} function to keep\slash inhibit ligatures}
 %    \begin{macrocode}
-%<luatex-def>          \MT@if@fontspec@font{\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
+%<luatex-def>          \MT@if@fontspec@font
+%<luatex-def>             {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
         \fi
       }%
       \MT@vinfo{... Disabling ligatures for characters: #2}%
@@ -11781,7 +11786,8 @@ end
   \MT@define@optionX@{tracking}{\ifnum\@tempcnta=\z@ \let\MT@tracking\MT@set@tr@zero
                                 \else \let\MT@tracking\MT@tracking@ \fi}
 %<pdftex-def>  \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
-%<pdftex-def>  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta \pdfappendkern\@tempcnta}
+%<pdftex-def>  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta
+%<pdftex-def>                               \pdfappendkern\@tempcnta}
 }{
 %</pdftex-def|luatex-def>
 %<*pdftex-def|luatex-def|xetex-def>
