@@ -38,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2016/05/11 v2.6a
+  [2016/05/14 v2.6a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -3081,6 +3081,7 @@
 %        \refsection{\ref{sub:options-cmd}}
 %  \item Protrusion settings for <T5> encoded Charter
 %
+%\ifcmr\else\pagebreak\fi ^^A layout
 %\Version{1.9}{2005/10/28}
 %  \item New command \cs{DisableLigatures} to disable ligatures
 %        (\pdftex\ $\geq$ 1.30)
@@ -4185,7 +4186,7 @@ local microtype  = microtype
 microtype.module = {
     name         = "microtype",
     version      = "2.6a",
-    date         = "2016/05/11",
+    date         = "2016/05/14",
     description  = "microtype module.",
     author       = "E. Roux, R. Schlicht and P. Gesang",
     copyright    = "E. Roux, R. Schlicht and P. Gesang",
