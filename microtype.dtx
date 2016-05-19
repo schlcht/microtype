@@ -2,7 +2,7 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.6a"
+% !DTXversion:: "2.6b"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -38,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2016/05/14 v2.6a
+  [2016/05/99 v2.6b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -2962,6 +2962,8 @@
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
+%\VersionDate{2.6a}{2016/05/14}
+%
 %\Version{2.6}{2016/05/01}
 %  \item Support for \luatex\ 0.85
 %  \item Improvements for tracking/letterspacing with \luatex\
@@ -3288,9 +3290,9 @@
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
-%  \@gobble,\@gobbletwo,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,
-%  \@ifundefined,\@let@token,\@m,\@makeother,\@minus,\@nameuse,\@ne,\@nil,\@nnil,
-%  \@onelevel@sanitize,\@onlypreamble,\@percentchar,\@pkgextension,\@plus,
+%  \@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,
+%  \@ifstar,\@ifundefined,\@let@token,\@m,\@makeother,\@minus,\@nameuse,\@ne,\@nil,
+%  \@nnil,\@onelevel@sanitize,\@onlypreamble,\@percentchar,\@pkgextension,\@plus,
 %  \@ptionlist,\@removeelement,\@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,
 %  \@tempc,\@tempcnta,\@tempcntb,\@tempdima,\@typeset@protect,\@undefined,
 %  \@unprocessedoptions,\@unusedoptionlist,\@xobeysp,\check@icr,\color@begingroup,
@@ -4984,6 +4986,17 @@ microtype.do_font = do_font
   \MT@warning@nl{Detected the `wordcount' utility.\MessageBreak
     Disabling `\MT@MT', since it wouldn't work}%
   \MT@clear@options\endinput}\relax
+%    \end{macrocode}
+% The \pkg{minimal} class doesn't define any size commands other than
+% \cmd\normalsize, which will result in lots of warnings. Therefore we
+% issue a warning about the warnings.
+%\changes{v2.6b}{2016/05/18}{warning with \pkg{minimal} class}
+%    \begin{macrocode}
+\@ifclassloaded{minimal}{%
+  \MT@warning@nl{Detected the `minimal' class.\MessageBreak
+    Expect lots of warnings and some malfunctions.\MessageBreak
+    You might want to use a proper class instead}%
+}\relax
 %    \end{macrocode}
 %\begin{macro}{\MT@setup@}
 %\changes{v1.9a}{2005/11/21}{defer setup until the end of the preamble}
@@ -8841,7 +8854,7 @@ end
 %\end{macro}
 %\begin{macro}{\MT@is@xchar}
 %\changes{v2.6}{2016/04/23}{update for \pkg{fontspec}'s <TU> encoding}
-% With \pkg{fontspec}'s <TU> encoding, glyphs numbers may be up to four digits.
+% With \pkg{fontspec}'s <TU> encoding, glyph numbers may be up to four digits.
 %\SpecialEscapechar{\/}
 %    \begin{macrocode}
       /def/MT@is@xchar##1|##2\CHAR"##3##4/relax{%
@@ -16779,7 +16792,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10449}
+% \CheckSum{10454}
 %
 % \Finale
 %
