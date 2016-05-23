@@ -196,9 +196,6 @@ sty-install: $(RUNFILES)
 
 manifest: $(SOURCE) 
 	@echo "=== Source files ==="
-#	@for f in $(SOURCE); do echo "$$f"; \
-#		sed -n 's/^.*\$$Id: \(.*\),v \([^ ]*\) \([^ ]*\) \([^ ]*\) .*$$/ >> RCS: v\2 (\3 \4)/p' $$f ; \
-#	done
 	@sed -n '/%<\*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
 	@sed -n '/ *version *= *.*$$/{N;s/^.*= *"\(.*\)",.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
 	@sed -n '/%<\*driver>$$/{N;/{\\jobname\.dtx}/ s/^.*\[\(.*\)\]$$/-- \1 ($(UTFDTX))/p;}' $(UTFDTX)

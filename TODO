@@ -1,4 +1,6 @@
-* what to do with lualatex -ini ?
+* letterspace and expansion works with dviluatex
+* efcodes seem to be 1000 with luatex
+* what to do about lualatex -ini ?
 * fix with mathpazo
 * fix (outer) spacing with luatex
 * don't set up inheritance list for tracking

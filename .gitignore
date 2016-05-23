@@ -25,6 +25,8 @@ microtype-gind.ist
 *.out
 *.tmp
 *.toc
+*.dvi
+*.ps
 
 *.mtx
 *.pl
