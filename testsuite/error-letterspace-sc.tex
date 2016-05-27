@@ -1,0 +1,31 @@
+\documentclass{book}
+\usepackage{microtype,xspace}
+%\tracingmicrotype4
+\SetTracking
+  [ name         = test,
+    outer spacing = {1000*,,},
+    no ligatures = {f} ]
+  { font = */*/*/sc/* }
+  { 050 }
+\makeatletter
+\def\test#1#2{%
+   \setbox0\hbox{#1}%
+   \ifdim\wd0=#2 \else\showthe\wd0 \fi
+   \box0
+}
+\def\testa#1{\test{#1}{64.04149pt }}
+\def\testb#1{\test{#1}{67.63034pt }}
+\def\x{\textsc{\textls{Hello}}\xspace}
+\begin{document}
+\testa{\textsc{\textls{Hello }}world!}
+
+\testa{\textls{\textsc{Hello }}world!}
+
+\testb{\textsc{\textls{Hello}} world!}
+
+%\testb{\textls{\textsc{Hello}} world!} % !wrong?!
+
+\testb{\textls{\textsc{Hello} }world!}
+
+\testb{\x world!}
+\end{document}

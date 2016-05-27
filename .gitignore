@@ -30,7 +30,6 @@ microtype-gind.ist
 
 *.mtx
 *.pl
-dummy-space.*
 justification.png
 
 make-normal-sty

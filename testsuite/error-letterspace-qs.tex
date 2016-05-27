@@ -1,0 +1,62 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{qstest}
+\IncludeTests{*}
+\LogTests{log}{*}{*}
+
+\begin{document}
+
+\newdimen\testdim
+
+\tracingoutput1
+\showboxbreadth\maxdimen
+\showboxdepth\maxdimen
+\def\ispace#1{(\dimexpr#1sp * \fontdimen6\font/1000\relax)}
+\def\okern#1{(\dimexpr#1sp * \fontdimen6\font/2000\relax)}
+
+\begin{qstest}{A}{A}
+  \newcommand\Test[7][]{%
+    \SetTracking[%
+       spacing={#3},%
+       outer spacing={#4},%
+       outer kerning={#5}]
+      {font=*/*/*/*/*}
+     {#6}
+    \ifx\relax#1\relax
+      \setbox0\hbox{Z#2Z}%
+    \else
+      \setbox0\hbox{#1 #2 #1}%
+    \fi
+    \testdim=\wd0
+    \typeout{=====A. \the\wd0}%
+    #6: \fbox{\unhbox0}\par
+    \ifx\relax#1\relax
+      \setbox0=\hbox{Z\textls{#2}Z}%
+    \else
+      \setbox0=\hbox{#1 \textls{#2} #1}%
+    \fi
+    \typeout{=====B. \the\wd0}%
+    \Expect*{\the\dimexpr\testdim+.#6\fontdimen6\font#7\relax}*\NearTo[0.001pt]{\the\wd0}
+    #6: \fbox{\unhbox0}\par\hrule\par
+  }
+  \Test{A}{*,*,*}{*,*,*}{*,*}{999}{}
+  \Test{A}{*,*,*}{*,*,*}{0,0} {998}{-\okern{998}*2}
+  \Test{A A}{0,*,*}{*,*,*}{*,*}{997}{*2-\fontdimen2\font-\ispace{997}}
+  \Test{A A}{0,0,0}{,,}{*,*}{996}{*2-\fontdimen2\font-\ispace{996}}
+  \Test{A A}{0,0,0}{,,}{0,0}{995}{*2-\fontdimen2\font-\okern{995}*4}
+  \Test{A A}{,,}{,,}{*,*}{994}{*2}
+  \Test[Y]{A A}{,,}{,,}{*,*}{993}{*2}
+  \Test[Y]{A A}{0,*,*}{,,}{*,*}{992}{*2-3\fontdimen2\font-\ispace{992}*3} % ?
+  \Test[Y]{A A}{,,}{0,,}{*,*}{991}{*2-2\fontdimen2\font-\ispace{991}}
+  \Test[Y]{A A}{,,}{1000*,,}{*,*}{990}{*2+2\fontdimen2\font}
+  \Test[Y]{AA} {,,}{1000*,,}{*,*}{989}{*2+2\fontdimen2\font}
+  \Test[Y]{A A}{,,}{500*,,}{*,*}{988}{*2+\fontdimen2\font}
+  \Test[Y]{A A}{,,}{1000,,}{*,*}{987}{*2-2\fontdimen2\font+2\fontdimen6\font-\ispace{987}}
+  \Test[Y]{A A}{1000*,,}{,,}{*,*}{986}{*2+3\fontdimen2\font}
+  \Test[Y]{A A}{1000,,}{,,}{*,*}{985}{*2-3\fontdimen2\font+3\fontdimen6\font-\ispace{985}*3}
+  \Test[Y]{A A}{1000,,}{0,,}{*,*}{984}{*2-3\fontdimen2\font+\fontdimen6\font-\ispace{984}*2}
+  \Test{A\textls{A}}{*,*,*}{*,*,*}{*,*}{983}{}
+  \Test{A\textls*{A}}{*,*,*}{*,*,*}{*,*}{982}{} % wrong !!!
+\end{qstest}
+\end{document}

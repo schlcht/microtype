@@ -1,0 +1,32 @@
+%
+%  spaces with non-etex
+%
+% Newsgroups: de.comp.text.tex
+% Von: Mark Rossi <mark.ro...@de.bosch.com>
+% Datum: Tue, 24 May 2005 08:24:16 +0200
+% Lokal: Di 24 Mai 2005 07:24
+% Betreff: [microtype] 2 x seltsames Verhalten
+%
+\tracingoutput1
+\showboxbreadth\maxdimen
+\showboxdepth\maxdimen
+\documentclass[a4paper]{scrartcl}
+\usepackage[ansinew]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{german}
+\let\eTeXversion\undefined
+\usepackage[protrusion={true,nocompatibility}, expansion={false}]{microtype}
+%\usepackage{hyperref}
+\begin{document}
+\begin{abstract}
+Bla blablub bla rum bla der das. \textit{Terhardt} Bla blablub bla rum bla der das. Bla blablub bla rum bla der das.
+Bla blablub bla rum bla der das.
+\end{abstract}
+
+Bla blablub bla rum bla der das. Bla blablub bla rum bla der das. Bla blablub bla rum bla der das. Bla blablub bla rum
+bla der das\footnote{Bla blablub bla rum bla der das. Bla blablub bla rum bla der das. Bla blablub bla rum bla der
+das. Bla blablub bla rum bla der das. Bla blablub bla rum bla der das.}.
+\end{document}
+
+! grep '^Overfull ' 
+

@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{amstext}
+\makeatletter
+\@fileswfalse
+\makeatother
+\usepackage[verbose,letterspace=200,activate=false,tracking=smallcaps]{microtype}
+%\usepackage[letterspace=200]{letterspace}
+\SetTracking
+  [ name         = XXXX,
+    no ligatures = {f},
+    outer spacing = {1000,,} ]
+  { encoding = OT1,
+    family   = *,
+    series   = m,
+    shape    = n }
+  { }
+\begin{document}
+\tracingoutput1
+\showboxdepth\maxdimen
+\showboxbreadth\maxdimen
+
+Z \textls{AAAAA\textls*[500]{BBB}CCC\textit{CCCC}DDD\textls*{EEE}}
+
+ Z  \textls{AAA} BBB
+
+  Z $\textls{AAA} \textls{BBB}$ BBB
+
+  Z $\textrm{\textls{AAA}} BBB$
+
+  $\textrm{Z \textls*{AAA}.B \textls{BBB}}$
+
+  $\mathchoice{a B}{HH \textls{\lslig{ff}} BB}{}{}$
+
+  $\mathchoice{\textls{AAA}}{\textls{BBB}}{C}{D}$
+
+  \[\mathchoice{\textls{AA\lslig{fi}AA}}{\textls{BBB}}{C}{D}\]
+
+  \[\mathchoice{\text{Z \textls{AAA} Z}}{\textls{BBB}}{C}{D}\]
+
+  \[\mathchoice{Z \text{\textls{AAA}} Z}{\textls{BBB}}{C}{D}\]
+
+  \[\mathchoice{\textsc{AA\lslig{fi}AA}}{\textsc{BBB}}{C}{D}\]
+
+  \[\mathchoice{\text{Z {\scshape AAA} Z}}{\textsc{BBB}}{C}{D}\]
+
+  \[\mathchoice{Z \text{\scshape AAA} Z}{\textsc{BBB}}{C}{D}\]
+
+% this doesn't work, by design:
+%  $\mathchoice{\lsstyle AAA}{\lsstyle BBB}{C}{D}$
+%  $\mathchoice{{\lsstyle AAA}}{{\lsstyle BBB}}{C}{D}$
+
+% but this does:
+  $\mathchoice{\textrm{\lsstyle AAA}}{\textrm{\lsstyle BBB}}{C}{D}$
+
+%\tracingmacros1
+\end{document}

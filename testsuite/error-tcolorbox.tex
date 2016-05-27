@@ -1,0 +1,60 @@
+% MID: <mk1sqc$jve$1@speranza.aioe.org>
+\documentclass[10pt]{scrbook}
+\KOMAoptions{BCOR=1cm}
+\usepackage[osf,sc]{mathpazo}
+
+% ohne ellipsis kommt ein anderer fehler
+\usepackage[xspace]{ellipsis}
+
+% parameters from
+% http://texdoc.net/texmf-dist/doc/latex/microtype/microtype.pdf
+% page 17
+\usepackage[tracking=true]{microtype}
+\DeclareMicrotypeSet*[tracking]{my}
+   { encoding = *,
+     size     = {-small,Large-},
+     font     = */*/*/sc/* }
+
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems,breakable}
+\newtcbtheorem
+  []
+  {mydefinition}
+  {Definition}
+  {breakable,top=4pt}
+  {definition}
+
+\begin{document}
+
+\chapter{A}
+\newpage
+a\newpage
+
+\newcommand{\textI}{textJ textJ}
+\newcommand{\textH}{\textI \textI}
+\newcommand{\textG}{\textH \textH}
+\newcommand{\textF}{\textG \textG}
+\newcommand{\textE}{\textF \textF}
+\newcommand{\textD}{\textE \textE}
+\newcommand{\textC}{\textD \textD}
+\newcommand{\textB}{\textC \textC}
+\newcommand{\textA}{\textB \textB}
+
+\textA
+\textA
+\textC
+\textD
+
+% \section{abc} liefert keinen fehler
+\section{$\text{abc}$}
+\textA\textB\textC
+
+\begin{mydefinition}{x}{x}
+\begin{math}
+a\\
+a
+\end{math}
+\end{mydefinition}
+
+\end{document}
+

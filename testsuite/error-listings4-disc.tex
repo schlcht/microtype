@@ -1,0 +1,13 @@
+%\changes{v2.3d}{2009/02/08}{fix: don't adjust inside discretionary
+%                            (reported by \contributor Maverick Woo <maverick\at cs.cmu.edu>)}
+%                                                  ^^A private mail, 2009/02/07
+\documentclass{article}
+\usepackage[tracking]{microtype}
+\DeclareMicrotypeSet*[tracking]{mytrackingset}{encoding=OT1,size=tiny}
+\usepackage{listings}
+\lstset{language=ML,breaklines=true,prebreak=\mbox{\tiny$\searrow$}}
+\begin{document}
+\begin{lstlisting}
+  fun (f >> g) = g o f (* a wordy comment to break the line *)
+\end{lstlisting}
+\end{document}

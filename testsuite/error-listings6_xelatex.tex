@@ -1,0 +1,27 @@
+% !TeX program = xelatex
+% !TeX encoding = utf-8
+% usage: pdflatex | lualatex | xelatex
+% Rolf Dieterich <rolf.dieterich at gmx.de>
+% 2011/04/30
+\documentclass{article}
+\pagestyle{empty}\parindent0pt
+\usepackage{listings,microtype}
+%\usepackage{unicode-math} % defines \carriagereturn
+
+\begin{document}
+
+\lstset{%
+ breaklines=true,%
+ prebreak=\mbox{\tiny$\searrow$},% --> FAILURE
+ %prebreak=\carriagereturn,% --> OK
+}
+
+\begin{lstlisting}
+case(wert;
+	1:	F_DoEins();
+	2:	F_DoZwei();
+	 :	F_DoSonst()
+)
+\end{lstlisting}
+
+\end{document}

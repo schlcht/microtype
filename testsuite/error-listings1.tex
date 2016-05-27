@@ -1,0 +1,11 @@
+\documentclass{article}
+\usepackage{listings}
+% just to make sure that microtype will have to do its work *inside*
+% the lstlistings (when the ptm font is loaded):
+\lstset{keywords=test,keywordstyle=\fontfamily{ptm}\selectfont}
+\usepackage[verbose,expansion=false]{microtype}
+\begin{document}
+\begin{lstlisting}
+  test
+\end{lstlisting}
+\end{document}

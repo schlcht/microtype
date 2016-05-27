@@ -1,0 +1,17 @@
+% http://tex.stackexchange.com/questions/213164/combination-of-microtype-and-algorithm-package-fails-to-compile
+\documentclass{article}
+\usepackage[activate=true,final,tracking=true,kerning=true,spacing=true]{microtype} % improves font appearance. http://www.khirevich.com/latex/microtype/
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\begin{document}
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\State $W_{out}\gets\{w_{out,1},\dots\}$
+\State $W_{in}\gets\{w_{in,1},w_{in,2},\dots\}$
+\State $g \gets\Call{initialGraph}{W_{in},W_{out}}$
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}

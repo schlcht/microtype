@@ -1,0 +1,20 @@
+% Maverick Woo, 2009/02/07
+\documentclass{article}
+\usepackage[tracking,letterspace=100,verbose]{microtype}
+\DeclareMicrotypeSet*[tracking]{mytrackingset}{encoding=OT1,size=tiny}
+\SetTracking
+  [ name         = default,
+    outer kerning = {0,0},
+    no ligatures = {f} ]
+  { encoding     = {OT1,T1,LY1,OT4,QX},
+}
+  { }
+\usepackage{listings}
+\lstset{language=ML,breaklines=true,prebreak=\mbox{\tiny$\searrow$}}
+\begin{document}
+
+\begin{lstlisting}
+  fun (f >> g) = g o f (* a wordy comment to break the line *)
+\end{lstlisting}
+
+\end{document}

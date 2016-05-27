@@ -1,0 +1,19 @@
+% Geoff Vallis <gkv at princeton.edu>
+% 2007/06/07
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\makeatletter
+\DeclareTextCompositeCommand{\r}{T1}{A}{%
+  \leavevmode
+  \setbox0\hbox{h}%
+  \dimen@\ht0 %
+  \advance\dimen@-1ex%
+  \hmode@bgroup
+    \ooalign{\hfil\raise.65\dimen@\hbox{\r{}}\hfil\crcr A}%
+  \egroup
+}
+\makeatother
+\usepackage{microtype}
+\begin{document}
+  \r A -- \char"C5
+\end{document}

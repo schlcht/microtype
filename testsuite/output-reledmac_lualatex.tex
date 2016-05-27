@@ -1,0 +1,85 @@
+\documentclass{article} 
+\usepackage{lipsum}
+\usepackage[series={A,B,C,D,E,F,G,H,I,J},noend,nofamiliar,noledgroup,noeledsec]{reledmac}%Declare series to be used
+\usepackage{reledpar}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\usepackage{libertine}
+\usepackage{microtype}
+\SetProtrusion[unit=1pt]{encoding=*,family=*}{. = {,1000},{,}={,1000},v={1000,},w={1000,}}
+\tracingoutput1
+\showboxbreadth1000
+\showboxdepth100
+% Here is the loop system:
+\makeatletter% We need to use command with @
+  % Two counters: one for left and one for right
+  \newcounter{mynotelevel}%
+    \renewcommand{\themynotelevel}{\Alph{mynotelevel}}% Print the counter as a letter
+  \newcounter{mynotelevelR}%
+    \renewcommand{\themynotelevelR}{\Alph{mynotelevelR}}% Print the counter as a letter
+  \setcounter{mynotelevelR}{5}
+
+  % Following lines are called at each \pstart
+  \AtEveryPstartCall{%
+        \ifledRcol%If it's a right pstart
+          \addtocounter{mynotelevelR}{1}%Step counter
+          \ifnumequal{\arabic{mynotelevelR}}{11}{%No more than J series (10)
+            \setcounter{mynotelevelR}{6}% If more than J => restart to F (6)
+          }{}%
+            \global\letcs{\mynote}{\themynotelevelR footnote}%  And let mynote equal to <X>footnote, where <X> is the current level \letcs is defined by etoolbox which is called by reledmac        
+        \else% If it's a left page
+          \addtocounter{mynotelevel}{1}%Step counter
+          \ifnumequal{\arabic{mynotelevel}}{6}{%No more than E series (5)
+            \setcounter{mynotelevel}{1}%If more than J => restart to A (1)
+          }{}%
+            \global\letcs{\mynote}{\themynotelevel footnote}%And let mynote equal to <X>footnote, where <X> is the current level \letcs is defined by etoolbox which called by reledmac        
+        \fi%
+  }
+  % This code is called when beginnings of each pstart are printed
+  \AtEveryPstart{%
+    \ifodd\c@page%If we are on a left page
+        \addtocounter{mynotelevelR}{1}%Step counter
+        \ifnumequal{\arabic{mynotelevelR}}{11}{%No more than J series (10)
+          \setcounter{mynotelevelR}{6}}{}% If more than J => restart to F (6)
+                    \seriesatend{\themynotelevelR}% The series should be at the end
+            \else%
+        \addtocounter{mynotelevel}{1}%Step counter
+        \ifnumequal{\arabic{mynotelevel}}{6}{%No more than E series (5)
+          \setcounter{mynotelevel}{1}}{}%% If more than E => restart to A (1)
+          \seriesatend{\themynotelevel}% The series should be at the end
+    \fi%
+   }
+
+\makeatother
+\begin{document}
+
+\begin{pages}
+\begin{Leftside}
+    \beginnumbering
+
+    \pstart
+    \edtext{\themynotelevel Here}{\mynote{First footnote in \themynotelevel. Und, so, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter.}} is the 
+    \edtext{\themynotelevel first}{\mynote{Second footnote in \themynotelevel.}} paragraph: 
+    \lipsum[1]
+    \pend
+    \endnumbering
+\end{Leftside}
+
+\begin{Rightside}
+    \beginnumbering
+
+    \pstart
+    \edtext{\themynotelevelR Here}{\mynote{First footnote in \themynotelevelR. Und, so, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter, weiter.}} is the 
+    \edtext{\themynotelevelR first}{\mynote{Second footnote in \themynotelevelR.}} paragraph: 
+    \lipsum[1]
+    \pend
+    \endnumbering
+\end{Rightside}
+\end{pages}
+\setcounter{mynotelevel}{0}%Restart the left counter
+\setcounter{mynotelevelR}{5}% And restart the right counter
+\Pages
+
+\end{document}
+
+grep "\\kern -1\.0"

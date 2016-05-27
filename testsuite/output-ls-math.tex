@@ -1,0 +1,18 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{microtype}
+\textwidth=7cm
+\DeclareMathOperator{\MyOp}{MyVeryLargeOperator}
+
+\begin{document}
+Before: $\MyOp(1,2,3)$. % this is how it should be.
+
+{\lsstyle $X^2 + Y^2 = Z^2$} % \lsstyle and math inside a group.
+
+%\makeatletter\let\glb@currsize\@empty\makeatother
+After: $\MyOp(1,2,3)$. % now math has wrong letterspacing.
+
+\end{document}
+
+! grep '^Overfull ' 
+

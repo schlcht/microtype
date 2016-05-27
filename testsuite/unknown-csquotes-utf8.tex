@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german,british]{babel}
+\usepackage[babel,german=guillemets]{csquotes}
+\MakeAutoQuote{›}{‹}
+\MakeForeignQuote{german}{»}{«}
+\usepackage{microtype}
+\SetProtrusion
+   {font = *}
+   { » = {0,0},
+     « = {0,0},
+     › = {0,0},
+     ‹ = {0,0}}
+\begin{document}
+›a‹
+
+»This is a sentence.«
+\end{document}

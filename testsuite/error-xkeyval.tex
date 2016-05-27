@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{xkeyval}
+\usepackage[ factor = 1500 , verbose,expansion = false]{microtype}
+\SetProtrusion
+   [ name = test  ,
+     factor = 750 ]
+   { font = * }
+   { - = {1000,1000},
+    A = {1000,1000},
+    l = {1000,1000} }
+\textwidth=10cm
+
+\begin{document}
+ `Margin kerning is the adjustments of the characters at the margins of a
+  typeset text. A simplified employment of margin kerning is hanging
+  punctuation. Margin kerning is needed for optical alignment of the margins
+  of a typeset text, because mechanical justification of the margins makes
+  them look rather ragged. Some characters can make a line appear shorter to
+  the human eye than others. Shifting such characters by an appropriate
+  amount into the margins would greatly improve the appearance of a typeset
+  text.
+
+  Composing with font expansion is the method to use a wider or narrower
+  variant of a font to make interword spacing more even. A font in a loose
+  line can be substituted by a wider variant so the interword spaces are
+  stretched by a smaller amount. Similarly, a font in a tight line can be
+  replaced by a narrower variant to reduce the amount that the interword
+  spaces are shrunk by. There is certainly a potential danger of font
+  distortion when using such manipulations, thus they must be used with
+  extreme care. The potentiality to adjust a line width by font expansion can
+  be taken into consideration while a paragraph is being broken into lines,
+  in order to choose better breakpoints.'
+
+\end{document}

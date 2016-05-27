@@ -1,0 +1,21 @@
+%
+%  \capitalcaron
+%
+% Newsgroups: de.comp.text.tex
+% Von: Stephan Hennig <stephanhen...@nospam.arcornews.de>
+% Datum: Mon, 13 Jun 2005 18:14:13 +0200
+% Lokal: Mo 13 Jun. 2005 17:14
+% Betreff: microtype und \capitalcaron
+%
+\tracingoutput1
+\showboxbreadth\maxdimen
+\showboxdepth\maxdimen
+\documentclass{article}
+\usepackage{textcomp}
+\usepackage{microtype}
+\begin{document}
+\capitalcaron{C}
+\end{document}
+
+grep '\.\.\.\.\\kern -6\.1105 (for accent)'
+
