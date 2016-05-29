@@ -34,6 +34,7 @@ NAME = microtype
 DOC  = $(NAME).pdf
 INS  = $(NAME).ins
 DTX  = $(NAME).dtx
+README = README.md
 UTFDOC = $(NAME)-utf.pdf
 UTFDTX = $(NAME)-utf.dtx
 ALLDTX = $(DTX) $(UTFDTX)
@@ -47,7 +48,7 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   mt-ugm.cfg mt-mvs.cfg mt-zpeu.cfg mt-euroitc.cfg \
 	   mt-CharisSIL.cfg mt-LatinModernRoman.cfg mt-PalatinoLinotype.cfg \
 	   test-microtype.tex
-SOURCE    = $(ALLDTX) $(INS) README.md
+SOURCE    = $(ALLDTX) $(INS) $(README)
 GENERATED = $(UNPACKED) $(COMPILED)
 
 CTAN_FILES = $(SOURCE) $(COMPILED)
@@ -55,7 +56,7 @@ CTAN_FILES = $(SOURCE) $(COMPILED)
 # Files grouped by installation location
 UNPACKED_DOC = test-microtype.tex
 RUNFILES = $(filter-out $(UNPACKED_DOC), $(UNPACKED))
-DOCFILES = $(COMPILED) $(UNPACKED_DOC) README.md
+DOCFILES = $(COMPILED) $(UNPACKED_DOC) $(README)
 SRCFILES = $(ALLDTX) $(INS)
 
 ALL_FILES = $(RUNFILES) $(DOCFILES) $(SRCFILES)
@@ -199,7 +200,7 @@ manifest: $(SOURCE)
 	@sed -n '/%<\*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
 	@sed -n '/ *version *= *.*$$/{N;s/^.*= *"\(.*\)",.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
 	@sed -n '/%<\*driver>$$/{N;/{\\jobname\.dtx}/ s/^.*\[\(.*\)\]$$/-- \1 ($(UTFDTX))/p;}' $(UTFDTX)
-	@sed -n 's/^ *(\(v[^ ]*\) *-- *\([^ ]*\))$$/-- \2 \1 (README.md)/p' README.md
+	@sed -n 's/^ *(\(v[^ ]*\) *-- *\([^ ]*\))$$/-- \2 \1 ($(README))/p' $(README)
 	@echo ""
 	@echo "=== Derived files ==="
 	@for f in $(UNPACKED); do echo "$$f"; done
@@ -214,7 +215,8 @@ clean: mostlyclean
 
 # testing the package
 TESTDIR = ./testsuite
-test: testerrors testunknown testoutput testcompat
+WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
+test: testerrors testunknown testoutput # testcompat
 	@$(RM) $(TESTDIR)/*.log
 	@$(RM) $(TESTDIR)/*.aux
 	@$(RM) $(TESTDIR)/*.pdf
@@ -232,7 +234,7 @@ testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 		$(foreach file,$^,$(call run-test-file,error,$(notdir $(basename $(file)))))
 	@echo " - wordcount"
 	@cd $(TESTDIR) && \
-		if ! `./wordcount.sh errorx-wordcount > /dev/null` ; \
+		if ! `$(WORDCOUNT) errorx-wordcount > /dev/null` ; \
 	        	then $(not-ok) ; \
 		fi
 
