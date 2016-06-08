@@ -1,7 +1,7 @@
-* letterspace and expansion works with dviluatex
-* efcodes seem to be 1000 with luatex
+* letterspace and expansion work with dviluatex (since when?)
+* default efcodes seem to be 1000 with luatex now
 * what to do about lualatex -ini ?
-* fix with mathpazo
+* fix infinite loop with mathpazo
 * fix (outer) spacing with luatex
 * don't set up inheritance list for tracking
 * make tracking work with xetex (shouldn't be a problem?)
@@ -15,7 +15,6 @@ and we must check whether \spaceskip<>0pt
 * expansion settings for luatex
 * "override" key?
 * let scrubfeatures relax (splitname)
-* proper testsuite
 ---
 * add this to microtype.ins? -:
 ----------------------------------

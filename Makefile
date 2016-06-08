@@ -25,10 +25,10 @@ help:
 	@echo ' install TEXMFROOT=<texmf> - install the package into the path <texmf>'
 	@echo ' '
 	@echo '     test        - run the test suite'
-	@echo '     testerrors  -    ...   or'
+	@echo '     testerrors  -    ...  or a'
 	@echo '     testunknown -    ...  part'
-	@echo '     testoutput  -    ...   of'
-	@echo '     testcompat  -    ...   it'
+	@echo '     testoutput  -    ...  of it'
+	@echo ' test... COMPAT=<TeX Live> - test with other TeX Live release'
 
 NAME = microtype
 DOC  = $(NAME).pdf
@@ -88,23 +88,23 @@ tds:    $(TDS_ZIP)
 world:  all ctan
 
 .PHONY: help install sty-install manifest mostlyclean clean \
-	test testerrors testunknown testoutput testcompat
+	test testerrors testunknown testoutput
 
 # for the documentation we need the debug version of microtype.sty 
 # as well as microtype-doc.sty and microtype-gind.ist
 make-doc-sty: $(INS) $(DTX) docstrip.cfg  
 	@echo "Creating doc sty"
-	@sed -i '' '/\\def\\DEBUG/s/^%//' $<
+	@sed -i '' '/\\def\\DEBUG/s/^%//'   $<
 	@sed -i '' '/microtype-gind/s/^%//' $<
-	@sed -i '' '/microtype-doc/s/^%//' $<
+	@sed -i '' '/microtype-doc/s/^%//'  $<
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
 	@touch make-doc-sty
 
 # undo
 make-normal-sty: $(INS) $(DTX) docstrip.cfg  
 	@echo "Creating normal sty"
-	@sed -i '' '/\\def\\DEBUG/s/^\\/%\\/' $<
-	@sed -i '' '/microtype-doc/s/^\\/%\\/' $<
+	@sed -i '' '/\\def\\DEBUG/s/^\\/%\\/'   $<
+	@sed -i '' '/microtype-doc/s/^\\/%\\/'  $<
 	@sed -i '' '/microtype-gind/s/^\\/%\\/' $<
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
 	@touch make-doc-sty
@@ -216,7 +216,9 @@ clean: mostlyclean
 # testing the package
 TESTDIR = ./testsuite
 WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
-test: testerrors testunknown testoutput # testcompat
+COMPAT = $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
+TLPATH = ~/Library/texlive/$(COMPAT)/bin/x86_64-darwin
+test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.log
 	@$(RM) $(TESTDIR)/*.aux
 	@$(RM) $(TESTDIR)/*.pdf
@@ -248,16 +250,12 @@ testoutput: $(wildcard $(TESTDIR)/output-*.tex)
 	@cd $(TESTDIR) && \
 		$(foreach file,$^,$(call run-output-file,$(notdir $(basename $(file)))))
 
-testcompat: $(wildcard $(TESTDIR)/compat-*.tex)
-	@echo "* Compatibility:"
-	@cd $(TESTDIR) && \
-		$(foreach file,$^,$(call run-test-file,compat,$(notdir $(basename $(file)))))
-
 # parts of the filename after `_' signify an engine other than pdflatex
 run-test-file = \
 	echo " - $(subst $1-,,$2)" | sed 's/\(.*\)_\(.*\)/\1 (\2)/' ; \
-	if ! `$(if $(shell echo $2 | sed -n 's/.*_\(.*\)/\1/p'),\
-		   $(shell echo $2 | sed -n 's/.*_\(.*\)/\1/p'),pdflatex) --interaction=batchmode $2 $(REDIRECT)` ; \
+	if ! `$(if $(shell echo $2 | grep _),\
+		   $(TLPATH)/$(shell echo $2 | sed -n 's/.*_\(.*\)/\1/p'),\
+		   $(TLPATH)/pdflatex) --interaction=batchmode $2 > /dev/null` ; \
 		then $(not-ok) ; \
 	fi ;
 

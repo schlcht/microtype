@@ -7170,10 +7170,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@afteraftergroup#1{%
   \MT@ifdefined@n@TF{MT@aftergroup@\number\currentgrouplevel}\relax{%
-  \MT@exp@cs\xdef{MT@aftergroup@\number\currentgrouplevel}%
-    {\MT@exp@cs\MT@glet{MT@aftergroup@\number\currentgrouplevel}\noexpand\@undefined#1}%
-  \expandafter\aftergroup\expandafter\aftergroup\MT@exp@cs\aftergroup
-    {MT@aftergroup@\number\currentgrouplevel}%
+    \MT@exp@cs\xdef{MT@aftergroup@\number\currentgrouplevel}%
+      {\MT@exp@cs\MT@glet{MT@aftergroup@\number\currentgrouplevel}\noexpand\@undefined#1}%
+    \expandafter\aftergroup\expandafter\aftergroup\MT@exp@cs\aftergroup
+      {MT@aftergroup@\number\currentgrouplevel}%
   }%
 }
 %</pdftex-def|luatex-def|letterspace>
@@ -7531,6 +7531,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % If \cmd\tikz@expandcount\ is greater than zero, we're inside or at the end of
 % a \pkg{tikz} node, where we don't want to do anything, lest we disturb
 % \pkg{tikz}.
+%\todo{didn't this once work?} ^^A should be fixed in ..afteraftergroup
 %    \begin{macrocode}
 \MT@addto@setup{%
   \@ifpackageloaded{tikz}
