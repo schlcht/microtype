@@ -2,6 +2,7 @@
 \usepackage[letterspace=150]{microtype}
 \usepackage{tikz}
 \usetikzlibrary{automata,positioning}
+\usepackage{pgfplots}
 \SetTracking
   [ name         = XXXX,
     no ligatures = {f},
@@ -38,6 +39,33 @@ A \textls{BBB} A
 \end{tikzpicture}
 
 A \textls{BBB} A
+
+% The following reported by \contributor Karl Karlsson <karl-karlsson\at yandex.ru>
+%               ^^A private mail, 2009/10/21
+\begin{tikzpicture}
+    \begin{loglogaxis}[
+        xlabel=\lsstyle\textsc{Dof},
+        ylabel=\lsstyle $L_2$ Error
+    ]
+    \axispath\draw
+            (7.49165,-10.02171)
+        |-  (8.31801,-11.32467)
+        node[near start,left] {$\frac{dy}{dx} = -1.58$};
+      \addplot plot coordinates {
+        (5,     8.312e-02)
+        (17,    2.547e-02)
+        (49,    7.407e-03)
+        (129,   2.102e-03)
+        (321,   5.874e-04)
+        (769,   1.623e-04)
+        (1793,  4.442e-05)
+        (4097,  1.207e-05)
+        (9217,  3.261e-06)
+    };
+    \legend{$d=2$\\$d=3$\\$d=4$\\$d=5$\\$d=6$\\}
+
+    \end{loglogaxis}
+\end{tikzpicture}
 
 \end{document}
 

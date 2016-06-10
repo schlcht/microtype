@@ -229,6 +229,7 @@ test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.xref
 	@$(RM) $(TESTDIR)/*.1
 	@$(RM) $(TESTDIR)/*.1R
+	@$(RM) $(TESTDIR)/*.pgf
 
 testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 	@echo "* Errors:"

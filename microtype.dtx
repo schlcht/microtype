@@ -5166,6 +5166,30 @@ microtype.do_font = do_font
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@maybe@gobble@with@tikz}
+%\begin{macro}{\MT@tikz@setup}
+%\changes{v2.3e}{2009/11/02}{compatibility with \pkg{tikz} (first reported by
+%                           \contributor Christian Stark <cstark\at gmx.de>)}       ^^A MID: <7d81lgF2ad3ckU1@mid.dfncis.de>, 2009/07/28
+%^^A                  Also: \contributor Karl Karlsson <karl-karlsson\at yandex.ru> ^^A private mail, 2009/10/29
+%^^A                        \contributor hscm <henkmetselaar\at gmail.com>          ^^A MID: <6a24e972-b1a7-4172-a5a0-d2707e016301@12g2000pri.googlegroups.com>, 2009/11/02
+%\changes{v2.6b}{2016/06/08}{compatibility with \pkg{tikz} (again)}
+% If \cmd\tikz@expandcount\ is greater than zero, we're inside or at the end of
+% a \pkg{tikz} node, where we don't want to adjust spacing after letterspacing,
+% lest we disturb \pkg{tikz}. This is used in \cs{MT@afteraftergroup}, and we
+% don't need it for \letterspace.
+%    \begin{macrocode}
+\let\MT@maybe@gobble@with@tikz\@firstofone
+%<*package>
+\def\MT@tikz@setup{%
+  \def\MT@maybe@gobble@with@tikz{%
+    \ifnum\tikz@expandcount>\z@
+      \expandafter\@gobble
+    \else
+      \expandafter\@firstofone
+    \fi}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@setupfont@hook}
 % This hook will be executed every time a font is set up (inside a group).
 %
@@ -5179,7 +5203,6 @@ microtype.do_font = do_font
 % (This is no longer needed, since the complete setup is now deferred until the
 % end of the preamble. However, it is still necessary for \opt{defersetup}|=false|.)
 %    \begin{macrocode}
-%<*package>
 \def\MT@setupfont@hook{%
 %    \end{macrocode}
 %\iffalse
@@ -5243,6 +5266,7 @@ microtype.do_font = do_font
   \MT@with@package@T{tex4ht}    \MT@if@true
   \MT@with@package@T{mathastext}\MT@if@true
   \ifMT@if@\MT@restore@p@h\fi
+  \MT@with@package@T{tikz}\MT@tikz@setup
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5391,6 +5415,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \fi}%
 %</plain>
 %<*package>
+  \MT@with@package@T{tikz}\MT@tikz@setup
 %    \end{macrocode}
 %\changes{v2.1}{2007/01/15}{compatibility with \pkg{pinyin}: disable \microtype\ in \cmd\py@macron\
 %                           (reported by \contributor Sven Naumann <svenau\at gmx.net>)}
@@ -7169,11 +7194,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5a}{2013/05/15}{fix: get outer kerning and spacing of nested letterspacing right}
 %    \begin{macrocode}
 \def\MT@afteraftergroup#1{%
-  \MT@ifdefined@n@TF{MT@aftergroup@\number\currentgrouplevel}\relax{%
-    \MT@exp@cs\xdef{MT@aftergroup@\number\currentgrouplevel}%
-      {\MT@exp@cs\MT@glet{MT@aftergroup@\number\currentgrouplevel}\noexpand\@undefined#1}%
-    \expandafter\aftergroup\expandafter\aftergroup\MT@exp@cs\aftergroup
-      {MT@aftergroup@\number\currentgrouplevel}%
+  \MT@maybe@gobble@with@tikz{%
+    \MT@ifdefined@n@TF{MT@aftergroup@\number\currentgrouplevel}\relax{%
+      \MT@exp@cs\xdef{MT@aftergroup@\number\currentgrouplevel}%
+        {\MT@exp@cs\MT@glet{MT@aftergroup@\number\currentgrouplevel}\noexpand\@undefined#1}%
+      \expandafter\aftergroup\expandafter\aftergroup\MT@exp@cs\aftergroup
+        {MT@aftergroup@\number\currentgrouplevel}%
+    }%
   }%
 }
 %</pdftex-def|luatex-def|letterspace>
@@ -7313,7 +7340,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.2}{2007/02/25}{always defined}
 %\changes{v2.3}{2007/11/03}{redone: extract outer kerns from current letterspacing
 %                           amount}
-%\begin{macro}{\MT@lslig}
 % For Fraktur fonts, some ligatures shouldn't be broken up. This command will
 % temporarily select the base font and insert the correct kerning.
 %    \begin{macrocode}
@@ -7328,7 +7354,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }{#1}}%
 }
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@ls@basefont}
 %\begin{macro}{\MT@get@ls@basefont}
@@ -7522,33 +7547,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@tr@outer@r}
-%\changes{v2.3e}{2009/11/02}{compatibility with \pkg{tikz} (first reported by
-%                           \contributor Christian Stark <cstark\at gmx.de>)}       ^^A MID: <7d81lgF2ad3ckU1@mid.dfncis.de>, 2009/07/28
-%^^A                  Also: \contributor Karl Karlsson <karl-karlsson\at yandex.ru> ^^A private mail, 2009/10/29
-%^^A                        \contributor hscm <henkmetselaar\at gmail.com>          ^^A MID: <6a24e972-b1a7-4172-a5a0-d2707e016301@12g2000pri.googlegroups.com>, 2009/11/02
-% \microtype\ also adjusts spacing.
-% If \cmd\tikz@expandcount\ is greater than zero, we're inside or at the end of
-% a \pkg{tikz} node, where we don't want to do anything, lest we disturb
-% \pkg{tikz}.
-%\todo{didn't this once work?} ^^A should be fixed in ..afteraftergroup
-%    \begin{macrocode}
-\MT@addto@setup{%
-  \@ifpackageloaded{tikz}
-    {\def\MT@tr@outer@r{%
-       \ifnum\tikz@expandcount>\z@ \else
-         \expandafter\MT@tr@outer@r@\fi}}
-    {\let\MT@tr@outer@r\MT@tr@outer@r@}}
-%    \end{macrocode}
-%\end{macro}
 %\begin{macro}{\MT@tr@outer@next}
-%\begin{macro}{\MT@tr@outer@r@}
+%\begin{macro}{\MT@tr@outer@r}
+% \microtype\ also adjusts spacing.
 % The following is borrowed from \pkg{soul}. I've added the cases for italic
 % correction, since tracking may also be triggered by text commands (\eg,
 % \cmd\textsc).
 %    \begin{macrocode}
-\def\MT@tr@outer@r@{%
-  \futurelet\MT@tr@outer@next\MT@tr@outer@r@@
+\def\MT@tr@outer@r{%
+  \futurelet\MT@tr@outer@next\MT@tr@outer@r@
 }
 %    \end{macrocode}
 %\end{macro}
@@ -7566,9 +7573,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@tr@outer@r@@}
+%\begin{macro}{\MT@tr@outer@r@}
 %    \begin{macrocode}
-\def\MT@tr@outer@r@@{%
+\def\MT@tr@outer@r@{%
   \def\MT@temp*{}%
 %    \end{macrocode}
 % Don't adjust in math mode.
@@ -7600,7 +7607,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
         \ifhmode\unkern\fi\egroup
         \MT@set@curr@ok \MT@set@curr@os
-        \def\MT@temp*{\afterassignment\MT@tr@outer@r@\let\MT@temp=}%
+        \def\MT@temp*{\afterassignment\MT@tr@outer@r\let\MT@temp=}%
       \else
 %    \end{macrocode}
 % If the next token is \cmd\maybe@ic\ (from an enclosing text command), we
@@ -7624,7 +7631,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % doesn't read beyond our group).
 %    \begin{macrocode}
           \MT@if@outer@next\check@icr{%
-            \def\MT@temp*{\aftergroup\MT@tr@outer@r@\check@icr\let\MT@temp=}%
+            \def\MT@temp*{\aftergroup\MT@tr@outer@r\check@icr\let\MT@temp=}%
           }{%
             \MT@if@outer@next\@sptoken{%
               \def\MT@temp* {\ifhmode\hskip\MT@outer@space
@@ -7662,7 +7669,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@tr@outer@icr@}
 % Helper macros for the italic correction mess.
 %    \begin{macrocode}
-\def\MT@tr@outer@icr{\afterassignment\MT@tr@outer@icr@\MT@tr@outer@r@}
+\def\MT@tr@outer@icr{\afterassignment\MT@tr@outer@icr@\MT@tr@outer@r}
 \def\MT@tr@outer@icr@{%
   \let\@let@token= \MT@tr@outer@next
   \maybe@ic@
@@ -16793,7 +16800,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10454}
+% \CheckSum{10461}
 %
 % \Finale
 %
