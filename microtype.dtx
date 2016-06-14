@@ -3306,8 +3306,8 @@
 %  \PackageError,\PackageInfo,\PackageWarning,\RequirePackage,
 %  \@@enc@update,\cf@encoding,\f@encoding}
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
-%^^A  \f@size,\font@name,\glb@currsize,\normalfont,\pickup@font,\selectfont,
-%^^A  \set@fontsize,\showhyphens}                                            ^^A latex
+%^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\normalfont,\pickup@font,
+%^^A  \selectfont,\set@fontsize,\showhyphens}                                ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
@@ -5338,7 +5338,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{hyperref}{%
     \pdfstringdefDisableCommands{%
 %<*package>
-      \let\pickup@font\MT@orig@pickupfont
+      \MT@ltx@pickupfont
       \let\textmicrotypecontext\@secondoftwo
       \let\microtypecontext\@gobble
 %</package>
@@ -5432,14 +5432,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\MT@orig@py@macron\py@macron
     \@ifpackagelater{pinyin}{2005/08/11}{% 4.6.0
       \def\py@macron#1#2{%
-        \let\pickup@font\MT@orig@pickupfont
+        \MT@ltx@pickupfont
         \MT@orig@py@macron{#1}{#2}%
-        \let\pickup@font\MT@pickupfont}%
+        \MT@MT@pickupfont}%
     }{%
       \def\py@macron#1{%
-        \let\pickup@font\MT@orig@pickupfont
+        \MT@ltx@pickupfont
         \MT@orig@py@macron{#1}%
-        \let\pickup@font\MT@pickupfont}%
+        \MT@MT@pickupfont}%
     }%
   }%
 %</package>
@@ -9232,10 +9232,17 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@pickupfont}
-% Remember the patched command for later.
+%\begin{macro}{\MT@MT@pickupfont}
+%\begin{macro}{\MT@ltx@pickupfont}
+% Remember the patched command, because we may have to disable
+% ourselves in certain situations.
 %    \begin{macrocode}
   \let\MT@pickupfont\pickup@font
+  \def\MT@MT@pickupfont {\let\pickup@font\MT@pickupfont}%
+  \def\MT@ltx@pickupfont{\let\pickup@font\MT@orig@pickupfont}%
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\do@subst@correction}
 % Additionally, we hook into \cmd\do@subst@correction, which is called if
@@ -9266,16 +9273,31 @@ end
 %    \begin{macrocode}
   \let\MT@orig@add@accent\add@accent
   \def\add@accent#1#2{%
-    \let\pickup@font\MT@orig@pickupfont
+    \MT@ltx@pickupfont
     \MT@orig@add@accent{#1}{#2}%
-    \let\pickup@font\MT@pickupfont
+    \MT@MT@pickupfont
   }%
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\every@math@size}
+%\changes{v2.6b}{2016/06/12}{fix: prevent infinite loop with \pkg{psnfss} packages}
+% The token register \cmd\every@math@size\ may contain code that loads fonts,
+% which may in turn throw us into an infinite loop, so we better disable ourselves here.
+% This may result in missing letterspacing of math fonts (\eg, with the
+% \pkg{psnfss} packages).
+%\todo{fix missing letterspacing with \pkg{psnfss} packages}
+%\todo{fix when loaded before \pkg{psnfss} packages}
+%    \begin{macrocode}
+  \edef\MT@temp{\the\every@math@size}%
+  \ifx\MT@temp\@empty\else
+    \every@math@size\expandafter{\expandafter\MT@ltx@pickupfont\the\every@math@size}%
+  \fi
 %</package>
 }
 %<plain>}\relax
 %<*package>
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 % Consequently (if all goes well), we are the last ones to change these
 % commands, therefore there is no need to check whether our definition has
@@ -16512,7 +16534,7 @@ end
 
 %</cmr>
 %    \end{macrocode}
-% \pkg{fontinst}, however, which is also used to create the \pkg{PSNFSS} font
+% \pkg{fontinst}, however, which is also used to create the \pkg{psnfss} font
 % metrics, sets \fontdim7 to 240 by default. Therefore, the fallback settings
 % use this value for the first component.
 %    \begin{macrocode}
@@ -16800,7 +16822,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10461}
+% \CheckSum{10472}
 %
 % \Finale
 %
