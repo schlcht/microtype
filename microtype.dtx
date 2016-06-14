@@ -172,12 +172,12 @@
   \def\match{\textbullet}
   \usepackage{amssymb} % \varnothing
   \let\OrigTeX\TeX
-  \def\TeX{\textoractual{\OrigTeX}{TeX}}
+  \DeclareRobustCommand\TeX{\textoractual{\OrigTeX}{TeX}}
   \setlength\textheight{49\baselineskip}
 \else
   \def\bfdefault{b}
   \def\Module#1{{\color{theblue}\textoractual{$\langle$}{<}\textit{#1}\textoractual{$\rangle$}{>}}}
-  \def\TeX{\textoractual{T\kern-.1em\lower.4ex\hbox{E}\kern-.075emX\@}{TeX}}
+  \DeclareRobustCommand\TeX{\textoractual{T\kern-.1em\lower.4ex\hbox{E}\kern-.075emX\@}{TeX}}
   \DeclareRobustCommand\LaTeX{\textoractual{L\kern-.26em{\sbox\z@ T\vbox to\ht\z@{%
      \hbox{\check@mathfonts\fontsize\sf@size\z@\math@fontsfalse\selectfont A}%
     \vss}}}{La}\kern-.075em\TeX}
@@ -430,6 +430,7 @@
 \def\OptionSep{{\rmfamily, }} \def\MacroSep{\,} \def\EnvironmentSep{\,}
 \def\PrintValues[#1]{{\MacroFont\expandafter\@gobble\@tempa\hfill #1}\\*[.25\baselineskip]}
 \def\CatIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar hyperpage}}
+\def\CatIndeX#1#2#3{\index{#2\actualchar#1\ (#3)\encapchar hyperpage}}
 \def\SpecialOptionIndex#1{\@bsphack
   \index{\quotechar/#1% sort options as `Symbols'
     \actualchar{\protect\ttfamily#1}\encapchar usage}%
@@ -701,17 +702,15 @@
      \else \llap{\raisebox{0.45ex}{\'{}\kern\dimexpr.05em-2\fontdimen1\font\relax}}%
      \fi}
 \DeclareRobustCommand\thanh{H\`an \thanhthe{} Th\`anh}
-\DeclareRobustCommand\pdftex{\texorpdfstring{pdf\kern.05em\TeX}{pdfTeX}}
-\DeclareRobustCommand\luatex{\texorpdfstring{Lua\kern-.05em\TeX}{LuaTeX}}
-\DeclareRobustCommand\etex{\mbox{e-\kern-.075em\TeX}}
+\DeclareRobustCommand\pdftex{\texorpdfstring{pdf\kern.05em\TeX\CatIndeX{pdf\TeX}{pdftex}{engine}}{pdfTeX}}
+\DeclareRobustCommand\luatex{\texorpdfstring{Lua\kern-.05em\TeX\CatIndeX{Lua\TeX}{luatex}{engine}}{LuaTeX}}
+\DeclareRobustCommand\etex{\mbox{e-\kern-.075em\TeX}\CatIndeX{e-\TeX}{etex}{engine}}
 \DeclareRobustCommand\nonetex{\rlap{\kern.05em/}\etex} % aka. \TeX
-\def\@reflect#1{\ifdim\fontdimen1\font=0pt \reflectbox{#1}%
-  \else \rotatebox[origin=c]{180}{#1}\fi}
-\def\xe{% also reflect the initial `X'?
-  \textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}
-\DeclareRobustCommand\xetex{\xe\kern-.1em\TeX}
-\def\texlive{\TeX~Live}
-\def\miktex{MiK\TeX}
+\def\@reflect#1{\ifdim\fontdimen1\font=0pt \reflectbox{#1}\else\rotatebox[origin=c]{180}{#1}\fi}
+\DeclareRobustCommand\xe{\textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}% also reflect the initial `X'? 
+\DeclareRobustCommand\xetex{\xe\kern-.1em\TeX\CatIndeX{\xe\TeX}{xetex}{engine}}
+\DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
+\DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
