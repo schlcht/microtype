@@ -12,7 +12,7 @@ we have to take \fontdimens from \MT@font, not \MT@lsfont (in tr@set@space...)
 and we must check whether \spaceskip<>0pt
 ---
 * expansion settings for luatex
-* "override" key?
+* "override" key? (could also automatically load the relevant file)
 * let scrubfeatures relax (splitname)
 ---
 * add this to microtype.ins? -:
