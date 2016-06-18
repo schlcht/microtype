@@ -1,0 +1,13 @@
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{Adobe Garamond Pro}
+\usepackage[verbose]{microtype}
+\SetTracking[no ligatures={T}]{font=*}{}
+\tracingoutput1
+\showboxdepth\maxdimen
+\showboxbreadth\maxdimen
+\begin{document}
+\textls{Th ff}
+\end{document}
+
+! grep '(ligature Th)'
