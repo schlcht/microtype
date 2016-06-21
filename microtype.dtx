@@ -5177,8 +5177,8 @@ microtype.do_font = do_font
 % lest we disturb \pkg{tikz}. This is used in \cs{MT@afteraftergroup}, and we
 % don't need it for \letterspace.
 %    \begin{macrocode}
-\let\MT@maybe@gobble@with@tikz\@firstofone
 %<*package>
+\let\MT@maybe@gobble@with@tikz\@firstofone
 \def\MT@tikz@setup{%
   \def\MT@maybe@gobble@with@tikz{%
     \ifnum\tikz@expandcount>\z@
@@ -7193,14 +7193,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5a}{2013/05/15}{fix: get outer kerning and spacing of nested letterspacing right}
 %    \begin{macrocode}
 \def\MT@afteraftergroup#1{%
-  \MT@maybe@gobble@with@tikz{%
+%<!letterspace>  \MT@maybe@gobble@with@tikz{%
     \MT@ifdefined@n@TF{MT@aftergroup@\number\currentgrouplevel}\relax{%
       \MT@exp@cs\xdef{MT@aftergroup@\number\currentgrouplevel}%
         {\MT@exp@cs\MT@glet{MT@aftergroup@\number\currentgrouplevel}\noexpand\@undefined#1}%
       \expandafter\aftergroup\expandafter\aftergroup\MT@exp@cs\aftergroup
         {MT@aftergroup@\number\currentgrouplevel}%
     }%
-  }%
+%<!letterspace>  }%
 }
 %</pdftex-def|luatex-def|letterspace>
 %    \end{macrocode}
