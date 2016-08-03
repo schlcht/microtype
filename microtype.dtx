@@ -531,7 +531,7 @@
 % fancy PDF document
 \ifpdf
   \ifx\eTeXversion\@undefined \else % errors when not using etex (conflict with multicol)
-    \ifx\pdfcolorstack\@undefined   % no longer required with pdftex 1.40
+    \ifnum\pdftexversion < 140      % no longer required with pdftex 1.40
       \usepackage{pdfcolmk}
   \fi\fi
   \usepackage[bookmarks,bookmarksopen,pdfdisplaydoctitle,
@@ -2808,9 +2808,11 @@
 %  \contributor Ronnie Marksch    <Ronnie.Marksch\at yahoo.de>,
 %  \contributor David Carlisle    <d.p.carlisle\at gmail.com>,
 % `\contributor Max               <@\at @>', ^^A http://tex.stackexchange.com/users/16809/max
-% `\contributor HcN               <@\at @>'  ^^A http://tex.stackexchange.com/users/87090/hcn
+% `\contributor HcN               <@\at @>', ^^A http://tex.stackexchange.com/users/87090/hcn
+%  \contributor Will Robertson    <will\at wspr.io>,
+% `\contributor user11126'        <@\at @>, ^^A http://tex.stackexchange.com/users/1000/user11126
 % and
-%  \contributor Will Robertson    <will\at wspr.io>.
+%  \contributor Ulrike Fischer    <fischer\at troubleshooting-tex.de>.
 %
 %
 %\iffalse
@@ -2964,7 +2966,7 @@
 %\VersionDate{2.6a}{2016/05/14}
 %
 %\Version{2.6}{2016/05/01}
-%  \item Support for \luatex\ 0.85
+%  \item Support for \luatex\ $\geq$ 0.85
 %  \item Improvements for tracking/letterspacing with \luatex\
 %        (|Renderer=Basic| no longer required)
 %  \item New font sets: `|alltext-nott|', `|allmath-nott|'
@@ -3305,8 +3307,8 @@
 %  \PackageError,\PackageInfo,\PackageWarning,\RequirePackage,
 %  \@@enc@update,\cf@encoding,\f@encoding}
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
-%^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\normalfont,\pickup@font,
-%^^A  \selectfont,\set@fontsize,\showhyphens}                                ^^A latex
+%^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\glb@settings,\normalfont,
+%^^A  \pickup@font,\selectfont,\set@fontsize,\showhyphens}                   ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
@@ -7171,13 +7173,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 % Stuff to be done after the letterspace group. The \letterspace\ package
 % only adjusts the kerning.
-%\changes{v2.6}{2014/09/07}{fix: ensure to set up math fonts (reported by \contributor kleenstar <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/187655/microtype-gives-wrong-letterspacing-in-math-mode
 %    \begin{macrocode}
     \MT@afteraftergroup{%
       \MT@set@curr@os
       \MT@set@curr@ok
-      \MT@glet\noexpand\glb@currsize\noexpand\@empty
       \noexpand\MT@tr@outer@r
     }%
 %</pdftex-def|luatex-def>
@@ -7306,11 +7305,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % another text switch, of course).
 %\changes{v2.5}{2012/11/14}{fix: ensure to set up math fonts (reported by \contributor RazorXsr <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/82686/settracking-in-the-math-environment
-% Still, we have to (globally) ensure that math fonts are set up again.
+%\changes{v2.6}{2014/09/07}{fix: ensure to set up math fonts (reported by \contributor kleenstar <@\at @>)}
+%                           ^^A http://tex.stackexchange.com/questions/187655/microtype-gives-wrong-letterspacing-in-math-mode
+% Still, we have to ensure that math fonts are set up again.
+%\changes{v2.6b}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} packages
+%                            (reported by \contributor user11126 <@\at @>,
+%                             solution by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>}
+% Setting \cmd\glb@currsize\ to \cmd\@empty\ (our previous solution) could
+% throw us into an infinite loop (\eg, with the \pkg{psnfss} packages,
+% via \cmd\every@math@size), so we issue \cmd\glb@settings\ instead.
 %    \begin{macrocode}
 \DeclareRobustCommand\lsstyle{%
   \not@math@alphabet\lsstyle\textls
-  \MT@glet\glb@currsize\@empty
+%<pdftex-def|luatex-def>  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
 %<pdftex-def|luatex-def>  \def\MT@feat{tr}%
   \let\MT@tracking\MT@set@tr@codes
   \selectfont
@@ -9276,27 +9283,12 @@ end
     \MT@orig@add@accent{#1}{#2}%
     \MT@MT@pickupfont
   }%
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\every@math@size}
-%\changes{v2.6b}{2016/06/12}{fix: prevent infinite loop with \pkg{psnfss} packages}
-% The token register \cmd\every@math@size\ may contain code that loads fonts,
-% which may in turn throw us into an infinite loop, so we better disable ourselves here.
-% This may result in missing letterspacing of math fonts (\eg, with the
-% \pkg{psnfss} packages).
-%\todo{fix missing letterspacing with \pkg{psnfss} packages}
-%\todo{fix when loaded before \pkg{psnfss} packages}
-%    \begin{macrocode}
-  \edef\MT@temp{\the\every@math@size}%
-  \ifx\MT@temp\@empty\else
-    \every@math@size\expandafter{\expandafter\MT@ltx@pickupfont\the\every@math@size}%
-  \fi
 %</package>
 }
 %<plain>}\relax
 %<*package>
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 % Consequently (if all goes well), we are the last ones to change these
 % commands, therefore there is no need to check whether our definition has
@@ -16821,7 +16813,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10472}
+% \CheckSum{10452}
 %
 % \Finale
 %

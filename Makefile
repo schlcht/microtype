@@ -11,7 +11,7 @@ help:
 	@echo 'microtype makefile targets:'
 	@echo ' '
 	@echo '            help - (this message)'
-	@echo '          unpack - extracts all files'
+	@echo '          unpack - extract all files'
 	@echo '             doc - compile documentation'
 	@echo '          utfdoc - compile Unicode documentation'
 	@echo '            ctan - generate archive for CTAN'
