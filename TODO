@@ -1,3 +1,6 @@
+* do something about http://tex.stackexchange.com/questions/324294/
+ (automatically load the right protrusion settigns for Charis SIL-sc)
+ (reported by `\contributor ltcomdata <@\at @>') 2016/08/10
 * letterspace and expansion work with dviluatex (since when?)
 * default efcodes seem to be 1000 with luatex now
 * what to do about lualatex -ini ?

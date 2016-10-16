@@ -1907,14 +1907,20 @@
 % is, whenever a particular character appears in the text, the specified
 % kerning will be inserted, regardless of which character precedes resp.
 % follows it.
+% (Put in another way, this feature allows to modify the left or right
+% \textit{sidebearings} of specific glyphs.)
 %
 %\emptypdfpageresources ^^A layers of letterspacing illustration
 %
 % It should not be neglected to mention a limitation of this feature:
 % words \emph{immediately following} such a kern (not separated by a space)
 % will not be hyphenated, unless you insert the breakpoints manually, \eg, for
-% kerning after the apostrophe, `|l'apos\-trophe|'. This restriction of \pdftex\
-% will hopefully be lifted some time.
+% kerning after the apostrophe, `|l'apos\-trophe|'.
+%\changes{v2.6b}{2016/10/16}{mention that additional kerning does not work in math mode
+%                            (reported by `\contributor Daniel <@\at @>')}
+%                           ^^A http://tex.stackexchange.com/questions/332695/microtype-kerning-in-math-mode-with-mathdesign-charter  
+% Furthermore, additional kerning will not be applied in math mode.
+% These restrictions of \pdftex\ will hopefully be lifted some time.
 %
 %\paragraph{The kerning settings}
 % are specified as pairs of \meta{character}\,|=|\,\meta{kerning values}, where
@@ -2817,8 +2823,9 @@
 % `\contributor HcN               <@\at @>', ^^A http://tex.stackexchange.com/users/87090/hcn
 %  \contributor Will Robertson    <will\at wspr.io>,
 % `\contributor user11126         <@\at @>', ^^A http://tex.stackexchange.com/users/1000/user11126
+%  \contributor Ulrike Fischer    <fischer\at troubleshooting-tex.de>,
 % and
-%  \contributor Ulrike Fischer    <fischer\at troubleshooting-tex.de>.
+% `\contributor Daniel            <@\at @>'. ^^A http://tex.stackexchange.com/users/113787/daniel
 %
 %
 %\iffalse
