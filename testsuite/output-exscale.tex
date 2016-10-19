@@ -1,0 +1,13 @@
+% http://tex.stackexchange.com/questions/316231/microtype-and-exscale-crashing-in-texlive-2016
+% cf. error-psnfss.tex
+\documentclass{article}
+\usepackage{microtype}
+\usepackage{exscale}
+\tracingoutput1
+\showboxdepth\maxdimen
+\showboxbreadth\maxdimen
+\begin{document}
+\textls[123]{$abc$}
+\end{document}
+
+grep 'OML/cmm/m/it/10/123ls'
