@@ -3720,9 +3720,8 @@
 %</plain>
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@maybe@etex}
-%\changes{v2.2}{2007/05/01}{use catcode trickery}
-%\changes{v2.3a}{2007/12/29}{removed}
+%\changes{v2.2}{2007/05/01}{use catcode trickery for \etex\ test}
+%^^A\changes{v2.3a}{2007/12/29}{removed} ^^A \MT@maybe@etex
 % For definitions that depend on \etex\ features.
 %    \begin{macrocode}
 \ifcase 0%
@@ -3738,7 +3737,6 @@
 %<debug>^^Q not
 %<debug>  etex}
 %    \end{macrocode}
-%\end{macro}
 %\changes{v2.5}{2010/05/05}{new files: \file{microtype-pdftex.def}, \file{microtype-xetex.def}, \file{microtype-luatex.def},
 %                           containing engine-specific definitions}
 % We check whether we are running \pdftex, \xetex, or \luatex, and
@@ -7323,7 +7321,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Still, we have to ensure that math fonts are set up again.
 %\changes{v2.6b}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} and \pkg{exscale} packages
 %                            (reported by \contributor user11126 <@\at @>,
-%                             solution by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>}
+%                             solution by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>)}
 % Setting \cmd\glb@currsize\ to \cmd\@empty\ (our previous solution) could
 % throw us into an infinite loop (\eg, with the \pkg{psnfss} packages,
 % via \cmd\every@math@size), so we issue \cmd\glb@settings\ instead.
@@ -12183,6 +12181,9 @@ end
 %\end{macro}
 %\changes{v1.7}{2005/03/02}{modify \cmd\showhyphens}
 % Inside \cmd\showhyphens, font expansion should be disabled.
+% (Since 2017/01/10, the \LaTeX\ format contains a different version
+% for \xetex, but since expansion doesn't work with \xetex, we don't
+% have to bother.)
 %    \begin{macrocode}
     \CheckCommand*\showhyphens[1]{\setbox0\vbox{%
       \color@begingroup\everypar{}\parfillskip\z@skip
@@ -12670,13 +12671,12 @@ end
 %    \begin{macrocode}
 %%% -----------------------------------------------------------------------
 %%% FONT VARIANTS AND ALIASES
-
 %    \end{macrocode}
 % These are the variants I happen to be using (expert encoding, oldstyle
 % numerals, swashes, alternative, display, inferior and superior numerals):
 %    \begin{macrocode}
-\DeclareMicrotypeVariants{x,j,w,a,d,0,1}
 
+\DeclareMicrotypeVariants{x,j,w,a,d,0,1}
 %    \end{macrocode}
 % Other candidates: |2|~(proportional digits), |e|~(engraved), |f|~(Fraktur),
 % |g|~(small text), |h|~(shadow), |l|~(outline), |n|~(informal),
@@ -12686,15 +12686,25 @@ end
 %
 %\bigskip\noindent
 % Fonts that are `the same':
-% The \pkg{fontspec} package will use |lmr| by default, whose EU1/2/TU encoding
-% is declared in \file{mt-LatinModernRoman.cfg}.
-%\changes{v2.5}{2012/08/23}{declare \texttt{lmr} as alias of Latin Modern Roman
-%                           (OpenType version)}
+% The \pkg{fontspec} package will set |lmr| as the default font, whose
+% declarations for <EU1>/<EU2>/<TU> encoding are in \file{mt-LatinModernRoman.cfg}.
+%\changes{v2.5}{2012/08/23}{declare Latin Modern Roman (OpenType version) as alias of \texttt{lmr}
+%                           when \pkg{fontspec} is loaded}
+% Since 2016/12/03, the default encoding with \xetex\ and \luatex\ in the
+% \LaTeX\ format is <TU>, even if \pkg{fontspec} is not loaded.
+%\changes{v2.6b}{2017/01/27}{declare Latin Modern Roman as alias of \texttt{lmr}
+%                            with new \LaTeX\ format
+%                            (reported by \contributor Ulrike Fischer <news3\at nililand.de>)}
+%                            ^^A private mail, 2017/01/25
 %    \begin{macrocode}
-\ifMT@fontspec
-\DeclareMicrotypeAlias{lmr} {Latin Modern Roman}
-\else
+
+\ifcase 0%
+  \ifx\UnicodeEncodingName\@undefined
+    \ifMT@fontspec 1\fi
+             \else 1\fi
 \DeclareMicrotypeAlias{lmr} {cmr}  % lmodern
+  \else
+\DeclareMicrotypeAlias{lmr} {Latin Modern Roman}
 \fi
 %    \end{macrocode}
 % The Latin Modern fonts, the virtual fonts from the
@@ -16826,7 +16836,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10452}
+% \CheckSum{10459}
 %
 % \Finale
 %

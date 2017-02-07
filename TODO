@@ -1,8 +1,10 @@
+* get rid of luatexbase? (http://tex.stackexchange.com/questions/351383/include-order-for-microtype-and-cleveref-is-important-only-in-lualatex)
+* fix problem with \copyfont in luatex (http://tex.stackexchange.com/questions/338942/, https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html) 
 * do something about http://tex.stackexchange.com/questions/324294/
  (automatically load the right protrusion settigns for Charis SIL-sc)
  (reported by `\contributor ltcomdata <@\at @>') 2016/08/10
 * letterspace and expansion work with dviluatex (since when?)
-* default efcodes seem to be 1000 with luatex now
+* default efcodes seem to be 1000 with luatex now (since when?)
 * what to do about lualatex -ini ?
 * fix (outer) spacing with luatex
 * don't set up inheritance list for tracking
