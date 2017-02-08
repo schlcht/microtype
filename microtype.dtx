@@ -48,6 +48,17 @@
 %<xetex-def>   xetex
    (RS)]
 %</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
+%<luafile>microtype        = microtype or {}
+%<luafile>local microtype  = microtype
+%<luafile>microtype.module = {
+%<luafile>    name         = "microtype",
+%<luafile>    version      = "2.6a",
+%<luafile>    date         = "2016/05/14",
+%<luafile>    description  = "microtype module.",
+%<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
+%<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
+%<luafile>    license      = "LPPL",
+%<luafile>}
 %<*config>
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
@@ -3304,21 +3315,21 @@
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
-%  \@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,
-%  \@ifstar,\@ifundefined,\@let@token,\@m,\@makeother,\@minus,\@nameuse,\@ne,\@nil,
-%  \@nnil,\@onelevel@sanitize,\@onlypreamble,\@percentchar,\@pkgextension,\@plus,
-%  \@ptionlist,\@removeelement,\@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,
-%  \@tempc,\@tempcnta,\@tempcntb,\@tempdima,\@typeset@protect,\@undefined,
-%  \@unprocessedoptions,\@unusedoptionlist,\@xobeysp,\check@icr,\color@begingroup,
-%  \color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,
-%  \nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,\strip@prefix,
-%  \strip@pt,\tw@,\z@,\z@skip,\zap@space,\active,\documentclass,\leavevmode,
-%  \makeatletter,\mbox,\newcommand,\newcount,\newdimen,\newif,\newskip,
-%  \newtoks,\nobreak,\nonfrenchspacing,\normalsize,\renewcommand,\space,
-%  \AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
-%  \DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,
-%  \PackageError,\PackageInfo,\PackageWarning,\RequirePackage,
-%  \@@enc@update,\cf@encoding,\f@encoding}
+%  \@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,
+%  \@ifpackageloaded,\@ifstar,\@ifundefined,\@let@token,\@m,\@makeother,
+%  \@minus,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,
+%  \@percentchar,\@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,
+%  \@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
+%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
+%  \@xobeysp,\check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,
+%  \hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,
+%  \on@line,\p@,\set@display@protect,\strip@prefix,\strip@pt,\tw@,\z@,\z@skip,
+%  \zap@space,\active,\documentclass,\leavevmode,\makeatletter,\mbox,\newcommand,
+%  \newcount,\newdimen,\newif,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
+%  \normalsize,\renewcommand,\space,\AtBeginDocument,\AtEndOfPackage,
+%  \CheckCommand,\CurrentOption,\DeclareRobustCommand,\IfFileExists,
+%  \InputIfFileExists,\MessageBreak,\PackageError,\PackageInfo,\PackageWarning,
+%  \RequirePackage,\@@enc@update,\cf@encoding,\f@encoding}
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
 %^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\glb@settings,\normalfont,
 %^^A  \pickup@font,\selectfont,\set@fontsize,\showhyphens}                   ^^A latex
@@ -4174,19 +4185,21 @@
 %\changes{v2.5a}{2013/04/19}{use \pkg{luatexbase} instead of \pkg{luatextra}
 %                            (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %                            ^^A MID: <516AAF6B.8040605@telecom-bretagne.eu>
-% We use the \pkg{luatexbase} package to load the module.
+% Unless running a recent \LaTeX,
+%\changes{v2.6b}{2017/02/08}{drop \pkg{luatexbase} with recent \LaTeX}
+% we load the \pkg{luatexbase} package.
 %    \begin{macrocode}
 %<*luatex-def>
-\RequirePackage{luatexbase}
+\@ifl@t@r\fmtversion{2016/01/01}\relax{\RequirePackage{luatexbase}}
 %    \end{macrocode}
-% Additionally, we load \pkg{luaotfload}, because some of its functions are
+% We load \pkg{luaotfload}, because some of its functions are
 % required in \file{microtype.lua}. This eliminates the need for the user to
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
 %\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
 %    \begin{macrocode}
 \RequirePackage{luaotfload}
-\RequireLuaModule{microtype}
+\MT@lua{require("microtype")}
 %</luatex-def>
 %    \end{macrocode}
 % Here it begins. The module was contributed by \'Elie Roux.
@@ -4195,18 +4208,6 @@
 %    \begin{macrocode}
 %<*luafile>
 
-microtype        = microtype or {}
-local microtype  = microtype
-microtype.module = {
-    name         = "microtype",
-    version      = "2.6a",
-    date         = "2016/05/14",
-    description  = "microtype module.",
-    author       = "E. Roux, R. Schlicht and P. Gesang",
-    copyright    = "E. Roux, R. Schlicht and P. Gesang",
-    license      = "LPPL",
-}
-
 local err, warn, info, log = luatexbase.provides_module(microtype.module)
 microtype.warning = warn
 
@@ -4214,8 +4215,14 @@ local find       = string.find
 local match      = string.match
 local tex_write  = tex.write
 
+local catpackage
+if luatexbase.registernumber then
+  catpackage = luatexbase.registernumber("catcodetable@atletter") -- LaTeX
+else
+  catpackage = luatexbase.catcodetables.CatcodeTableAtletter   -- luatexbase
+end
 function microtype.sprint (...)
-  tex.sprint(luatexbase.catcodetables['latex-package'], ...)
+  tex.sprint(catpackage, ...)
 end
 
 %</luafile>
@@ -16836,7 +16843,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10459}
+% \CheckSum{10462}
 %
 % \Finale
 %
