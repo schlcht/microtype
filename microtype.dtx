@@ -2835,8 +2835,9 @@
 %  \contributor Will Robertson    <will\at wspr.io>,
 % `\contributor user11126         <@\at @>', ^^A http://tex.stackexchange.com/users/1000/user11126
 %  \contributor Ulrike Fischer    <fischer\at troubleshooting-tex.de>,
+% `\contributor Daniel            <@\at @>', ^^A http://tex.stackexchange.com/users/113787/daniel
 % and
-% `\contributor Daniel            <@\at @>'. ^^A http://tex.stackexchange.com/users/113787/daniel
+%  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>.
 %
 %
 %\iffalse
@@ -5588,13 +5589,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                                               ^^A private mail, 2008/04/14
 %    \begin{macrocode}
   \xdef\MT@font@copy{\csname\MT@@font/\MT@pr@context/\MT@ex@context\endcsname}%
+  \expandafter\ifx\MT@font@copy\relax
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@font@orig}
 % \pdftex\ doesn't allow copying a font that has already been copied and
 % expanded\slash letterspaced. Hence, we have to get the original.
 %    \begin{macrocode}
-  \expandafter\ifx\MT@font@copy\relax
     \edef\MT@font@orig{\csname\expandafter\string\font@name @orig\endcsname}%
     \expandafter\ifx\MT@font@orig\relax
       \MT@exp@two@c\MT@glet\MT@font@orig\font@name
@@ -7225,13 +7226,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@ls@fontspec@colon}
 %\begin{macro}{\MT@ls@fontspec@font}
 %\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
+%\changes{v2.6b}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
+%                            (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
+%                            ^^A http://tug.org/pipermail/lualatex-dev/2017-February/001670.html
 % Add the |kernfactor| feature to a font loaded by \pkg{fontspec}
 % (we might have to add the colon ourselves).
 %    \begin{macrocode}
 %<*luatex-def|letterspace>
-\def\MT@ls@fontspec@colon#1:#2:#3\@nil{#1:#2}
+\def\MT@ls@fontspec@colon#1:#2:#3:#4\@nil{\ifx\\#3\\#1:#2\else#1:#2:#3\fi}
 \def\MT@ls@fontspec@font#1 #2\@nil{%
-  "\MT@ls@fontspec@colon#1::\@nil
+  "\MT@ls@fontspec@colon#1:::\relax\@nil
     kernfactor=\MT@minus \ifnum\MT@letterspace@=1000 1\else 0.%
          \ifnum\MT@minus\MT@letterspace@<100 0\fi
          \ifnum\MT@minus\MT@letterspace@<10  0\fi
@@ -16843,7 +16847,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10462}
+% \CheckSum{10470}
 %
 % \Finale
 %
