@@ -779,10 +779,10 @@
 %\noindent
 % The \microtype\ package provides a \LaTeX\ interface to the micro-typographic
 % extensions that were introduced by \pdftex\ and have since also propagated to
-% \luatex\ and \xetex: most prominently, character protrusion and font
-% expansion, furthermore the adjustment of interword spacing and additional
-% kerning, as well as hyphenatable letterspacing (tracking) and the possibility
-% to disable all or selected ligatures.
+% \luatex\ and \xetex: most prominently, character protrusion and font expansion,
+% furthermore the adjustment of interword spacing and additional kerning, as
+% well as hyphenatable letterspacing (tracking) and the possibility to disable
+% all or selected ligatures.
 % These features may be applied to customisable sets of fonts, and all
 % micro-typographic aspects of the fonts can be configured in a straight-forward
 % and flexible way. Settings for various fonts are provided.
@@ -3925,7 +3925,8 @@
 % \item + \cmd\directlua\ without state number ($\geq$~0.36)
 % \item + \cmd\letterspacefont\ ($\geq$~0.62)
 % \item + almost all of the \pdftex\ primitives have been renamed ($\geq$~0.85)
-% \item + \cmd\protrusionboundary\ [not yet supported] ($\geq$~0.90)
+% \item + default \cmd\efcode\,=\,1000;
+%         \cmd\protrusionboundary\ [not yet supported] ($\geq$~0.90)
 %\todo{interface for \cmd\protrusionboundary}
 %\end{enum}
 %\changes{v2.6}{2016/04/22}{update for \luatex\ 0.85 (renamed primitives)}
@@ -3941,14 +3942,17 @@
 %\changes{v2.3d}{2009/03/25}{update for \luatex\ 0.36}
 %    \begin{macrocode}
 \def\MT@lua{\directlua}
-\def\MT@luatex@no{4}
-\ifnum\luatexversion<85
-  \def\MT@luatex@no{3}
-  \ifnum\luatexversion<62
-    \def\MT@luatex@no{2}
-    \ifnum\luatexversion<36
-      \def\MT@lua{\directlua0}
-      \def\MT@luatex@no{1}
+\def\MT@luatex@no{5}
+\ifnum\luatexversion<90
+  \def\MT@luatex@no{4}
+  \ifnum\luatexversion<85
+    \def\MT@luatex@no{3}
+    \ifnum\luatexversion<62
+      \def\MT@luatex@no{2}
+      \ifnum\luatexversion<36
+        \def\MT@lua{\directlua0}
+        \def\MT@luatex@no{1}
+      \fi
     \fi
   \fi
 \fi
@@ -6613,24 +6617,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@reset@ef@codes}
-% However, this is only necessary for versions prior to~1.20.
+% However, this is only necessary for \pdftex\ versions prior to~1.20,
+% or \luatex\ $\less$~0.90 (actually, I think, 0.87).
 %\changes{v1.6a}{2005/01/30}{only reset \cmd\efcode s for older \pdftex\ versions}
+%\changes{v2.6b}{2017/02/13}{only reset \cmd\efcode s for older \luatex\ versions}
 %    \begin{macrocode}
-%<*pdftex-def>
-\MT@requires@pdftex4{
+%<pdftex-def>\MT@requires@pdftex4{
+%<luatex-def>\MT@requires@luatex5{
   \def\MT@reset@ef@codes{%
     \ifnum\MT@ex@factor@=\@m \else
       \MT@reset@ef@codes@
     \fi
   }
 }{
-%</pdftex-def>
-%    \end{macrocode}
-% ^^A this is SO wrong!
-%\todo{do it right for \luatex}
-%    \begin{macrocode}
   \let\MT@reset@ef@codes\MT@reset@ef@codes@
-%<pdftex-def>}
+}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ex@split@val}
@@ -16847,7 +16848,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10470}
+% \CheckSum{10476}
 %
 % \Finale
 %
