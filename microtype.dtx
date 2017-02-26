@@ -2145,28 +2145,27 @@
 % Adobe Minion (|pmnx|, |pmnj|)
 %      & <OT1>, <T1>, <T2A>, <LY1>, <TS1>
 %      & n, it, (sl)\fnref{fn:it-sl}, sc, si\\
-% Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
-%                                           \pkg{qfonts}/QuasiPalatino, \TeX\ Gyre Pagella (|qpl|),
-%                                           <FPL> Neu (|fp9x|, |fp9j|)}
+% Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|), <FPL> Neu (|fp9x|, |fp9j|),
+%                                           \pkg{qfonts}/QuasiPalatino, \TeX\ Gyre Pagella (|qpl|)}
 %      & <OT1>, <OT4>, <T1>, <LY1>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
-% Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
+% Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|), \pkg{newtxtext}, \pkg{tempora},
 %                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|)}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Latin Modern Roman
-%      & <EU1/2>, <TU> [Latin, Greek]
+%      & <EU1>/<2>, <TU> [Latin, Greek]
 %      & n, it, (sl)\fnref{fn:it-sl}\\
 % Charis <SIL>
-%      & <EU1/2>, <TU> [Latin, Cyrillic, Greek]
+%      & <EU1>/<2>, <TU> [Latin, Cyrillic, Greek]
 %      & n, it, sc\\
 %\iffalse ^^A provided with the EB Garamond package
 % <EB> Garamond
-%      & <EU1/2>, <TU> [Latin, Cyrillic, Greek]
+%      & <EU1>/<2>, <TU> [Latin, Cyrillic, Greek]
 %      & n, it, sc, si\\
 %\fi
 % Palatino Linotype\footnote{Aliases: \TeX\ Gyre Pagella, Palatino <LT> Std, Palatino}
-%      & <EU1/2>, <TU> [Latin]
+%      & <EU1>/<2>, <TU> [Latin]
 %      & n, it, sc\\
 % Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|)}
 %      & <OML>/<OMS>
@@ -6622,8 +6621,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.6a}{2005/01/30}{only reset \cmd\efcode s for older \pdftex\ versions}
 %\changes{v2.6b}{2017/02/13}{only reset \cmd\efcode s for older \luatex\ versions}
 %    \begin{macrocode}
-%<pdftex-def>\MT@requires@pdftex4{
-%<luatex-def>\MT@requires@luatex5{
+%<pdftex-def>\MT@requires@pdftex4
+%<luatex-def>\MT@requires@luatex5
+{
   \def\MT@reset@ef@codes{%
     \ifnum\MT@ex@factor@=\@m \else
       \MT@reset@ef@codes@
@@ -12712,11 +12712,10 @@ end
 
 \ifcase 0%
   \ifx\UnicodeEncodingName\@undefined
-    \ifMT@fontspec 1\fi
-             \else 1\fi
-\DeclareMicrotypeAlias{lmr} {cmr}  % lmodern
+    \ifMT@fontspec 1\fi\else 1\fi
+\DeclareMicrotypeAlias{lmr}{cmr}         % lmodern
   \else
-\DeclareMicrotypeAlias{lmr} {Latin Modern Roman}
+\DeclareMicrotypeAlias{lmr}{Latin Modern Roman}
 \fi
 %    \end{macrocode}
 % The Latin Modern fonts, the virtual fonts from the
@@ -12734,10 +12733,10 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{lmsy}{cmsy}
 \DeclareMicrotypeAlias{lmm} {cmm}
-\DeclareMicrotypeAlias{aer} {cmr}  % ae
-\DeclareMicrotypeAlias{zer} {cmr}  % zefonts
-\DeclareMicrotypeAlias{cmor}{cmr}  % eco
-\DeclareMicrotypeAlias{hfor}{cmr}  % hfoldsty
+\DeclareMicrotypeAlias{aer} {cmr}        % ae
+\DeclareMicrotypeAlias{zer} {cmr}        % zefonts
+\DeclareMicrotypeAlias{cmor}{cmr}        % eco
+\DeclareMicrotypeAlias{hfor}{cmr}        % hfoldsty
 %    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
@@ -12747,16 +12746,30 @@ end
 %\changes{v1.9}{2005/08/16}{declare \texttt{qpl} and \texttt{qtm} (\pkg{qfonts}, \TeX\ Gyre)
 %                           as aliases of \texttt{ppl} resp. \texttt{ptm}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{pxr} {ppl}  % pxfonts
-\DeclareMicrotypeAlias{qpl} {ppl}  % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
+\DeclareMicrotypeAlias{pxr} {ppl}        % pxfonts
+\DeclareMicrotypeAlias{qpl} {ppl}        % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
 %    \end{macrocode}
 % The `<FPL> Neu' fonts, a `re-implementation' of Palatino.
 %\changes{v2.2}{2007/05/27}{declare \texttt{fp9x}, \texttt{fp9j} (<FPL> Neu) as aliases of \texttt{ppl[xj]}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{fp9x}{pplx} % FPL Neu
-\DeclareMicrotypeAlias{fp9j}{pplj} %   "
-\DeclareMicrotypeAlias{txr} {ptm}  % txfonts
-\DeclareMicrotypeAlias{qtm} {ptm}  % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
+\DeclareMicrotypeAlias{fp9x}{pplx}       % FPL Neu
+\DeclareMicrotypeAlias{fp9j}{pplj}       %    "
+\DeclareMicrotypeAlias{txr} {ptm}        % txfonts
+%    \end{macrocode}
+% The \pkg{newtxtext} package, a replacement for \pkg{txfonts}.
+%\changes{v2.6b}{2017/02/25}{declare font aliases for \pkg{newtxtext}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{ntxlf}{ptm}       % newtxtext
+\DeclareMicrotypeAlias{ntxosf}{ptm}      %    "
+\DeclareMicrotypeAlias{ntxtlf}{ptm}      %    "
+\DeclareMicrotypeAlias{ntxtosf}{ptm}     %    "
+%    \end{macrocode}
+% The \pkg{tempora} package.
+%\changes{v2.6b}{2017/02/25}{declare font aliases for \pkg{tempora}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{Tempora-TLF}{ptm} % tempora
+\DeclareMicrotypeAlias{Tempora-TOsF}{ptm}%    "
+\DeclareMicrotypeAlias{qtm} {ptm}        % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
 %    \end{macrocode}
 % The OpenType versions:
 %
@@ -12777,44 +12790,44 @@ end
 %\changes{v1.9e}{2006/07/28}{declare \texttt{zeur} and \texttt{zeus} (\pkg{eulervm})
 %                            as aliases of \texttt{eur} resp. \texttt{eus} (\pkg{euler})}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zeur}{eur}  % Euler VM
-\DeclareMicrotypeAlias{zeus}{eus}  %   "
+\DeclareMicrotypeAlias{zeur}{eur}        % Euler VM
+\DeclareMicrotypeAlias{zeus}{eus}        %    "
 %    \end{macrocode}
 % MicroPress's Charter version (\pkg{chmath}).
 %\changes{v2.2}{2007/06/08}{declare \texttt{chr} (\pkg{chmath}) as an alias of \texttt{bch}
 %                           (reported by \contributor Geoff Vallis <gkv\at Princeton.EDU>)}
 %                                                            ^^A private mail, 2007/06/07
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{chr} {bch}  % CH Math
+\DeclareMicrotypeAlias{chr} {bch}        % CH Math
 %    \end{macrocode}
 % The \pkg{mathdesign} package provides math fonts matching Bitstream Charter
 %\changes{v1.9a}{2005/10/31}{declare \texttt{mdbch} (\pkg{mathdesign})
 %                            as an alias of \texttt{bch}}
 % and <URW> Garamond.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{mdbch}{bch} % mathdesign/Charter
-\DeclareMicrotypeAlias{mdugm}{ugm} % mathdesign/URW Garamond
+\DeclareMicrotypeAlias{mdbch}{bch}       % mathdesign/Charter
+\DeclareMicrotypeAlias{mdugm}{ugm}       % mathdesign/URW Garamond
 %    \end{macrocode}
 % The \pkg{garamondx} package, an extension of <URW> Garamond, providing
 % small caps and oldstyle figures.
 %\changes{v2.5}{2013/02/20}{declare \texttt{zgmx} etc. (\pkg{garamondx})
 %                           as aliases of \texttt{ugm}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zgmx}{ugm}  % garamondx
-\DeclareMicrotypeAlias{zgmj}{ugm}  %    "
-\DeclareMicrotypeAlias{zgmI}{ugm}  %    "
-\DeclareMicrotypeAlias{zgmq}{ugm}  %    "
+\DeclareMicrotypeAlias{zgmx}{ugm}        % garamondx
+\DeclareMicrotypeAlias{zgmj}{ugm}        %    "
+\DeclareMicrotypeAlias{zgmI}{ugm}        %    "
+\DeclareMicrotypeAlias{zgmq}{ugm}        %    "
 %    \end{macrocode}
 % <URW> Letter Gothic is similar enough to Bitstream Letter Gothic to share the
 % configuration.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{ulg} {blg}  % URW LetterGothic -> Bitstream LetterGothic12Pitch
+\DeclareMicrotypeAlias{ulg} {blg}        % URW LetterGothic -> Bitstream LetterGothic12Pitch
 %    \end{macrocode}
 % Euro symbol fonts, to save some files.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zpeus}   {zpeu}    % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{eurosans}{zpeu}    % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{euroitcs}{euroitc} % ITC Euro sans -> serif
+\DeclareMicrotypeAlias{zpeus}   {zpeu}   % Adobe Euro sans -> serif
+\DeclareMicrotypeAlias{eurosans}{zpeu}   % Adobe Euro sans -> serif
+\DeclareMicrotypeAlias{euroitcs}{euroitc}% ITC Euro sans -> serif
 
 %    \end{macrocode}
 %
@@ -16848,7 +16861,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10476}
+% \CheckSum{10482}
 %
 % \Finale
 %
