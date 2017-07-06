@@ -2845,8 +2845,9 @@
 %  \contributor Ulrike Fischer    <fischer\at troubleshooting-tex.de>,
 % `\contributor Daniel            <@\at @>', ^^A https://tex.stackexchange.com/users/113787/daniel
 % `\contributor ltcomdata         <@\at @>', ^^A https://tex.stackexchange.com/users/17061/ltcomdata
+%  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>,
 % and
-%  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>.
+% `\contributor jcr               <@\at @>'. ^^A https://tex.stackexchange.com/users/56514/jcr
 %
 %
 %\iffalse
@@ -8955,6 +8956,20 @@ end
     \expandafter\def\expandafter\MT@char\expandafter{\csname\expandafter
                     \string\csname\MT@encoding\endcsname
                     \MT@detokenize@n{#1}-\MT@detokenize@n{#2}\endcsname}%
+%    \end{macrocode}
+% In 2017, \LaTeX\ introduced a new way of declaring accented
+% Unicode commands (\cs{DeclareUnicodeComposite}), which we take care of here
+% (\cs{UnicodeEncodingName} has been introduced at the same time):
+%\changes{v2.6b}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cs{DeclareUnicodeComposite})
+%                            (reported by \contributor Ulrike Fischer <news3\at nililand.de> and
+%                             `\contributor jcr <@\at @>')}
+%                             ^^A (1) private mail, 2017/04/25
+%                             ^^A (2) https://tex.stackexchange.com/questions/373594/
+%    \begin{macrocode}
+    \ifx\UnicodeEncodingName\@undefined\else
+      \expandafter\expandafter\expandafter
+        \MT@is@uni@comp\MT@char\iffontchar\else\fi\relax
+    \fi
     \expandafter\expandafter\expandafter\MT@is@letter\MT@char\relax\relax
 %    \end{macrocode}
 % Again, \pkg{xunicode}.
@@ -8967,6 +8982,14 @@ end
       \fi
     \fi
   \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{MT@is@uni@comp}
+% Helper for \cs{DeclareUnicodeComposite}.
+%    \begin{macrocode}
+\def\MT@is@uni@comp#1\iffontchar#2\else#3\fi\relax{%
+  \ifx\\#2\\\else\edef\MT@char{\iffontchar#2\fi}\fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -16891,7 +16914,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10490}
+% \CheckSum{10521}
 %
 % \Finale
 %
