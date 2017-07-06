@@ -217,7 +217,7 @@ clean: mostlyclean
 TESTDIR = ./testsuite
 WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
 COMPAT = $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
-TLPATH = ~/Library/texlive/$(COMPAT)/bin/x86_64-darwin
+TLPATH = ~/Library/texlive/$(COMPAT)/bin/x86_64-darwinlegacy
 test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.log
 	@$(RM) $(TESTDIR)/*.aux

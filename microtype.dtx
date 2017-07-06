@@ -975,7 +975,7 @@
 % refinement which the fonts in your document should gain. By default, the
 % package is moderately greedy: character protrusion will always be enabled,
 % font expansion will only be disabled when the fonts cannot be expanded
-% automatically, that is, with \pdftex\ versions older than 1.20, in <DVI>
+% automatically, that is, with \pdftex\ versions older than 1.20 or in <DVI>
 % output mode (see section~\ref{sub:options-misc}), or with \xetex.
 % In other words, \microtype\ will try to apply as much micro-typography as
 % can safely be expected to work under the respective conditions (hence, it is
@@ -1017,6 +1017,7 @@
 % the active font set (by default, all small capitals).
 % It is not available with \xetex\ (you may use the `|LetterSpace|'
 % option of the \cite{fontspec} package instead).
+% With \pdftex, it is only available in <PDF> mode.
 %
 %\medskip
 %\Describe{Option}{kerning}{true,!false,:font set name}
@@ -1059,12 +1060,12 @@
 %    & $\geq$  1.20  & <DVI>       & ! & ? & _ & _ & _ & _\\
 %    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
 %    & $\geq$  1.40  & <DVI>       & ! & ? & _ & ? & ? & _\\
-%    &               & <PDF>       & ! & ! & ! & ? & ? & ?\,\textsuperscript{\itshape a}\\
+%    &               & <PDF>       & ! & ! & ! & ? & ? & ?\\^^A\,\textsuperscript{\itshape a}\\
 %\cmidrule(r){1-3}
 % \luatex ^^A we will have to re-model kerning, spacing and tracking with \luatex
 %    & $\geq$  0.30  & <DVI>       & ! & ? & _ & _ & _ & _\\
 %    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
-%    & $\geq$  0.62  & <DVI>       & ! & ? & _ & _ & _ & _\\
+%    & $\geq$  0.62  & <DVI>       & ! & ? & ?\,\textsuperscript{\itshape a} & _ & _ & ?\\
 %    &               & <PDF>       & ! & ! & ! & _ & _ & ?\\
 %\cmidrule(r){1-3}
 % \let\textoractual\@firstoftwo ^^A why?
@@ -1078,7 +1079,8 @@
 % ? = not enabled\quad
 % _ = not available
 %\hfill
-% \textit{a}\quad $\geq$ 1.40.4 recommended
+% ^^A \textit{a}\quad $\geq$ 1.40.4 recommended
+% \textit{a}\quad for legacy (<TFM>) fonts only
 %\vskip3pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
@@ -1126,8 +1128,8 @@
 % instances of the fonts may be calculated automatically and at run-time instead
 % of the user having to prepare the instances in advance. This option is true
 % by default provided that you are using a \TeX\ engine with this capability
-% and the output mode is <PDF>; otherwise, it will be disabled.
-% If \opt{auto} is set to false, the fonts for all expansion steps must exist
+% and the output mode is <PDF>.
+% If \opt{auto} is set to false, the font instances for all expansion steps must exist
 % (with files called \meta{font~name}\texttt{\textpm}\meta{expansion value},
 % \eg, \file{cmr12+10}, as described in the \cite{pdftexman}).
 %\iffalse ^^A no longer true (1.40?)
@@ -1137,7 +1139,8 @@
 %
 %\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
 %                           automatic font expansion}
-% Automatic font expansion does not work with bitmap fonts. Therefore, if you
+%\changes{v2.6b}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
+% With \pdftex, automatic font expansion does not work with bitmap fonts. Therefore, if you
 % are using the Computer Modern Roman fonts in <T1> encoding,
 %\iffalse
 % \footnote{
@@ -1145,7 +1148,10 @@
 %     no other way related than that both start with a `T' and end with a `1'.}
 %\fi
 % you should either install the \pkg{cm-super} fonts or use the Latin Modern
-% fonts (package \pkg{lmodern}).
+% fonts (package \pkg{lmodern}). With \luatex, automatic expansion even works
+% in <DVI> mode, however, because postprocessing programs like |dvips| or
+% |dvipdfmx| are (at the moment of this writing) not capable of dealing with
+% OpenType fonts, only for legacy fonts.
 %
 %\medskip
 %\Describe{Option}{stretch}{:integer}[20]
@@ -1195,6 +1201,7 @@
 % to +1000.
 %
 %
+%\enlargethispage{2\baselineskip} ^^A layout
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
 %\Describe{Option}{DVIoutput}{true,*false}
@@ -1531,14 +1538,14 @@
 % The set of fonts to which the settings should apply is declared using the
 % same syntax of \meta{font axis}\,|=|\,\meta{value list} pairs as for the
 % command \cs{DeclareMicrotypeSet} (see section~\ref{sec:font-sets}), with the
-% only difference that values with an asterisk will be translated immediately
+% only difference that values including asterisks (which, as you may recall,
+% stand for the respective default) will be translated immediately
 % instead of at the end of the preamble.
 % To find the matching settings for a given font the package will try all
 % combinations of font encoding, family, series, shape and size,
-% with decreasing significance in this order. For instance, if both settings for
-% the current family (say, |T1/cmr///|) and settings for italic fonts in the
-% normal weight (|T1//m/it/|) exist, those for the |cmr| family would
-% apply.
+% with decreasing significance in this order. For instance, if settings exist for
+% both the current family (say, |T1/cmr///|) and for italic fonts in the
+% normal weight (|T1//m/it/|), the settings for the |cmr| family would apply.
 %\changes{v1.7}{2005/03/23}{remove table of match order
 %                           (now table~\ref{tab:match-order} on page~\pageref{tab:match-order})}
 % The encoding must always match.
@@ -5938,7 +5945,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@if@list@exists{%
     \ifMT@nofamily
       \MT@ifdefined@n@TF{\MT@encoding-\MT@family-settings}\relax{%
-        \MT@info@nl{Loading generic settings for font family\MessageBreak
+        \MT@info@nl{Loading generic protrusion settings for font family\MessageBreak
                     `\MT@family' (encoding: \MT@encoding).\MessageBreak
                     For optimal results, create family-specific settings.\MessageBreak
                     See the microtype manual for details}%
@@ -12098,12 +12105,14 @@ end
 %    \begin{macrocode}
     \let\MT@auto\@empty
     \ifMT@auto
-%<pdftex-def>      \MT@requires@pdftex4{%
 %    \end{macrocode}
 %\end{macro}
-% We turn off automatic expansion if output mode is <DVI>.
+% We turn off automatic expansion if output mode is <DVI> and we're running \pdftex.
 %\changes{v1.5}{2004/12/02}{disable automatic expansion for <DVI> output}
+%\changes{v2.6b}{2017/07/02}{don't disable automatic expansion for <DVI> output with \luatex}
 %    \begin{macrocode}
+%<*pdftex-def>
+      \MT@requires@pdftex4{%
         \ifnum\pdfoutput<\@ne
           \ifMT@opt@auto
             \MT@error{%
@@ -12115,7 +12124,9 @@ end
           \fi
           \MT@autofalse
         \else
+%</pdftex-def>
           \def\MT@auto{autoexpand}%
+%<*pdftex-def>
         \fi
 %    \end{macrocode}
 % Also, if \pdftex\ is too old.
@@ -12123,7 +12134,6 @@ end
 %                            version is too old for \texttt{autoexpand}}
 %\changes{v1.6}{2004/12/23}{disable automatic expansion for old \pdftex\ versions}
 %    \begin{macrocode}
-%<*pdftex-def>
       }{%
         \MT@error{%
           The pdftex version you are using is too old for\MessageBreak
@@ -12134,12 +12144,10 @@ end
         \MT@autofalse
         \def\MT@auto{1000 }%
       }%
-%</pdftex-def>
     \else
 %    \end{macrocode}
 % No automatic expansion.
 %    \begin{macrocode}
-%<*pdftex-def>
       \MT@requires@pdftex4\relax{%
         \def\MT@auto{1000 }%
       }%
@@ -12378,27 +12386,32 @@ end
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@tracking@DVI}
 %\changes{v2.2}{2007/02/11}{warning when letterspacing in DVI mode}
-% We issue a warning, when letterspacing in <DVI> mode, since it will probably
+%\changes{v2.6b}{2017/07/06}{don't warn for letterspacing in DVI mode with \luatex}
+% With \pdftex, we issue a warning, when letterspacing in <DVI> mode, since it will probably
 % not work. We also switch on protrusion if it isn't already, to compensate for
 % the letterspacing kerns.
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def|letterspace>
 {%
+%<*pdftex-def|letterspace>
   \ifnum\pdfoutput<\@ne
     \def\MT@warn@tracking@DVI{%
+%<letterspace>      \MT@pdf@or@lua{%
       \MT@warning@nl{%
           You are using tracking/letterspacing in DVI mode.\MessageBreak
           This will probably not work, unless the post-\MessageBreak
           processing program (dvips, dvipdfm(x), ...) is\MessageBreak
           able to create the virtual fonts on the fly}%
+%<letterspace>      }\relax
       \MT@glet\MT@warn@tracking@DVI\relax
     }%
   \else
+%</pdftex-def|letterspace>
     \def\MT@warn@tracking@DVI{%
       \ifnum\pdfprotrudechars<\@ne \global\pdfprotrudechars\@ne \fi
       \MT@glet\MT@warn@tracking@DVI\relax
     }%
-  \fi
+%<pdftex-def|letterspace>  \fi
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
@@ -16877,7 +16890,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10488}
+% \CheckSum{10490}
 %
 % \Finale
 %
