@@ -985,10 +985,53 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %}
 %    \begin{macrocode}
    }
+%    \end{macrocode}
+% The small caps glyph names in Charis <SIL> have changed with version 5.0
+% of the font. We try to get the names right both with \luatex\ (where we
+% can simply query the font version) and with \xetex\ (where we check for
+% glyph name).
+%\changes{v2.6b}{2017/07/06}{automatically get small caps glyph names right for Charis SIL
+%                            (reported by `\contributor ltcomdata <@\at @>')}
+%                            ^^A https://tex.stackexchange.com/questions/324294/
+%    \begin{macrocode}
+
+ % quick and dirty -- maybe we'll promote this to a
+ % regular key some time
+\define@key{MT@pr@c}{command}{\csname #1\endcsname}
+
+ % glyph names have changed with version 5.0 of Charis SIL:
+ % before: /a.SC, /b.SC, ...
+ % after:  /a.sc, /b.sc, ...
+\ifx\MT@lua\@undefined
+  \gdef\MT@get@CHARIS@SC{
+    % test whether glyph "a.sc" exists
+    \ifnum\numexpr\XeTeXglyphindex "a.sc"\relax > 0
+      \gdef\MT@CHARIS@SC{sc}%
+    \else
+      \gdef\MT@CHARIS@SC{SC}%
+    \fi
+  }
+\else
+  \gdef\MT@get@CHARIS@SC{
+    \gdef\MT@CHARIS@SC{\MT@lua{
+      % check font version
+% --  why doesn't this work?:
+%     f = font.getfont(font.current());
+%     i = fontloader.info(f.filename);
+%     if (tonumber(i.version) < 5) then;
+      if (tonumber(fontloader.info(font.getfont(font.current()).filename).version) < 5) then;
+        tex.print("SC");
+      else;
+        tex.print("sc");
+      end
+    }}
+  }
+\fi
 
 \SetProtrusion
    [ name     = Charis-sc,
-     load     = Charis-default   ]
+     load     = Charis-default,
+     command  = {MT@get@CHARIS@SC} ]
    { encoding = {EU1,EU2,TU},
      family   = Charis SIL,
      shape    = {sc}  }
@@ -997,24 +1040,24 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %{\setmacrofont\CharisSIL
 %    \begin{macrocode}
     % ᴀ = {100,100}, % etc., doesn't work with \textsc
-     /a.SC = {100,100},
-     /c.SC = {50,  },
-     /d.SC = {  ,50},
-     /f.SC = {  ,50},
-     /g.SC = {50,  },
-     /j.SC = {100, },
-     /k.SC = {  ,50},
-     /l.SC = {  ,50},
-   /f_l.SC = {  ,50},
-     /o.SC = {50,50},
-    /oe.SC = {50,  },
-     /q.SC = {50,70},
-     /r.SC = {  ,50},
-     /t.SC = {50,100},
-     /v.SC = {50,50},
-     /w.SC = {50,50},
-     /x.SC = {50,50},
-     /y.SC = {50,50}
+     /a.\MT@CHARIS@SC = {100,100},
+     /c.\MT@CHARIS@SC = {50,  },
+     /d.\MT@CHARIS@SC = {  ,50},
+     /f.\MT@CHARIS@SC = {  ,50},
+     /g.\MT@CHARIS@SC = {50,  },
+     /j.\MT@CHARIS@SC = {100, },
+     /k.\MT@CHARIS@SC = {  ,50},
+     /l.\MT@CHARIS@SC = {  ,50},
+   /f_l.\MT@CHARIS@SC = {  ,50},
+     /o.\MT@CHARIS@SC = {50,50},
+    /oe.\MT@CHARIS@SC = {50,  },
+     /q.\MT@CHARIS@SC = {50,70},
+     /r.\MT@CHARIS@SC = {  ,50},
+     /t.\MT@CHARIS@SC = {50,100},
+     /v.\MT@CHARIS@SC = {50,50},
+     /w.\MT@CHARIS@SC = {50,50},
+     /x.\MT@CHARIS@SC = {50,50},
+     /y.\MT@CHARIS@SC = {50,50}
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
