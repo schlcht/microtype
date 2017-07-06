@@ -2,11 +2,11 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.6a"
+% !DTXversion:: "2.7"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
-%           Copyright (c) 2004--2016 R Schlicht <w.m.l@gmx.net>
+%           Copyright (c) 2004--2017 R Schlicht <w.m.l@gmx.net>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3c of this license or (at
@@ -27,9 +27,9 @@
 %
 \ProvidesFile
 %<*driver>
-    {\jobname.dtx}[2016/05/14 v2.6a]
+    {\jobname.dtx}[2017/07/07 v2.7]
 %</driver>
-%<CharisSIL>  {mt-CharisSIL.cfg}[2013/03/13 v1.0 microtype config. file: Charis SIL (RS)]
+%<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2013/03/13 v1.0 microtype config. file: Latin Modern Roman (RS)]
 %<PalatinoLinotype>  {mt-PalatinoLinotype.cfg}[2012/03/10 v1.0 microtype config. file: Palatino Linotype and similar fonts (LBD)]
 %<*driver>
@@ -990,7 +990,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 % of the font. We try to get the names right both with \luatex\ (where we
 % can simply query the font version) and with \xetex\ (where we check for
 % glyph name).
-%\changes{v2.6b}{2017/07/06}{automatically get small caps glyph names right for Charis SIL
+%\changes{v2.7}{2017/07/06}{automatically get small caps glyph names right for Charis SIL
 %                            (reported by `\contributor ltcomdata <@\at @>')}
 %                            ^^A https://tex.stackexchange.com/questions/324294/
 %    \begin{macrocode}

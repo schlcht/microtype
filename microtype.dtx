@@ -2,11 +2,11 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.6b"
+% !DTXversion:: "2.7"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
-%           Copyright (c) 2004--2016 R Schlicht <w.m.l@gmx.net>
+%           Copyright (c) 2004--2017 R Schlicht <w.m.l@gmx.net>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3c of this license or (at
@@ -38,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2016/05/99 v2.6b
+  [2017/07/07 v2.7
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.6a",
-%<luafile>    date         = "2016/05/14",
+%<luafile>    version      = "2.7",
+%<luafile>    date         = "2017/07/07",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -559,7 +559,7 @@
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
       character protrusion, margin kerning, optical alignment, font expansion,
       font scaling, hz, kerning, spacing, glue, letterspacing, tracking, ligatures},
-    pdfcopyright={\textcopyright\ 2004--2016 R Schlicht\012%
+    pdfcopyright={\textcopyright\ 2004--2017 R Schlicht\012%
       This work may be distributed and/or modified under the conditions
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\012%
@@ -802,7 +802,7 @@
 % other extensions (see section~\ref{sec:lettersp}).
 %
 %\bigskip\noindent
-% This package is copyright \textcopyright\ 2004\kern.09em--2016 R Schlicht.
+% This package is copyright \textcopyright\ 2004\kern.09em--2017 R Schlicht.
 % It may be distributed and/or modified under the conditions of the
 % \IfFileExists{lppl.tex}{\hyperref[LPPL:LPPL]}{\href{http://www.latex-project.org/lppl/}}
 %   {\LaTeX\ Project Public License},
@@ -1139,7 +1139,7 @@
 %
 %\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
 %                           automatic font expansion}
-%\changes{v2.6b}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
+%\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
 % With \pdftex, automatic font expansion does not work with bitmap fonts. Therefore, if you
 % are using the Computer Modern Roman fonts in <T1> encoding,
 %\iffalse
@@ -1934,7 +1934,7 @@
 % words \emph{immediately following} such a kern (not separated by a space)
 % will not be hyphenated, unless you insert the breakpoints manually, \eg, for
 % kerning after the apostrophe, `|l'apos\-trophe|'.
-%\changes{v2.6b}{2016/10/16}{mention that additional kerning does not work in math mode
+%\changes{v2.7}{2016/10/16}{mention that additional kerning does not work in math mode
 %                            (discovered by `\contributor Daniel <@\at @>')}
 %                           ^^A http://tex.stackexchange.com/questions/332695/microtype-kerning-in-math-mode-with-mathdesign-charter  
 % Furthermore, additional kerning will not be applied in math mode.
@@ -2996,7 +2996,11 @@
 %
 %\begin{History}
 %
-%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item Allow automatic expansion and letterspacing with \luatex\ in <DVI> mode
+%        (aka. \texttt{dvilualatex})
+%        \refsection{\ref{sub:options-microtype}, \ref{sub:options-expansion}, table~\ref{tab:available-features}}
+%  \item Compatibility with \LaTeX\ 2017/01/01
 %
 %\VersionDate{2.6a}{2016/05/14}
 %
@@ -3119,7 +3123,6 @@
 %        \refsection{\ref{sub:options-cmd}}
 %  \item Protrusion settings for <T5> encoded Charter
 %
-%\ifcmr\else\pagebreak\fi ^^A layout
 %\Version{1.9}{2005/10/28}
 %  \item New command \cs{DisableLigatures} to disable ligatures
 %        (\pdftex\ $\geq$ 1.30)
@@ -4201,7 +4204,7 @@
 %                            (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %                            ^^A MID: <516AAF6B.8040605@telecom-bretagne.eu>
 % Unless running a recent \LaTeX,
-%\changes{v2.6b}{2017/02/08}{drop \pkg{luatexbase} with recent \LaTeX}
+%\changes{v2.7}{2017/02/08}{drop \pkg{luatexbase} with recent \LaTeX}
 % we load the \pkg{luatexbase} package.
 %    \begin{macrocode}
 %<*luatex-def>
@@ -5024,7 +5027,7 @@ microtype.do_font = do_font
 % The \pkg{minimal} class doesn't define any size commands other than
 % \cmd\normalsize, which will result in lots of warnings. Therefore we
 % issue a warning about the warnings.
-%\changes{v2.6b}{2016/05/18}{warning with \pkg{minimal} class}
+%\changes{v2.7}{2016/05/18}{warning with \pkg{minimal} class}
 %    \begin{macrocode}
 \@ifclassloaded{minimal}{%
   \MT@warning@nl{Detected the `minimal' class.\MessageBreak
@@ -5206,7 +5209,7 @@ microtype.do_font = do_font
 %                           \contributor Christian Stark <cstark\at gmx.de>)}       ^^A MID: <7d81lgF2ad3ckU1@mid.dfncis.de>, 2009/07/28
 %^^A                  Also: \contributor Karl Karlsson <karl-karlsson\at yandex.ru> ^^A private mail, 2009/10/29
 %^^A                        \contributor hscm <henkmetselaar\at gmail.com>          ^^A MID: <6a24e972-b1a7-4172-a5a0-d2707e016301@12g2000pri.googlegroups.com>, 2009/11/02
-%\changes{v2.6b}{2016/06/08}{compatibility with \pkg{tikz} (again)}
+%\changes{v2.7}{2016/06/08}{compatibility with \pkg{tikz} (again)}
 % If \cmd\tikz@expandcount\ is greater than zero, we're inside or at the end of
 % a \pkg{tikz} node, where we don't want to adjust spacing after letterspacing,
 % lest we disturb \pkg{tikz}. This is used in \cs{MT@afteraftergroup}, and we
@@ -6630,7 +6633,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % However, this is only necessary for \pdftex\ versions prior to~1.20,
 % or \luatex\ $\less$~0.90 (actually, I think, 0.87).
 %\changes{v1.6a}{2005/01/30}{only reset \cmd\efcode s for older \pdftex\ versions}
-%\changes{v2.6b}{2017/02/13}{only reset \cmd\efcode s for older \luatex\ versions}
+%\changes{v2.7}{2017/02/13}{only reset \cmd\efcode s for older \luatex\ versions}
 %    \begin{macrocode}
 %<pdftex-def>\MT@requires@pdftex4
 %<luatex-def>\MT@requires@luatex5
@@ -7238,7 +7241,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@ls@fontspec@colon}
 %\begin{macro}{\MT@ls@fontspec@font}
 %\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
-%\changes{v2.6b}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
+%\changes{v2.7}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
 %                            (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
 %                            ^^A http://tug.org/pipermail/lualatex-dev/2017-February/001670.html
 % Add the |kernfactor| feature to a font loaded by \pkg{fontspec}
@@ -7342,7 +7345,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.6}{2014/09/07}{fix: ensure to set up math fonts (reported by \contributor kleenstar <@\at @>)}
 %                           ^^A http://tex.stackexchange.com/questions/187655/microtype-gives-wrong-letterspacing-in-math-mode
 % Still, we have to ensure that math fonts are set up again.
-%\changes{v2.6b}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} and \pkg{exscale} packages
+%\changes{v2.7}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} and \pkg{exscale} packages
 %                            (reported by \contributor user11126 <@\at @>,
 %                             solution by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>)}
 % Setting \cmd\glb@currsize\ to \cmd\@empty\ (our previous solution) could
@@ -8960,7 +8963,7 @@ end
 % In 2017, \LaTeX\ introduced a new way of declaring accented
 % Unicode commands (\cs{DeclareUnicodeComposite}), which we take care of here
 % (\cs{UnicodeEncodingName} has been introduced at the same time):
-%\changes{v2.6b}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cs{DeclareUnicodeComposite})
+%\changes{v2.7}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cs{DeclareUnicodeComposite})
 %                            (reported by \contributor Ulrike Fischer <news3\at nililand.de> and
 %                             `\contributor jcr <@\at @>')}
 %                             ^^A (1) private mail, 2017/04/25
@@ -12133,7 +12136,7 @@ end
 %\end{macro}
 % We turn off automatic expansion if output mode is <DVI> and we're running \pdftex.
 %\changes{v1.5}{2004/12/02}{disable automatic expansion for <DVI> output}
-%\changes{v2.6b}{2017/07/02}{don't disable automatic expansion for <DVI> output with \luatex}
+%\changes{v2.7}{2017/07/02}{don't disable automatic expansion for <DVI> output with \luatex}
 %    \begin{macrocode}
 %<*pdftex-def>
       \MT@requires@pdftex4{%
@@ -12410,7 +12413,7 @@ end
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@tracking@DVI}
 %\changes{v2.2}{2007/02/11}{warning when letterspacing in DVI mode}
-%\changes{v2.6b}{2017/07/06}{don't warn for letterspacing in DVI mode with \luatex}
+%\changes{v2.7}{2017/07/06}{don't warn for letterspacing in DVI mode with \luatex}
 % With \pdftex, we issue a warning, when letterspacing in <DVI> mode, since it will probably
 % not work. We also switch on protrusion if it isn't already, to compensate for
 % the letterspacing kerns.
@@ -12743,7 +12746,7 @@ end
 %                           when \pkg{fontspec} is loaded}
 % Since 2016/12/03, the default encoding with \xetex\ and \luatex\ in the
 % \LaTeX\ format is <TU>, even if \pkg{fontspec} is not loaded.
-%\changes{v2.6b}{2017/01/27}{declare Latin Modern Roman as alias of \texttt{lmr}
+%\changes{v2.7}{2017/01/27}{declare Latin Modern Roman as alias of \texttt{lmr}
 %                            with new \LaTeX\ format
 %                            (reported by \contributor Ulrike Fischer <news3\at nililand.de>)}
 %                            ^^A private mail, 2017/01/25
@@ -12795,7 +12798,7 @@ end
 \DeclareMicrotypeAlias{fp9j}{pplj}       %    "
 %    \end{macrocode}
 % The \pkg{newpx} package, a replacement for \pkg{pxfonts}.
-%\changes{v2.6b}{2017/03/13}{declare aliases for \pkg{newpx}}
+%\changes{v2.7}{2017/03/13}{declare aliases for \pkg{newpx}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{zpllf}{ppl}       % newpxtext
 \DeclareMicrotypeAlias{zplosf}{ppl}      %    "
@@ -12804,7 +12807,7 @@ end
 \DeclareMicrotypeAlias{txr} {ptm}        % txfonts
 %    \end{macrocode}
 % The \pkg{newtx} package, a replacement for \pkg{txfonts}.
-%\changes{v2.6b}{2017/02/25}{declare aliases for \pkg{newtx}}
+%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{newtx}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{ntxlf}{ptm}       % newtxtext
 \DeclareMicrotypeAlias{ntxosf}{ptm}      %    "
@@ -12812,7 +12815,7 @@ end
 \DeclareMicrotypeAlias{ntxtosf}{ptm}     %    "
 %    \end{macrocode}
 % The \pkg{tempora} package.
-%\changes{v2.6b}{2017/02/25}{declare aliases for \pkg{tempora}}
+%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{tempora}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{Tempora-TLF}{ptm} % tempora
 \DeclareMicrotypeAlias{Tempora-TOsF}{ptm}%    "
@@ -12847,7 +12850,7 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{chr} {bch}        % CH Math
 %    \end{macrocode}
-%\changes{v2.6b}{2017/03/13}{declare aliases for \pkg{XCharter}}
+%\changes{v2.7}{2017/03/13}{declare aliases for \pkg{XCharter}}
 % The \pkg{XCharter} package extends the Charter fonts.
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{XCharter-TLF} {bch} % XCharter
