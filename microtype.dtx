@@ -12616,6 +12616,8 @@ end
 % ^^A -------------------------------------------------------------------------
 %\NoIndexing  ^^A from now on, don't bother indexing
 %
+%\newpage
+%
 %\section{Configuration files}
 %\changes{v1.6}{2005/01/24}{restructure \file{dtx} file}
 %
@@ -12763,12 +12765,15 @@ end
 %                            ^^A private mail, 2017/01/25
 %    \begin{macrocode}
 
-\ifcase 0%
-  \ifx\UnicodeEncodingName\@undefined
-    \ifMT@fontspec 1\fi\else 1\fi
-\DeclareMicrotypeAlias{lmr}{cmr}         % lmodern
-  \else
+\MT@if@false
+\ifx\UnicodeEncodingName\@undefined\else
+  \MT@ifstreq{\encodingdefault}{\UnicodeEncodingName}\MT@if@true\relax
+\fi
+\ifMT@fontspec\MT@if@true\fi
+\ifMT@if@
 \DeclareMicrotypeAlias{lmr}{Latin Modern Roman}
+  \else
+\DeclareMicrotypeAlias{lmr}{cmr}         % lmodern
 \fi
 %    \end{macrocode}
 % The Latin Modern fonts, the virtual fonts from the
@@ -16928,7 +16933,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10542}
+% \CheckSum{10549}
 %
 % \Finale
 %
