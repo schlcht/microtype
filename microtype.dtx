@@ -3000,7 +3000,7 @@
 %  \item Allow automatic expansion and letterspacing with \luatex\ in <DVI> mode
 %        (aka. \texttt{dvilualatex})
 %        \refsection{\ref{sub:options-microtype}, \ref{sub:options-expansion}, table~\ref{tab:available-features}}
-%  \item Compatibility with \LaTeX\ 2017/01/01
+%  \item Compatibility with \LaTeX\ 2017/01/01 (fix warnings)
 %
 %\VersionDate{2.6a}{2016/05/14}
 %
@@ -11109,12 +11109,18 @@ end
       }{%
 %    \end{macrocode}
 % Only one list can apply to a given combination.
+%\changes{v2.7}{2017/07/07}{don't warn for override if conflicting list is loaded}
+% But we don't warn if the overridden list is to be loaded by the current one.
 %    \begin{macrocode}
         \MT@ifdefined@n@T{MT@\MT@permutelist @\@tempa\MT@extra@context}{%
-          \MT@warning{\@nameuse{MT@abbr@\MT@permutelist} list
-            `\@nameuse{MT@\MT@permutelist @name}' will override list\MessageBreak
-            `\@nameuse{MT@\MT@permutelist @\@tempa\MT@extra@context}'
-            for font `\@tempa'}%
+          \MT@ifstreq{\csname MT@\MT@permutelist @\@tempa\MT@extra@context\endcsname}%
+             {\csname MT@\MT@permutelist @\csname MT@\MT@permutelist @name\endcsname @load\endcsname}%
+              \relax{%
+            \MT@warning{\@nameuse{MT@abbr@\MT@permutelist} list
+              `\@nameuse{MT@\MT@permutelist @name}' will override list\MessageBreak
+              `\@nameuse{MT@\MT@permutelist @\@tempa\MT@extra@context}'
+              for font `\@tempa'}%
+          }%
         }%
 %<debug>\MT@dinfo@nl{1}{initialising: use list for font \@tempa
 %<debug>                \ifx\MT@extra@context\@empty\else\MessageBreak
@@ -11182,7 +11188,8 @@ end
 %\end{macro}
 %\begin{macro}{\MT@check@range@}
 % \cmd\@tempb\ and \cmd\@tempc\ are lower resp. upper bound of the new range,
-% \meta{\#2} and \meta{\#3} those of the existing range.
+% \meta{\#1} and \meta{\#2} those of the existing range. \meta{\#3} is the list name.
+%\changes{v2.7}{2017/07/07}{don't warn for override if conflicting list is loaded}
 %    \begin{macrocode}
 \def\MT@check@range@#1#2#3{%
   \MT@ifdim{#2}=\m@ne{%
@@ -11224,9 +11231,13 @@ end
     }%
   }%
   \ifMT@if@
-    \MT@warning{\@nameuse{MT@abbr@\MT@permutelist} list
-      `\@nameuse{MT@\MT@permutelist @name}' will override\MessageBreak
-      list `#3' for font \@tempa,\MessageBreak size \@tempb}%
+    \MT@ifstreq{#3}%
+        {\csname MT@\MT@permutelist @\csname MT@\MT@permutelist @name\endcsname @load\endcsname}%
+        \relax{%
+      \MT@warning{\@nameuse{MT@abbr@\MT@permutelist} list
+        `\@nameuse{MT@\MT@permutelist @name}' will override\MessageBreak
+        list `#3' for font \@tempa,\MessageBreak size \@tempb}%
+    }%
 %    \end{macrocode}
 % If we've already found a conflict with this item, we can skip the rest of the
 % list.
@@ -16917,7 +16928,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10521}
+% \CheckSum{10542}
 %
 % \Finale
 %

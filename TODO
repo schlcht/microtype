@@ -1,4 +1,3 @@
-* don't warn for override when loaded (https://tex.stackexchange.com/questions/123989/modifying-i-e-partially-overriding-microtypes-character-protrusion-settings/124032#124032)
 * build our own "is@opentype@font" (test if font.format==(opentype or truetype))
 * non-OpenType fonts cannot be letterspaced with `kernfactor'
 * fix problem with \copyfont in luatex (http://tex.stackexchange.com/questions/338942/, https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html) 
