@@ -887,7 +887,7 @@
 % typography to add a small space before question mark, exclamation mark and
 % semi-colon, and a bigger space before the colon and the guillemets. Until
 % now, this could only be achieved by making these characters active (as is done,
-% for example, the \pkg{babel} package), which may not always be a robust
+% for example, by the \pkg{babel} package), which may not always be a robust
 % solution. In contrast to the standard kerning built into the fonts
 % (which will of course apply as usual), this additional kerning relates to
 % single characters, not to character pairs.
@@ -905,7 +905,7 @@
 % improvements. I suggest reading the reasoning behind the settings in
 % section~\ref{sub:conf-spacing}.
 %
-% The possibility, finally, to \emph{disable all ligatures} in a font is
+% The possibility, finally, to \emph{disable all or selected ligatures} is
 % particularly useful for typewriter fonts.
 %
 %\emptypdfpageresources ^^A layers of the sample
@@ -1223,7 +1223,7 @@
 % -- in the latter case, the \opt{DVIoutput} option is redundant.
 %
 % When generating <DVI> files, font expansion has to be enabled explicitly.
-% Neither letterspacing nor \emph{automatic} font expansion will work because
+% With \pdftex, neither letterspacing nor \emph{automatic} font expansion will work because
 % the postprocessing drivers (|dvips|, |dvipdfm|, etc.) resp. the <DVI> viewer
 % are not able to generate the fonts on the fly.
 %
@@ -1333,8 +1333,8 @@
 %
 % \paragraph{The set of fonts} is specified by assigning values to the <NFSS>
 % font attributes: encoding, family, series, shape and size (cf.~\cite{fntguide}).
-% Let's start with an example. This package defines a font set called
-% `|basictext|' in the main configuration file as follows:
+% Let's start with an example. In the main configuration file \file{microtype.cfg},
+% a font set called `|basictext|' is defined as follows:
 %\begin{verbatim}
 %\DeclareMicrotypeSet{basictext}
 %   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,EU1,EU2,TU},
@@ -2470,10 +2470,10 @@
 %\paragraph{Don't use font expansion for web documents (with older \pdftex\ versions).}
 % With \pdftex\ versions older than 1.40, each expanded instance of the font
 % will be embedded in the <PDF> file, hence the file size may increase by quite
-% large a factor (depending on expansion limits and step). Therefore, courtesy
+% a large factor (depending on expansion limits and step). Therefore, courtesy
 % and thriftiness of bandwidth command it not to enable font expansion when
-% creating files to be distributed electronically. With \pdftex\ 1.40, which
-% uses a different technique of expansion, the file size increase can be
+% creating files to be distributed electronically. With \pdftex\ 1.40 and \luatex, which
+% use a different technique of expansion, the increase of file size can be
 % neglected.
 %
 %\changes{v2.2}{2007/07/06}{add hint about extra <TOC> leader dot
@@ -2605,7 +2605,7 @@
 %\end{verbatim}
 % This error message will occur if you are trying to employ font expansion
 % while creating <DVI> output. Remember that \emph{automatic} font expansion
-% only works when running \pdftex\ or \luatex\ in <PDF> mode. Although expansion is also
+% only works when running \pdftex\ in <PDF> mode. Although expansion is also
 % possible in <DVI> mode, it requires that all instances of the expanded fonts
 % exist on your \TeX\ system.
 %

@@ -10,10 +10,10 @@ microtype.lua
 test-microtype.tex
 microtype-doc.sty
 microtype-gind.ist
+*.cfg
 
 # auxiliary files
 *.aux
-*.cfg
 *.glo
 *.gls
 *.glg
