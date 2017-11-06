@@ -2,7 +2,7 @@
 % ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.7"
+% !DTXversion:: "2.7a"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -38,7 +38,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2017/07/07 v2.7
+  [2017/99/99 v2.7a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -52,7 +52,7 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.7",
+%<luafile>    version      = "2.7a",
 %<luafile>    date         = "2017/07/07",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
@@ -1124,9 +1124,9 @@
 %           \label{sub:options-expansion}
 %
 %\Describe{Option}{auto}{*true,false}
-% Beginning with version \pdftex\ 1.20 (and with \luatex), the expanded
+% Beginning with \pdftex\ version 1.20 (inherited by \luatex), the expanded
 % instances of the fonts may be calculated automatically and at run-time instead
-% of the user having to prepare the instances in advance. This option is true
+% of the user having to prepare them in advance. This option is true
 % by default provided that you are using a \TeX\ engine with this capability
 % and the output mode is <PDF>.
 % If \opt{auto} is set to false, the font instances for all expansion steps must exist
@@ -1139,7 +1139,6 @@
 %
 %\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
 %                           automatic font expansion}
-%\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
 % With \pdftex, automatic font expansion does not work with bitmap fonts. Therefore, if you
 % are using the Computer Modern Roman fonts in <T1> encoding,
 %\iffalse
@@ -1148,10 +1147,12 @@
 %     no other way related than that both start with a `T' and end with a `1'.}
 %\fi
 % you should either install the \pkg{cm-super} fonts or use the Latin Modern
-% fonts (package \pkg{lmodern}). With \luatex, automatic expansion even works
-% in <DVI> mode, however, because postprocessing programs like |dvips| or
-% |dvipdfmx| are (at the moment of this writing) not capable of dealing with
-% OpenType fonts, only for legacy fonts.
+% fonts (package \pkg{lmodern}).
+%\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
+% With \luatex, expansion is always automatic, and also works in <DVI> mode
+% (|dvilualatex|), however, because postprocessing programs like |dvips|
+% or |dvipdfmx| are not (yet) capable of dealing with OpenType fonts,
+% only for legacy fonts.
 %
 %\medskip
 %\Describe{Option}{stretch}{:integer}[20]
@@ -1201,7 +1202,7 @@
 % to +1000.
 %
 %
-%\enlargethispage{2\baselineskip} ^^A layout
+%\enlargethispage{\baselineskip} ^^A layout
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
 %\Describe{Option}{DVIoutput}{true,*false}
@@ -2996,7 +2997,9 @@
 %
 %\begin{History}
 %
-%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\Version{2.7}{2017/07/07}
 %  \item Allow automatic expansion and letterspacing with \luatex\ in <DVI> mode
 %        (aka. \texttt{dvilualatex})
 %        \refsection{\ref{sub:options-microtype}, \ref{sub:options-expansion}, table~\ref{tab:available-features}}
@@ -6589,7 +6592,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\MT@stretch@  \MT@stretch
     \let\MT@shrink@   \MT@shrink
     \let\MT@step@     \MT@step
-    \let\MT@auto@     \MT@auto
+%<pdftex-def>    \let\MT@auto@     \MT@auto
     \let\MT@ex@factor@\MT@ex@factor
   }%
   \MT@reset@ef@codes
@@ -6709,8 +6712,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@ex@opt@{stretch}{Setting stretch limit to \number\MT@stretch@}%
   \MT@get@ex@opt@{shrink} {Setting shrink limit to \number\MT@shrink@}%
   \MT@get@ex@opt@{step}   {Setting expansion step to \number\MT@step@}%
-  \def\@tempa{autoexpand}%
-  \MT@get@ex@opt@{auto}{\ifx\@tempa\MT@auto@ En\else Dis\fi abling automatic expansion}%
+%<pdftex-def>  \def\@tempa{autoexpand}%
+%<pdftex-def>  \MT@get@ex@opt@{auto}{\ifx\@tempa\MT@auto@ En\else Dis\fi abling automatic expansion}%
   \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @preset}{%
     \MT@preset@ex
     \let\MT@reset@ef@codes\relax
@@ -10817,18 +10820,25 @@ end
 % Don't use |autoexpand| for \pdftex\ version older than 1.20.
 %\changes{v1.7}{2005/03/07}{fix: remove space after \texttt{autoexpand}}
 %\changes{v1.7}{2005/03/07}{disallow automatic expansion if \pdftex\ too old}
+%\changes{v2.7a}{2017/08/08}{disallow non-automatic expansion with \luatex}
 %    \begin{macrocode}
-%<pdftex-def>    \MT@requires@pdftex4{%
-      \MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}%
 %<*pdftex-def>
+    \MT@requires@pdftex4{%
+      \MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}%
     }{%
       \MT@warning{pdftex too old for automatic font expansion}%
     }
 %</pdftex-def>
   \else
-%<pdftex-def>    \MT@requires@pdftex4{%
+%<*pdftex-def>
+    \MT@requires@pdftex4{%
       \MT@glet@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty
-%<pdftex-def>    }\relax
+    }\relax
+%</pdftex-def>
+%<*luatex-def>
+    \MT@warning{Non-automatic font expansion doesn't work with\MessageBreak
+                luatex}%
+%</luatex-def>
   \fi
 }
 %    \end{macrocode}
@@ -11626,9 +11636,10 @@ end
 %    \begin{macrocode}
 %<pdftex-def>  \MT@requires@pdftex4{
     \MT@expansiontrue
-    \MT@autotrue
+%<pdftex-def>    \MT@autotrue
 %<pdftex-def>  }\relax
 \fi
+%<luatex-def>\MT@autotrue
 %</pdftex-def|luatex-def>
 %    \end{macrocode}
 % The main configuration file will be loaded before processing the package
@@ -12140,8 +12151,19 @@ end
 % \textit{\fontfamily{pzc}\selectfont hz}~programme really usable.
 % It must be either `|autoexpand|' or empty (or `|1000|' for older versions of
 % \pdftex).
+%\changes{v2.7a}{2017/07/18}{with \luatex, font expansion is always automatic
+%                            (as confirmed by \contributor Hans Hagen <pragma\at wxs.nl>)}
+%                             ^^A http://tug.org/pipermail/luatex/2017-July/006579.html and following
+% With \luatex, we just leave it empty, as there's actually no difference --
+% non-automatic font expansion doesn't work anymore.
+%\changes{v2.7a}{2017/11/01}{remove `\texttt{autoexpand}' for \luatex\ 1.0.6
+%                            (reported by \contributor Ulrike Fischer <news3\at nililand.de>)}
+%                            ^^A private mail, 2017/10/29
+% In \luatex\ 1.0.6, the `|autoexpand|' option seems to have been removed altogether
+% and would trigger an error.
 %    \begin{macrocode}
-    \let\MT@auto\@empty
+%<luatex-def>    \let\MT@auto@\@empty
+%<pdftex-def>    \let\MT@auto\@empty
     \ifMT@auto
 %    \end{macrocode}
 %\end{macro}
@@ -12162,9 +12184,7 @@ end
           \fi
           \MT@autofalse
         \else
-%</pdftex-def>
           \def\MT@auto{autoexpand}%
-%<*pdftex-def>
         \fi
 %    \end{macrocode}
 % Also, if \pdftex\ is too old.
@@ -12182,7 +12202,9 @@ end
         \MT@autofalse
         \def\MT@auto{1000 }%
       }%
+%</pdftex-def>
     \else
+%<*pdftex-def>
 %    \end{macrocode}
 % No automatic expansion.
 %    \begin{macrocode}
@@ -12190,6 +12212,12 @@ end
         \def\MT@auto{1000 }%
       }%
 %</pdftex-def>
+%<*luatex-def>
+      \ifMT@opt@auto
+        \MT@error{Non-automatic font expansion does not work with\MessageBreak
+                  luatex}{Remove `auto=false' from the package options, or use pdftex.}%
+      \fi
+%</luatex-def>
     \fi
 %    \end{macrocode}
 % Choose the appropriate macro for selected expansion.
@@ -16933,7 +16961,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10549}
+% \CheckSum{10559}
 %
 % \Finale
 %
