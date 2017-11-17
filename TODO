@@ -1,4 +1,3 @@
-* vinfo about tracking too early
 * warning for `unknown*` values
 * build our own "is@opentype@font" (test if font.format==(opentype or truetype))
 * non-OpenType fonts cannot be letterspaced with `kernfactor'

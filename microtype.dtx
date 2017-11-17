@@ -5548,6 +5548,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<debug>\MT@show@pdfannot2%
   \else
     \MT@vinfo{Setting up font `\MT@@font'\on@line}%
+    \MT@info@notracking
 %    \end{macrocode}
 % Now we can begin setting up the font for all features that the current
 % \pdftex\ provides. The following commands are \cmd\let\ to \cmd\relax\ if the
@@ -5782,11 +5783,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \def\MT@feat{#1}%
     \csname MT@set@#1@codes\endcsname
   \else
-    \MT@vinfo{... No \@nameuse{MT@abbr@#1}}%
+    \MT@ifstreq{#1}{tr}%
+      {\let\MT@info@notracking\MT@info@notracking@}%
+      {\MT@vinfo{... No \@nameuse{MT@abbr@#1}}}%
   \fi
 }
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@info@notracking}
+%\begin{macro}{\MT@info@notracking@}
+%\changes{v2.7a}{2017/11/17}{defer `No tracking' message}
+% To defer the message to after the font has actually been logged.
+%    \begin{macrocode}
+\let\MT@info@notracking\relax
+\def\MT@info@notracking@{\MT@vinfo{... No tracking}}
+%    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@dinfo@list}
@@ -16961,7 +16974,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10559}
+% \CheckSum{10570}
 %
 % \Finale
 %
