@@ -1,0 +1,18 @@
+% https://tex.stackexchange.com/questions/401668/microtype-tracking-for-bold-fonts/
+\documentclass{article}
+\usepackage[sfdefault]{FiraSans}
+\usepackage[verbose,tracking]{microtype}
+\DeclareMicrotypeSet*[tracking]{bold}
+  { encoding = *, series = {b,bx,b*} }
+\SetTracking
+  [ unit = 1pc ]
+   { encoding = *, series = {b,x,r*} }
+   { 550 }
+\begin{document}
+
+\textbf{Es irrt der Mensch.}
+
+\section{First section}
+
+Some more text.
+\end{document}
