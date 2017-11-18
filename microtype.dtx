@@ -9743,7 +9743,15 @@ end
 % And `|family = *|' will become \cmd\familydefault.
 %    \begin{macrocode}
     \MT@ifempty\@tempa{\def\@tempa{#1}}\relax
-    \edef\MT@val{\expandafter\noexpand\csname \@tempa default\endcsname}%
+%    \end{macrocode}
+% Test whether the command is actually defined.
+%\changes{v2.7a}{2017/11/17}{test whether \cs{\dots default} is defined}
+%    \begin{macrocode}
+    \MT@ifdefined@n@TF{\@tempa default}%
+      {\edef\MT@val{\expandafter\noexpand\csname \@tempa default\endcsname}}%
+      {\MT@warning{`\@backslashchar\@tempa default' is not a defined command.\MessageBreak
+                   Ignoring `#1 = {\@tempa*}' in font set\MessageBreak`\MT@curr@set@name'}%
+       \let\MT@val\@empty}%
 %    \end{macrocode}
 % In contrast to earlier version, these values will not be expanded immediately
 % but at the end of the preamble.
@@ -11140,9 +11148,9 @@ end
              {\csname MT@\MT@permutelist @\csname MT@\MT@permutelist @name\endcsname @load\endcsname}%
               \relax{%
             \MT@warning{\@nameuse{MT@abbr@\MT@permutelist} list
-              `\@nameuse{MT@\MT@permutelist @name}' will override list\MessageBreak
-              `\@nameuse{MT@\MT@permutelist @\@tempa\MT@extra@context}'
-              for font `\@tempa'}%
+              `\@nameuse{MT@\MT@permutelist @name}' will\MessageBreak override
+              list `\@nameuse{MT@\MT@permutelist @\@tempa\MT@extra@context}'
+              for \MessageBreak font `\@tempa'}%
           }%
         }%
 %<debug>\MT@dinfo@nl{1}{initialising: use list for font \@tempa
@@ -16974,7 +16982,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10570}
+% \CheckSum{10583}
 %
 % \Finale
 %
