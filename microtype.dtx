@@ -601,7 +601,7 @@
     {\texttt{w.m.l@gmx.net}}}
   % the samples in the introduction, utilising nested optional content groups (aka. layers):
   \ifnum\pdftexversion<140 \else
-    \def\mt@layer#1#2{\pdfliteral direct{/OC/#1 BDC}#2\pdfliteral direct{EMC}}
+    \def\mt@layer#1#2{\pdfliteral page{/OC/#1 BDC}#2\pdfliteral page{EMC}}
     \ifx\mt@objects\@undefined\let\mt@objects\@empty\fi
     \ifx\mt@order  \@undefined\let\mt@order  \@empty\fi
     \let\mt@resources\@empty

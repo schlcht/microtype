@@ -143,11 +143,6 @@
 \mtl@register{TeX-boxes}
 \xdef\mt@order{\mt@order]}
 \global\let\mtl@objects\mt@objects
-\ifx\pdfcolorstack\@undefined
-  \pdfcatalog{/OCProperties <<
-                /OCGs [\mt@objects]
-                /D << /Order [\mt@order] >> >>}
-\fi
 \def\togglelayer#1#2{%
   \pdfstartlink width \wd\logobox height \ht\logobox depth \dp\logobox
     user{/Subtype/Link
@@ -463,9 +458,8 @@
 % You are currently reading this.
 %    \begin{macrocode}
 \DocInput{microtype-logo.dtx}
-%    \end{macrocode}
-% And here's the logo.
-%    \begin{macrocode}
+\newpage
+  And here it is:
 \vfill
 \begin{center}
   \printlogo \null

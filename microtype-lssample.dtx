@@ -121,8 +121,8 @@
 % Draw the interword space.
 %    \begin{macrocode}
 \def\lssp#1#2#3#4{%
-  \mts@layer{stuff}{%
-    \begin{tikzpicture}[remember picture,line width=\lsrule,inner sep=0pt]
+  \begin{tikzpicture}[remember picture,line width=\lsrule,inner sep=0pt]
+    \mts@layer{stuff}{%
       \tikzstyle{every draw}=[anchor=bottom]
       \coordinate(#1space) at (#2/2,\lsdepth/2);
       \coordinate(#1stretch) at (#2+#3/2,+0pt);
@@ -137,14 +137,15 @@
             (+#2,-2pt-.5\lsrule) -- ++(+#3,+0pt);
       \draw[->,line width=0.3pt,shorten <=0.5\lsrule,color=thegreen!30]
             (+#2,-2pt-.5\lsrule) -- ++(-#4,+0pt);
-    \end{tikzpicture}%
-  }\ignorespaces
+    }%
+  \end{tikzpicture}%
+  \ignorespaces
 }
 %    \end{macrocode}
 % Layers.
 %    \begin{macrocode}
-\def\mts@layer#1#2{\pdfliteral{/OC/#1 BDC}#2\pdfliteral{EMC}}
-\def\mtsx@layer#1#2{\pdfliteral{/OC/stuff BDC /OC/#1 BDC}#2\pdfliteral{EMC EMC}}
+\def\mts@layer#1#2{\pdfliteral page{/OC/#1 BDC}#2\pdfliteral page{EMC}}
+\def\mtsx@layer#1#2{\pdfliteral page{/OC/stuff BDC /OC/#1 BDC}#2\pdfliteral page{EMC EMC}}
 \ifx\mt@objects\@undefined\let\mt@objects\@empty\fi
 \ifx\mt@order  \@undefined\let\mt@order  \@empty\fi
 \xdef\mt@order{\mt@order[(Sheep)}
