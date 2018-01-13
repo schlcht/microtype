@@ -1,0 +1,45 @@
+\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{microtype}
+\usepackage{newunicodechar}
+\newunicodechar{å}{\r a}
+\newunicodechar{€}{\texteuro}
+\newunicodechar{œ}{œ}
+
+\SetProtrusion{font=*}{å = {0,0},€={10,10},œ = {20,20}}
+%\tracingmicrotype4
+\makeatletter
+\def\MT@is@active#1#2\@nil{%
+  \ifnum\catcode`#1 = \active
+    \begingroup
+      \set@display@protect
+      \let\IeC\@firstofone
+      \let\@inpenc@undefined@\MT@undefined@char
+      \def\UTFviii@defined##1{\ifx ##1\relax
+        \MT@undefined@char{utf8}\else\expandafter ##1\fi}%
+      \MT@ifdefined@c@T\PrerenderUnicode
+        {\PrerenderUnicode{\@tempa}\let\unicode@charfilter\@firstofone}%
+%      \MT@ifdefined@c@TF\newunicodechar{%
+      \edef\x{\endgroup
+        \def\noexpand\@tempa{\expandafter\expandafter\expandafter\@empty\@tempa}%
+        \MT@toks={\the\MT@toks\space(= \expandafter\expandafter\expandafter\@empty\@tempa)}% 
+      }%
+%      }{%
+%      \edef\x{\endgroup
+%        \def\noexpand\@tempa{\@tempa}%
+%        \MT@toks={\the\MT@toks\space(= \@tempa)}% 
+%      }%
+%      }%
+    \x
+  \fi
+}
+
+\makeatother 
+
+\tracingcommands2
+\tracingmacros2
+\begin{document}
+å € œ
+\end{document} 

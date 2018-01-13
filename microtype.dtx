@@ -1,5 +1,4 @@
 %\iffalse meta-comment
-% ^^A messages to WinEdt:
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
 % !DTXversion:: "2.7a"
@@ -2725,8 +2724,8 @@
 % Furthermore, I thank him for helping me to improve this package, and not
 % least for promoting it in \cite{ThanhPracTeX}, \cite{ThanhEuroTeX07} and ^^A comma, to avoid the Three Ands Falls
 % elsewhere. I also thank him and the rest of the \pdftex\ team, and more
-% recently also the \luatex\ team, for refuting the idea that \TeX\ is dead,
-% and for fixing the bugs I find.
+% recently also the \luatex\ and \xetex\ teams, for refuting the idea that
+% \TeX\ is dead, and for fixing the bugs I find.
 %
 %  \contributor Harald Harders <h.harders\at tu-bs.de>
 % has contributed protrusion settings for Adobe Minion. I~would also like to
@@ -2773,7 +2772,7 @@
 %
 % Additionally, the following people have reported bugs, made suggestions or
 % helped otherwise (in chronological order, quotes indicate
-%    \href{http://tex.stackexchange.com/users/}{TeX.SX} user names):
+%    \href{http://tex.stackexchange.com/users/}{TeX.SX} user names):\linebreak
 %  \contributor Tom Kink          <kink\at hia.rwth-aachen.de>,
 %  \contributor Herb Schulz       <herbs\at wideopenwest.com>,
 %  \contributor Michael Hoppe     <mh\at michael-hoppe.de>,
@@ -2847,8 +2846,9 @@
 % `\contributor Daniel            <@\at @>', ^^A https://tex.stackexchange.com/users/113787/daniel
 % `\contributor ltcomdata         <@\at @>', ^^A https://tex.stackexchange.com/users/17061/ltcomdata
 %  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>,
+% `\contributor jcr               <@\at @>', ^^A https://tex.stackexchange.com/users/56514/jcr
 % and
-% `\contributor jcr               <@\at @>'. ^^A https://tex.stackexchange.com/users/56514/jcr
+% \contributor Nils Anders Danielsson <nad\at cse.gu.se>.
 %
 %
 %\iffalse
@@ -3168,7 +3168,7 @@
 %^^A        \refsection{\ref{sec:fine-tuning}}
 %  \item New command \cs{LoadMicrotypeFile} to load a configuration file manually
 %        \refsection{\ref{sub:config-file}}
-%  \item Hook \cs{Microtype@Hook} for font package authors
+%  \item New command \cs{Microtype@Hook} for font package authors
 %        \refsection{\ref{sub:hook}}
 %  \item New option `\opt{verbose}|=errors|' to turn all warnings into errors
 %^^A  \item Disable expansion inside \cmd\showhyphens
@@ -3268,9 +3268,7 @@
 %    \appendix
 %    \AppendixSettings
 %  \fi
-%  \typeout{:?1000} ^^A tell WinEdt not to bother about overfull boxes
 %  \PrintIndex
-%  \typeout{:?1111}
 %  \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %}
 %
@@ -8476,18 +8474,19 @@ end
 %    \begin{macrocode}
   \MT@toks=\expandafter{\@tempa}%
 %    \end{macrocode}
+%\changes{v1.8}{2005/03/30}{fix: expand active characters}
+%\changes{v2.7a}{2018/01/12}{expand active characters earlier}
+%  \item It might be an active character, \ie, an 8-bit character defined by
+%        \pkg{inputenc}. If so, we will expand it here to its <LICR> form.
+%    \begin{macrocode}
+  \MT@exp@two@c\MT@is@active\string\@tempa\@nil
+%    \end{macrocode}
 % Now, let's walk through (hopefully) all possible cases.
 %\begin{itemize}
 %  \item It's a letter, a character or a number.
 %    \begin{macrocode}
   \expandafter\MT@is@letter\@tempa\relax\relax
   \ifnum\MT@char@ < \z@
-%    \end{macrocode}
-%\changes{v1.8}{2005/03/30}{fix: expand active characters}
-%  \item It might be an active character, \ie, an 8-bit character defined by
-%        \pkg{inputenc}. If so, we will expand it here to its <LICR> form.
-%    \begin{macrocode}
-    \MT@exp@two@c\MT@is@active\string\@tempa\@nil
 %    \end{macrocode}
 %  \item OK, so it must be a macro. We do not allow random commands but only
 %        those defined in \LaTeX's idiosyncratic font encoding scheme:
@@ -8839,13 +8838,20 @@ end
 %    \begin{macrocode}
       \MT@ifdefined@c@T\PrerenderUnicode
         {\PrerenderUnicode{\@tempa}\let\unicode@charfilter\@firstofone}%
+%    \end{macrocode}
+% The \cmd\expandafter\ hocus-pocus should please \pkg{newunicodechar}.
+%\changes{v2.7a}{2017/11/25}{compatibility with \pkg{newunicodechar}
+%                            (reported by \contributor Nils Anders Danielsson <nad\at cse.gu.se>)}
+%                            ^^A private mail, 2017/09/05
+%    \begin{macrocode}
       \edef\x{\endgroup
-        \def\noexpand\@tempa{\@tempa}%
+        \def\noexpand\@tempa{\expandafter\expandafter\expandafter\@empty\@tempa}%
 %    \end{macrocode}
 % Append what we think the translation is to the token register we use for the
 % log.
 %    \begin{macrocode}
-        \MT@toks={\the\MT@toks\space(= \@tempa)}%
+        \MT@toks={\the\MT@toks\space(=
+                  \expandafter\expandafter\expandafter\@empty\@tempa)}%
       }%
     \x
   \fi
@@ -16982,7 +16988,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10583}
+% \CheckSum{10591}
 %
 % \Finale
 %
