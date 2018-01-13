@@ -1936,7 +1936,7 @@
 % kerning after the apostrophe, `|l'apos\-trophe|'.
 %\changes{v2.7}{2016/10/16}{mention that additional kerning does not work in math mode
 %                            (discovered by `\contributor Daniel <@\at @>')}
-%                           ^^A http://tex.stackexchange.com/questions/332695/microtype-kerning-in-math-mode-with-mathdesign-charter  
+%                           ^^A https://tex.stackexchange.com/questions/332695/microtype-kerning-in-math-mode-with-mathdesign-charter
 % Furthermore, additional kerning will not be applied in math mode.
 % These restrictions of \pdftex\ will hopefully be lifted some time.
 %
@@ -2772,7 +2772,7 @@
 %
 % Additionally, the following people have reported bugs, made suggestions or
 % helped otherwise (in chronological order, quotes indicate
-%    \href{http://tex.stackexchange.com/users/}{TeX.SX} user names):\linebreak
+%    \href{https://tex.stackexchange.com/users/}{TeX.SX} user names):\linebreak
 %  \contributor Tom Kink          <kink\at hia.rwth-aachen.de>,
 %  \contributor Herb Schulz       <herbs\at wideopenwest.com>,
 %  \contributor Michael Hoppe     <mh\at michael-hoppe.de>,
@@ -2938,9 +2938,9 @@
 %   \newblock (\ctanurl{macros/latex/doc/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
-%   Will Robertson, Khaled Hosny,
+%   Will Robertson,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 31 March 2017.
+%    \newblock 9~September 2017.
 %    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
@@ -5296,7 +5296,7 @@ microtype.do_font = do_font
 % and \pkg{mathastext}.
 %\changes{v2.5}{2011/07/29}{restore \cmd\% and \cmd\# when \pkg{mathastext} is loaded
 %                           (found by \contributor Seamus Bradley <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/24248
+%                           ^^A https://tex.stackexchange.com/questions/24248
 %                           ^^A (beta:07)
 %    \begin{macrocode}
   \MT@if@false
@@ -5338,7 +5338,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.6}{2014/03/17}{redefine \cs{MT@setupfont@hook} globally
 %                           for problem with \pkg{tikzposter}
 %                           (reported by \contributor Sam Mason <sam\at samason.me.uk>)}
-%                           ^^A http://tex.stackexchange.com/questions/165846/
+%                           ^^A https://tex.stackexchange.com/questions/165846/
 %    \begin{macrocode}
   \MT@glet\MT@setupfont@hook\@empty
   \ifMT@fontspec
@@ -6028,7 +6028,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5}{2011/08/19}{fix: remove space
 %                           (found by \contributor Meho~R <meho.2005\at gmail.com>)}
 %                            ^^A MID: <b3c1627e-192f-4004-ab46-4ea86925e298@dc3g2000vbb.googlegroups.com>
-%                            ^^A http://tex.stackexchange.com/questions/25036/microtype-package-v-2-5-beta-06-and-footnote-protrusion
+%                            ^^A https://tex.stackexchange.com/questions/25036/microtype-package-v-2-5-beta-06-and-footnote-protrusion
 %                            ^^A (beta:08)
 %    \begin{macrocode}
 \def\MT@set@all@pr#1#2{%
@@ -7236,7 +7236,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@afteraftergroup}
 % This helper macro carries stuff outside of the current group to the end of
 % the next group, but will then respect grouping, which is crucial for nested
-% letterspacing. (Following an idea of Will Robertson.)^^A http://tex.stackexchange.com/a/56319
+% letterspacing. (Following an idea of Will Robertson.)^^A https://tex.stackexchange.com/a/56319
 %\changes{v2.5a}{2013/05/15}{fix: get outer kerning and spacing of nested letterspacing right}
 %    \begin{macrocode}
 \def\MT@afteraftergroup#1{%
@@ -7355,9 +7355,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Only \cs{textls} can be used in math mode (\cs{lsstyle} may be used inside
 % another text switch, of course).
 %\changes{v2.5}{2012/11/14}{fix: ensure to set up math fonts (reported by \contributor RazorXsr <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/82686/settracking-in-the-math-environment
+%                           ^^A https://tex.stackexchange.com/questions/82686/settracking-in-the-math-environment
 %\changes{v2.6}{2014/09/07}{fix: ensure to set up math fonts (reported by \contributor kleenstar <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/187655/microtype-gives-wrong-letterspacing-in-math-mode
+%                           ^^A https://tex.stackexchange.com/questions/187655/microtype-gives-wrong-letterspacing-in-math-mode
 % Still, we have to ensure that math fonts are set up again.
 %\changes{v2.7}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} and \pkg{exscale} packages
 %                            (reported by \contributor user11126 <@\at @>,
@@ -7737,11 +7737,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@xspace}
 %\changes{v2.5a}{2013/05/15}{fix \texttt{outer spacing} problem with \pkg{xspace}
 %                            (reported by \contributor Dave <@\at @>)}
-%                            ^^A http://tex.stackexchange.com/questions/59655
+%                            ^^A https://tex.stackexchange.com/questions/59655
 %\changes{v2.6}{2014/11/22}{fix \texttt{outer spacing} problem with (not only) \pkg{algorithm}
 %                           (reported by \contributor Henning <@\at @>
 %                            and \contributor Ronnie Marksch <Ronnie.Marksch\at yahoo.de>)}
-%                            ^^A http://tex.stackexchange.com/questions/213164
+%                            ^^A https://tex.stackexchange.com/questions/213164
 %                            ^^A MID: <mk1sqc$jve$1@speranza.aioe.org>
 %\begin{macro}{\MT@xspace@}
 % If the group is followed by \cmd\xspace, we first feed \cmd\xspace\ with the
@@ -9194,13 +9194,13 @@ end
 % commands but only (Unicode) letters.
 %\changes{v2.6}{2015/12/05}{(in)compatibility with \pkg{luatexja}: disable unknown slots warnings
 %                          (reported by \contributor Max <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/272102/luatexja-with-microtype-generates-lots-of-warnings
+%                           ^^A https://tex.stackexchange.com/questions/272102/luatexja-with-microtype-generates-lots-of-warnings
 % The \pkg{xeCJK} package, or rather its \pkg{xunicode-addon}, also modifies the way
 % text symbols are defined (like \pkg{luatexja} but in a different way).
 % Again, we only issue a warning.
 %\changes{v2.6}{2015/11/03}{(in)compatibility with \pkg{xeCJK}: disable unknown slots warnings
 %                           (reported by \contributor HcN <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
+%                           ^^A https://tex.stackexchange.com/questions/275653/warning-using-microtype-and-excjk-packages
 %    \begin{macrocode}
 %<package>  \MT@with@package@T{luatexja}{\MT@warn@unknown@once{luatexja}}%
 %<package>  \MT@with@package@T{xeCJK}   {\MT@warn@unknown@once{xeCJK}}%
@@ -9504,7 +9504,7 @@ end
 %    \end{macrocode}
 % We need to ensure that math fonts are set up anew.
 %\changes{v2.5}{2012/11/13}{fix: ensure to set up math fonts (reported by \contributor RazorXsr <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/82556/pdftex-font-expansion-error-setexpansion-in-microtype-package
+%                           ^^A https://tex.stackexchange.com/questions/82556/pdftex-font-expansion-error-setexpansion-in-microtype-package
 %    \begin{macrocode}
     \MT@glet\glb@currsize\@empty
     \setkeys{MTC}{#1}%
@@ -9823,8 +9823,8 @@ end
 % Font sizes may also be specified as ranges. This has been requested by Andreas
 % B\"uhmann, who has also offered valuable help in implementing this. Now, it
 % is for instance possible to set up different lists for fonts with optical
-% sizes. (The MinionPro project is trying to do this for the OpenType version
-% of Adobe's Minion. See \url{http://developer.berlios.de/projects/minionpro/}.)
+% sizes. (The \pkg{MinionPro} project does this for the OpenType version
+% of Adobe's Minion. (\ctanpkgurl{minionpro}))
 %
 %\begin{macro}{\MT@get@range}
 %\begin{macro}{\MT@upper}
@@ -12749,7 +12749,7 @@ end
 %\changes{v2.3e}{2009/06/01}{\texttt{sc*} instead of \texttt{sc} in \texttt{smallcaps} set}
 %\changes{v2.6}{2014/02/18}{add \texttt{si} and \texttt{scit} to \texttt{smallcaps} set
 %                           (reported by \contributor uli <@\at @>)}
-%                           ^^A http://tex.stackexchange.com/questions/157397
+%                           ^^A https://tex.stackexchange.com/questions/157397
 %    \begin{macrocode}
 \DeclareMicrotypeSet{smallcaps}
    { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU},
@@ -12842,7 +12842,7 @@ end
 %\changes{v2.5}{2012/07/17}{declare \texttt{lmsy} and \texttt{lmm} as aliases
 %                           of \texttt{cmsy} resp. \texttt{cmm}
 %                           (reported by \contributor Jonas Hogstrom <hjb981\at gmail.com>)}
-%                           ^^A http://tex.stackexchange.com/questions/63558/how-to-get-microtype-to-work-with-mathematical-minus-sign-and-package-lmodern
+%                           ^^A https://tex.stackexchange.com/questions/63558/how-to-get-microtype-to-work-with-mathematical-minus-sign-and-package-lmodern
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{lmsy}{cmsy}
 \DeclareMicrotypeAlias{lmm} {cmm}
