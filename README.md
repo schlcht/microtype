@@ -4,7 +4,7 @@ The `microtype` package
 
 **Subliminal refinements towards typographical perfection**
 
-  (v2.7 -- 2017/07/07)
+  (v2.7a -- 2018/01/12)
 
 
 Overview
@@ -76,5 +76,5 @@ provided that: (1) the original copyright statement is not removed, and
 (2) the identification string is changed.
 
 ------------------------------------------------------
-Copyright (c) 2004--2017  R Schlicht `<w.m.l@gmx.net>`
+Copyright (c) 2004--2018  R Schlicht `<w.m.l@gmx.net>`
 ------------------------------------------------------
