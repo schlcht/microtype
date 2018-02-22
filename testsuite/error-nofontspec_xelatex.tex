@@ -1,0 +1,15 @@
+% https://tex.stackexchange.com/questions/416310/problem-of-amsart-and-microtype-under-xelatex
+\documentclass{article}
+%\usepackage{fontspec}
+\usepackage{microtype}
+\setlength\parindent{0pt}
+\SetProtrusion{font = *}{/braceleft = {1000,0}, /cwm = {0,0}}
+\SetProtrusion{font = */*/*/sc/*}{a = {1000,0}}
+\begin{document}
+
+A
+
+\textbraceleft
+
+\scshape a
+\end{document}

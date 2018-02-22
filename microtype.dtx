@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.7a"
+% !DTXversion:: "2.7b"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2018/01/14 v2.7a
+  [2018/99/99 v2.7b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -51,8 +51,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.7a",
-%<luafile>    date         = "2018/01/14",
+%<luafile>    version      = "2.7b",
+%<luafile>    date         = "2018/99/99",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -2847,8 +2847,9 @@
 % `\contributor ltcomdata         <@\at @>', ^^A https://tex.stackexchange.com/users/17061/ltcomdata
 %  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>,
 % `\contributor jcr               <@\at @>', ^^A https://tex.stackexchange.com/users/56514/jcr
+%  \contributor Nils Anders Danielsson <nad\at cse.gu.se>
 % and
-% \contributor Nils Anders Danielsson <nad\at cse.gu.se>.
+%  \contributor Paolo Ney         <@\at @>. ^^A https://tex.stackexchange.com/users/29161/paulo-ney
 %
 %
 %\iffalse
@@ -2998,6 +2999,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{2.7a}{2018/01/14}
 %
 %\Version{2.7}{2017/07/07}
 %  \item Allow automatic expansion and letterspacing with \luatex\ in <DVI> mode
@@ -5258,14 +5261,6 @@ microtype.do_font = do_font
 %\changes{v1.8}{2005/03/24}{remove superfluous \pkg{statex} hook}
 % --- No longer needed, either.
 %\fi
-%\changes{v2.5}{2012/08/22}{select font with \pkg{fontspec} (found by \contributor Georg Duffner <g.duffner\at gmail.com>)}
-%                           ^^A private mail, 2012/08/17
-% When a font is defined via \cmd\fontspec, the font is not actually loaded,
-% hence \xetex\ resp. \luatex\ would see a wrong font (in \cs{MT@get@slot}).
-% Therefore, we load the current font.
-%    \begin{macrocode}
-  \ifMT@fontspec\MT@font\fi
-%    \end{macrocode}
 %\changes{v1.8}{2005/03/30}{restore percent character if Spanish \pkg{babel} is loaded}
 %\changes{v2.2}{2007/02/02}{restore percent character if Galician \pkg{babel} is loaded}
 %\changes{v2.3a}{2008/01/29}{restore percent character if Mexican \pkg{babel} is loaded}
@@ -5341,9 +5336,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           ^^A https://tex.stackexchange.com/questions/165846/
 %    \begin{macrocode}
   \MT@glet\MT@setupfont@hook\@empty
-  \ifMT@fontspec
-    \g@addto@macro\MT@setupfont@hook{\MT@font}%
-  \fi
   \MT@if@false
   \MT@with@babel@and@T{spanish} \MT@if@true
   \MT@with@babel@and@T{galician}\MT@if@true
@@ -5495,11 +5487,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@setupfont}
 % Setting up a font entails checking for each feature whether it should be
 % applied to the current font (\cs{MT@font}).
-% But first, we might have to disable stuff when used together with adventurous
-% packages.
 %    \begin{macrocode}
 %<*pdftex-def|xetex-def|luatex-def>
-\def\MT@setupfont{\MT@setupfont@hook}
+\def\MT@setupfont{%
+%    \end{macrocode}
+%\changes{v2.5}{2012/08/22}{select font with \pkg{fontspec} (found by \contributor Georg Duffner <g.duffner\at gmail.com>)}
+%                           ^^A private mail, 2012/08/17
+%\changes{v2.7b}{2018/02/21}{always select current font with \xetex\ and \luatex\ (reported by \contributor Paolo Ney <@\at @>,
+%                            solution by \contributor Ulrike Fischer <news3\at nililand.de>)}
+%                            ^^A (1) https://tex.stackexchange.com/questions/416310/problem-of-amsart-and-microtype-under-xelatex
+%                            ^^A (2) private mail, 2018/02/20
+% With \xetex\ and \luatex\ the font may not be actually loaded,
+% hence we might see a wrong font (in \cs{MT@get@slot}).
+% Therefore, we first load the current font.
+%    \begin{macrocode}
+%<xetex-def|luatex-def>  \MT@font
+%    \end{macrocode}
+% We might have to disable stuff when used together with adventurous
+% packages.
+%    \begin{macrocode}
+  \MT@setupfont@hook}
 %    \end{macrocode}
 % This will use a copy of the font (allowing for expansion parameter variation
 % and the use of more than one set of protrusion factors for a font within one
@@ -6248,10 +6255,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (reported by \contributor Juan Acevedo <juan.acevedo.juan\at gmail.com>)}
 %                           ^^A <http://permalink.gmane.org/gmane.comp.tex.xetex/17202>
 %                           ^^A (beta:05)
+%\changes{v2.7b}{2018/02/20}{fix message for glyphs specified as names in \xetex\
+%                            (reported by \contributor Paolo Ney <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/416310/problem-of-amsart-and-microtype-under-xelatex
 %    \begin{macrocode}
 \def\MT@info@missing@char{%
   \MT@info@nl{Character `\the\MT@toks'
-^^X    \iffontchar\MT@font\MT@char@
+^^X    \iffontchar\MT@font\ifnum\MT@char@<\z@-\fi\MT@char@
       has a width of 0pt
 ^^X    \else is missing\fi
 ^^Q    \MessageBreak (it's probably missing)
@@ -16988,7 +16998,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10591}
+% \CheckSum{10588}
 %
 % \Finale
 %
