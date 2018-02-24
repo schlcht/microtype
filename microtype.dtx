@@ -6261,9 +6261,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@info@missing@char{%
   \MT@info@nl{Character `\the\MT@toks'
-^^X    \iffontchar\MT@font\ifnum\MT@char@<\z@-\fi\MT@char@
-      has a width of 0pt
-^^X    \else is missing\fi
+^^X   \ifnum\MT@char@<\z@ is missing\else
+^^X     \iffontchar\MT@font\MT@char@
+               has a width of 0pt
+^^X      \else is missing\fi\fi
 ^^Q    \MessageBreak (it's probably missing)
     \MessageBreak in font `\MT@@font'.\MessageBreak
     Ignoring protrusion settings for this character}%
@@ -16998,7 +16999,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10588}
+% \CheckSum{10589}
 %
 % \Finale
 %
