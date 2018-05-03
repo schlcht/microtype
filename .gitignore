@@ -27,6 +27,8 @@ microtype-gind.ist
 *.toc
 *.dvi
 *.ps
+*.1
+*.1R
 
 *.mtx
 *.pl
