@@ -227,8 +227,8 @@ test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.4tc
 	@$(RM) $(TESTDIR)/*.dvi
 	@$(RM) $(TESTDIR)/*.xref
-	@$(RM) $(TESTDIR)/*.1
-	@$(RM) $(TESTDIR)/*.1R
+#	@$(RM) $(TESTDIR)/*.1
+#	@$(RM) $(TESTDIR)/*.1R
 	@$(RM) $(TESTDIR)/*.pgf
 
 testerrors: $(wildcard $(TESTDIR)/error-*.tex)
