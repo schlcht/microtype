@@ -2383,10 +2383,10 @@
 % `|{\kern0pt}|' or \pkg{babel}'s \verb="|= shortcut; or disable them and
 % protect those ligatures that need to be protected by enclosing them in the
 % \cs{lslig} command. So, the following two solutions have the same result
-% (namely, `\textls{\def\!#1{\textcolor{thered}{\lslig{#1}}}^^A
-%                   \def\?#1{\textcolor{thegreen}{#1}}^^A
+% (namely, `\textls{\def\!#1{\textcolor{thegreen}{\lslig{#1}}}^^A
+%                   \def\?#1{\textcolor{thered}{#1}}^^A
 %  \textfrak{Au\!{s:}\?{si}\!{ch}t\!{s:}lo\?{si}gkeit}}',
-%  with ligatures shown in red, inhibited ligatures in green).
+%  with ligatures shown in green, inhibited ligatures in red).
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
 %\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
@@ -2553,11 +2553,15 @@
 % \LaTeX\ packages (except for \pkg{pdfcprot}). However, life isn't perfect, so
 % problems are to be expected. Currently, I am aware of the following issues:
 %\begin{itemize}
-%  \item If you want to use 8-bit characters in the configuration, you have to
-%        load the \pkg{inputenc} package first. Unicode input is also supported
-%        (when loading \pkg{inputenc} with the |utf8| or the |utf8x| option,
-%        or out of the box with \xetex\ and \luatex).
-%        When using multiple input encodings in a document, 8-bit characters in
+%\changes{v2.7b}{2018/09/18}{update hint about non-7-bit characters
+%                            (notified by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%                            ^^A private mail, 2018/08/14
+%  \item Even though all configuration files are still provided in legacy (7-bit)
+%        format, using multi-byte (Unicode) characters in the settings should run
+%        smoothly with an up-to-date \LaTeX\ system.
+%        For older systems or documents in legacy encodings, in contrast, this requires
+%        loading the \pkg{inputenc} package first.
+%        Furthermore, when using multiple input encodings in a document, 8-bit characters in
 %        the settings will only work reliably if you specify the |inputenc| key.
 %\changes{v2.3a}{2008/02/25}{add hint about \pkg{babel} having to be loaded first}
 %  \item When loading the package with the \opt{babel} option, you must load
@@ -2847,9 +2851,10 @@
 % `\contributor ltcomdata         <@\at @>', ^^A https://tex.stackexchange.com/users/17061/ltcomdata
 %  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>,
 % `\contributor jcr               <@\at @>', ^^A https://tex.stackexchange.com/users/56514/jcr
-%  \contributor Nils Anders Danielsson <nad\at cse.gu.se>
+%  \contributor Nils Anders Danielsson <nad\at cse.gu.se>,
+%  \contributor Paolo Ney         <@\at @>  ^^A https://tex.stackexchange.com/users/29161/paulo-ney
 % and
-%  \contributor Paolo Ney         <@\at @>. ^^A https://tex.stackexchange.com/users/29161/paulo-ney
+%  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>.
 %
 %
 %\iffalse
@@ -3782,7 +3787,6 @@
 }
 %    \end{macrocode}
 %\end{macro}
-%
 %\changes{v1.9}{2005/08/29}{compatibility with \texlive\ hack
 %               (reported by \contributor Herbert Vo\ss{} <Herbert.Voss\at gmx.net>)}
 %                                      ^^A MID: <deprh8$c69$00$1@news.t-online.com>
@@ -4533,7 +4537,7 @@ microtype.if_dimen = if_dimen
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ifdim}
-% Test floating point numbers.
+% Compare floating point numbers.
 %    \begin{macrocode}
 %<*package>
 \def\MT@ifdim#1#2#3{%
@@ -8205,7 +8209,7 @@ end
 %\end{macro}
 %\begin{macro}{\MT@get@basefamily}
 % The family name might have a suffix
-%\changes{v1.1}{2004/09/14}{only remove suffix if it is `\texttt{x}' or `\texttt{j}'}
+%\changes{v1.1}{2004/09/14}{only remove suffixes `\texttt{x}' or `\texttt{j}'}
 % \eg, for expert set (|x|), old style numbers (|j|)
 %\changes{v1.2}{2004/09/26}{also remove `w' (swash capitals)}
 % swash capitals (|w|) etc. We mustn't simply remove the last letter, as this
@@ -12189,7 +12193,7 @@ end
 % \textit{\fontfamily{pzc}\selectfont hz}~programme really usable.
 % It must be either `|autoexpand|' or empty (or `|1000|' for older versions of
 % \pdftex).
-%\changes{v2.7a}{2017/07/18}{with \luatex, font expansion is always automatic
+%\changes{v2.7a}{2017/07/18}{with \luatex, non-automatic font expansion is no longer possible
 %                            (as confirmed by \contributor Hans Hagen <pragma\at wxs.nl>)}
 %                             ^^A http://tug.org/pipermail/luatex/2017-July/006579.html and following
 % With \luatex, we just leave it empty, as there's actually no difference --
@@ -12489,8 +12493,8 @@ end
 %<pdftex-def|luatex-def>\def\MT@setup@warntracking
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@tracking@DVI}
-%\changes{v2.2}{2007/02/11}{warning when letterspacing in DVI mode}
-%\changes{v2.7}{2017/07/06}{don't warn for letterspacing in DVI mode with \luatex}
+%\changes{v2.2}{2007/02/11}{warning when letterspacing in <DVI> mode}
+%\changes{v2.7}{2017/07/06}{don't warn for letterspacing in <DVI> mode with \luatex}
 % With \pdftex, we issue a warning, when letterspacing in <DVI> mode, since it will probably
 % not work. We also switch on protrusion if it isn't already, to compensate for
 % the letterspacing kerns.
@@ -13208,7 +13212,7 @@ end
 %                            (reported by \contributor Vasile Gaburici <vgaburici\at gmail.com>)}
 %                                          ^^A private mail, 2008/09/01, and
 %                                          ^^A http://tug.org/pipermail/tex-live/2008-September/017385.html
-% The Rumanian \cmd\textcommabelow\ accents are actually replacements for the
+% The Romanian \cmd\textcommabelow\ accents are actually replacements for the
 % \cmd\c\ variants, which had previously (and erroneously\footnote{
 %   Cf. \url{http://tug.org/pipermail/tex-live/2008-August/017204.html}})
 % been included in <QX> encoding. They are still kept for backwards

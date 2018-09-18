@@ -1,3 +1,5 @@
+* end of \MT@tr@set@space@@: ?
+%%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax
 * mention that the German translation is not our brain-child
 * build our own "is@opentype@font" (test if font.format==(opentype or truetype))
 * non-OpenType fonts cannot be letterspaced with `kernfactor'

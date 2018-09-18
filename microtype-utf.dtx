@@ -49,6 +49,7 @@
 \luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
 \usepackage{microtype-doc}
 \luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
+\let\lsstyle\relax % !!!!!!! ATTENTION, PLEASE !!!!!!!!! (letterspacing is broken in luatex 1.07)
  \def\setmacrofont#1{\par\def\macro@font{#1}\footnotesize}
  \newfontface\LMR{Latin Modern Roman}
  \newfontface\CharisSIL{Charis SIL}
@@ -989,7 +990,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 % of the font. We try to get the names right both with \luatex\ (where we
 % can simply query the font version) and with \xetex\ (where we check for
 % glyph name).
-%\changes{v2.7}{2017/07/06}{automatically choose correct names for Charis SIL small caps
+%\changes{v2.7}{2017/07/06}{automatically choose correct names for Charis <SIL> small caps
 %                            (reported by `\contributor ltcomdata <@\at @>')}
 %                            ^^A https://tex.stackexchange.com/questions/324294/
 %    \begin{macrocode}
