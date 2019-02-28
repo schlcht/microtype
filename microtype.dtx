@@ -2853,7 +2853,8 @@
 % `\contributor jcr               <@\at @>', ^^A https://tex.stackexchange.com/users/56514/jcr
 %  \contributor Nils Anders Danielsson <nad\at cse.gu.se>,
 %  \contributor Paolo Ney         <@\at @>,  ^^A https://tex.stackexchange.com/users/29161/paulo-ney
-%  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>
+%  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>,
+%  \contributor Franz Wexler      <@\at @>   ^^A https://tex.stackexchange.com/users/182307/franz-wexler
 % and
 %  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>.
 %
@@ -13157,6 +13158,9 @@ end
 %
 %\subsubsection{<OT4>}
 %\changes{v1.9}{2005/08/16}{add list for <OT4>}
+%\changes{v2.7b}{2019/02/28}{add textquotedblleft ligature to <OT4>
+%                (reported by \contributor Franz Wexler <@\at @>)}
+%                ^^A https://tex.stackexchange.com/questions/476648/
 % The Polish <OT1> extension. More interesting characters here:
 % |009|~(`fk'), |012|~(`fi'), |013|~(`fl'), |014|~(`ffi'), |015|~(`ffl'),
 % \AE, \ae, \OE, \oe.
@@ -13181,7 +13185,8 @@ end
      S = {\'S},
      s = {\'s},
      Z = {\'Z,\.Z},
-     z = {\'z,\.z}
+     z = {\'z,\.z},
+     \textquotedblleft = "FF
    }
 
 %    \end{macrocode}
@@ -17010,7 +17015,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10589}
+% \CheckSum{10590}
 %
 % \Finale
 %
