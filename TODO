@@ -1,3 +1,4 @@
+* add OT4 textquotedblleft (https://tex.stackexchange.com/questions/476648/microtypography-protrusion-with-polish-quotation-marks)
 * end of \MT@tr@set@space@@: ?
 %%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax
 * mention that the German translation is not our brain-child

@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2018/99/99 v2.7b
+  [2019/02/28 v2.7b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -52,7 +52,7 @@
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
 %<luafile>    version      = "2.7b",
-%<luafile>    date         = "2018/99/99",
+%<luafile>    date         = "2018/02/28",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -2852,9 +2852,10 @@
 %  \contributor Reinhard Kotucha  <reinhard.kotucha\at web.de>,
 % `\contributor jcr               <@\at @>', ^^A https://tex.stackexchange.com/users/56514/jcr
 %  \contributor Nils Anders Danielsson <nad\at cse.gu.se>,
-%  \contributor Paolo Ney         <@\at @>  ^^A https://tex.stackexchange.com/users/29161/paulo-ney
+%  \contributor Paolo Ney         <@\at @>,  ^^A https://tex.stackexchange.com/users/29161/paulo-ney
+%  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>
 % and
-%  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>.
+%  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>.
 %
 %
 %\iffalse
@@ -2928,7 +2929,7 @@
 % \bibitem[\pdftex\ manual]{pdftexman}
 %   \thanh, Sebastian Rahtz, Hans Hagen, Hartmut Henkel, Pawe\l\ Jackowski, Martin Schr\"oder,
 %   \emph{The \pdftex\ user manual},
-%   \newblock 20 April 2017.
+%   \newblock 2~January 2018.
 %   \newblock (\ctanurl{systems/doc/pdftex/manual/pdftex-a.pdf})
 %             ^^A latest version at \url{http://sarovar.org/projects/pdftex/}
 %             ^^A or even \url{http://foundry.supelec.fr/scm/?group_id=23}
@@ -2946,13 +2947,13 @@
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 9~September 2017.
+%    \newblock 12~February 2019.
 %    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
-%   \'Elie Roux, Khaled Hosny, Philipp Gesang,
+%   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 29 January 2017.
+%    \newblock 14~February 2019.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -4231,11 +4232,17 @@
 % Here it begins. The module was contributed by \'Elie Roux.
 %\changes{v2.4}{2009/11/12}{new file \file{microtype.lua} containing the \texttt{lua} functions
 %                           (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
+%\changes{v2.7b}{2019/02/28}{update lua function \texttt{microtype.warning} after changes in \pkg{luaotfload}
+%                            (reported by \contributor Moritz Wemheuer <moritz.wemheuer\at gmail.com> and
+%                             \contributor Ulrike Fischer <news3\at nililand.de>)}
+%                            ^^A private mail, 2019/02/19
+%                            ^^A private mail, 2019/02/26
 %    \begin{macrocode}
 %<*luafile>
 
-local err, warn, info, log = luatexbase.provides_module(microtype.module)
-microtype.warning = warn
+function microtype.warning(...)
+  luatexbase.module_warning("microtype",...)
+end
 
 local find       = string.find
 local match      = string.match
