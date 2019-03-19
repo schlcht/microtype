@@ -141,6 +141,15 @@
   \ifluatex % microtype.dtx finally compiles with 0.35!
     \microtypesetup{kerning=false}
     \def\pdftexversion{200} % in TeX Live 2015, they let this to \luatexversion
+    \let\pdfxform                    \saveboxresource
+    \let\pdflastxform                \lastsavedboxresourceindex
+    \protected\edef\pdfminorversion  {\pdfvariable minorversion}
+    \protected\def\pdfobj            {\pdfextension obj }
+    \protected\def\pdfannot          {\pdfextension annot }
+    \protected\def\pdfoutline        {\pdfextension outline }
+    \protected\def\pdfmapline        {\pdfextension mapline }
+    \protected\def\pdfglyphtounicode {\pdfextension glyphtounicode }
+    \protected\def\pdflastobj        {\numexpr\pdffeedback lastobj\relax}
   \fi
   \ifnum\pdftexversion<140 \else % pdftex 1.40, including textmatrix patch,
     \microtypesetup{expansion=alltext,step=1} % hence we can activate expansion ...
@@ -8030,7 +8039,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Here's our concoction of this function. The table |microtype.ligs| will
 % be populated in \cmd\MT@noligatures@.
 %\changes{v2.7c}{2019/03/08}{turn warning into info when overwriting the \texttt{keepligature} function
-%                            (notified by \contributor Andy N <@\at @>)}
+%                            (reported by \contributor Andy N <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/478344/
 %    \begin{macrocode}
 %<*luafile>
