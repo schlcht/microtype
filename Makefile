@@ -205,6 +205,7 @@ manifest: $(SOURCE)
 	@echo "=== Derived files ==="
 	@for f in $(UNPACKED); do echo "$$f"; done
 	@echo "----------------------------"
+	@if grep '\-\-'`date -v-1y +%Y` $(SOURCE); then echo "!!!! Copyright strings not up to date !!!!" ; fi
 
 mostlyclean:
 	@$(RM) -- *.log *.aux *.toc *.idx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
@@ -267,7 +268,7 @@ run-unknown-file = \
 		then $(not-ok) ; \
 	fi ;
 
-# the files contain the relevant grep command
+# the test files themselves contain the relevant grep command
 run-output-file = \
 	$(call run-test-file,output,$1) \
 	if ! $$(eval $$(grep grep $1.tex) $1.log > /dev/null) ; \
