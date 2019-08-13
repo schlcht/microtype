@@ -49,12 +49,10 @@
 \luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
 \usepackage{microtype-doc}
 \luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
-%\let\lsstyle\relax % !!!!!!! ATTENTION, PLEASE !!!!!!!!! (letterspacing is broken in luatex 1.07)
  \def\setmacrofont#1{\par\def\macro@font{#1}\footnotesize}
  \newfontface\LMR{Latin Modern Roman}
  \newfontface\CharisSIL{Charis SIL}
  \newfontface\PalatinoLinotype{TeX Gyre Pagella}
-\textheight=626pt % this isn't set correctly for some reason
 \usepackage{luacode}
 \tracinglostchars2
 % we replace any missing characters (in Palatino) with CharisSIL
@@ -72,6 +70,7 @@ color_push.stack,  color_pop.stack   = 0,0
 color_push.command,color_pop.command = 1,2
 color_push.data      = "0.97 0.04 0.07 rg" -- red
 local fallbackfont   = font.id("fallbackfont")
+local fallbackchar   = 0xFFFD -- Unicode replacement character
 table.setmetatableindex(fontcharacters, function (t, k)
   if k == true then
     return fontcharacters[currentfont()]
@@ -103,7 +102,7 @@ local nodeprocessor = function (head)
         node.insert_after(head,n,node.copy(color_pop))
         n.font = fallbackfont
         if not fontcharacters[fallbackfont][char] then -- not even in Charis SIL
-          n.char = 0xFFFD
+          n.char = fallbackchar
         end
       end
     end
