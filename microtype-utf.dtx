@@ -99,6 +99,7 @@ local nodeprocessor = function (head)
       lastfont = currfont
       if not characters[char] then
         head = node.insert_before(head,n,node.copy(color_push))
+	node.remove(head,node.next(n)) -- remove .notdef char (new in luaotfload 2.99)
         node.insert_after(head,n,node.copy(color_pop))
         n.font = fallbackfont
         if not fontcharacters[fallbackfont][char] then -- not even in Charis SIL
@@ -369,7 +370,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 % Unfortunately, I don't have a Palatino variant containing all of the following
 % glyphs. The settings are typeset in \TeX\ Gyre Pagella;
 % missing glyphs, printed in red, are taken from Charis <SIL>;
-% glyphs missing even in Charis <SIL> appear as `\char"FFFD'.
+% glyphs missing even in Charis <SIL> appear as `\char"FFFD@'.
 % To see the real settings, consult \file{mt-PalatinoLinotype.cfg}.
 %{\setmacrofont\PalatinoLinotype
 %    \begin{macrocode}
@@ -1290,7 +1291,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      ﬂ = { 0,50},
      ﬄ = { 0,50},
      ﬅ = { 0,50},
-     ﬆ  = { 0,50}
+     ﬆ = { 0,50}
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
