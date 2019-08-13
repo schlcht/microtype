@@ -29,6 +29,7 @@ help:
 	@echo '     testunknown -    ...  part'
 	@echo '     testoutput  -    ...  of it'
 	@echo ' test... COMPAT=<TeX Live> - test with other TeX Live release'
+	@echo ' test... DEV=1 - test with current developer version'
 
 NAME = microtype
 DOC  = $(NAME).pdf
@@ -252,12 +253,15 @@ testoutput: $(wildcard $(TESTDIR)/output-*.tex)
 	@cd $(TESTDIR) && \
 		$(foreach file,$^,$(call run-output-file,$(notdir $(basename $(file)))))
 
+ifdef DEV
+override DEV=-dev
+endif
 # parts of the filename after `_' signify an engine other than pdflatex
 run-test-file = \
 	echo " - $(subst $1-,,$2)" | sed 's/\(.*\)_\(.*\)/\1 (\2)/' ; \
 	if ! `$(if $(shell echo $2 | grep _),\
-		   $(TLPATH)/$(shell echo $2 | sed -n 's/.*_\(.*\)/\1/p'),\
-		   $(TLPATH)/pdflatex) --interaction=batchmode $2 > /dev/null` ; \
+		   $(TLPATH)/$(shell echo $2 | sed -n 's/.*_\(.*\)/\1/p' | sed -e '/latex/s/$$/$(DEV)/'),\
+		   $(TLPATH)/pdflatex$(DEV)) --interaction=batchmode $2 > /dev/null` ; \
 		then $(not-ok) ; \
 	fi ;
 
