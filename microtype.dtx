@@ -8917,12 +8917,21 @@ end
       \meaning\expandafter\MT@char\MT@charstring\relax\relax\relax
   \ifnum\MT@char@ < \z@
 %    \end{macrocode}
+%\changes{v2.7c}{2019/08/13}{take care of \cs{remove@tlig}}
+% For <TU> encoding, the commands \cmd\textquotesingle, \cmd\textasciigrave\
+% and \cmd\textquotedbl\ are now defined with the auxiliary macro
+% \cmd\remove@tlig, which we take care of here.
+%    \begin{macrocode}
+    \expandafter\expandafter\expandafter\MT@is@tlig\MT@char\relax\relax
+    \ifnum\MT@char@ < \z@
+%    \end{macrocode}
 %\changes{v2.2}{2007/03/07}{expand once more (for \pkg{frenchpro})}
-% \dots~or, if it hasn't been defined by \cs{DeclareTextSymbol}, a letter
+% Finally, if it hasn't been defined by \cs{DeclareTextSymbol}, it could be a letter
 % (\eg, \cmd\i, when using \pkg{frenchpro}). ^^A as noted by Bernard Gaulle
 %                                              ^^A private mail, 2005/01/28
 %    \begin{macrocode}
-    \expandafter\expandafter\expandafter\MT@is@letter\MT@char\relax\relax
+      \expandafter\expandafter\expandafter\MT@is@letter\MT@char\relax\relax
+    \fi
   \fi
 }
 %    \end{macrocode}
@@ -8998,6 +9007,16 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@is@tlig}
+% This might have to change again with the next \LaTeX\ release.
+%    \begin{macrocode}
+\def\MT@is@tlig#1#2{%
+  \ifx#1\remove@tlig
+    \MT@is@number #2\relax \relax
+  \fi
+}
+%    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@is@composite}
 % Here, we are dealing with accented characters, specified as two tokens.
@@ -17030,7 +17049,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10590}
+% \CheckSum{10609}
 %
 % \Finale
 %
