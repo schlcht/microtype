@@ -99,7 +99,7 @@ local nodeprocessor = function (head)
       lastfont = currfont
       if not characters[char] then
         head = node.insert_before(head,n,node.copy(color_push))
-	node.remove(head,node.next(n)) -- remove .notdef char (new in luaotfload 2.99)
+	node.remove(head,node.next(n)) -- remove .notdef char (new in luaotfload 2.98)
         node.insert_after(head,n,node.copy(color_pop))
         n.font = fallbackfont
         if not fontcharacters[fallbackfont][char] then -- not even in Charis SIL

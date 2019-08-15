@@ -8919,7 +8919,7 @@ end
 %    \end{macrocode}
 %\changes{v2.7c}{2019/08/13}{take care of \cs{remove@tlig}}
 % For <TU> encoding, the commands \cmd\textquotesingle, \cmd\textasciigrave\
-% and \cmd\textquotedbl\ are now defined with the auxiliary macro
+% and \cmd\textquotedbl\ are defined by means of the auxiliary macro
 % \cmd\remove@tlig, which we take care of here.
 %    \begin{macrocode}
     \expandafter\expandafter\expandafter\MT@is@tlig\MT@char\relax\relax
@@ -9009,11 +9009,11 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@is@tlig}
-% This might have to change again with the next \LaTeX\ release.
+% This might have to change with the next \LaTeX\ release.
 %    \begin{macrocode}
 \def\MT@is@tlig#1#2{%
   \ifx#1\remove@tlig
-    \MT@is@number #2\relax \relax
+    \MT@is@number #2\relax\relax
   \fi
 }
 %    \end{macrocode}
