@@ -2864,9 +2864,10 @@
 %  \contributor Paolo Ney         <@\at @>,  ^^A https://tex.stackexchange.com/users/29161/paulo-ney
 %  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>,
 %  \contributor Franz Wexler      <@\at @>,  ^^A https://tex.stackexchange.com/users/182307/franz-wexler
-%  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>
+%  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>,
+% `\contributor Andy N            <@\at @>'  ^^A https://tex.stackexchange.com/users/182462/andy-n
 % and
-% `\contributor Andy N            <@\at @>'. ^^A https://tex.stackexchange.com/users/182462/andy-n
+% \contributor Phelype Oleinik    <phe.h.o1\at gmail.com>.
 %
 %
 %\iffalse
@@ -12351,24 +12352,38 @@ end
     \MT@check@active@set{ex}%
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\showhyphens}
 %\changes{v1.7}{2005/03/02}{modify \cmd\showhyphens}
 % Inside \cmd\showhyphens, font expansion should be disabled.
 % (Since 2017/01/10, the \LaTeX\ format contains a different version
 % for \xetex, but since expansion doesn't work with \xetex, we don't
 % have to bother.)
+%\changes{v2.7c}{2019/10/02}{adjust for change in \LaTeX\ 2019-10-01
+%                            (reported by \contributor Phelype Oleinik <phe.h.o1\at gmail.com>)}
+%                            ^^A private mail, 2019/09/26
+% Since 2019/10/01, the command is robust.
 %    \begin{macrocode}
-    \CheckCommand*\showhyphens[1]{\setbox0\vbox{%
-      \color@begingroup\everypar{}\parfillskip\z@skip
-      \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
-      \hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}%
+    \MT@ifdefined@n@TF{showhyphens }{%
+      \def\MT@temp##1##2{%
+        \expandafter\CheckCommand\csname showhyphens \endcsname[1]{##1}%
+        \DeclareRobustCommand\showhyphens[1]{##2}}%
+    }{%
+      \def\MT@temp##1##2{%
+        \CheckCommand*\showhyphens[1]{##1}%
 %    \end{macrocode}
-%\begin{macro}{\showhyphens}
 % I wonder why it's defined globally (in \file{ltfssbas.dtx})?
 %    \begin{macrocode}
-    \gdef\showhyphens##1{\setbox0\vbox{%
-      \color@begingroup\pdfadjustspacing\z@\everypar{}\parfillskip\z@skip
-      \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
-      \hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}%
+        \gdef\showhyphens####1{##2}}%
+    }%
+    \MT@temp
+       {\setbox0\vbox{\color@begingroup
+        \everypar{}\parfillskip\z@skip
+        \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
+        \hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}
+       {\setbox0\vbox{\color@begingroup\pdfadjustspacing\z@
+        \everypar{}\parfillskip\z@skip
+        \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
+        \hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
@@ -17049,7 +17064,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10609}
+% \CheckSum{10621}
 %
 % \Finale
 %
