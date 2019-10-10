@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2019/02/28 v2.7c
+  [2019/10/10 v2.7c
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -52,7 +52,7 @@
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
 %<luafile>    version      = "2.7c",
-%<luafile>    date         = "2019/02/28",
+%<luafile>    date         = "2019/10/10",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -2865,9 +2865,10 @@
 %  \contributor Frank Mittelbach  <frank.mittelbach\at latex-project.org>,
 %  \contributor Franz Wexler      <@\at @>,  ^^A https://tex.stackexchange.com/users/182307/franz-wexler
 %  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>,
-% `\contributor Andy N            <@\at @>'  ^^A https://tex.stackexchange.com/users/182462/andy-n
+% `\contributor Andy N            <@\at @>', ^^A https://tex.stackexchange.com/users/182462/andy-n
+%  \contributor Phelype Oleinik   <phe.h.o1\at gmail.com>
 % and
-% \contributor Phelype Oleinik    <phe.h.o1\at gmail.com>.
+%  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>.
 %
 %
 %\iffalse
@@ -2953,19 +2954,19 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX3 Project Team, \emph{\LaTeXe\ font selection},
-%   \newblock 27 November 2005.
-%   \newblock (\ctanurl{macros/latex/doc/fntguide.pdf})
+%   \newblock July 2019.
+%   \newblock (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 12~February 2019.
+%    \newblock 15~March 2019.
 %    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 14~February 2019.
+%    \newblock 13~September 2019.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -8868,6 +8869,13 @@ end
       \let\IeC\@firstofone
       \let\@inpenc@undefined@\MT@undefined@char
 %    \end{macrocode}
+% Unicode handling has changed again with \LaTeX\ 2019/10/01.
+%\changes{v2.7c}{2019/10/10}{compatibility with \LaTeX\ 2019/10/01} ^^A https://github.com/latex3/latex2e/commit/2edd9339ed9a710d45b435ba91545240d0cc9528#diff-d138747c4604d436824f8cb7cedd7d46
+%    \begin{macrocode}
+      \let\UTF@two@octets@noexpand\@empty
+      \let\UTF@three@octets@noexpand\@empty
+      \let\UTF@four@octets@noexpand\@empty
+%    \end{macrocode}
 % We refrain from checking whether there is a sufficient number of octets.
 %    \begin{macrocode}
       \def\UTFviii@defined##1{\ifx ##1\relax
@@ -9010,7 +9018,7 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@is@tlig}
-% This might have to change with the next \LaTeX\ release.
+% This might have to change again with the next \LaTeX\ release. ^^A see https://github.com/latex3/latex2e/issues/165
 %    \begin{macrocode}
 \def\MT@is@tlig#1#2{%
   \ifx#1\remove@tlig
@@ -12358,9 +12366,11 @@ end
 % (Since 2017/01/10, the \LaTeX\ format contains a different version
 % for \xetex, but since expansion doesn't work with \xetex, we don't
 % have to bother.)
-%\changes{v2.7c}{2019/10/02}{adjust for change in \LaTeX\ 2019-10-01
-%                            (reported by \contributor Phelype Oleinik <phe.h.o1\at gmail.com>)}
+%\changes{v2.7c}{2019/10/02}{compatibility with \LaTeX\ 2019/10/01
+%                            (reported by \contributor Phelype Oleinik <phe.h.o1\at gmail.com>
+%                             and \contributor Falk Hanisch <falk.hanisch\at tu-dresden.de>)}
 %                            ^^A private mail, 2019/09/26
+%                            ^^A private mail, 2019/10/08
 % Since 2019/10/01, the command is robust.
 %    \begin{macrocode}
     \MT@ifdefined@n@TF{showhyphens }{%
@@ -12370,9 +12380,6 @@ end
     }{%
       \def\MT@temp##1##2{%
         \CheckCommand*\showhyphens[1]{##1}%
-%    \end{macrocode}
-% I wonder why it's defined globally (in \file{ltfssbas.dtx})?
-%    \begin{macrocode}
         \gdef\showhyphens####1{##2}}%
     }%
     \MT@temp
@@ -17064,7 +17071,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10621}
+% \CheckSum{10630}
 %
 % \Finale
 %
