@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.7c"
+% !DTXversion:: "2.7d"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2019/10/10 v2.7c
+  [2019/99/99 v2.7d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -2866,9 +2866,10 @@
 %  \contributor Franz Wexler      <@\at @>,  ^^A https://tex.stackexchange.com/users/182307/franz-wexler
 %  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>,
 % `\contributor Andy N            <@\at @>', ^^A https://tex.stackexchange.com/users/182462/andy-n
-%  \contributor Phelype Oleinik   <phe.h.o1\at gmail.com>
+%  \contributor Phelype Oleinik   <phe.h.o1\at gmail.com>,
+%  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>
 % and
-%  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>.
+%  \contributor Markus Kohm <komascript\at gmx.info>.
 %
 %
 %\iffalse
@@ -3018,6 +3019,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{2.7c}{2019/10/10}
 %
 %\VersionDate{2.7b}{2019/02/28}
 %
@@ -9457,16 +9460,22 @@ end
 %\end{macro}
 %\begin{macro}{\MT@register@subst@font}
 % Register the substituted font
-%\changes{v2.5}{2010/08/23}{only register if it isn't registered already
+%\changes{v2.5}{2010/08/23}{only register substituted font if it isn't registered already
 %                           (reported by \contributor George Gratzer <gratzer\at me.com>
 %                            and \contributor Josep Maria Font <jmfont\at ub.edu>)}
 %                             ^^A 1. <http://permalink.gmane.org/gmane.comp.tex.macosx/38293>
 %                             ^^A 2. <http://permalink.gmane.org/gmane.comp.tex.macosx/38303>
 %                             ^^A (beta:02)
 % (only if it isn't registered already).
+%\changes{v2.7d}{2019/10/28}{remove substitute font from list}
+% Additionally, we have to remove the substitute font from the list of fonts,
+% so that we set it up again.
 %    \begin{macrocode}
 \def\MT@register@subst@font{\MT@exp@one@n\MT@in@clist\font@name\MT@font@list
-  \ifMT@inlist@\else\xdef\MT@font@list{\MT@font@list\font@name,}\fi}
+  \ifMT@inlist@\else
+    \xdef\MT@font@list{\MT@font@list\font@name,}%
+    \expandafter\MT@rem@from@clist\MT@font\MT@font@list
+  \fi}
 %    \end{macrocode}
 %\end{macro}
 %
@@ -9503,9 +9512,13 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@register@subst@font@cx}
-% Add the substituted font to each feature list.
+% Add the substituted font to each feature list and possibly remove substitute font.
 %\todo{remove from other lists?}
 %\changes{v2.5}{2010/08/23}{only register if it isn't registered already} ^^A (beta:02)
+%\changes{v2.7d}{2019/10/28}{remove substitute font from lists
+%                            (reported by \contributor Markus Kohm <komascript\at gmx.info>)}
+%                             ^^A private mail, 2019/01/16
+%                             ^^A https://tex.stackexchange.com/q/470311
 %    \begin{macrocode}
 \def\MT@register@subst@font@cx{%
   \MT@map@clist@c\MT@active@features{%
@@ -9515,6 +9528,8 @@ end
       \MT@exp@cs\MT@xadd
         {MT@##1@\csname MT@##1@context\endcsname font@list}%
         {\font@name,}%
+      \expandafter\MT@exp@one@n\expandafter\MT@rem@from@clist\expandafter\MT@font
+         \csname MT@##1@\csname MT@##1@context\endcsname font@list\endcsname
     \fi
   }%
 }
@@ -17071,7 +17086,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10630}
+% \CheckSum{10644}
 %
 % \Finale
 %

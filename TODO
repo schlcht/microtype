@@ -1,4 +1,3 @@
-* fix problem with MinionPro (Markus Kohm)
 * luatex: reimplement spacing feature (see https://tex.stackexchange.com/questions/498032/how-do-i-define-a-new-tex-register-with-arguments-in-luatex)
 * end of \MT@tr@set@space@@: ?
 %%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax

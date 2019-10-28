@@ -1,0 +1,26 @@
+\documentclass{article}
+\pdfmapfile{+MinionPro}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\PassOptionsToPackage{verbose,babel, kerning=true}{microtype}
+\usepackage[loosequotes]{MinionPro}
+
+\SetExtraKerning[ name     = french-custom,
+   context  = french,
+   unit     = space   ]
+   { encoding = *}
+   {
+   ' ={100,200},
+   ’ ={100,200}
+   }
+
+\pagestyle{headings}
+\begin{document}
+
+l'éléphant \textit{l'éléphant}
+
+\newpage
+l'éléphant \textit{l'éléphant \typeout{\the\rpcode\font`-/\the\knaccode\font`'}}
+\end{document}
+
+grep '250/46'

@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\renewcommand\rmdefault{pilx}
+\usepackage[kerning=true,expansion=true,protrusion=true]{microtype}
+\SetProtrusion
+   { encoding = *, family = * }
+   { - = {,1000}}
+\SetExtraKerning[ name     = french-custom,
+   unit     = space   ]
+   { family = *, encoding = *, font = {*/*/*/sl/*, */*/*/it/*} }
+   {
+   ' ={1500,1500},
+   }
+\def\text{Additionally, we hook into do@subst, which is called if a substitution has taken place, to record the name of the ersatz font. Unfortunately, this will only work for one-level substitutions. We have to remember the substitute for the rest of the document, not just for the first time it is called, since we need it every time {a font is letterspaced}.}
+
+\pagestyle{empty}
+\begin{document}
+
+l'elephant \text
+
+\textit{l'elephant \text}
+
+\textsl{l'elephant \text}
+
+\textit{l'elephant \text \typeout{\the\rpcode\font`- /\the\knaccode\font`'}}
+
+\end{document}
+
+grep '370/417'
