@@ -84,16 +84,16 @@
 %</driver>
 % Let's abolish CM! We use Charter and Letter Gothic
 % (for the pre-built documentation on CTAN):
- \usepackage[T1]{fontenc}
- \usepackage[charter]{mathdesign}
+\usepackage[T1]{fontenc}
+\usepackage[charter]{mathdesign}
  \def\rmdefault{bch} % not scaled
  \def\sfdefault{SourceSansPro-TLF}
  \def\SourceSansPro@scale{1.02}
  \def\ttdefault{blg}
  {\ttfamily\selectfont
   \DeclareFontShape{T1}{blg}{k}{n}{<-> ssub * blg/b/n}{}}
- \usepackage{textcomp}
-\usepackage{ifpdf,ifluatex,ifxetex}
+\usepackage{textcomp}
+\usepackage{iftex}
 %<*!docsty>
 \ifxetex\else
 \usepackage[latin1]{\ifluatex lua\fi inputenc}
@@ -120,10 +120,10 @@
       { encoding = T1,
         family   = blg }
       { _ = {100,100} } % underscores shouldn't touch
- \ifxetex\else
+\ifxetex\else
  % disable ?` and !` ligatures (sample in section \ref{sec:disable-ligatures})
  \DisableLigatures[?,!]{encoding = *, family = rm* }
- \fi
+\fi
  % Fraktur sample in section \ref{sec:lettersp}
  \IfFileExists{t1mwr.fd}
    {\def\textfrak##1{{\fontfamily{mwr}\selectfont ##1}}
@@ -136,15 +136,18 @@
         \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{120}
       \fi}
      {\def\textfrak{\rule{.5em}{1.5ex}\@gobble}}}
+\ifpdftex\else
+  \microtypesetup{kerning=false}
+\fi
 \tolerance=700
 \ifpdf
   \ifluatex % microtype.dtx finally compiles with 0.35!
-    \microtypesetup{kerning=false}
     \def\pdftexversion{200} % in TeX Live 2015, they let this to \luatexversion
     \let\pdfxform                    \saveboxresource
     \let\pdflastxform                \lastsavedboxresourceindex
     \protected\edef\pdfminorversion  {\pdfvariable minorversion}
     \protected\def\pdfobj            {\pdfextension obj }
+    \protected\def\pdfcatalog        {\pdfextension catalog }
     \protected\def\pdfannot          {\pdfextension annot }
     \protected\def\pdfoutline        {\pdfextension outline }
     \protected\def\pdfmapline        {\pdfextension mapline }
@@ -161,10 +164,9 @@
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
   \InputIfFileExists{microtype-lssample.dtx}\relax\relax
 \else
-  \let\lsstyle\relax
-\fi
-\ifxetex
-  \microtypesetup{kerning=false}
+  \ifluatex\else
+    \let\lsstyle\relax
+  \fi
 \fi
 \usepackage{booktabs}
 \usepackage{array}
@@ -333,7 +335,7 @@
      \itemindent \labelsep
      \lstset{belowskip=0pt}}}
   {\endlist}
-% boxes (for some reason, mathdesign changes these values) % still?
+% boxes (for some reason, mathdesign changes these values)
 \setlength\fboxrule{0.4pt}
 \setlength\fboxsep{3pt}
 \setlength\arrayrulewidth{0.4pt}
@@ -2869,7 +2871,7 @@
 %  \contributor Phelype Oleinik   <phe.h.o1\at gmail.com>,
 %  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>
 % and
-%  \contributor Markus Kohm <komascript\at gmx.info>.
+%  \contributor Markus Kohm       <komascript\at gmx.info>.
 %
 %
 %\iffalse
@@ -2961,13 +2963,13 @@
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 15~March 2019.
+%    \newblock 19~October 2019.
 %    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 13~September 2019.
+%    \newblock 4~November 2019.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -9471,11 +9473,13 @@ end
 % Additionally, we have to remove the substitute font from the list of fonts,
 % so that we set it up again.
 %    \begin{macrocode}
-\def\MT@register@subst@font{\MT@exp@one@n\MT@in@clist\font@name\MT@font@list
+\def\MT@register@subst@font{%
+  \MT@exp@one@n\MT@in@clist\font@name\MT@font@list
   \ifMT@inlist@\else
     \xdef\MT@font@list{\MT@font@list\font@name,}%
     \expandafter\MT@rem@from@clist\MT@font\MT@font@list
-  \fi}
+  \fi
+}
 %    \end{macrocode}
 %\end{macro}
 %
