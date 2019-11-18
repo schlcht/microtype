@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2019/99/99 v2.7d
+  [2019/11/18 v2.7d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -51,8 +51,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.7c",
-%<luafile>    date         = "2019/10/10",
+%<luafile>    version      = "2.7d",
+%<luafile>    date         = "2019/11/18",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -1218,7 +1218,7 @@
 %\Describe{Option}{DVIoutput}{true,*false}
 % \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
 % spit out <DVI> files.\footnote{
-%    Recent \TeX\ systems are using \pdftex\ as the default engine even for
+%    All recent \TeX\ systems are using \pdftex\ as the default engine also for
 %    <DVI> output.}
 % The latter can be ordered with the option \opt{DVIoutput}, which will set
 % \cmd\pdfoutput\ to zero.
@@ -2056,7 +2056,6 @@
 %       of the respective space dimension set by the font. By default, the unit
 %       is measured by the space dimensions. For example, with the following
 %       (nonsensical) settings:
-%\pagebreak ^^A layout
 %\begin{verbatim}
 %\SetExtraSpacing
 %   [ unit = space  ] % default
@@ -2653,6 +2652,7 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
+%\pagebreak ^^A layout
 %\changes{v1.9a}{2005/11/15}{add explanation for error message with non-Type\,1 fonts}
 %  \item
 %\begin{verbatim}
@@ -2869,9 +2869,12 @@
 %  \contributor Moritz Wemheuer   <moritz.wemheuer\at gmail.com>,
 % `\contributor Andy N            <@\at @>', ^^A https://tex.stackexchange.com/users/182462/andy-n
 %  \contributor Phelype Oleinik   <phe.h.o1\at gmail.com>,
-%  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>
+%  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>,
+%  \contributor Markus Kohm       <komascript\at gmx.info>,
+%  \contributor Paolo Polesana    <@\at @>, ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
+%  \contributor Oliver Kopp       <koppdev\at gmail.com>
 % and
-%  \contributor Markus Kohm       <komascript\at gmx.info>.
+%  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>.
 %
 %
 %\iffalse
@@ -2967,9 +2970,9 @@
 %    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
-%   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer,
+%   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 4~November 2019.
+%    \newblock 10~November 2019.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -3376,7 +3379,7 @@
 %  \RequirePackage,\@@enc@update,\cf@encoding,\f@encoding}
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
 %^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\glb@settings,\normalfont,
-%^^A  \pickup@font,\selectfont,\set@fontsize,\showhyphens}                   ^^A latex
+%^^A  \pickup@font,\remove@tlig,\selectfont,\set@fontsize,\showhyphens}      ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
@@ -3972,6 +3975,8 @@
 %\todo{interface for \cmd\protrusionboundary}
 %\end{enum}
 %\changes{v2.6}{2016/04/22}{update for \luatex\ 0.85 (renamed primitives)}
+% Also, sometime between 1.0.4 and 1.0.7, the function |font.setexpansion|
+% has been introduced, but we'll test this directly later.
 %    \begin{macrocode}
 %<*luatex-def>
 %<debug>\MT@dinfo@nl0{this is luatex (\the\luatexversion)}
@@ -5635,7 +5640,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def>
 \let\MT@copy@font\relax
-%<luatex-def>\MT@requires@luatex4{\let\pdfcopyfont\copyfont}\relax
 %<pdftex-def>\MT@requires@pdftex7{
 \def\MT@copy@font@{%
 %    \end{macrocode}
@@ -5659,10 +5663,22 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \else
       \MT@exp@two@c\let\font@name\MT@font@orig
     \fi
-    \global\MT@exp@two@c\pdfcopyfont\MT@font@copy\font@name
-%<debug>\MT@dinfo1{creating new copy: \MT@font@copy}%
+%<pdftex-def>    \global\MT@exp@two@c\pdfcopyfont\MT@font@copy\font@name
 %    \end{macrocode}
 %\end{macro}
+% Even though \luatex\ also provides the primitive from \pdftex\ (even renamed to
+% \cmd\copyfont, that is, `promoted' as per the \luatex\ manual), it is crippled
+% in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html
+%\changes{v2.7d}{2019/11/17}{in \luatex, don't use the \cmd\copyfont\ primitive, but load the font anew
+%                            (reported by \contributor Paolo Polesana <@\at @> and
+%                                         \contributor Oliver Kopp <koppdev\at gmail.com>)}
+%                                          ^^A http://tex.stackexchange.com/questions/338942/cancellation-of-color-fontspec-font-settings-while-defining-microtype-context
+%                                          ^^A https://tex.stackexchange.com/questions/419288/microtypecontext-with-lualatex
+% Therefore, we do not copy the font but load it anew.
+%    \begin{macrocode}
+%<luatex-def>    \MT@exp@two@c\MT@lua@copyfont\meaning\font@name\@nil
+%<debug>\MT@dinfo1{creating new copy: \MT@font@copy}%
+%    \end{macrocode}
 % Since it's a new font, we have to remove it from the context lists.
 %    \begin{macrocode}
     \MT@map@clist@c\MT@active@features{%
@@ -5679,7 +5695,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \let\font@name\MT@font@copy
 %    \end{macrocode}
 % But we have to properly substitute the font after we're done.
+% In \luatex, for some reason, one expansion step more.
 %    \begin{macrocode}
+%<luatex-def>  \aftergroup\MT@exp@two@c
   \aftergroup\let\aftergroup\font@name\aftergroup\MT@font@copy
 }
 %    \end{macrocode}
@@ -5694,6 +5712,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %<pdftex-def>}\relax
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@lua@copy@font}
+% \meta{\#1} and \meta{\#2} are `|select|' and `|font|', respectively,
+% \meta{\#3} is the font spec.
+%    \begin{macrocode}
+%<luatex-def>\def\MT@lua@copyfont #1 #2 #3\@nil{%
+%<luatex-def>  \global\expandafter\font\MT@font@copy=#3\relax}
 %</pdftex-def|luatex-def>
 %    \end{macrocode}
 %\end{macro}
@@ -6665,11 +6691,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@expandfont}
 % Expand the font.
+% In \luatex, we try to go the |lua| way, if the |font.setexpansion| function exists.
+%\changes{v2.7d}{2019/11/17}{use \luatex\ function \texttt{font.}\penalty\exhyphenpenalty\texttt{setexpansion} if available}
 %    \begin{macrocode}
-%<luatex-def>\MT@requires@luatex4{\let\pdffontexpand\expandglyphsinfont}\relax
+%<*luatex-def>
+\directlua{\detokenize{
+  if font.setexpansion == nil then
+    tex.print("\\@firstoftwo")
+  else
+    tex.print("\\@secondoftwo")
+  end
+}}{
+\MT@requires@luatex4{\let\pdffontexpand\expandglyphsinfont}\relax
+%</luatex-def>
 \def\MT@expandfont{%
   \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ \MT@auto@\relax
 }
+%<*luatex-def>
+}{
+\def\MT@expandfont{%
+  \directlua{font.setexpansion(font.current(),\MT@stretch@,\MT@shrink@,\MT@step@)}%
+}
+}
+%</luatex-def>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@all@ex}
@@ -9469,7 +9513,10 @@ end
 %                             ^^A 2. <http://permalink.gmane.org/gmane.comp.tex.macosx/38303>
 %                             ^^A (beta:02)
 % (only if it isn't registered already).
-%\changes{v2.7d}{2019/10/28}{remove substitute font from list}
+%\changes{v2.7d}{2019/10/28}{remove substitute font from list
+%                            (reported by \contributor Markus Kohm <komascript\at gmx.info>)}
+%                             ^^A private mail, 2019/01/16
+%                             ^^A https://tex.stackexchange.com/q/470311
 % Additionally, we have to remove the substitute font from the list of fonts,
 % so that we set it up again.
 %    \begin{macrocode}
@@ -9519,10 +9566,7 @@ end
 % Add the substituted font to each feature list and possibly remove substitute font.
 %\todo{remove from other lists?}
 %\changes{v2.5}{2010/08/23}{only register if it isn't registered already} ^^A (beta:02)
-%\changes{v2.7d}{2019/10/28}{remove substitute font from lists
-%                            (reported by \contributor Markus Kohm <komascript\at gmx.info>)}
-%                             ^^A private mail, 2019/01/16
-%                             ^^A https://tex.stackexchange.com/q/470311
+%\changes{v2.7d}{2019/10/28}{remove substitute font from lists}
 %    \begin{macrocode}
 \def\MT@register@subst@font@cx{%
   \MT@map@clist@c\MT@active@features{%
@@ -17090,7 +17134,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10644}
+% \CheckSum{10666}
 %
 % \Finale
 %
