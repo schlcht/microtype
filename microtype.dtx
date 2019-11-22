@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.7d"
+% !DTXversion:: "2.7e"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2019/11/18 v2.7d
+  [2019/99/18 v2.7e
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -1413,20 +1413,13 @@
 % normal font. Size selection commands are possible, too, however, ranges are
 % not allowed.
 %
-%\medskip\noindent
-% Table~\ref{tab:predefined-font-sets} lists the eleven predefined font sets.
-% They may also be activated by passing their name to the feature options
-% \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{kerning} and
-% \opt{spacing} when loading the package, for example:
-%\begin{verbatim}
-%\usepackage[protrusion=allmath,tracking=smallcaps]{microtype}
-%\end{verbatim}
-%
+%\newcounter{fontsets}
 %\begin{table}\microtypesetup{protrusion=false}\small
 %\caption{Predefined font sets}\label{tab:predefined-font-sets}
 %\catcode`\!=13 \def!{\textcolor{thered}{$\varnothing$}}
 %\catcode`\/=13 \def/#1/{\textcolor{thegreen}{#1}}
 %\def<#1>{\textcolor{theblue}{\acronym{#1}}}
+%\def\s#1{|#1|\stepcounter{fontsets}}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -1443,56 +1436,56 @@
 %    & \footnotesize Size\\
 %\cmidrule(r){1-1}\cmidrule(r){2-2}\cmidrule(r){3-3}
 %\cmidrule(r){4-4}\cmidrule(r){5-5}\cmidrule{6-6}
-% |all|
+% \s{all}
 %    & !
 %    & !
 %    & !
 %    & !
 %    & ! \\
 %\cmidrule(r){1-1}
-% |alltext|\linebreak(|allmath|)
+% \s{alltext}\linebreak(\s{allmath})
 %    & Text encodings, <TS1>\linebreak (<OML>, <OMS>, <U>)
 %    & !
 %    & !
 %    & !
 %    & ! \\
 %\cmidrule(r){1-1}
-% |alltext-nott|\linebreak(|allmath-nott|)
+% \s{alltext-nott}\linebreak(\s{allmath-nott})
 %    & Text encodings, <TS1>\linebreak (<OML>, <OMS>, <U>)
 %    & /\cmd\rm|*|/,\linebreak/\cmd\sf|*|/
 %    & !
 %    & !
 %    & ! \\
 %\cmidrule(r){1-1}
-% |basictext|\linebreak(|basicmath|)
+% \s{basictext}\linebreak(\s{basicmath})
 %    & Text encodings \linebreak (<OML>, <OMS>)
 %    & /\cmd\rm|*|/,\linebreak/\cmd\sf|*|/
 %    & /\cmd\md|*|/
 %    & !
 %    & /\cmd\normalsize/, /\cmd\footnotesize/, /\cmd\small/, /\cmd\large/\\
 %\cmidrule(r){1-1}
-% |smallcaps|
+% \s{smallcaps}
 %    & Text encodings
 %    & !
 %    & !
 %    & /\cmd\sc|*|/,/si/,/scit/
 %    & ! \\
 %\cmidrule(r){1-1}
-% |footnotesize|
+% \s{footnotesize}
 %    & Text encodings, <TS1>
 %    & !
 %    & !
 %    & !
 %    & |-|/\cmd\small/\\
 %\cmidrule(r){1-1}
-% |scriptsize|
+% \s{scriptsize}
 %    & Text encodings, <TS1>
 %    & !
 %    & !
 %    & !
 %    & |-|/\cmd\footnotesize/\\
 %\cmidrule(r){1-1}
-% |normalfont|
+% \s{normalfont}
 %    & /\cmd\encoding|*|/
 %    & /\cmd\family|*|/
 %    & /\cmd\series|*|/
@@ -1508,6 +1501,18 @@
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
+%\def\nrfontsets{\ifx\c@fontsets\relax???\else\ifcase\c@fontsets
+%\or\or\or\or\or\or\or\or\or\or\or eleven\or twelve\else
+% \PackageError{\MT@MT}{I cannot count any further}{}\fi}
+%
+%\medskip\noindent
+% Table~\ref{tab:predefined-font-sets} lists the \nrfontsets\ predefined font sets.
+% They may also be activated by passing their name to the feature options
+% \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{kerning} and
+% \opt{spacing} when loading the package, for example:
+%\begin{verbatim}
+%\usepackage[protrusion=allmath,tracking=smallcaps]{microtype}
+%\end{verbatim}
 %
 %\ifcmr\else\pagebreak\fi ^^A layout
 %\medskip
@@ -2125,9 +2130,9 @@
 %\begin{minipage}{\textwidth}
 %\def\arraystretch{1.2}
 %\long\def\@makefntext#1{%
-%  \leftskip 0pt
-%  \parindent 0pt
-%  \everypar{\parindent 0pt}%
+%  \leftskip 15pt
+%  \parindent -15pt
+%  \everypar{\parindent -15pt}%
 %  \leavevmode\hbox to 15pt{\@thefnmark\hss}#1}
 %\let\footnoterule\relax
 %\def\fnref#1{\textsuperscript{\itshape\ifpdf\ref*{#1}\else\ref{#1}\fi}}
@@ -2141,7 +2146,7 @@
 % Generic
 %      & <OT1>, <T1>, <T2A>, <LY1>, <QX>, (<TS1>)\footnote{Incomplete\label{fn:incmpl}}
 %      & n, (it, sl, sc)\fnref{fn:incmpl} \\
-% Computer Modern Roman (|cmr|)\footnote{Aliases: Latin Modern (|lmr|),
+% Computer Modern Roman (|cmr|)\footnote{Aliases: Latin Modern Roman (|lmr|),
 %                                        \pkg{ae} (|aer|), \pkg{zefonts} (|zer|),
 %                                        \pkg{eco} (|cmor|), \pkg{hfoldsty} (|hfor|)}
 %      & <OT1>, <OT4>, <T1>, <T2A>, <T5>, <LY1>, <TS1>
@@ -2172,7 +2177,7 @@
 %                                        \pkg{newtx}, \pkg{tempora}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
-% Latin Modern Roman
+% Latin Modern Roman\footnote{Alias: New Computer Modern}
 %      & <EU1>/<2>, <TU> [Latin, Greek]
 %      & n, it, (sl)\fnref{fn:it-sl}\\
 % Charis <SIL>
@@ -3024,6 +3029,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{2.7d}{2019/11/18}
 %
 %\VersionDate{2.7c}{2019/10/10}
 %
@@ -4224,7 +4231,7 @@
 %<pdftex-def>  \MT@pdftex@no
 %<luatex-def>  \MT@luatex@no
     <#1 \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}
-%<luatex-def&debug>\MT@requires@luatex4{\directlua{tex.enableprimitives('pdf',{'tracingfonts'})}}\relax
+%<luatex-def&debug>\MT@requires@luatex4{\MT@lua{tex.enableprimitives('pdf',{'tracingfonts'})}}\relax
 %<pdftex-def&debug>\MT@requires@pdftex6{
 %<debug>\pdftracingfonts=1
 %<pdftex-def&debug>}\relax
@@ -5672,7 +5679,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.7d}{2019/11/17}{in \luatex, don't use the \cmd\copyfont\ primitive, but load the font anew
 %                            (reported by \contributor Paolo Polesana <@\at @> and
 %                                         \contributor Oliver Kopp <koppdev\at gmail.com>)}
-%                                          ^^A http://tex.stackexchange.com/questions/338942/cancellation-of-color-fontspec-font-settings-while-defining-microtype-context
+%                                          ^^A https://tex.stackexchange.com/questions/338942/cancellation-of-color-fontspec-font-settings-while-defining-microtype-context
 %                                          ^^A https://tex.stackexchange.com/questions/419288/microtypecontext-with-lualatex
 % Therefore, we do not copy the font but load it anew.
 %    \begin{macrocode}
@@ -6695,7 +6702,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.7d}{2019/11/17}{use \luatex\ function \texttt{font.}\penalty\exhyphenpenalty\texttt{setexpansion} if available}
 %    \begin{macrocode}
 %<*luatex-def>
-\directlua{\detokenize{
+\MT@lua{\detokenize{
   if font.setexpansion == nil then
     tex.print("\\@firstoftwo")
   else
@@ -6710,7 +6717,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*luatex-def>
 }{
 \def\MT@expandfont{%
-  \directlua{font.setexpansion(font.current(),\MT@stretch@,\MT@shrink@,\MT@step@)}%
+  \MT@lua{font.setexpansion(font.current(),\MT@stretch@,\MT@shrink@,\MT@step@)}%
 }
 }
 %</luatex-def>
@@ -12993,6 +13000,11 @@ end
 \DeclareMicrotypeAlias{cmor}{cmr}        % eco
 \DeclareMicrotypeAlias{hfor}{cmr}        % hfoldsty
 %    \end{macrocode}
+% Another, new Latin Modern extension.
+%\changes{v2.7e}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{New Computer Modern}{Latin Modern Roman}
+%    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
 %\changes{v1.8}{2005/04/19}{declare \texttt{pxr} and \texttt{txr}
@@ -17134,7 +17146,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10666}
+% \CheckSum{10667}
 %
 % \Finale
 %

@@ -1,12 +1,12 @@
+* check contexts in lua again
+* cm-unicode alias
 * guard against expanding context? -:
 \newcommand{\@ifexpanding}{\let\@ifexpanding@\@ifexpanding@\@secondoftwo}
 \newcommand{\@ifexpanding@}[4]{\relax\relax#3}
 * luatex: reimplement spacing feature (see https://tex.stackexchange.com/questions/498032/how-do-i-define-a-new-tex-register-with-arguments-in-luatex)
 * end of \MT@tr@set@space@@: ?
 %%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax
-* mention that the German translation is not our brain-child
 * build our own "is@opentype@font" (test if font.format==(opentype or truetype))
-* non-OpenType fonts cannot be letterspaced with `kernfactor'
 * what to do about lualatex -ini ?
 * fix (outer) spacing with luatex
 * don't set up inheritance list for tracking
