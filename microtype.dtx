@@ -5674,8 +5674,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 % Even though \luatex\ also provides the primitive from \pdftex\ (even renamed to
-% \cmd\copyfont, that is, `promoted' as per the \luatex\ manual), it is crippled
-% in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html
+% \cmd\copyfont, that is, `promoted' as per the \luatex\ manual), it is seriously
+% crippled in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html
 %\changes{v2.7d}{2019/11/17}{in \luatex, don't use the \cmd\copyfont\ primitive, but load the font anew
 %                            (reported by \contributor Paolo Polesana <@\at @> and
 %                                         \contributor Oliver Kopp <koppdev\at gmail.com>)}
@@ -5702,9 +5702,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \let\font@name\MT@font@copy
 %    \end{macrocode}
 % But we have to properly substitute the font after we're done.
-% In \luatex, for some reason, one expansion step more.
 %    \begin{macrocode}
-%<luatex-def>  \aftergroup\MT@exp@two@c
   \aftergroup\let\aftergroup\font@name\aftergroup\MT@font@copy
 }
 %    \end{macrocode}
@@ -9708,6 +9706,7 @@ end
         \def\MT@reset@context{\aftergroup\MT@reset@context@}%
 %    \end{macrocode}
 % The next time we see the font, we have to reset \emph{all} factors.
+% TODO: only for pdftex?
 %    \begin{macrocode}
         \MT@glet@nn{MT@reset@\@tempb @codes}{MT@reset@\@tempb @codes@}%
 %    \end{macrocode}
@@ -9726,10 +9725,11 @@ end
 }
 %    \end{macrocode}
 % We also allow the |activate| shortcut.
+%\changes{v2.7e}{2019/11/25}{fix \texttt{activate} shortcut in \cmd\microtypecontext}
 %    \begin{macrocode}
 \define@key{MTC}{activate}[]{%
-  \setkeys{MT}{protrusion={#1}}%
-  \setkeys{MT}{expansion={#1}}%
+  \setkeys{MTC}{protrusion={#1}}%
+  \setkeys{MTC}{expansion={#1}}%
 }
 %    \end{macrocode}
 %\begin{macro}{\MT@pr@context}
@@ -13000,7 +13000,7 @@ end
 \DeclareMicrotypeAlias{cmor}{cmr}        % eco
 \DeclareMicrotypeAlias{hfor}{cmr}        % hfoldsty
 %    \end{macrocode}
-% Another, new Latin Modern extension.
+% Another, new Computer Modern extension.
 %\changes{v2.7e}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{New Computer Modern}{Latin Modern Roman}
@@ -17146,7 +17146,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10667}
+% \CheckSum{10665}
 %
 % \Finale
 %
