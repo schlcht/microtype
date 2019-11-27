@@ -607,7 +607,7 @@
                     \href{https://www.ctan.org/pkg/#1}{\nolinkurl{pkg/#1}}}
   \DeclareRobustCommand\mailto[1]{\href{mailto:#1}{\nolinkurl{#1}}}
   \def\mailtoRS{\href % some PDF viewers don't like spaces:
-    {mailto:<w.m.l@gmx.net>\%20Robert\%20Schlicht?subject=[microtype\%20\fileversion]}
+    {mailto:Robert\%20Schlicht\%3cw.m.l@gmx.net\%3e?subject=[microtype\%20\fileversion]}
     {\texttt{w.m.l@gmx.net}}}
   % the samples in the introduction, utilising nested optional content groups (aka. layers):
   \ifnum\pdftexversion<140 \else
@@ -3860,6 +3860,7 @@
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
         \let\pdfprotrudechars\protrudechars
+        \let\MT@lua\directlua
       \fi
     \fi
 %</letterspace>
@@ -3995,7 +3996,7 @@
 % number.
 %\changes{v2.3d}{2009/03/25}{update for \luatex\ 0.36}
 %    \begin{macrocode}
-\def\MT@lua{\directlua}
+\let\MT@lua\directlua
 \def\MT@luatex@no{5}
 \ifnum\luatexversion<90
   \def\MT@luatex@no{4}
@@ -4256,6 +4257,7 @@
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
 %\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
+% Since 2017/01/01, it is loaded in the format.
 %    \begin{macrocode}
 \RequirePackage{luaotfload}
 \MT@lua{require("microtype")}
@@ -4849,12 +4851,44 @@ microtype.if_str_eq = if_str_eq
 %    \end{macrocode}
 %\end{macro}
 %\changes{v2.6a}{2016/05/03}{fixes for \letterspace\ package with \luatex}
+%\begin{macro}{\MT@if@luaotf@font}
+%\changes{v2.7e}{2019/11/27}{use \texttt{lua} function}
+% For fonts loaded by \pkg{luaotfload} we query the font's table.
+%    \begin{macrocode}
+%<letterspace>\MT@pdf@or@lua{\let\MT@if@luaotf@font\@secondoftwo}{
+%<luatex-def|letterspace>\def\MT@if@luaotf@font{\csname\MT@lua{
+%<luatex-def>  microtype.if_luaotf_font()
+%<*luafile|letterspace>
+%<luafile>local function if_luaotf_font()
+  if fonts then
+    local thefont
+    if fonts.ids then
+      thefont = fonts.ids[font.current()]
+    else
+      thefont = fonts.hashes.identifiers[font.current()]
+    end
+    if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
+      then tex.write("@firstoftwo")
+      else tex.write("@secondoftwo")
+    end
+  else
+    tex.write("@secondoftwo")
+  end
+%<luafile>end
+%<luafile>microtype.if_luaotf_font = if_luaotf_font
+%<luafile>
+%</luafile|letterspace>
+%<luatex-def|letterspace> }\endcsname
+%<luatex-def|letterspace>}%
+%<letterspace>}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@do@font}
 % Execute \meta{\#1} 256 times,
 %    \begin{macrocode}
 %<pdftex-def|letterspace>\def\MT@do@font{\MT@while@num\z@\@cclvi}
 %    \end{macrocode}
-% resp. for the whole font for \luatex, if loaded by \pkg{fontspec}/\pkg{luaotfload}.
+% resp. for the whole font for \luatex, if it's a Unicode font.
 %\changes{v2.5}{2010/08/14}{adapt for \luatex}
 %\changes{v2.6}{2013/07/14}{speed up for \luatex}
 %\changes{v2.6a}{2015/05/10}{fix \texttt{lua} function
@@ -4863,7 +4897,7 @@ microtype.if_str_eq = if_str_eq
 %    \begin{macrocode}
 %<*luatex-def>
 \def\MT@do@font#1{%
-  \MT@if@fontspec@font{%
+  \MT@if@luaotf@font{%
     \def\MT@dofont@function{#1}%
     \MT@lua{microtype.do_font()}%
   }{\MT@while@num\z@\@cclvi{#1}}%
@@ -4871,8 +4905,7 @@ microtype.if_str_eq = if_str_eq
 %</luatex-def>
 %    \end{macrocode}
 % This is the |lua| function, which is much faster than looping through all glyphs
-% in \TeX. Legacy fonts (which this function might be fed with, because \pkg{fontspec}
-% isn't always getting it right) don't contain a |v.index| field.
+% in \TeX. Legacy fonts (which this function should never work on) don't contain a |v.index| field.
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
@@ -5226,27 +5259,8 @@ microtype.do_font = do_font
 %    \begin{macrocode}
 \newif\ifMT@xunicode
 \MT@with@package@T{xunicode}\MT@xunicodetrue
-%</package>
 \newif\ifMT@fontspec
-%<letterspace>\MT@requires@latex2{
 \MT@with@package@T{fontspec}\MT@fontspectrue
-%<letterspace>}{\MT@fontspecfalse}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@if@fontspec@font}
-%\begin{macro}{\MT@fontspec@setup}
-%\changes{v2.6}{2016/04/23}{fix \cs{MT@if@fontspec@font} ABD}
-% For fonts loaded by \pkg{fontspec} (or, rather, \pkg{luaotfload}) we can
-% use some of the features the latter package provides.
-%    \begin{macrocode}
-\let\MT@if@fontspec@font\@secondoftwo
-\def\MT@fontspec@setup{%
-  \@ifpackagelater{fontspec}{2013/05/23}{
-    \MT@let@cn\MT@if@fontspec@font{fontspec_if_fontspec_font:TF}%
-  }\relax
-}
-\ifMT@fontspec\MT@fontspec@setup\fi
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -5262,7 +5276,6 @@ microtype.do_font = do_font
 % lest we disturb \pkg{tikz}. This is used in \cs{MT@afteraftergroup}, and we
 % don't need it for \letterspace.
 %    \begin{macrocode}
-%<*package>
 \let\MT@maybe@gobble@with@tikz\@firstofone
 \def\MT@tikz@setup{%
   \def\MT@maybe@gobble@with@tikz{%
@@ -5366,11 +5379,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T {eledmac}\MT@ledmac@setup
   \MT@with@package@T{reledmac}\MT@ledmac@setup
   \MT@with@package@T{xunicode}\MT@xunicodetrue
-%</package>
-%<plain>  \MT@requires@latex2{
-  \MT@with@package@T{fontspec}{\MT@fontspectrue\MT@fontspec@setup}%
-%<plain>  }\relax
-%<*package>
+  \MT@with@package@T{fontspec}\MT@fontspectrue
 %    \end{macrocode}
 % We can clean up \cs{MT@setupfont@hook} now.
 %\changes{v2.6}{2014/03/17}{redefine \cs{MT@setupfont@hook} globally
@@ -7175,8 +7184,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % than the \pdftex\ primitive \cmd\letterspacefont.
 %    \begin{macrocode}
 %<*luatex-def|letterspace>
-      \MT@if@fontspec@font{%
-%<luatex-def&debug>\MT@dinfo@nl{1}{... fontspec font: \MessageBreak
+      \MT@if@luaotf@font{%
+%<luatex-def&debug>\MT@dinfo@nl{1}{... luaotf font: \MessageBreak
 %<luatex-def&debug>         \expandafter\fontname\font@name}%
         \ifnum\MT@letterspace@<\z@\def\MT@minus{-}\else\let\MT@minus\@empty\fi
         \global\expandafter\font\MT@lsfont=%
@@ -7236,7 +7245,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Wolfram Schaalo <schaalo\at gmx.net>)}
 %                                                              ^^A private mail, 2008/05/12
 %    \begin{macrocode}
-%<luatex-def|letterspace>      \MT@if@fontspec@font\relax{%
+%<luatex-def|letterspace>      \MT@if@luaotf@font\relax{%
 %<debug>\MT@dinfo@nl{2}{... compensating for tracking (\number\MT@letterspace@)}%
       \MT@do@font{\lpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax
                   \rpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax}%
@@ -7250,7 +7259,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \aftergroup\MT@set@lsfont
 %<pdftex-def|luatex-def>    \let\MT@font\MT@lsfont
-%<luatex-def>    \MT@if@fontspec@font\MT@font\relax
+%<luatex-def>    \MT@if@luaotf@font\MT@font\relax
 %    \end{macrocode}
 %\begin{macro}{\MT@set@curr@ls}
 %\begin{macro}{\MT@curr@ls}
@@ -8066,7 +8075,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % in a table (used by the \pkg{luaotfload} function |keepligature|).
 %\changes{v2.6}{2016/04/20}{use \pkg{luaotfload} function to keep\slash inhibit ligatures}
 %    \begin{macrocode}
-%<luatex-def>          \MT@if@fontspec@font
+%<luatex-def>          \MT@if@luaotf@font
 %<luatex-def>             {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
         \fi
       }%
@@ -8079,7 +8088,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }{%
     \pdfnoligatures#1%
-%<luatex-def>    \MT@if@fontspec@font
+%<luatex-def>    \MT@if@luaotf@font
 %<luatex-def>        {\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
     \MT@vinfo{... Disabling all ligatures}%
   }%
@@ -17146,7 +17155,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10665}
+% \CheckSum{10660}
 %
 % \Finale
 %

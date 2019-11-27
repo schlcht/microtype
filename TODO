@@ -6,7 +6,6 @@
 * luatex: reimplement spacing feature (see https://tex.stackexchange.com/questions/498032/how-do-i-define-a-new-tex-register-with-arguments-in-luatex)
 * end of \MT@tr@set@space@@: ?
 %%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax
-* build our own "is@opentype@font" (test if font.format==(opentype or truetype))
 * what to do about lualatex -ini ?
 * fix (outer) spacing with luatex
 * don't set up inheritance list for tracking
