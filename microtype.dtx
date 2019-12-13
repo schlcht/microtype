@@ -9635,16 +9635,23 @@ end
 %\changes{v2.6}{2014/03/26}{allow \texttt{activate} shortcut (reported by \contributor Karl Berry <karl\at freefriends.org>)}
 %                                           ^^A private mail, 2014/03/21
 %\changes{v2.7e}{2019/11/25}{fix \texttt{activate} shortcut}
+%\changes{v2.7e}{2019/12/12}{ignore spaces}
+%\begin{macro}{\MT@microtypecontext}
 % The user may change the context, so that different setups are possible. This
 % is especially useful for multi-lingual documents.
-%^^A TODO: ignore spaces
 %
-% Inside the preamble, it shouldn't actually do anything but remember it for
+% Inside the preamble, this command shouldn't actually do anything but remember itself for
 % later.
 %    \begin{macrocode}
-\def\microtypecontext#1{\MT@addto@setup{\microtypecontext{#1}}}
+\def\microtypecontext{\MT@begin@catcodes\MT@microtypecontext}
+\def\MT@microtypecontext#1{\MT@end@catcodes\MT@addto@setup{\microtypecontext{#1}}}
 \MT@addto@setup{%
-  \DeclareRobustCommand\microtypecontext[1]{%
+  \DeclareRobustCommand\microtypecontext{%
+    \MT@begin@catcodes
+    \MT@microtypecontext
+  }%
+  \def\MT@microtypecontext#1{%
+    \MT@end@catcodes
     \MT@setup@contexts
     \let\MT@reset@context\relax
 %    \end{macrocode}
@@ -9660,12 +9667,20 @@ end
 }
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
 %\begin{macro}{\textmicrotypecontext}
 %\changes{v2.2}{2007/07/03}{new command: wrapper around \cs{microtypecontext}}
+%\changes{v2.7e}{2019/12/12}{ignore spaces}
+%\begin{macro}{\MT@textmicrotypecontext}
+%\begin{macro}{\MT@text@microtypecontext}
 % This is just a wrapper around \cs{microtypecontext}.
 %    \begin{macrocode}
-\DeclareRobustCommand\textmicrotypecontext[2]{{\microtypecontext{#1}#2}}
+\DeclareRobustCommand\textmicrotypecontext{\MT@begin@catcodes\MT@textmicrotypecontext}
+\def\MT@textmicrotypecontext#1{\MT@end@catcodes\MT@text@microtypecontext{#1}}
+\def\MT@text@microtypecontext#1#2{{\microtypecontext{#1}#2}}
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@reset@context}
 %\changes{v1.9f}{2006/08/03}{only reset context if it has actually been changed}
@@ -17160,7 +17175,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10663}
+% \CheckSum{10681}
 %
 % \Finale
 %
