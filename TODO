@@ -1,3 +1,4 @@
+* what about polyglossia?
 * check contexts in lua again
 * cm-unicode alias
 * guard against expanding context? -:

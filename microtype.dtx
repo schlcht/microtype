@@ -1301,7 +1301,7 @@
 % expansion settings with a |context| keyword are encountered. If these
 % settings are loaded after the preamble, however, it is too late, and you
 % should set the \opt{copyfonts} option manually.
-% This only works with \pdftex\ 1.40.4 or later.
+% This only works with \pdftex\ 1.40.4 or later, or \luatex.
 %\fi
 %
 %
@@ -1502,8 +1502,8 @@
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
 %\def\nrfontsets{\ifx\c@fontsets\relax???\else\ifcase\c@fontsets
-%\or\or\or\or\or\or\or\or\or\or\or eleven\or twelve\else
-% \PackageError{\MT@MT}{I cannot count any further}{}\fi}
+%                \or\or\or\or\or\or\or\or\or\or\or eleven\or twelve\else
+%                \PackageError{\MT@MT}{I cannot count any further}{}\fi\fi}
 %
 %\medskip\noindent
 % Table~\ref{tab:predefined-font-sets} lists the \nrfontsets\ predefined font sets.
@@ -1526,8 +1526,8 @@
 %\Describe{Macro}{\DeclareMicrotypeSetDefault}{?features,set name}
 % If a feature is enabled but no font set has been chosen explicitly, the sets
 % declared by this command will be activated. By default, the `|alltext|' font
-% set will be used for character protrusion and additional kerning, the
-% `|basictext|' set for font expansion and interword spacing, and the
+% set will be activated for character protrusion and additional kerning, the
+% `|alltext-nott|' set for font expansion and interword spacing, and the
 % `|smallcaps|' set for tracking.
 %
 %\medskip\noindent
@@ -1741,12 +1741,13 @@
 %  This paragraph contains a `fussy' widow.}
 %\end{verbatim}
 %       This method of employing contexts to temporarily apply different
-%       expansion parameters only works with \pdftex\ version 1.40.4 or later.^^A
+%       expansion parameters only works with \pdftex\ version 1.40.4 or later,^^A
 %         \footnote{For older versions, a dirty trick is laid out in
 %                   section~\ref{ssec:font-setup} on page~\pageref{exp-hack}.}
-%       Also note that \pdftex\ prohibits the use of fonts with different expansion
+%       or with \luatex.
+%       Also note that both \pdftex\ and \luatex\ prohibit the use of fonts with different expansion
 %       limits or steps (even of different fonts) within one paragraph, hence
-%       the |sloppy| context has to be applied to complete paragraphs.
+%       the |sloppy| context would have to be applied to complete paragraphs.
 %  \item[\key{factor}]
 %       This option provides a different method to alter expansion settings for
 %       certain fonts, working around the restriction just mentioned. The
@@ -4257,9 +4258,9 @@
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
 %\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
-% Since 2017/01/01, it is loaded in the format.
+% Since 2017/01/01, it is already loaded in the format.
 %    \begin{macrocode}
-\RequirePackage{luaotfload}
+\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
 \MT@lua{require("microtype")}
 %</luatex-def>
 %    \end{macrocode}
@@ -4856,7 +4857,7 @@ microtype.if_str_eq = if_str_eq
 % For fonts loaded by \pkg{luaotfload} we query the font's table.
 %    \begin{macrocode}
 %<letterspace>\MT@pdf@or@lua{\let\MT@if@luaotf@font\@secondoftwo}{
-%<luatex-def|letterspace>\def\MT@if@luaotf@font{\csname\MT@lua{
+%<luatex-def|letterspace>\def\MT@if@luaotf@font{\csname\MT@lua{%
 %<luatex-def>  microtype.if_luaotf_font()
 %<*luafile|letterspace>
 %<luafile>local function if_luaotf_font()
@@ -4879,7 +4880,7 @@ microtype.if_str_eq = if_str_eq
 %<luafile>
 %</luafile|letterspace>
 %<luatex-def|letterspace> }\endcsname
-%<luatex-def|letterspace>}%
+%<luatex-def|letterspace>}
 %<letterspace>}
 %    \end{macrocode}
 %\end{macro}
@@ -9633,8 +9634,10 @@ end
 %                                           ^^A MID: <46ab4fbb$0$31632$9b4e6d93@newsspool3.arcor-online.net>
 %\changes{v2.6}{2014/03/26}{allow \texttt{activate} shortcut (reported by \contributor Karl Berry <karl\at freefriends.org>)}
 %                                           ^^A private mail, 2014/03/21
+%\changes{v2.7e}{2019/11/25}{fix \texttt{activate} shortcut}
 % The user may change the context, so that different setups are possible. This
 % is especially useful for multi-lingual documents.
+%^^A TODO: ignore spaces
 %
 % Inside the preamble, it shouldn't actually do anything but remember it for
 % later.
@@ -9715,7 +9718,7 @@ end
         \def\MT@reset@context{\aftergroup\MT@reset@context@}%
 %    \end{macrocode}
 % The next time we see the font, we have to reset \emph{all} factors.
-% TODO: only for pdftex?
+%^^A TODO: only for pdftex? or why at all?
 %    \begin{macrocode}
         \MT@glet@nn{MT@reset@\@tempb @codes}{MT@reset@\@tempb @codes@}%
 %    \end{macrocode}
@@ -9734,7 +9737,6 @@ end
 }
 %    \end{macrocode}
 % We also allow the |activate| shortcut.
-%\changes{v2.7e}{2019/11/25}{fix \texttt{activate} shortcut in \cmd\microtypecontext}
 %    \begin{macrocode}
 \define@key{MTC}{activate}[]{%
   \setkeys{MTC}{protrusion={#1}}%
@@ -9904,7 +9906,7 @@ end
                    Ignoring `#1 = {\@tempa*}' in font set\MessageBreak`\MT@curr@set@name'}%
        \let\MT@val\@empty}%
 %    \end{macrocode}
-% In contrast to earlier version, these values will not be expanded immediately
+% In contrast to earlier versions, these values will not be expanded immediately,
 % but at the end of the preamble.
 %\changes{v1.2}{2004/09/26}{check whether defaults have changed}
 %\changes{v1.5}{2004/12/02}{don't test defaults if called after begin document}
@@ -12933,13 +12935,15 @@ end
 %    \end{macrocode}
 % The default sets.
 %\changes{v2.2}{2007/04/15}{default set for tracking: \texttt{smallcaps}}
+%\changes{v2.7e}{2019/12/04}{default set for expansion: \texttt{alltext-nott}}
+%\changes{v2.7e}{2019/12/04}{default set for spacing: \texttt{alltext-nott}}
 %    \begin{macrocode}
 %%% -----------------------------------------------------------------------
 %%% DEFAULT SETS
 
 \DeclareMicrotypeSetDefault[protrusion]{alltext}
-\DeclareMicrotypeSetDefault[expansion] {basictext}
-\DeclareMicrotypeSetDefault[spacing]   {basictext}
+\DeclareMicrotypeSetDefault[expansion] {alltext-nott}
+\DeclareMicrotypeSetDefault[spacing]   {alltext-nott}
 \DeclareMicrotypeSetDefault[kerning]   {alltext}
 \DeclareMicrotypeSetDefault[tracking]  {smallcaps}
 
@@ -13166,7 +13170,7 @@ end
 % encoding with \cmd\DeclareTextSymbol\ or \cmd\DeclareTextComposite.
 % Characters defined via \cmd\chardef\ are also possible.
 %
-% Ligatures and \cmd\mathchardef ed symbols have to be specified numerically.
+% Ligatures and \cmd\mathchardef'ed symbols have to be specified numerically.
 % Of course, numerical identification is possible in any other case, too.
 %
 %\changes{v1.1}{2004/09/14}{remove 8-bit characters from the configuration files
@@ -13178,7 +13182,8 @@ end
 % combination with the `|inputenc|' key.
 %
 % With \xetex\ or \luatex, in contrast, it is advisable to use the proper
-% Unicode characters.
+% Unicode characters, or the font-specific glyph names prefixed with `|/|'
+% (cf. section \ref{sec:OpenType}).
 %
 %\subsection{Character inheritance}
 %\GeneralChanges{Inheritance}
@@ -16992,9 +16997,9 @@ end
 %
 %\IfFileExists{microtype-utf.pdf}
 %   {\includepdf[pages=-,
-%                addtotoc={1,section,1,OpenType configuration files,section.\thesection,
-%                          \utfsectioni,subsection,2,Character inheritance,subsection.\thesection.1,
-%                          \utfsectionii,subsection,2,Character protrusion,subsection.\thesection.2}]
+%                addtotoc={1,section,1,OpenType configuration files,sec:OpenType,
+%                          \utfsectioni,subsection,2,Character inheritance,sub:OT-inheritance,
+%                          \utfsectionii,subsection,2,Character protrusion,sub:OT-protrusion}]
 %               {microtype-utf.pdf}}
 %   {\section{OpenType configuration settings}
 %       To view the OpenType configuration settings, first typeset
@@ -17155,7 +17160,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10660}
+% \CheckSum{10663}
 %
 % \Finale
 %
