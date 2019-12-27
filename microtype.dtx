@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.7e"
+% !DTXversion:: "2.8"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2019/99/18 v2.7e
+  [2019/99/18 v2.8
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -51,8 +51,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.7d",
-%<luafile>    date         = "2019/11/18",
+%<luafile>    version      = "2.8",
+%<luafile>    date         = "2019/99/18",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -192,7 +192,7 @@
   \def\PackageFont{\sffamily}
   \def\match{\textbullet}
   \usepackage{amssymb} % \varnothing
-  \let\OrigTeX\TeX
+  \expandafter\let\expandafter\OrigTeX\csname TeX \endcsname
   \DeclareRobustCommand\TeX{\textoractual{\OrigTeX}{TeX}}
   \setlength\textheight{49\baselineskip}
 \else
@@ -1630,7 +1630,7 @@
 %       (since the value that comes last will take precedence). Font settings
 %       will be loaded recursively.
 %       The following options will affect all loaded lists, in other words,
-%       any options from the loaded lists will be ignored:
+%       any options from the loaded lists will be ignored:\looseness=-1 ^^A layout
 %\changes{v1.8}{2005/06/23}{add example for \texttt{factor} option}
 %  \item[\key{factor}] This option can be used to influence all protrusion
 %       factors of the list, overriding any global \opt{factor} setting (see
@@ -2658,7 +2658,7 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
-%\pagebreak ^^A layout
+%\ifcmr\else\pagebreak\fi ^^A layout
 %\changes{v1.9a}{2005/11/15}{add explanation for error message with non-Type\,1 fonts}
 %  \item
 %\begin{verbatim}
@@ -3029,7 +3029,9 @@
 %
 %\begin{History}
 %
-%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item New default font sets for expansion and spacing: `|alltext-nott|'
+%        \refsection{\ref{sec:font-sets}, table~\ref{tab:predefined-font-sets}}
 %
 %\VersionDate{2.7d}{2019/11/18}
 %
@@ -4853,7 +4855,7 @@ microtype.if_str_eq = if_str_eq
 %\end{macro}
 %\changes{v2.6a}{2016/05/03}{fixes for \letterspace\ package with \luatex}
 %\begin{macro}{\MT@if@luaotf@font}
-%\changes{v2.7e}{2019/11/27}{use \texttt{lua} function}
+%\changes{v2.8}{2019/11/27}{use \texttt{lua} function}
 % For fonts loaded by \pkg{luaotfload} we query the font's table.
 %    \begin{macrocode}
 %<letterspace>\MT@pdf@or@lua{\let\MT@if@luaotf@font\@secondoftwo}{
@@ -9634,8 +9636,8 @@ end
 %                                           ^^A MID: <46ab4fbb$0$31632$9b4e6d93@newsspool3.arcor-online.net>
 %\changes{v2.6}{2014/03/26}{allow \texttt{activate} shortcut (reported by \contributor Karl Berry <karl\at freefriends.org>)}
 %                                           ^^A private mail, 2014/03/21
-%\changes{v2.7e}{2019/11/25}{fix \texttt{activate} shortcut}
-%\changes{v2.7e}{2019/12/12}{ignore spaces}
+%\changes{v2.8}{2019/11/25}{fix \texttt{activate} shortcut}
+%\changes{v2.8}{2019/12/12}{ignore spaces}
 %\begin{macro}{\MT@microtypecontext}
 % The user may change the context, so that different setups are possible. This
 % is especially useful for multi-lingual documents.
@@ -9670,7 +9672,7 @@ end
 %\end{macro}
 %\begin{macro}{\textmicrotypecontext}
 %\changes{v2.2}{2007/07/03}{new command: wrapper around \cs{microtypecontext}}
-%\changes{v2.7e}{2019/12/12}{ignore spaces}
+%\changes{v2.8}{2019/12/12}{ignore spaces}
 %\begin{macro}{\MT@textmicrotypecontext}
 %\begin{macro}{\MT@text@microtypecontext}
 % This is just a wrapper around \cs{microtypecontext}.
@@ -12950,8 +12952,8 @@ end
 %    \end{macrocode}
 % The default sets.
 %\changes{v2.2}{2007/04/15}{default set for tracking: \texttt{smallcaps}}
-%\changes{v2.7e}{2019/12/04}{default set for expansion: \texttt{alltext-nott}}
-%\changes{v2.7e}{2019/12/04}{default set for spacing: \texttt{alltext-nott}}
+%\changes{v2.8}{2019/12/04}{default set for expansion: \texttt{alltext-nott}}
+%\changes{v2.8}{2019/12/04}{default set for spacing: \texttt{alltext-nott}}
 %    \begin{macrocode}
 %%% -----------------------------------------------------------------------
 %%% DEFAULT SETS
@@ -13029,7 +13031,7 @@ end
 \DeclareMicrotypeAlias{hfor}{cmr}        % hfoldsty
 %    \end{macrocode}
 % Another, new Computer Modern extension.
-%\changes{v2.7e}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
+%\changes{v2.8}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{New Computer Modern}{Latin Modern Roman}
 %    \end{macrocode}
