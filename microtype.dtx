@@ -3505,9 +3505,9 @@
 \def\MT@fix@catcode#1#2{%
   \edef\MT@restore@catcodes{%
     \MT@restore@catcodes
-    \catcode#1 \the\catcode#1\relax
+    \catcode#1=\the\catcode#1\relax
   }%
-  \catcode#1 #2\relax
+  \catcode#1=#2\relax
 }
 %<package>\MT@fix@catcode{17}{14}% ^^Q (comment)
 \MT@fix@catcode{24} {9}% ^^X (ignore)
@@ -5445,9 +5445,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \MT@with@package@T{listings}{%
     \g@addto@macro\MT@cfg@catcodes{%
-      \MT@while@num{"30}{"3A}{\catcode\@tempcnta 12\relax}%
-      \MT@while@num{"41}{"5B}{\catcode\@tempcnta 11\relax}%
-      \MT@while@num{"61}{"7B}{\catcode\@tempcnta 11\relax}%
+      \MT@while@num{"30}{"3A}{\catcode\@tempcnta=12\relax}%
+      \MT@while@num{"41}{"5B}{\catcode\@tempcnta=11\relax}%
+      \MT@while@num{"61}{"7B}{\catcode\@tempcnta=11\relax}%
     }%
 %    \end{macrocode}
 % \dots~and the backslash (which would lead to problems in \cs{MT@get@slot}).
@@ -5456,7 +5456,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                                     ^^A private mail, 2006/09/15
 %    \begin{macrocode}
     \g@addto@macro\MT@setupfont@hook{%
-      \catcode`\\\z@
+      \catcode`\\=\z@
 %    \end{macrocode}
 % Inside a listing, \cmd\space\ is redefined.
 %\changes{v2.5}{2011/05/03}{restore \cmd\space\ inside \pkg{listings}
@@ -6571,8 +6571,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*pdftex-def|xetex-def|luatex-def>
 \def\MT@set@pr@heirs#1{%
-  \lpcode\MT@font #1 =\lpcode\MT@font\MT@char\relax
-  \rpcode\MT@font #1 =\rpcode\MT@font\MT@char\relax
+  \lpcode\MT@font #1=\lpcode\MT@font\MT@char\relax
+  \rpcode\MT@font #1=\rpcode\MT@font\MT@char\relax
 %<debug>\MT@dinfo@nl{2}{-- heir of \MT@char: #1}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font\MT@char\space/%
 %<debug>                                \number\rpcode\MT@font\MT@char\space}%
