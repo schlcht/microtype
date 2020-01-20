@@ -1995,6 +1995,7 @@
 %   |pdftex|, it does not\\include the sample that the original documentation
 %   features.}
 %\else
+%\tracingmacros1
 %      \begin{microtypecontext}{kerning=french}
 %       What is the result of these settings? If they are active, like in the
 %       current paragraph, a thin space will be inserted in front of each
@@ -2011,6 +2012,7 @@
 % these settings! This paragraph was input like this:
 %\end{microtypecontext}
 %\end{verbatim}
+%\tracingmacros0
 %\fi
 %\end{options}
 %
@@ -5663,12 +5665,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@copy@font@{%
 %    \end{macrocode}
 %\begin{macro}{\MT@font@copy}
-% For every new protrusion and expansion context, we create a new copy.
+% For every new context, we create a new copy.
 %\changes{v2.3b}{2008/04/15}{enable font copies also with protrusion contexts
 %                            (reported by \contributor Nathan Rosenblum <nater\at cs.wisc.edu>)}
 %                                                               ^^A private mail, 2008/04/14
 %    \begin{macrocode}
-  \xdef\MT@font@copy{\csname\MT@@font/\MT@pr@context/\MT@ex@context\endcsname}%
+  \xdef\MT@font@copy{\csname\MT@@font/\MT@pr@context/\MT@ex@context/\MT@tr@context/\MT@kn@context\endcsname}%
   \expandafter\ifx\MT@font@copy\relax
 %    \end{macrocode}
 %\end{macro}
@@ -5697,18 +5699,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<luatex-def>    \MT@exp@two@c\MT@lua@copyfont\meaning\font@name\@nil
 %<debug>\MT@dinfo1{creating new copy: \MT@font@copy}%
-%    \end{macrocode}
-% Since it's a new font, we have to remove it from the context lists.
-%    \begin{macrocode}
-    \MT@map@clist@c\MT@active@features{%
-      \MT@exp@cs\ifx{MT@\@nameuse{MT@abbr@##1}}\relax\else
-        \def\@tempa{##1}%
-        \MT@exp@cs\MT@map@tlist@c{MT@##1@doc@contexts}\MT@rem@from@list
-      \fi
-    }%
   \fi
-  \MT@exp@two@c\let\MT@font\MT@font@copy
+  \let\MT@font\MT@font@copy
 %    \end{macrocode}
+%\changes{v2.8}{2020/01/05}{don't expand \cs{MT@font@copy} (hence no need to remove from other lists)}
 % We only need the font identifier for letterspacing.
 %    \begin{macrocode}
   \let\font@name\MT@font@copy
@@ -5717,19 +5711,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \aftergroup\let\aftergroup\font@name\aftergroup\MT@font@copy
 }
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@rem@from@list}
-%    \begin{macrocode}
-\def\MT@rem@from@list#1{%
-  \MT@exp@cs\ifx{MT@\@tempa @#1font@list}\relax\else
-    \expandafter\MT@exp@one@n\expandafter\MT@rem@from@clist\expandafter
-       \MT@font \csname MT@\@tempa @#1font@list\endcsname
-  \fi
-}
 %<pdftex-def>}\relax
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@lua@copy@font}
 % \meta{\#1} and \meta{\#2} are `|select|' and `|font|', respectively,
@@ -9601,8 +9585,8 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@register@font@cx}
-% For each feature, add the current font to the list, unless we didn't set it
-% up.
+%\changes{v2.8}{2020/01/05}{don't remove font from other lists}
+% For each feature, add the current font to the list, unless we didn't set it up.
 %    \begin{macrocode}
 \def\MT@register@font@cx{%
   \MT@map@clist@c\MT@active@features{%
@@ -9610,21 +9594,7 @@ end
       \MT@exp@cs\MT@xadd
         {MT@##1@\csname MT@##1@context\endcsname font@list}%
         {\MT@font,}%
-      \def\@tempa{##1}%
-      \MT@exp@cs\MT@map@tlist@c{MT@##1@doc@contexts}\MT@maybe@rem@from@list
     \fi
-  }%
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@maybe@rem@from@list}
-% Recurse through all context font lists of the document and remove the font,
-% unless it's the current context.
-%    \begin{macrocode}
-\def\MT@maybe@rem@from@list#1{%
-  \MT@ifstreq{\@tempa/#1}{\@tempa/\csname MT@\@tempa @context\endcsname}\relax{%
-    \expandafter\MT@exp@one@n\expandafter\MT@rem@from@clist\expandafter
-       \MT@font \csname MT@\@tempa @#1font@list\endcsname
   }%
 }
 %    \end{macrocode}
@@ -9737,7 +9707,7 @@ end
 % The next time we see the font, we have to reset \emph{all} factors.
 %^^A TODO: only for pdftex? or why at all?
 %    \begin{macrocode}
-        \MT@glet@nn{MT@reset@\@tempb @codes}{MT@reset@\@tempb @codes@}%
+%        \MT@glet@nn{MT@reset@\@tempb @codes}{MT@reset@\@tempb @codes@}%
 %    \end{macrocode}
 % We must also keep track of all contexts in the document.
 %    \begin{macrocode}
@@ -10900,6 +10870,21 @@ end
   }
 %</pdftex-def|luatex-def>
 %<*pdftex-def>
+  \define@key{MT@kn@c}{context}[]{%
+    \MT@ifempty{#1}\relax{%
+      \MT@glet\MT@copy@font\MT@copy@font@
+      \def\MT@extra@context{#1}%
+    }%
+  }
+  \MT@addto@setup{%
+    \define@key{MT@kn@c}{context}[]{%
+      \MT@ifempty{#1}\relax{\def\MT@extra@context{#1}}%
+      \ifx\MT@copy@font\MT@copy@font@\else
+        \MT@warning@nl{If kerning contexts don't work as expected,
+          \MessageBreak load the package with the `copyfonts' option}%
+      \fi
+    }%
+  }
 }{
   \define@key{MT@ex@c}{context}[]{%
     \MT@error{Expansion contexts only work with pdftex 1.40.4\MessageBreak
@@ -17177,7 +17162,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10681}
+% \CheckSum{10629}
 %
 % \Finale
 %
