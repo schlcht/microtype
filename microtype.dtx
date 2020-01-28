@@ -3287,21 +3287,6 @@
 %  \setlength{\linewidth}{\textwidth}
 %  \footnotesize
 %}
-%\def\LPPLSettings{
-%\changes{v1.9e}{2006/06/13}{include <LPPL>}
-%  \let\LPPLicense\empty
-%  \def\endLPPLicense{\endmulticols\endgroup}
-%  \def\LPPLsection##1{\begin{multicols}{2}[\section{##1}][12\baselineskip]}
-%  \def\LPPLsubsection##1{\end{multicols}\begin{multicols}{2}[\subsection*{##1}][6\baselineskip]}
-%  \def\LPPLsubsubsection{\subsubsection*}
-%  \let\LPPLparagraph\textit
-%  \let\LPPLfile\file
-%  \def\textsc##1{\acronym{\MakeUppercase{##1}}}
-%  \lstset{gobble=2,basicstyle=\MacroFont\tiny,commentstyle=,aboveskip=\smallskipamount}
-%  \let\oldmakeatletter\makeatletter
-%  \long\def\makeatletter##1\makeatother{\let\makeatletter\oldmakeatletter}
-%  \MakePercentComment
-%}
 %
 %\StopEventually{
 %  \GeneralChanges{Documentation}
@@ -3311,7 +3296,6 @@
 %    \AppendixSettings
 %  \fi
 %  \PrintIndex
-%  \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %}
 %
 % \GeneralChanges*
@@ -17157,6 +17141,24 @@ normal, and shrunk by 5\%:
 % \InputIfFileExists{microtype-lssample.dtx}\relax\relax
 %
 % \PrintChanges
+%
+%\def\LPPLSettings{
+%\changes{v1.9e}{2006/06/13}{include <LPPL>}
+%  \let\LPPLicense\empty
+%  \def\endLPPLicense{\endmulticols\endgroup}
+%  \def\LPPLsection##1{\begin{multicols}{2}[\section{##1}][12\baselineskip]}
+%  \def\LPPLsubsection##1{\end{multicols}\begin{multicols}{2}[\subsection*{##1}][6\baselineskip]}
+%  \def\LPPLsubsubsection{\subsubsection*}
+%  \let\LPPLparagraph\textit
+%  \let\LPPLfile\file
+%  \def\textsc##1{\acronym{\MakeUppercase{##1}}}
+%  \lstset{gobble=2,basicstyle=\MacroFont\tiny,commentstyle=,aboveskip=\smallskipamount}
+%  \let\oldmakeatletter\makeatletter
+%  \long\def\makeatletter##1\makeatother{\let\makeatletter\oldmakeatletter}
+%  \MakePercentComment
+%}
+%
+% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %
 % ^^A -------------------------------------------------------------------------
 %\makeatother
