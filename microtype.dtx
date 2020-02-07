@@ -3288,6 +3288,22 @@
 %  \footnotesize
 %}
 %
+%\def\LPPLSettings{
+%\changes{v1.9e}{2006/06/13}{include <LPPL>}
+%  \let\LPPLicense\empty
+%  \def\endLPPLicense{\endmulticols\endgroup}
+%  \def\LPPLsection##1{\begin{multicols}{2}[\section{##1}][12\baselineskip]}
+%  \def\LPPLsubsection##1{\end{multicols}\begin{multicols}{2}[\subsection*{##1}][6\baselineskip]}
+%  \def\LPPLsubsubsection{\subsubsection*}
+%  \let\LPPLparagraph\textit
+%  \let\LPPLfile\file
+%  \def\textsc##1{\acronym{\MakeUppercase{##1}}}
+%  \lstset{gobble=2,basicstyle=\MacroFont\tiny,commentstyle=,aboveskip=\smallskipamount}
+%  \let\oldmakeatletter\makeatletter
+%  \long\def\makeatletter##1\makeatother{\let\makeatletter\oldmakeatletter}
+%  \MakePercentComment
+%}
+%
 %\StopEventually{
 %  \GeneralChanges{Documentation}
 %  \ifx\Finale\relax
@@ -3296,6 +3312,7 @@
 %    \AppendixSettings
 %  \fi
 %  \PrintIndex
+%  \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %}
 %
 % \GeneralChanges*
@@ -3348,8 +3365,8 @@
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(ap,pre)pendkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
 %\DoNotIndex{\XeTeXversion,\XeTeXrevision}                                   ^^A xetex
-%^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXcountglyphs,\XeTeXfonttype,\XeTeXglyph,
-%^^A  \XeTeXglyphindex,\XeTeXglyphname,\XeTeXprotrudechars}
+%^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
+%^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}
 %\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
@@ -4916,15 +4933,17 @@ microtype.do_font = do_font
 
 %</luafile>
 %    \end{macrocode}
-% The \xetex\ variant.
+% The \xetex\ variant (it's slow~\dots!).
 %\changes{v2.5}{2010/05/18}{adapt for \xetex}
+%\changes{v2.8}{2020/02/06}{fix for \xetex}
 %    \begin{macrocode}
 %<*xetex-def>
 \def\MT@do@font#1{%
   \@tempcnta=\z@
-  \MT@loop #1%
-    \advance\@tempcnta \@ne
-    \ifnum\@tempcnta < \XeTeXcountglyphs\MT@font \MT@repeat
+  \MT@loop
+    \iffontchar\MT@font\@tempcnta #1\fi
+    \advance\@tempcnta\@ne
+    \ifnum\@tempcnta < \XeTeXlastfontchar\MT@font \MT@repeat
 }
 %</xetex-def>
 %<*package>
@@ -17142,24 +17161,6 @@ normal, and shrunk by 5\%:
 %
 % \PrintChanges
 %
-%\def\LPPLSettings{
-%\changes{v1.9e}{2006/06/13}{include <LPPL>}
-%  \let\LPPLicense\empty
-%  \def\endLPPLicense{\endmulticols\endgroup}
-%  \def\LPPLsection##1{\begin{multicols}{2}[\section{##1}][12\baselineskip]}
-%  \def\LPPLsubsection##1{\end{multicols}\begin{multicols}{2}[\subsection*{##1}][6\baselineskip]}
-%  \def\LPPLsubsubsection{\subsubsection*}
-%  \let\LPPLparagraph\textit
-%  \let\LPPLfile\file
-%  \def\textsc##1{\acronym{\MakeUppercase{##1}}}
-%  \lstset{gobble=2,basicstyle=\MacroFont\tiny,commentstyle=,aboveskip=\smallskipamount}
-%  \let\oldmakeatletter\makeatletter
-%  \long\def\makeatletter##1\makeatother{\let\makeatletter\oldmakeatletter}
-%  \MakePercentComment
-%}
-%
-% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
-%
 % ^^A -------------------------------------------------------------------------
 %\makeatother
 %
@@ -17179,7 +17180,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10681}
+% \CheckSum{10685}
 %
 % \Finale
 %
