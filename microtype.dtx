@@ -5670,7 +5670,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Nathan Rosenblum <nater\at cs.wisc.edu>)}
 %                                                               ^^A private mail, 2008/04/14
 %    \begin{macrocode}
-  \xdef\MT@font@copy{\csname\MT@@font/\MT@pr@context/\MT@ex@context/\MT@tr@context/\MT@kn@context\endcsname}%
+  \xdef\MT@font@copy{\csname\MT@@font/\MT@pr@context/\MT@ex@context
+%<pdftex-def>                        /\MT@tr@context/\MT@kn@context
+                     \endcsname}%
   \expandafter\ifx\MT@font@copy\relax
 %    \end{macrocode}
 %\end{macro}
@@ -17162,7 +17164,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10629}
+% \CheckSum{10650}
 %
 % \Finale
 %

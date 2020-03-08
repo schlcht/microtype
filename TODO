@@ -1,4 +1,5 @@
-* split docu
+* contexts should work for tracking etc. even if not enabled
+* split docu?
 * what about polyglossia?
 * check contexts in lua again
 * cm-unicode alias
