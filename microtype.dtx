@@ -12974,13 +12974,11 @@ end
 %\subsection{Font variants and aliases}
 %\GeneralChanges{Font aliases}
 %
-%    \begin{macrocode}
-%%% -----------------------------------------------------------------------
-%%% FONT VARIANTS AND ALIASES
-%    \end{macrocode}
 % These are the variants I happen to be using (expert encoding, oldstyle
 % numerals, swashes, alternative, display, inferior and superior numerals):
 %    \begin{macrocode}
+%%% -----------------------------------------------------------------------
+%%% FONT VARIANTS AND ALIASES
 
 \DeclareMicrotypeVariants{x,j,w,a,d,0,1}
 %    \end{macrocode}
@@ -13010,9 +13008,10 @@ end
 \fi
 \ifMT@fontspec\MT@if@true\fi
 \ifMT@if@
+%% -- Computer/Latin Modern Roman
 \DeclareMicrotypeAlias{lmr}{Latin Modern Roman}
   \else
-\DeclareMicrotypeAlias{lmr}{cmr}         % lmodern
+\DeclareMicrotypeAlias{lmr}{cmr}           % lmodern
 \fi
 %    \end{macrocode}
 % The Latin Modern fonts, the virtual fonts from the
@@ -13028,12 +13027,12 @@ end
 %                           (reported by \contributor Jonas Hogstrom <hjb981\at gmail.com>)}
 %                           ^^A https://tex.stackexchange.com/questions/63558/how-to-get-microtype-to-work-with-mathematical-minus-sign-and-package-lmodern
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{lmsy}{cmsy}
-\DeclareMicrotypeAlias{lmm} {cmm}
-\DeclareMicrotypeAlias{aer} {cmr}        % ae
-\DeclareMicrotypeAlias{zer} {cmr}        % zefonts
-\DeclareMicrotypeAlias{cmor}{cmr}        % eco
-\DeclareMicrotypeAlias{hfor}{cmr}        % hfoldsty
+\DeclareMicrotypeAlias{lmsy}{cmsy}         %   "
+\DeclareMicrotypeAlias{lmm} {cmm}          %   "
+\DeclareMicrotypeAlias{aer} {cmr}          % ae
+\DeclareMicrotypeAlias{zer} {cmr}          % zefonts
+\DeclareMicrotypeAlias{cmor}{cmr}          % eco
+\DeclareMicrotypeAlias{hfor}{cmr}          % hfoldsty
 %    \end{macrocode}
 % Another, new Computer Modern extension.
 %\changes{v2.8}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
@@ -13048,78 +13047,77 @@ end
 %\changes{v1.9}{2005/08/16}{declare \texttt{qpl} and \texttt{qtm} (\pkg{qfonts}, \TeX\ Gyre)
 %                           as aliases of \texttt{ppl} resp. \texttt{ptm}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{pxr} {ppl}        % pxfonts
-\DeclareMicrotypeAlias{qpl} {ppl}        % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
+%% -- Palatino
+\DeclareMicrotypeAlias{pxr} {ppl}          % pxfonts
+\DeclareMicrotypeAlias{qpl} {ppl}          % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
 %    \end{macrocode}
 % The `<FPL> Neu' fonts, a `re-implementation' of Palatino.
 %\changes{v2.2}{2007/05/27}{declare \texttt{fp9x}, \texttt{fp9j} (<FPL> Neu) as aliases of \texttt{ppl[xj]}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{fp9x}{pplx}       % FPL Neu
-\DeclareMicrotypeAlias{fp9j}{pplj}       %    "
+\DeclareMicrotypeAlias{fp9x}{pplx}         % FPL Neu
+\DeclareMicrotypeAlias{fp9j}{pplj}         %    "
 %    \end{macrocode}
 % The \pkg{newpx} package, a replacement for \pkg{pxfonts}.
 %\changes{v2.7}{2017/03/13}{declare aliases for \pkg{newpx}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zpllf}{ppl}       % newpxtext
-\DeclareMicrotypeAlias{zplosf}{ppl}      %    "
-\DeclareMicrotypeAlias{zpltlf}{ppl}      %    "
-\DeclareMicrotypeAlias{zpltosf}{ppl}     %    "
-\DeclareMicrotypeAlias{txr} {ptm}        % txfonts
+\DeclareMicrotypeAlias{zpllf}{pplx}        % newpxtext
+\DeclareMicrotypeAlias{zplosf}{pplj}       %    "
+\DeclareMicrotypeAlias{zpltlf}{pplx}       %    "
+\DeclareMicrotypeAlias{zpltosf}{pplj}      %    "
 %    \end{macrocode}
-% The \pkg{newtx} package, a replacement for \pkg{txfonts}.
-%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{newtx}}
-%    \begin{macrocode}
-\DeclareMicrotypeAlias{ntxlf}{ptm}       % newtxtext
-\DeclareMicrotypeAlias{ntxosf}{ptm}      %    "
-\DeclareMicrotypeAlias{ntxtlf}{ptm}      %    "
-\DeclareMicrotypeAlias{ntxtosf}{ptm}     %    "
-%    \end{macrocode}
-% The \pkg{tempora} package.
-%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{tempora}}
-%    \begin{macrocode}
-\DeclareMicrotypeAlias{Tempora-TLF}{ptm} % tempora
-\DeclareMicrotypeAlias{Tempora-TOsF}{ptm}%    "
-\DeclareMicrotypeAlias{qtm} {ptm}        % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
-%    \end{macrocode}
-% The \pkg{step} and \pkg{domitian} packages.
+% The \pkg{domitian} package.
 %\changes{v2.8}{2020/03/07}{declare aliases for \pkg{step} and \pkg{domitian}
 %                           (notified by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
 %                           ^^A private mail, 2020/02/27
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{STEP-TLF}{ptm}    % step
-\DeclareMicrotypeAlias{STEP-TOsF}{ptm}   %   "
-\DeclareMicrotypeAlias{Domitian-TLF}{ppl}% domitian
-\DeclareMicrotypeAlias{Domitian-TOsF}{ppl}%  "
-\DeclareMicrotypeAlias{Domitian}        {Palatino Linotype}
+\DeclareMicrotypeAlias{Domitian-TLF} {pplx}% domitian
+\DeclareMicrotypeAlias{Domitian-TOsF}{pplj}%    "
 %    \end{macrocode}
 % The OpenType versions:
 %
 %\changes{v2.5}{2012/03/29}{declare TeX Gyre Pagella, Asana Math, Palatino <LT> Std, and Palatino
 %                           as aliases of Palatino Linotype (OpenType version)}
 %    \begin{macrocode}
+\DeclareMicrotypeAlias{Domitian}        {Palatino Linotype}
 \DeclareMicrotypeAlias{TeX Gyre Pagella}{Palatino Linotype}
 \DeclareMicrotypeAlias{Palatino LT Std} {Palatino Linotype}
 \DeclareMicrotypeAlias{Palatino}        {Palatino Linotype}
 \DeclareMicrotypeAlias{Asana Math}      {Palatino Linotype}
+%% -- Times New Roman
+\DeclareMicrotypeAlias{txr}{ptm}           % txfonts
+%    \end{macrocode}
+% The \pkg{newtx} package, a replacement for \pkg{txfonts}.
+%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{newtx}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{ntxlf}{ptmx}        % newtxtext
+\DeclareMicrotypeAlias{ntxosf}{ptmj}       %    "
+\DeclareMicrotypeAlias{ntxtlf}{ptmx}       %    "
+\DeclareMicrotypeAlias{ntxtosf}{ptmj}      %    "
+%    \end{macrocode}
+% The \pkg{tempora} package.
+%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{tempora}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{Tempora-TLF}{ptmx}  % tempora
+\DeclareMicrotypeAlias{Tempora-TOsF}{ptmj} %    "
+\DeclareMicrotypeAlias{qtm}{ptm}           % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
+%    \end{macrocode}
+% The \pkg{step} package.
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{STEP-TLF}{ptmx}     % step
+\DeclareMicrotypeAlias{STEP-TOsF}{ptmj}    %   "
 %    \end{macrocode}
 %\todo{check Times variants}
 % More Times variants, to be checked: |pns|, |mns| (TimesNewRomanPS); |mnt|
 % (Times\-NewRomanMT, TimesNRSevenMT), |mtm| (TimesSmallTextMT); |pte|
 % (TimesEuropa); |ptt| (TimesTen); TimesEighteen; TimesModernEF.
 %
-% The \pkg{eulervm} package virtually extends the Euler fonts.
-%\changes{v1.9e}{2006/07/28}{declare \texttt{zeur} and \texttt{zeus} (\pkg{eulervm})
-%                            as aliases of \texttt{eur} resp. \texttt{eus} (\pkg{euler})}
-%    \begin{macrocode}
-\DeclareMicrotypeAlias{zeur}{eur}        % Euler VM
-\DeclareMicrotypeAlias{zeus}{eus}        %    "
-%    \end{macrocode}
 % MicroPress's Charter version (\pkg{chmath}).
 %\changes{v2.2}{2007/06/08}{declare \texttt{chr} (\pkg{chmath}) as an alias of \texttt{bch}
 %                           (reported by \contributor Geoff Vallis <gkv\at Princeton.EDU>)}
 %                                                            ^^A private mail, 2007/06/07
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{chr} {bch}        % CH Math
+%% -- Charter
+\DeclareMicrotypeAlias{chr}{bch}           % CH Math
 %    \end{macrocode}
 %\changes{v2.7}{2017/03/13}{declare aliases for \pkg{XCharter}}
 % The \pkg{XCharter} package extends the Charter fonts.
@@ -13132,29 +13130,38 @@ end
 %                            as an alias of \texttt{bch}}
 % and <URW> Garamond.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{mdbch}{bch}       % mathdesign/Charter
-\DeclareMicrotypeAlias{mdugm}{ugm}       % mathdesign/URW Garamond
+\DeclareMicrotypeAlias{mdbch}{bch}         % mathdesign/Charter
+%% -- Garamond
+\DeclareMicrotypeAlias{mdugm}{ugm}         % mathdesign/URW Garamond
 %    \end{macrocode}
 % The \pkg{garamondx} package, an extension of <URW> Garamond, providing
 % small caps and oldstyle figures.
 %\changes{v2.5}{2013/02/20}{declare \texttt{zgmx} etc. (\pkg{garamondx})
 %                           as aliases of \texttt{ugm}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zgmx}{ugm}        % garamondx
-\DeclareMicrotypeAlias{zgmj}{ugm}        %    "
-\DeclareMicrotypeAlias{zgmI}{ugm}        %    "
-\DeclareMicrotypeAlias{zgmq}{ugm}        %    "
+\DeclareMicrotypeAlias{zgmx}{ugm}          % garamondx
+\DeclareMicrotypeAlias{zgmj}{ugm}          %    "
+\DeclareMicrotypeAlias{zgmI}{ugm}          %    "
+\DeclareMicrotypeAlias{zgmq}{ugm}          %    "
+%% --
 %    \end{macrocode}
 % <URW> Letter Gothic is similar enough to Bitstream Letter Gothic to share the
 % configuration.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{ulg} {blg}        % URW LetterGothic -> Bitstream LetterGothic12Pitch
+\DeclareMicrotypeAlias{ulg}{blg}           % URW LetterGothic -> Bitstream LetterGothic12Pitch
+%    \end{macrocode}
+% The \pkg{eulervm} package virtually extends the Euler fonts.
+%\changes{v1.9e}{2006/07/28}{declare \texttt{zeur} and \texttt{zeus} (\pkg{eulervm})
+%                            as aliases of \texttt{eur} resp. \texttt{eus} (\pkg{euler})}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{zeur}{eur}          % Euler VM
+\DeclareMicrotypeAlias{zeus}{eus}          %    "
 %    \end{macrocode}
 % Euro symbol fonts, to save some files.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zpeus}   {zpeu}   % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{eurosans}{zpeu}   % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{euroitcs}{euroitc}% ITC Euro sans -> serif
+\DeclareMicrotypeAlias{zpeus}   {zpeu}     % Adobe Euro sans -> serif
+\DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
+\DeclareMicrotypeAlias{euroitcs}{euroitc}  % ITC Euro sans -> serif
 
 %    \end{macrocode}
 %
