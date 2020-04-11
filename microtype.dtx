@@ -206,6 +206,7 @@
   \def\match{{\large\raisebox{-.15em}{\textbullet}}}
   {\catcode`\`=\active % indiscernible from ' in Bitstream Letter Gothic
    \g@addto@macro\macro@code{\let`\textasciigrave}}
+  \DeclareEncodingSubset{TS1}{blg}{1} % for \textasciigrave
   \linespread{1.07}\normalfont
   \setlength\textheight{48\baselineskip}
 \fi
@@ -766,6 +767,7 @@
 %</driver|docsty>
 % \fi
 %
+%\makeatletter
 % ^^A -------------------------------------------------------------------------
 %\GeneralChanges*
 %\changes{v1.0}{2004/09/11}{Initial version}
@@ -823,7 +825,7 @@
 %
 %\newpage
 %\emptypdfpageresources ^^A layers of the logo
-%{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\def\bfdefault{sb}\fi
+%{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\DeclareFontSeriesDefault[sf]{bf}{sb}\fi
 % \tableofcontents
 % \listoftables
 %}
@@ -972,8 +974,8 @@
 % the well-known |key=value| syntax. In the following, you will find a
 % description of all \key{keys} and their possible |values|
 % (`|true|' may be omitted; multiple values, where allowed, must be enclosed in
-% braces; the default value is shown on the right, preceded by an asterisk
-% if it is contingent on the \TeX\ engine, version and/or the output mode).
+% braces; the default value is shown on the right -- if preceded by an asterisk,
+% this default only applies when running an up-to-date \pdftex\ in <PDF> mode).
 %
 %
 %\subsection{Enabling the micro-typographic features}\label{sub:options-microtype}
@@ -989,7 +991,7 @@
 % output mode (see section~\ref{sub:options-misc}), or with \xetex.
 % In other words, \microtype\ will try to apply as much micro-typography as
 % can safely be expected to work under the respective conditions (hence, it is
-% usually not necessary to load the package with different options for <PDF>
+% usually not necessary to load the package with different options, \eg, for <PDF>
 % resp. <DVI> mode).
 %
 % Protrusion and expansion may be enabled or disabled independently from each
@@ -1068,15 +1070,15 @@
 %    & $\less$ 0.14f & <DVI>/<PDF> & _ & _ & _ & _ & _ & _\\
 %    & $\geq$  0.14f & <DVI>/<PDF> & ! & ? & _ & _ & _ & _\\
 %    & $\geq$  1.20  & <DVI>       & ! & ? & _ & _ & _ & _\\
-%    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
+%    &               & <PDF>       & ! & ? & ! & _ & _ & _\\
 %    & $\geq$  1.40  & <DVI>       & ! & ? & _ & ? & ? & _\\
-%    &               & <PDF>       & ! & ! & ! & ? & ? & ?\\^^A\,\textsuperscript{\itshape a}\\
+%    &               & <PDF>       & ! & ? & ! & ? & ? & ?\\
 %\cmidrule(r){1-3}
-% \luatex ^^A we will have to re-model kerning, spacing and tracking with \luatex
+% \luatex ^^A we will have to re-model kerning and spacing with \luatex
 %    & $\geq$  0.30  & <DVI>       & ! & ? & _ & _ & _ & _\\
-%    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
-%    & $\geq$  0.62  & <DVI>       & ! & ? & ?\,\textsuperscript{\itshape a} & _ & _ & ?\,\textsuperscript{\itshape a}\\
-%    &               & <PDF>       & ! & ! & ! & _ & _ & ?\\
+%    &               & <PDF>       & ! & ? & ! & _ & _ & _\\
+%    & $\geq$  0.62  & <DVI>       & ! & _ & \hskip1em\llap{(}\textcolor{theblue}{$\boxtimes$})\textsuperscript{\itshape a} & _ & _ & ?\\
+%    &               & <PDF>       & ! & _ & ! & _ & _ & ?\\
 %\cmidrule(r){1-3}
 % \let\textoractual\@firstoftwo ^^A why?
 % \xetex
@@ -1084,14 +1086,13 @@
 %\bottomrule
 %\end{tabular}^^A
 %\vskip4pt\footnotesize
-%\hskip-.8em
+%\hskip-1em
 % ! = enabled\quad
 % ? = not enabled\quad
 % _ = not available
 %\hfill
-% ^^A \textit{a}\quad $\geq$ 1.40.4 recommended
-% \textit{a}\quad for legacy (<TFM>) fonts only
-%\vskip3pt
+% \textit{a}\quad by means of variable tracking\hskip1em
+%\vskip4pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
@@ -1138,7 +1139,13 @@
 % instances of the fonts may be calculated automatically and at run-time instead
 % of the user having to prepare them in advance. This option is true
 % by default provided that you are using a \TeX\ engine with this capability
-% and the output mode is <PDF>.
+% and the output mode is <PDF>.\footnote{
+% With \pdftex, automatic font expansion does not work with bitmap fonts.
+% Therefore, if you are using the Computer Modern Roman fonts in <T1> encoding,
+% you should either install the \pkg{cm-super} package or use the Latin Modern
+% fonts (package \pkg{lmodern}).}
+%\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
+%                           automatic font expansion}
 % If \opt{auto} is set to false, the font instances for all expansion steps must exist
 % (with files called \meta{font~name}\texttt{\textpm}\meta{expansion value},
 % \eg, \file{cmr12+10}, as described in the \cite{pdftexman}).
@@ -1146,23 +1153,17 @@
 % If expanded instances of the fonts are available, they will be used
 % regardless whether \opt{auto} is true or not.
 %\fi
+% With \luatex, expansion is always automatic.
 %
-%\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
-%                           automatic font expansion}
-% With \pdftex, automatic font expansion does not work with bitmap fonts. Therefore, if you
-% are using the Computer Modern Roman fonts in <T1> encoding,
-%\iffalse
-% \footnote{
-%     En passant, it may be noted that Type\,1 format and <T1> encoding are in
-%     no other way related than that both start with a `T' and end with a `1'.}
-%\fi
-% you should either install the \pkg{cm-super} fonts or use the Latin Modern
-% fonts (package \pkg{lmodern}).
-%\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
-% With \luatex, expansion is always automatic, and also works in <DVI> mode
-% (|dvilualatex|), however, because postprocessing programs like |dvips|
-% or |dvipdfmx| are not (yet) capable of dealing with OpenType fonts,
-% only for legacy fonts.
+% When generating <DVI> files, font expansion has to be enabled explicitly.
+% With \pdftex, \emph{automatic} font expansion will not work because
+% the postprocessing drivers (|dvips|, |dvipdfm|, etc.) resp. the <DVI> viewer
+% are not able to generate the fonts on the fly.
+%^^A\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
+%\changes{v2.8}{2020/02/09}{squash fake news about automatic font expansion with \texttt{dvilualatex}}^^A
+% With \luatex, on the other hand, expansion in <DVI> mode is realised by
+% modifying the inter-letter spacing (tracking) instead of the glyphs
+% themselves, which may or may not be desired.
 %
 %\medskip
 %\Describe{Option}{stretch}{:integer}[20]
@@ -1212,19 +1213,23 @@
 % to +1000.
 %
 %
-%\enlargethispage{\baselineskip} ^^A layout
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
 %\Describe{Option}{DVIoutput}{true,*false}
 % \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
-% spit out <DVI> files.\footnote{
-%    All recent \TeX\ systems are using \pdftex\ as the default engine also for
-%    <DVI> output.}
-% The latter can be ordered with the option \opt{DVIoutput}, which will set
-% \cmd\pdfoutput\ to zero.
+% spit out <DVI> files. In fact, all recent \TeX\ systems are using \pdftex\ as
+% the default engine also for <DVI> output, and \luatex\ too can be called
+% in <DVI> mode. However, since changing the output mode inside the document
+% may have undesired effects, this option should be considered deprecated;
+% instead, it is recommended to just call the respective program (|latex| resp.
+% |dvilualatex|).
+%\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
 % For \xetex, this option is not applicable.
 %
+%\iffalse
 %\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
+% The latter can be ordered with the option \opt{DVIoutput}, which will set
+% \cmd\pdfoutput\ to zero.
 % Note that this will confuse packages that depend on the value of
 % \cmd\pdfoutput\ if they were loaded earlier, as they had been made believe
 % that they were called to generate <PDF> output where they actually weren't.
@@ -1232,11 +1237,7 @@
 % \pkg{hyperref}, \pkg{pstricks} and, obviously, \pkg{ifpdf}. Either load these
 % packages after \microtype\ or else issue the command |\pdfoutput=0| earlier
 % -- in the latter case, the \opt{DVIoutput} option is redundant.
-%
-% When generating <DVI> files, font expansion has to be enabled explicitly.
-% With \pdftex, neither letterspacing nor \emph{automatic} font expansion will work because
-% the postprocessing drivers (|dvips|, |dvipdfm|, etc.) resp. the <DVI> viewer
-% are not able to generate the fonts on the fly.
+%\fi
 %
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{draft}' option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
@@ -1497,7 +1498,7 @@
 % `Text encodings' = <OT1>, <T1>, <T2A>, <LY1>, <OT4>, <QX>, <T5>, <EU1>, <EU2>, <TU>
 %\hfill
 % `/\bslash\,\dots|*|/' = `/\bslash\,\dots|default|/'
-%\vskip3pt
+%\vskip4pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
@@ -1942,7 +1943,7 @@
 % is, whenever a particular character appears in the text, the specified
 % kerning will be inserted, regardless of which character precedes resp.
 % follows it.
-% (Put in another way, this feature allows to modify the left or right
+% (Put differently, this feature allows modifying the left or right
 % \textit{sidebearings} of specific glyphs.)
 %
 %\emptypdfpageresources ^^A layers of letterspacing illustration
@@ -2132,10 +2133,10 @@
 %\begin{minipage}{\textwidth}
 %\def\arraystretch{1.2}
 %\long\def\@makefntext#1{%
-%  \leftskip 15pt
-%  \parindent -15pt
-%  \everypar{\parindent -15pt}%
-%  \leavevmode\hbox to 15pt{\@thefnmark\hss}#1}
+%  \leftskip 1em
+%  \parindent -1em
+%  \everypar{\parindent -1em}%
+%  \leavevmode\hbox to 1em{\@thefnmark\hss}#1}
 %\let\footnoterule\relax
 %\def\fnref#1{\textsuperscript{\itshape\ifpdf\ref*{#1}\else\ref{#1}\fi}}
 %\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}*3l@{}}
@@ -2626,8 +2627,8 @@
 %\end{verbatim}
 % This error message will occur if you are trying to employ font expansion
 % while creating <DVI> output. Remember that \emph{automatic} font expansion
-% only works when running \pdftex\ in <PDF> mode. Although expansion is also
-% possible in <DVI> mode, it requires that all instances of the expanded fonts
+% only works when running \pdftex\ or \luatex\ in <PDF> mode. Although expansion is also
+% possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
 % exist on your \TeX\ system.
 %
 %\changes{v2.2}{2007/06/13}{add hint about error message with \pdftex\ 1.40}
@@ -2880,7 +2881,8 @@
 %  \contributor Markus Kohm       <komascript\at gmx.info>,
 %  \contributor Paolo Polesana    <@\at @>, ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
 %  \contributor Oliver Kopp       <koppdev\at gmail.com>,
-%  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>
+%  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
+% `\contributor d909              <@\at @>'
 % and
 %  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>.
 %
@@ -3982,7 +3984,11 @@
 % \item N/A
 % \item \luatex\ ($\less$~0.36)
 % \item + \cmd\directlua\ without state number ($\geq$~0.36)
-% \item + \cmd\letterspacefont\ ($\geq$~0.62)
+% \item + \cmd\letterspacefont; non-automatic expansion doesn't work anymore,
+%         and automatic expansion in <DVI> mode is realised by modifying the tracking,
+%         not the glyphs\footnote{This may have been changed earlier, but I'm no longer able
+%               to find out when (the last version that actually works for me is 0.40).}
+%         ($\geq$~0.62)
 % \item + almost all of the \pdftex\ primitives have been renamed ($\geq$~0.85)
 % \item + default \cmd\efcode\,=\,1000;
 %         \cmd\protrusionboundary\ [not yet supported] ($\geq$~0.90)
@@ -5692,7 +5698,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 % Even though \luatex\ also provides the primitive from \pdftex\ (even renamed to
 % \cmd\copyfont, that is, `promoted' as per the \luatex\ manual), it is seriously
-% crippled in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html
+% crippled in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html seqq.
 %\changes{v2.7d}{2019/11/17}{in \luatex, don't use the \cmd\copyfont\ primitive, but load the font anew
 %                            (reported by \contributor Paolo Polesana <@\at @> and
 %                                         \contributor Oliver Kopp <koppdev\at gmail.com>)}
@@ -12278,11 +12284,30 @@ end
 % For <DVI> output, the user must have explicitly passed the \opt{expansion}
 % option to the package.
 %\changes{v1.5}{2004/12/02}{defaults: turn off expansion for <DVI> output}
+% Under \luatex, expansion works quite differently: the glyphs will be
+% positioned as if they were transformed, without actually being transformed.
+% Since this could still be considered a viable option, we don't disable
+% the feature completely, but issue a warning.
+%\changes{v2.8}{2020/02/09}{warrning when expanding in <DVI> mode with \luatex\
+%                           (reported by \contributor d909 <@\at @>)}
+%                           ^^A https://tex.stackexchange.com/questions/531413/dvipdfmx-and-dvips-do-not-expand-fonts-properly-with-lualatex-in-dvi-mode
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def>
 \def\MT@setup@expansion{%
   \ifnum\pdfoutput<\@ne
-    \ifMT@opt@expansion \else
+    \ifMT@opt@expansion
+%<*luatex-def>
+      \ifMT@expansion
+        \MT@requires@luatex3{%
+          \MT@warning@nl{Font expansion doesn't work properly with luatex in\MessageBreak
+             DVI mode: the glyphs won't be actually transformed,\MessageBreak
+             but will only be shifted. You might want to use\MessageBreak
+             pdflatex instead. I'll continue anyway ..}%
+          %\MT@expansionfalse
+        }\relax
+      \fi
+%</luatex-def>
+    \else
       \MT@expansionfalse
     \fi
   \fi
@@ -12363,7 +12388,7 @@ end
     \ifMT@auto
 %    \end{macrocode}
 %\end{macro}
-% We turn off automatic expansion if output mode is <DVI> and we're running \pdftex.
+% We turn off automatic expansion if output mode is <DVI>.
 %\changes{v1.5}{2004/12/02}{disable automatic expansion for <DVI> output}
 %\changes{v2.7}{2017/07/02}{don't disable automatic expansion for <DVI> output with \luatex}
 %    \begin{macrocode}
@@ -12409,10 +12434,13 @@ end
       }%
 %</pdftex-def>
 %<*luatex-def>
-      \ifMT@opt@auto
-        \MT@error{Non-automatic font expansion does not work with\MessageBreak
-                  luatex}{Remove `auto=false' from the package options, or use pdftex.}%
-      \fi
+      \MT@requires@luatex3{%
+        \ifMT@opt@auto
+          \MT@error{Non-automatic font expansion does not work with\MessageBreak
+                    luatex}{Remove `auto=false' from the package options, or use pdftex.}%
+          \MT@autotrue
+        \fi
+      }\relax
 %</luatex-def>
     \fi
 %    \end{macrocode}
@@ -17200,7 +17228,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10690}
+% \CheckSum{10702}
 %
 % \Finale
 %
