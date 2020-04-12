@@ -2882,9 +2882,11 @@
 %  \contributor Paolo Polesana    <@\at @>, ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
 %  \contributor Oliver Kopp       <koppdev\at gmail.com>,
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
-% `\contributor d909              <@\at @>'
+% `\contributor d909              <@\at @>',
+%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>
 % and
-%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>.
+%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>.
+
 %
 %
 %\iffalse
@@ -3411,7 +3413,7 @@
 %\DoNotIndex{\RequireLuaModule}                                              ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
-%\DoNotIndex{\SOUL@,\soulregister}                                           ^^A soul
+%\DoNotIndex{\SOUL@,\SOUL@doword,\soulregister}                              ^^A soul
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
@@ -3868,6 +3870,7 @@
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
         \let\pdfprotrudechars\protrudechars
+        \let\pdfadjustspacing\adjustspacing
         \let\MT@lua\directlua
       \fi
     \fi
@@ -5492,24 +5495,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Of course, using both \pkg{soul}'s and \microtype's letterspacing mechanisms
 % at the same time doesn't make much sense. But \pkg{soul} can do more, \eg,
 % underlining. The optional argument to \cs{textls} may not be used.
+%\changes{v2.8}{2020/04/11}{compatibility with \pkg{soul}: patch for font change
+%                           (reported by \contributor Md Ayquassar <mdayq0\at lenta.ru>)}
+%                           ^^A https://github.com/latex3/babel/issues/53#issuecomment-598307655
+% Also, we have to disable expansion within \pkg{soul}'s trial run.
+%\changes{v2.3a}{2008/01/06}{fix test for \pkg{soul} under plain \TeX}
+% Under plain \TeX, \pkg{soul} doesn't register itself the \LaTeX\ way, so
+% we just test for its main command.
 %    \begin{macrocode}
 %</package>
-%<plain>  \MT@requires@latex2{
-  \MT@with@package@T{soul}{%
+  \ifx\SOUL@\@undefined\else
     \soulregister\lsstyle 0%
     \soulregister\textls  1%
-  }%
-%    \end{macrocode}
-%\changes{v2.3a}{2008/01/06}{fix test for \pkg{soul} under plain \TeX}
-% Under plain \TeX, \pkg{soul} doesn't register itself the \LaTeX\ way, hence
-% we have to use a different test in this case.
-%    \begin{macrocode}
-%<*plain>
-  }{\ifx\SOUL@\@undefined\else
-      \soulregister\lsstyle 0%
-      \soulregister\textls  1%
-    \fi}%
-%</plain>
+    \let\MT@SOUL@doword\SOUL@doword
+    \def\SOUL@doword{\pdfadjustspacing=\z@ \MT@SOUL@doword}%
+  \fi
 %<*package>
   \MT@with@package@T{tikz}\MT@tikz@setup
 %    \end{macrocode}
@@ -17228,7 +17228,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10702}
+% \CheckSum{10707}
 %
 % \Finale
 %

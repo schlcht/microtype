@@ -1,0 +1,28 @@
+% https://github.com/latex3/babel/issues/53
+\documentclass{article}
+\usepackage{microtype}
+\usepackage{soul}
+\makeatletter
+%\let\MT@SOUL@doword\SOUL@doword
+%\def\SOUL@doword{\pdfadjustspacing=0\MT@SOUL@doword}
+\makeatother
+
+% this is the default for textsterling and it works
+\DeclareTextCommandDefault{\textsterling}{\UseTextSymbol{TS1}{\textsterling}}
+\DeclareTextSymbol\textsterling{TS1}{163}
+
+% this one fails  also fails if I point to OT1
+% the moment microtype is added
+
+\DeclareTextCommandDefault{\textsterling}{\UseTextSymbol{T1}{\textsterling}}
+\DeclareTextSymbol\textsterling{T1}{191}
+%\def\pounds{Pounding}
+
+
+\begin{document}
+
+ \pounds
+
+\hl{a b \pounds{} c}
+
+\end{document}
