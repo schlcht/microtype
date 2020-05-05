@@ -1,4 +1,7 @@
 * contexts should work for tracking etc. even if not enabled
+* partly revert c63fdd701 ; check historical luatex
+* move MT@lua definition ; check in letterspace.sty for older luatex
+* stix/xits -> times?
 * split docu?
 * what about polyglossia?
 * check contexts in lua again

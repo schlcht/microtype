@@ -5,7 +5,7 @@
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
-%           Copyright (c) 2004--2019 R Schlicht <w.m.l@gmx.net>
+%           Copyright (c) 2004--2020 R Schlicht <w.m.l@gmx.net>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3c of this license or (at
@@ -206,6 +206,7 @@
   \def\match{{\large\raisebox{-.15em}{\textbullet}}}
   {\catcode`\`=\active % indiscernible from ' in Bitstream Letter Gothic
    \g@addto@macro\macro@code{\let`\textasciigrave}}
+  \DeclareEncodingSubset{TS1}{blg}{1} % for \textasciigrave
   \linespread{1.07}\normalfont
   \setlength\textheight{48\baselineskip}
 \fi
@@ -569,7 +570,7 @@
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
       character protrusion, margin kerning, optical alignment, font expansion,
       font scaling, hz, kerning, spacing, glue, letterspacing, tracking, ligatures},
-    pdfcopyright={\textcopyright\ 2004--2019 R Schlicht\012%
+    pdfcopyright={\textcopyright\ 2004--2020 R Schlicht\012%
       This work may be distributed and/or modified under the conditions
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\012%
@@ -812,7 +813,7 @@
 % other extensions (see section~\ref{sec:lettersp}).
 %
 %\bigskip\noindent
-% This package is copyright \textcopyright\ 2004\kern.09em--2019 R Schlicht.
+% This package is copyright \textcopyright\ 2004\kern.09em--2020 R Schlicht.
 % It may be distributed and/or modified under the conditions of the
 % \IfFileExists{lppl.tex}{\hyperref[LPPL:LPPL]}{\href{http://www.latex-project.org/lppl/}}
 %   {\LaTeX\ Project Public License},
@@ -823,7 +824,7 @@
 %
 %\newpage
 %\emptypdfpageresources ^^A layers of the logo
-%{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\def\bfdefault{sb}\fi
+%{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\DeclareFontSeriesDefault[sf]{bf}{sb}\fi
 % \tableofcontents
 % \listoftables
 %}
@@ -972,8 +973,8 @@
 % the well-known |key=value| syntax. In the following, you will find a
 % description of all \key{keys} and their possible |values|
 % (`|true|' may be omitted; multiple values, where allowed, must be enclosed in
-% braces; the default value is shown on the right, preceded by an asterisk
-% if it is contingent on the \TeX\ engine, version and/or the output mode).
+% braces; the default value is shown on the right -- if preceded by an asterisk,
+% this default only applies when running an up-to-date \pdftex\ in <PDF> mode).
 %
 %
 %\subsection{Enabling the micro-typographic features}\label{sub:options-microtype}
@@ -989,7 +990,7 @@
 % output mode (see section~\ref{sub:options-misc}), or with \xetex.
 % In other words, \microtype\ will try to apply as much micro-typography as
 % can safely be expected to work under the respective conditions (hence, it is
-% usually not necessary to load the package with different options for <PDF>
+% usually not necessary to load the package with different options, \eg, for <PDF>
 % resp. <DVI> mode).
 %
 % Protrusion and expansion may be enabled or disabled independently from each
@@ -1068,15 +1069,15 @@
 %    & $\less$ 0.14f & <DVI>/<PDF> & _ & _ & _ & _ & _ & _\\
 %    & $\geq$  0.14f & <DVI>/<PDF> & ! & ? & _ & _ & _ & _\\
 %    & $\geq$  1.20  & <DVI>       & ! & ? & _ & _ & _ & _\\
-%    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
+%    &               & <PDF>       & ! & ? & ! & _ & _ & _\\
 %    & $\geq$  1.40  & <DVI>       & ! & ? & _ & ? & ? & _\\
-%    &               & <PDF>       & ! & ! & ! & ? & ? & ?\\^^A\,\textsuperscript{\itshape a}\\
+%    &               & <PDF>       & ! & ? & ! & ? & ? & ?\\
 %\cmidrule(r){1-3}
-% \luatex ^^A we will have to re-model kerning, spacing and tracking with \luatex
+% \luatex ^^A we will have to re-model kerning and spacing with \luatex
 %    & $\geq$  0.30  & <DVI>       & ! & ? & _ & _ & _ & _\\
-%    &               & <PDF>       & ! & ! & ! & _ & _ & _\\
-%    & $\geq$  0.62  & <DVI>       & ! & ? & ?\,\textsuperscript{\itshape a} & _ & _ & ?\,\textsuperscript{\itshape a}\\
-%    &               & <PDF>       & ! & ! & ! & _ & _ & ?\\
+%    &               & <PDF>       & ! & ? & ! & _ & _ & _\\
+%    & $\geq$  0.62  & <DVI>       & ! & _ & \hskip1em\llap{(}\textcolor{theblue}{$\boxtimes$})\textsuperscript{\itshape a} & _ & _ & ?\\
+%    &               & <PDF>       & ! & _ & ! & _ & _ & ?\\
 %\cmidrule(r){1-3}
 % \let\textoractual\@firstoftwo ^^A why?
 % \xetex
@@ -1084,14 +1085,13 @@
 %\bottomrule
 %\end{tabular}^^A
 %\vskip4pt\footnotesize
-%\hskip-.8em
+%\hskip-1em
 % ! = enabled\quad
 % ? = not enabled\quad
 % _ = not available
 %\hfill
-% ^^A \textit{a}\quad $\geq$ 1.40.4 recommended
-% \textit{a}\quad for legacy (<TFM>) fonts only
-%\vskip3pt
+% \textit{a}\quad by means of variable tracking\hskip1em
+%\vskip4pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
@@ -1138,7 +1138,13 @@
 % instances of the fonts may be calculated automatically and at run-time instead
 % of the user having to prepare them in advance. This option is true
 % by default provided that you are using a \TeX\ engine with this capability
-% and the output mode is <PDF>.
+% and the output mode is <PDF>.\footnote{
+% With \pdftex, automatic font expansion does not work with bitmap fonts.
+% Therefore, if you are using the Computer Modern Roman fonts in <T1> encoding,
+% you should either install the \pkg{cm-super} package or use the Latin Modern
+% fonts (package \pkg{lmodern}).}
+%\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
+%                           automatic font expansion}
 % If \opt{auto} is set to false, the font instances for all expansion steps must exist
 % (with files called \meta{font~name}\texttt{\textpm}\meta{expansion value},
 % \eg, \file{cmr12+10}, as described in the \cite{pdftexman}).
@@ -1146,23 +1152,17 @@
 % If expanded instances of the fonts are available, they will be used
 % regardless whether \opt{auto} is true or not.
 %\fi
+% With \luatex, expansion is always automatic.
 %
-%\changes{v1.9}{2005/08/27}{add remark about Type\,1 fonts required for
-%                           automatic font expansion}
-% With \pdftex, automatic font expansion does not work with bitmap fonts. Therefore, if you
-% are using the Computer Modern Roman fonts in <T1> encoding,
-%\iffalse
-% \footnote{
-%     En passant, it may be noted that Type\,1 format and <T1> encoding are in
-%     no other way related than that both start with a `T' and end with a `1'.}
-%\fi
-% you should either install the \pkg{cm-super} fonts or use the Latin Modern
-% fonts (package \pkg{lmodern}).
-%\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
-% With \luatex, expansion is always automatic, and also works in <DVI> mode
-% (|dvilualatex|), however, because postprocessing programs like |dvips|
-% or |dvipdfmx| are not (yet) capable of dealing with OpenType fonts,
-% only for legacy fonts.
+% When generating <DVI> files, font expansion has to be enabled explicitly.
+% With \pdftex, \emph{automatic} font expansion will not work because
+% the postprocessing drivers (|dvips|, |dvipdfm|, etc.) resp. the <DVI> viewer
+% are not able to generate the fonts on the fly.
+%^^A\changes{v2.7}{2017/07/06}{add remark about automatic font expansion with \texttt{dvilualatex}}
+%\changes{v2.8}{2020/02/09}{squash fake news about automatic font expansion with \texttt{dvilualatex}}^^A
+% With \luatex, on the other hand, expansion in <DVI> mode is realised by
+% modifying the inter-letter spacing (tracking) instead of the glyphs
+% themselves, which may or may not be desired.
 %
 %\medskip
 %\Describe{Option}{stretch}{:integer}[20]
@@ -1212,19 +1212,23 @@
 % to +1000.
 %
 %
-%\enlargethispage{\baselineskip} ^^A layout
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
 %\Describe{Option}{DVIoutput}{true,*false}
 % \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
-% spit out <DVI> files.\footnote{
-%    All recent \TeX\ systems are using \pdftex\ as the default engine also for
-%    <DVI> output.}
-% The latter can be ordered with the option \opt{DVIoutput}, which will set
-% \cmd\pdfoutput\ to zero.
+% spit out <DVI> files. In fact, all recent \TeX\ systems are using \pdftex\ as
+% the default engine also for <DVI> output, and \luatex\ too can be called
+% in <DVI> mode. However, since changing the output mode inside the document
+% may have undesired effects, this option should be considered deprecated;
+% instead, it is recommended to just call the respective program (|latex| resp.
+% |dvilualatex|).
+%\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
 % For \xetex, this option is not applicable.
 %
+%\iffalse
 %\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
+% The latter can be ordered with the option \opt{DVIoutput}, which will set
+% \cmd\pdfoutput\ to zero.
 % Note that this will confuse packages that depend on the value of
 % \cmd\pdfoutput\ if they were loaded earlier, as they had been made believe
 % that they were called to generate <PDF> output where they actually weren't.
@@ -1232,11 +1236,7 @@
 % \pkg{hyperref}, \pkg{pstricks} and, obviously, \pkg{ifpdf}. Either load these
 % packages after \microtype\ or else issue the command |\pdfoutput=0| earlier
 % -- in the latter case, the \opt{DVIoutput} option is redundant.
-%
-% When generating <DVI> files, font expansion has to be enabled explicitly.
-% With \pdftex, neither letterspacing nor \emph{automatic} font expansion will work because
-% the postprocessing drivers (|dvips|, |dvipdfm|, etc.) resp. the <DVI> viewer
-% are not able to generate the fonts on the fly.
+%\fi
 %
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{draft}' option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
@@ -1497,7 +1497,7 @@
 % `Text encodings' = <OT1>, <T1>, <T2A>, <LY1>, <OT4>, <QX>, <T5>, <EU1>, <EU2>, <TU>
 %\hfill
 % `/\bslash\,\dots|*|/' = `/\bslash\,\dots|default|/'
-%\vskip3pt
+%\vskip4pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
@@ -1942,7 +1942,7 @@
 % is, whenever a particular character appears in the text, the specified
 % kerning will be inserted, regardless of which character precedes resp.
 % follows it.
-% (Put in another way, this feature allows to modify the left or right
+% (Put differently, this feature allows modifying the left or right
 % \textit{sidebearings} of specific glyphs.)
 %
 %\emptypdfpageresources ^^A layers of letterspacing illustration
@@ -2124,6 +2124,7 @@
 % This package ships with configuration files for a number of font families.
 % Table~\ref{tab:fonts} lists them all.
 %
+%\enlargethispage{\baselineskip} ^^A layout
 %\begin{table}[t]\small
 %\changes{v1.6a}{2005/02/02}{add table of fonts with tailored protrusion settings}
 %\caption{Fonts with tailored protrusion settings}\label{tab:fonts}
@@ -2133,10 +2134,10 @@
 %\begin{minipage}{\textwidth}
 %\def\arraystretch{1.2}
 %\long\def\@makefntext#1{%
-%  \leftskip 15pt
-%  \parindent -15pt
-%  \everypar{\parindent -15pt}%
-%  \leavevmode\hbox to 15pt{\@thefnmark\hss}#1}
+%  \leftskip 1em
+%  \parindent -1em
+%  \everypar{\parindent -1em}%
+%  \leavevmode\hbox to 1em{\@thefnmark\hss}#1}
 %\let\footnoterule\relax
 %\def\fnref#1{\textsuperscript{\itshape\ifpdf\ref*{#1}\else\ref{#1}\fi}}
 %\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}*3l@{}}
@@ -2172,12 +2173,12 @@
 %      & n, it, (sl)\fnref{fn:it-sl}, sc, si\\
 % Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
 %                                           \pkg{qfonts}/QuasiPalatino, \TeX\ Gyre Pagella (|qpl|),
-%                                           \pkg{newpx}, <FPL> Neu (|fp9x|, |fp9j|)}
+%                                           \pkg{newpx}, <FPL> Neu (|fp9x|, |fp9j|), \pkg{domitian}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
 %                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|),
-%                                        \pkg{newtx}, \pkg{tempora}}
+%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Latin Modern Roman\footnote{Alias: New Computer Modern}
@@ -2191,7 +2192,7 @@
 %      & <EU1>/<2>, <TU> [Latin, Cyrillic, Greek]
 %      & n, it, sc, si\\
 %\fi
-% Palatino Linotype\footnote{Aliases: \TeX\ Gyre Pagella, Palatino <LT> Std, Palatino}
+% Palatino Linotype\footnote{Aliases: \TeX\ Gyre Pagella, Palatino <LT> Std, Palatino, Domitian}
 %      & <EU1>/<2>, <TU> [Latin]
 %      & n, it, sc\\
 % Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|)}
@@ -2627,8 +2628,8 @@
 %\end{verbatim}
 % This error message will occur if you are trying to employ font expansion
 % while creating <DVI> output. Remember that \emph{automatic} font expansion
-% only works when running \pdftex\ in <PDF> mode. Although expansion is also
-% possible in <DVI> mode, it requires that all instances of the expanded fonts
+% only works when running \pdftex\ or \luatex\ in <PDF> mode. Although expansion is also
+% possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
 % exist on your \TeX\ system.
 %
 %\changes{v2.2}{2007/06/13}{add hint about error message with \pdftex\ 1.40}
@@ -2880,9 +2881,13 @@
 %  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>,
 %  \contributor Markus Kohm       <komascript\at gmx.info>,
 %  \contributor Paolo Polesana    <@\at @>, ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
-%  \contributor Oliver Kopp       <koppdev\at gmail.com>
+%  \contributor Oliver Kopp       <koppdev\at gmail.com>,
+%  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
+% `\contributor d909              <@\at @>',
+%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>
 % and
-%  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>.
+%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>.
+
 %
 %
 %\iffalse
@@ -2954,9 +2959,9 @@
 %   \newblock (Online at \url{http://www.tug.org/TUGboat/Articles/tb29-1/tb91thanh-fonts.pdf})
 %
 % \bibitem[\pdftex\ manual]{pdftexman}
-%   \thanh, Sebastian Rahtz, Hans Hagen, Hartmut Henkel, Pawe\l\ Jackowski, Martin Schr\"oder,
+%   \thanh, Sebastian Rahtz, Hans Hagen, Hartmut Henkel, Pawe\l\ Jackowski, Martin Schr\"oder, Karl Berry,
 %   \emph{The \pdftex\ user manual},
-%   \newblock 2~January 2018.
+%   \newblock 2~March 2020.
 %   \newblock (\ctanurl{systems/doc/pdftex/manual/pdftex-a.pdf})
 %             ^^A latest version at \url{http://sarovar.org/projects/pdftex/}
 %             ^^A or even \url{http://foundry.supelec.fr/scm/?group_id=23}
@@ -2968,19 +2973,19 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX3 Project Team, \emph{\LaTeXe\ font selection},
-%   \newblock July 2019.
+%   \newblock October 2019.
 %   \newblock (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson,
 %    \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%    \newblock 19~October 2019.
+%    \newblock 21~February 2020.
 %    \newblock (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 10~November 2019.
+%    \newblock 2~February 2020.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -3289,6 +3294,7 @@
 %  \setlength{\linewidth}{\textwidth}
 %  \footnotesize
 %}
+%
 %\def\LPPLSettings{
 %\changes{v1.9e}{2006/06/13}{include <LPPL>}
 %  \let\LPPLicense\empty
@@ -3366,8 +3372,8 @@
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(ap,pre)pendkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
 %\DoNotIndex{\XeTeXversion,\XeTeXrevision}                                   ^^A xetex
-%^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXcountglyphs,\XeTeXfonttype,\XeTeXglyph,
-%^^A  \XeTeXglyphindex,\XeTeXglyphname,\XeTeXprotrudechars}
+%^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
+%^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}
 %\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
@@ -3408,7 +3414,7 @@
 %\DoNotIndex{\RequireLuaModule}                                              ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
-%\DoNotIndex{\SOUL@,\soulregister}                                           ^^A soul
+%\DoNotIndex{\SOUL@,\SOUL@doword,\soulregister}                              ^^A soul
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
@@ -3507,9 +3513,9 @@
 \def\MT@fix@catcode#1#2{%
   \edef\MT@restore@catcodes{%
     \MT@restore@catcodes
-    \catcode#1 \the\catcode#1\relax
+    \catcode#1=\the\catcode#1\relax
   }%
-  \catcode#1 #2\relax
+  \catcode#1=#2\relax
 }
 %<package>\MT@fix@catcode{17}{14}% ^^Q (comment)
 \MT@fix@catcode{24} {9}% ^^X (ignore)
@@ -3865,6 +3871,7 @@
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
         \let\pdfprotrudechars\protrudechars
+        \let\pdfadjustspacing\adjustspacing
         \let\MT@lua\directlua
       \fi
     \fi
@@ -3981,7 +3988,11 @@
 % \item N/A
 % \item \luatex\ ($\less$~0.36)
 % \item + \cmd\directlua\ without state number ($\geq$~0.36)
-% \item + \cmd\letterspacefont\ ($\geq$~0.62)
+% \item + \cmd\letterspacefont; non-automatic expansion doesn't work anymore,
+%         and automatic expansion in <DVI> mode is realised by modifying the tracking,
+%         not the glyphs\footnote{This may have been changed earlier, but I'm no longer able
+%               to find out when (the last version that actually works for me is 0.40).}
+%         ($\geq$~0.62)
 % \item + almost all of the \pdftex\ primitives have been renamed ($\geq$~0.85)
 % \item + default \cmd\efcode\,=\,1000;
 %         \cmd\protrusionboundary\ [not yet supported] ($\geq$~0.90)
@@ -4934,15 +4945,17 @@ microtype.do_font = do_font
 
 %</luafile>
 %    \end{macrocode}
-% The \xetex\ variant.
+% The \xetex\ variant (it's slow~\dots!).
 %\changes{v2.5}{2010/05/18}{adapt for \xetex}
+%\changes{v2.8}{2020/02/06}{fix for \xetex}
 %    \begin{macrocode}
 %<*xetex-def>
 \def\MT@do@font#1{%
   \@tempcnta=\z@
-  \MT@loop #1%
-    \advance\@tempcnta \@ne
-    \ifnum\@tempcnta < \XeTeXcountglyphs\MT@font \MT@repeat
+  \MT@loop
+    \iffontchar\MT@font\@tempcnta #1\fi
+    \advance\@tempcnta\@ne
+    \ifnum\@tempcnta < \XeTeXlastfontchar\MT@font \MT@repeat
 }
 %</xetex-def>
 %<*package>
@@ -5447,9 +5460,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \MT@with@package@T{listings}{%
     \g@addto@macro\MT@cfg@catcodes{%
-      \MT@while@num{"30}{"3A}{\catcode\@tempcnta 12\relax}%
-      \MT@while@num{"41}{"5B}{\catcode\@tempcnta 11\relax}%
-      \MT@while@num{"61}{"7B}{\catcode\@tempcnta 11\relax}%
+      \MT@while@num{"30}{"3A}{\catcode\@tempcnta=12\relax}%
+      \MT@while@num{"41}{"5B}{\catcode\@tempcnta=11\relax}%
+      \MT@while@num{"61}{"7B}{\catcode\@tempcnta=11\relax}%
     }%
 %    \end{macrocode}
 % \dots~and the backslash (which would lead to problems in \cs{MT@get@slot}).
@@ -5458,7 +5471,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                                     ^^A private mail, 2006/09/15
 %    \begin{macrocode}
     \g@addto@macro\MT@setupfont@hook{%
-      \catcode`\\\z@
+      \catcode`\\=\z@
 %    \end{macrocode}
 % Inside a listing, \cmd\space\ is redefined.
 %\changes{v2.5}{2011/05/03}{restore \cmd\space\ inside \pkg{listings}
@@ -5483,24 +5496,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Of course, using both \pkg{soul}'s and \microtype's letterspacing mechanisms
 % at the same time doesn't make much sense. But \pkg{soul} can do more, \eg,
 % underlining. The optional argument to \cs{textls} may not be used.
+%\changes{v2.8}{2020/04/11}{compatibility with \pkg{soul}: patch for font change
+%                           (reported by \contributor Md Ayquassar <mdayq0\at lenta.ru>)}
+%                           ^^A https://github.com/latex3/babel/issues/53#issuecomment-598307655
+% Also, we have to disable expansion within \pkg{soul}'s trial run.
+%\changes{v2.3a}{2008/01/06}{fix test for \pkg{soul} under plain \TeX}
+% Under plain \TeX, \pkg{soul} doesn't register itself the \LaTeX\ way, so
+% we just test for its main command.
 %    \begin{macrocode}
 %</package>
-%<plain>  \MT@requires@latex2{
-  \MT@with@package@T{soul}{%
+  \ifx\SOUL@\@undefined\else
     \soulregister\lsstyle 0%
     \soulregister\textls  1%
-  }%
-%    \end{macrocode}
-%\changes{v2.3a}{2008/01/06}{fix test for \pkg{soul} under plain \TeX}
-% Under plain \TeX, \pkg{soul} doesn't register itself the \LaTeX\ way, hence
-% we have to use a different test in this case.
-%    \begin{macrocode}
-%<*plain>
-  }{\ifx\SOUL@\@undefined\else
-      \soulregister\lsstyle 0%
-      \soulregister\textls  1%
-    \fi}%
-%</plain>
+    \let\MT@SOUL@doword\SOUL@doword
+    \def\SOUL@doword{\pdfadjustspacing=\z@ \MT@SOUL@doword}%
+  \fi
 %<*package>
   \MT@with@package@T{tikz}\MT@tikz@setup
 %    \end{macrocode}
@@ -5691,7 +5701,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 % Even though \luatex\ also provides the primitive from \pdftex\ (even renamed to
 % \cmd\copyfont, that is, `promoted' as per the \luatex\ manual), it is seriously
-% crippled in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html
+% crippled in that OpenType features will be lost. ^^A see https://mailman.ntg.nl/pipermail/ntg-context/2016/087541.html seqq.
 %\changes{v2.7d}{2019/11/17}{in \luatex, don't use the \cmd\copyfont\ primitive, but load the font anew
 %                            (reported by \contributor Paolo Polesana <@\at @> and
 %                                         \contributor Oliver Kopp <koppdev\at gmail.com>)}
@@ -6557,8 +6567,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*pdftex-def|xetex-def|luatex-def>
 \def\MT@set@pr@heirs#1{%
-  \lpcode\MT@font #1 =\lpcode\MT@font\MT@char\relax
-  \rpcode\MT@font #1 =\rpcode\MT@font\MT@char\relax
+  \lpcode\MT@font #1=\lpcode\MT@font\MT@char\relax
+  \rpcode\MT@font #1=\rpcode\MT@font\MT@char\relax
 %<debug>\MT@dinfo@nl{2}{-- heir of \MT@char: #1}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font\MT@char\space/%
 %<debug>                                \number\rpcode\MT@font\MT@char\space}%
@@ -12260,11 +12270,30 @@ end
 % For <DVI> output, the user must have explicitly passed the \opt{expansion}
 % option to the package.
 %\changes{v1.5}{2004/12/02}{defaults: turn off expansion for <DVI> output}
+% Under \luatex, expansion works quite differently: the glyphs will be
+% positioned as if they were transformed, without actually being transformed.
+% Since this could still be considered a viable option, we don't disable
+% the feature completely, but issue a warning.
+%\changes{v2.8}{2020/02/09}{warrning when expanding in <DVI> mode with \luatex\
+%                           (reported by \contributor d909 <@\at @>)}
+%                           ^^A https://tex.stackexchange.com/questions/531413/dvipdfmx-and-dvips-do-not-expand-fonts-properly-with-lualatex-in-dvi-mode
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def>
 \def\MT@setup@expansion{%
   \ifnum\pdfoutput<\@ne
-    \ifMT@opt@expansion \else
+    \ifMT@opt@expansion
+%<*luatex-def>
+      \ifMT@expansion
+        \MT@requires@luatex3{%
+          \MT@warning@nl{Font expansion doesn't work properly with luatex in\MessageBreak
+             DVI mode: the glyphs won't be actually transformed,\MessageBreak
+             but will only be shifted. You might want to use\MessageBreak
+             pdflatex instead. I'll continue anyway ..}%
+          %\MT@expansionfalse
+        }\relax
+      \fi
+%</luatex-def>
+    \else
       \MT@expansionfalse
     \fi
   \fi
@@ -12345,7 +12374,7 @@ end
     \ifMT@auto
 %    \end{macrocode}
 %\end{macro}
-% We turn off automatic expansion if output mode is <DVI> and we're running \pdftex.
+% We turn off automatic expansion if output mode is <DVI>.
 %\changes{v1.5}{2004/12/02}{disable automatic expansion for <DVI> output}
 %\changes{v2.7}{2017/07/02}{don't disable automatic expansion for <DVI> output with \luatex}
 %    \begin{macrocode}
@@ -12391,10 +12420,13 @@ end
       }%
 %</pdftex-def>
 %<*luatex-def>
-      \ifMT@opt@auto
-        \MT@error{Non-automatic font expansion does not work with\MessageBreak
-                  luatex}{Remove `auto=false' from the package options, or use pdftex.}%
-      \fi
+      \MT@requires@luatex3{%
+        \ifMT@opt@auto
+          \MT@error{Non-automatic font expansion does not work with\MessageBreak
+                    luatex}{Remove `auto=false' from the package options, or use pdftex.}%
+          \MT@autotrue
+        \fi
+      }\relax
 %</luatex-def>
     \fi
 %    \end{macrocode}
@@ -12956,13 +12988,11 @@ end
 %\subsection{Font variants and aliases}
 %\GeneralChanges{Font aliases}
 %
-%    \begin{macrocode}
-%%% -----------------------------------------------------------------------
-%%% FONT VARIANTS AND ALIASES
-%    \end{macrocode}
 % These are the variants I happen to be using (expert encoding, oldstyle
 % numerals, swashes, alternative, display, inferior and superior numerals):
 %    \begin{macrocode}
+%%% -----------------------------------------------------------------------
+%%% FONT VARIANTS AND ALIASES
 
 \DeclareMicrotypeVariants{x,j,w,a,d,0,1}
 %    \end{macrocode}
@@ -12992,9 +13022,10 @@ end
 \fi
 \ifMT@fontspec\MT@if@true\fi
 \ifMT@if@
+%% -- Computer/Latin Modern Roman
 \DeclareMicrotypeAlias{lmr}{Latin Modern Roman}
   \else
-\DeclareMicrotypeAlias{lmr}{cmr}         % lmodern
+\DeclareMicrotypeAlias{lmr}{cmr}           % lmodern
 \fi
 %    \end{macrocode}
 % The Latin Modern fonts, the virtual fonts from the
@@ -13010,12 +13041,12 @@ end
 %                           (reported by \contributor Jonas Hogstrom <hjb981\at gmail.com>)}
 %                           ^^A https://tex.stackexchange.com/questions/63558/how-to-get-microtype-to-work-with-mathematical-minus-sign-and-package-lmodern
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{lmsy}{cmsy}
-\DeclareMicrotypeAlias{lmm} {cmm}
-\DeclareMicrotypeAlias{aer} {cmr}        % ae
-\DeclareMicrotypeAlias{zer} {cmr}        % zefonts
-\DeclareMicrotypeAlias{cmor}{cmr}        % eco
-\DeclareMicrotypeAlias{hfor}{cmr}        % hfoldsty
+\DeclareMicrotypeAlias{lmsy}{cmsy}         %   "
+\DeclareMicrotypeAlias{lmm} {cmm}          %   "
+\DeclareMicrotypeAlias{aer} {cmr}          % ae
+\DeclareMicrotypeAlias{zer} {cmr}          % zefonts
+\DeclareMicrotypeAlias{cmor}{cmr}          % eco
+\DeclareMicrotypeAlias{hfor}{cmr}          % hfoldsty
 %    \end{macrocode}
 % Another, new Computer Modern extension.
 %\changes{v2.8}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
@@ -13030,67 +13061,77 @@ end
 %\changes{v1.9}{2005/08/16}{declare \texttt{qpl} and \texttt{qtm} (\pkg{qfonts}, \TeX\ Gyre)
 %                           as aliases of \texttt{ppl} resp. \texttt{ptm}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{pxr} {ppl}        % pxfonts
-\DeclareMicrotypeAlias{qpl} {ppl}        % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
+%% -- Palatino
+\DeclareMicrotypeAlias{pxr} {ppl}          % pxfonts
+\DeclareMicrotypeAlias{qpl} {ppl}          % TeX Gyre Pagella (formerly: qfonts/QuasiPalatino)
 %    \end{macrocode}
 % The `<FPL> Neu' fonts, a `re-implementation' of Palatino.
 %\changes{v2.2}{2007/05/27}{declare \texttt{fp9x}, \texttt{fp9j} (<FPL> Neu) as aliases of \texttt{ppl[xj]}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{fp9x}{pplx}       % FPL Neu
-\DeclareMicrotypeAlias{fp9j}{pplj}       %    "
+\DeclareMicrotypeAlias{fp9x}{pplx}         % FPL Neu
+\DeclareMicrotypeAlias{fp9j}{pplj}         %    "
 %    \end{macrocode}
 % The \pkg{newpx} package, a replacement for \pkg{pxfonts}.
 %\changes{v2.7}{2017/03/13}{declare aliases for \pkg{newpx}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zpllf}{ppl}       % newpxtext
-\DeclareMicrotypeAlias{zplosf}{ppl}      %    "
-\DeclareMicrotypeAlias{zpltlf}{ppl}      %    "
-\DeclareMicrotypeAlias{zpltosf}{ppl}     %    "
-\DeclareMicrotypeAlias{txr} {ptm}        % txfonts
+\DeclareMicrotypeAlias{zpllf}{pplx}        % newpxtext
+\DeclareMicrotypeAlias{zplosf}{pplj}       %    "
+\DeclareMicrotypeAlias{zpltlf}{pplx}       %    "
+\DeclareMicrotypeAlias{zpltosf}{pplj}      %    "
 %    \end{macrocode}
-% The \pkg{newtx} package, a replacement for \pkg{txfonts}.
-%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{newtx}}
+% The \pkg{domitian} package.
+%\changes{v2.8}{2020/03/07}{declare aliases for \pkg{step} and \pkg{domitian}
+%                           (notified by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
+%                           ^^A private mail, 2020/02/27
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{ntxlf}{ptm}       % newtxtext
-\DeclareMicrotypeAlias{ntxosf}{ptm}      %    "
-\DeclareMicrotypeAlias{ntxtlf}{ptm}      %    "
-\DeclareMicrotypeAlias{ntxtosf}{ptm}     %    "
-%    \end{macrocode}
-% The \pkg{tempora} package.
-%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{tempora}}
-%    \begin{macrocode}
-\DeclareMicrotypeAlias{Tempora-TLF}{ptm} % tempora
-\DeclareMicrotypeAlias{Tempora-TOsF}{ptm}%    "
-\DeclareMicrotypeAlias{qtm} {ptm}        % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
+\DeclareMicrotypeAlias{Domitian-TLF} {pplx}% domitian
+\DeclareMicrotypeAlias{Domitian-TOsF}{pplj}%    "
 %    \end{macrocode}
 % The OpenType versions:
 %
 %\changes{v2.5}{2012/03/29}{declare TeX Gyre Pagella, Asana Math, Palatino <LT> Std, and Palatino
 %                           as aliases of Palatino Linotype (OpenType version)}
 %    \begin{macrocode}
+\DeclareMicrotypeAlias{Domitian}        {Palatino Linotype}
 \DeclareMicrotypeAlias{TeX Gyre Pagella}{Palatino Linotype}
 \DeclareMicrotypeAlias{Palatino LT Std} {Palatino Linotype}
 \DeclareMicrotypeAlias{Palatino}        {Palatino Linotype}
 \DeclareMicrotypeAlias{Asana Math}      {Palatino Linotype}
+%% -- Times New Roman
+\DeclareMicrotypeAlias{txr}{ptm}           % txfonts
+%    \end{macrocode}
+% The \pkg{newtx} package, a replacement for \pkg{txfonts}.
+%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{newtx}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{ntxlf}{ptmx}        % newtxtext
+\DeclareMicrotypeAlias{ntxosf}{ptmj}       %    "
+\DeclareMicrotypeAlias{ntxtlf}{ptmx}       %    "
+\DeclareMicrotypeAlias{ntxtosf}{ptmj}      %    "
+%    \end{macrocode}
+% The \pkg{tempora} package.
+%\changes{v2.7}{2017/02/25}{declare aliases for \pkg{tempora}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{Tempora-TLF}{ptmx}  % tempora
+\DeclareMicrotypeAlias{Tempora-TOsF}{ptmj} %    "
+\DeclareMicrotypeAlias{qtm}{ptm}           % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
+%    \end{macrocode}
+% The \pkg{step} package.
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{STEP-TLF}{ptmx}     % step
+\DeclareMicrotypeAlias{STEP-TOsF}{ptmj}    %   "
 %    \end{macrocode}
 %\todo{check Times variants}
 % More Times variants, to be checked: |pns|, |mns| (TimesNewRomanPS); |mnt|
 % (Times\-NewRomanMT, TimesNRSevenMT), |mtm| (TimesSmallTextMT); |pte|
 % (TimesEuropa); |ptt| (TimesTen); TimesEighteen; TimesModernEF.
 %
-% The \pkg{eulervm} package virtually extends the Euler fonts.
-%\changes{v1.9e}{2006/07/28}{declare \texttt{zeur} and \texttt{zeus} (\pkg{eulervm})
-%                            as aliases of \texttt{eur} resp. \texttt{eus} (\pkg{euler})}
-%    \begin{macrocode}
-\DeclareMicrotypeAlias{zeur}{eur}        % Euler VM
-\DeclareMicrotypeAlias{zeus}{eus}        %    "
-%    \end{macrocode}
 % MicroPress's Charter version (\pkg{chmath}).
 %\changes{v2.2}{2007/06/08}{declare \texttt{chr} (\pkg{chmath}) as an alias of \texttt{bch}
 %                           (reported by \contributor Geoff Vallis <gkv\at Princeton.EDU>)}
 %                                                            ^^A private mail, 2007/06/07
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{chr} {bch}        % CH Math
+%% -- Charter
+\DeclareMicrotypeAlias{chr}{bch}           % CH Math
 %    \end{macrocode}
 %\changes{v2.7}{2017/03/13}{declare aliases for \pkg{XCharter}}
 % The \pkg{XCharter} package extends the Charter fonts.
@@ -13103,29 +13144,38 @@ end
 %                            as an alias of \texttt{bch}}
 % and <URW> Garamond.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{mdbch}{bch}       % mathdesign/Charter
-\DeclareMicrotypeAlias{mdugm}{ugm}       % mathdesign/URW Garamond
+\DeclareMicrotypeAlias{mdbch}{bch}         % mathdesign/Charter
+%% -- Garamond
+\DeclareMicrotypeAlias{mdugm}{ugm}         % mathdesign/URW Garamond
 %    \end{macrocode}
 % The \pkg{garamondx} package, an extension of <URW> Garamond, providing
 % small caps and oldstyle figures.
 %\changes{v2.5}{2013/02/20}{declare \texttt{zgmx} etc. (\pkg{garamondx})
 %                           as aliases of \texttt{ugm}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zgmx}{ugm}        % garamondx
-\DeclareMicrotypeAlias{zgmj}{ugm}        %    "
-\DeclareMicrotypeAlias{zgmI}{ugm}        %    "
-\DeclareMicrotypeAlias{zgmq}{ugm}        %    "
+\DeclareMicrotypeAlias{zgmx}{ugm}          % garamondx
+\DeclareMicrotypeAlias{zgmj}{ugm}          %    "
+\DeclareMicrotypeAlias{zgmI}{ugm}          %    "
+\DeclareMicrotypeAlias{zgmq}{ugm}          %    "
+%% --
 %    \end{macrocode}
 % <URW> Letter Gothic is similar enough to Bitstream Letter Gothic to share the
 % configuration.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{ulg} {blg}        % URW LetterGothic -> Bitstream LetterGothic12Pitch
+\DeclareMicrotypeAlias{ulg}{blg}           % URW LetterGothic -> Bitstream LetterGothic12Pitch
+%    \end{macrocode}
+% The \pkg{eulervm} package virtually extends the Euler fonts.
+%\changes{v1.9e}{2006/07/28}{declare \texttt{zeur} and \texttt{zeus} (\pkg{eulervm})
+%                            as aliases of \texttt{eur} resp. \texttt{eus} (\pkg{euler})}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{zeur}{eur}          % Euler VM
+\DeclareMicrotypeAlias{zeus}{eus}          %    "
 %    \end{macrocode}
 % Euro symbol fonts, to save some files.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{zpeus}   {zpeu}   % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{eurosans}{zpeu}   % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{euroitcs}{euroitc}% ITC Euro sans -> serif
+\DeclareMicrotypeAlias{zpeus}   {zpeu}     % Adobe Euro sans -> serif
+\DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
+\DeclareMicrotypeAlias{euroitcs}{euroitc}  % ITC Euro sans -> serif
 
 %    \end{macrocode}
 %
@@ -17164,7 +17214,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10650}
+% \CheckSum{10676}
 %
 % \Finale
 %

@@ -1,0 +1,16 @@
+\documentclass[12pt]{article}
+\usepackage{iftex}
+\ifluatex
+\pdfextension mapfile{+pkpmm}
+\pdfvariable compresslevel=0
+\else
+\pdfmapfile{+pkpmm}
+\pdfcompresslevel=0
+\fi
+\usepackage[T1]{fontenc}
+\renewcommand\rmdefault{pkpx}
+\usepackage[verbose,expansion,auto=false,stretch=50,step=5]{microtype}
+\begin{document}
+\hsize=8cm
+The microtype package provides a LaTeX interface to the micro-typographic extensions that were introduced by pdfTeX and have since also propagated to LuaTeX and XeTeX: most prominently, character protrusion and font expansion, furthermore the adjustment of interword spacing and additional kerning, as well as hyphenatable letterspacing (tracking) and the possibility to disable all or selected ligatures. These features may be applied to customisable sets of fonts, and all micro-typographic aspects of the fonts can be configured in a straight-forward and flexible way. Settings for various fonts are provided.
+\end{document}
