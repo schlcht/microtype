@@ -1413,13 +1413,13 @@
 % normal font. Size selection commands are possible, too, however, ranges are
 % not allowed.
 %
-%\newcounter{fontsets}
+%\newcounter{nrfontsets}
 %\begin{table}\microtypesetup{protrusion=false}\small
 %\caption{Predefined font sets}\label{tab:predefined-font-sets}
 %\catcode`\!=13 \def!{\textcolor{thered}{$\varnothing$}}
 %\catcode`\/=13 \def/#1/{\textcolor{thegreen}{#1}}
 %\def<#1>{\textcolor{theblue}{\acronym{#1}}}
-%\def\s#1{|#1|\stepcounter{fontsets}}
+%\def\s#1{|#1|\stepcounter{nrfontsets}}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -1500,13 +1500,13 @@
 %\vskip4pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
+%\ifcase\c@nrfontsets\or\or\or\or\or\or\or\or\or\or\or
+%   \def\@currentlabel{eleven}\or \def\@currentlabel{twelve}\else
+%   \PackageError{\MT@MT}{I cannot count any further}{}\fi\label{nrfontsets}
 %\end{table}
-%\def\nrfontsets{\ifx\c@fontsets\relax???\else\ifcase\c@fontsets
-%                \or\or\or\or\or\or\or\or\or\or\or eleven\or twelve\else
-%                \PackageError{\MT@MT}{I cannot count any further}{}\fi\fi}
 %
 %\medskip\noindent
-% Table~\ref{tab:predefined-font-sets} lists the \nrfontsets\ predefined font sets.
+% Table~\ref{tab:predefined-font-sets} lists the \ref*{nrfontsets} predefined font sets.
 % They may also be activated by passing their name to the feature options
 % \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{kerning} and
 % \opt{spacing} when loading the package, for example:
