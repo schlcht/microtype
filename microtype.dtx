@@ -5777,6 +5777,39 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % prevent a different design size being selected.
 %
 %\bigskip
+%\begin{macro}{\MT@fix@fontdimen@six}
+%\changes{v1.8}{2005/05/03}{new macro: test whether \fontdim6 is defined}
+%\changes{v2.3e}{2009/08/31}{fix: gobbling settings with tracking failed
+%                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
+%                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
+%\changes{v2.8}{2020/05/25}{try to fix \fontdim6}
+%\begin{macro}{\MT@dimen@six}
+% If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
+% won't work, and we could skip the settings (for example, the \pkg{dsfont}
+% fonts don't specify this dimension; this is probably a bug -- the \pkg{fourier}
+% and \pkg{newpx}/\pkg{newtx} packages have been fixed in the meantime).
+% However, we can fix it ourselves -- only tracking still doesn't work (it seems
+% that \cmd\letterspacefont\ uses the \fontdim6 from the original font).
+% \xetex\ doesn't provide an equivalent to \cmd\pdffontsize, so we use the
+% nominal size instead.
+%    \begin{macrocode}
+%<*pdftex-def|luatex-def|xetex-def>
+\def\MT@fix@fontdimen@six{%
+  \ifnum\fontdimen6\MT@font=\z@
+    \fontdimen6\MT@font=%
+%<pdftex-def>      \pdffontsize\MT@font
+%<luatex-def>      \dimexpr\pdffeedback fontsize\MT@font
+%<xetex-def>      \MT@size pt
+    \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
+             (new value: \the\fontdimen6\MT@font)}%
+    \MT@glet@nc{\MT@@font-fake6}\@empty
+  \fi
+  \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
+}
+%</pdftex-def|luatex-def|xetex-def>
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@split@name}
 %\changes{v1.7}{2005/02/27}{don't define \cs{MT@encoding} \&c. \cmd\global ly}
 %\changes{v2.0}{2006/12/19}{adjust to possible letterspacing}
@@ -5800,6 +5833,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \def\MT@series  {#3}%
   \def\MT@shape   {#4}%
   \def\MT@size    {#5}%
+  \MT@fix@fontdimen@six
 %    \end{macrocode}
 %\begin{macro}{\MT@familyalias}
 % Alias family?
@@ -6061,56 +6095,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@glet@nc{\MT@encoding-\MT@family-settings}\@empty
       }%
     \fi
-    \MT@get@font@dimen@six{%
-      \MT@get@opt
-      \MT@reset@pr@codes
+    \MT@get@opt
+    \MT@reset@pr@codes
 %    \end{macrocode}
 % Get the name of the inheritance list and parse it.
 %    \begin{macrocode}
-      \MT@get@inh@list
+    \MT@get@inh@list
 %    \end{macrocode}
 % Set an input encoding?
 %    \begin{macrocode}
-      \MT@set@inputenc{c}%
+    \MT@set@inputenc{c}%
 %    \end{macrocode}
 % Load additional lists?
 %    \begin{macrocode}
-      \MT@load@list\MT@pr@c@name
-      \MT@set@listname
+    \MT@load@list\MT@pr@c@name
+    \MT@set@listname
 %    \end{macrocode}
 % Load the main list.
 %    \begin{macrocode}
-      \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
-      \expandafter\MT@set@codes\@tempc,\relax,}%
+    \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
+    \expandafter\MT@set@codes\@tempc,\relax,%
   }\MT@reset@pr@codes
 }
 %    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@get@font@dimen@six}
-%\changes{v1.8}{2005/05/03}{new macro: test whether \fontdim6 is defined}
-%\changes{v2.3e}{2009/08/31}{fix: gobbling settings with tracking failed
-%                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
-%                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
-%\begin{macro}{\MT@dimen@six}
-% If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
-% won't work, and we can skip the settings (for example, the \pkg{dsfont} and
-% \pkg{fourier} fonts don't specify this dimension; this is probably a bug in
-% the fonts).
-%    \begin{macrocode}
-\def\MT@get@font@dimen@six{%
-  \ifnum\fontdimen6\MT@font=\z@
-    \MT@warning@nl{%
-      Font `\MT@@font' does not specify its\MessageBreak
-      \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
-      \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
-    \expandafter\@gobble
-  \else
-    \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
-    \expandafter\@firstofone
-  \fi
-}
-%    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@all@pr}
 %\changes{v2.2}{2007/06/16}{(et al.) allow empty values}
@@ -6896,15 +6903,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@set@sp@codes{%
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six{%
-      \MT@get@opt
-      \MT@reset@sp@codes
-      \MT@get@inh@list
-      \MT@set@inputenc{c}%
-      \MT@load@list\MT@sp@c@name
-      \MT@set@listname
-      \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
-      \expandafter\MT@set@codes\@tempc,\relax,}%
+    \MT@get@opt
+    \MT@reset@sp@codes
+    \MT@get@inh@list
+    \MT@set@inputenc{c}%
+    \MT@load@list\MT@sp@c@name
+    \MT@set@listname
+    \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
+    \expandafter\MT@set@codes\@tempc,\relax,%
   }\MT@reset@sp@codes
 }
 %    \end{macrocode}
@@ -7013,15 +7019,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@set@kn@codes{%
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six{%
-      \MT@get@opt
-      \MT@reset@kn@codes
-      \MT@get@inh@list
-      \MT@set@inputenc{c}%
-      \MT@load@list\MT@kn@c@name
-      \MT@set@listname
-      \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
-      \expandafter\MT@set@codes\@tempc,\relax,}%
+    \MT@get@opt
+    \MT@reset@kn@codes
+    \MT@get@inh@list
+    \MT@set@inputenc{c}%
+    \MT@load@list\MT@kn@c@name
+    \MT@set@listname
+    \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
+    \expandafter\MT@set@codes\@tempc,\relax,%
   }\MT@reset@kn@codes
 }
 %    \end{macrocode}
@@ -7146,12 +7151,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % The tracking amount is determined by the optional argument to \cs{textls},
 % settings from \cs{SetTracking}, or the global \opt{letterspace} option, in
 % this order.
+%
+% Tracking won't work if the original font's \fontdim6 is zero, in which
+% case we issue a warning (once for every font).
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def|letterspace>
 \def\MT@set@tr@codes{%
 %<*pdftex-def|luatex-def>
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
-  \MT@get@font@dimen@six{%
+  \MT@ifdefined@n@TF{\MT@@font-fake6}{%
+    \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
+      \MT@warning@nl{%
+        Font `\MT@@font' does not specify its\MessageBreak
+        \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
+        \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
+      \MT@glet@nc{\MT@@font-fake6}\relax
+    \fi
+  }{%
   \MT@if@list@exists
     \MT@get@tr@opt
     \relax
@@ -17226,7 +17242,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10707}
+% \CheckSum{10730}
 %
 % \Finale
 %
