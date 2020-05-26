@@ -7490,12 +7490,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.7}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} and \pkg{exscale} packages
 %                            (reported by \contributor user11126 <@\at @>,
 %                             solution by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>)}
-% Setting \cmd\glb@currsize\ to \cmd\@empty\ (our previous solution) could
+%                           ^^A https://tex.stackexchange.com/questions/316231/microtype-and-exscale-crashing-in-texlive-2016#comment771828_316252
+% Setting \cmd\glb@currsize\ globally to \cmd\@empty\ (our previous solution) could
 % throw us into an infinite loop (\eg, with the \pkg{psnfss} packages,
 % via \cmd\every@math@size), so we issue \cmd\glb@settings\ instead.
+%\changes{v2.8}{2020/05/26}{fix: enforce math setup, again}
+% However, in certain situations, we may still miss some math fonts, so
+% let's try to also enforce it by emptying \cmd\glb@currsize, fingers crossed.
+% The overhead seems small.
 %    \begin{macrocode}
 \DeclareRobustCommand\lsstyle{%
   \not@math@alphabet\lsstyle\textls
+  \let\glb@currsize\@empty
 %<pdftex-def|luatex-def>  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
 %<pdftex-def|luatex-def>  \def\MT@feat{tr}%
   \let\MT@tracking\MT@set@tr@codes
@@ -17242,7 +17248,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10730}
+% \CheckSum{10733}
 %
 % \Finale
 %
