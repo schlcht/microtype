@@ -3514,7 +3514,7 @@
   }%
   \catcode#1=#2\relax
 }
-%<package>\MT@fix@catcode{17}{14}% ^^Q (comment)
+\MT@fix@catcode{17}{14}% ^^Q (comment)
 \MT@fix@catcode{24} {9}% ^^X (ignore)
 %<package>\MT@fix@catcode{33}{12}% !
 %<package>\MT@fix@catcode{34}{12}% "
@@ -3795,6 +3795,7 @@
 %\end{macro}
 %\changes{v2.2}{2007/05/01}{use catcode trickery for \etex\ test}
 %^^A\changes{v2.3a}{2007/12/29}{removed} ^^A \MT@maybe@etex
+%\changes{v2.8}{2020/05/26}{\letterspace\ only works with \etex\ extensions}
 % For definitions that depend on \etex\ features.
 %    \begin{macrocode}
 \ifcase 0%
@@ -3806,6 +3807,8 @@
 \else
   \catcode`\^^Q=9 \catcode`\^^X=14
 \fi
+%<letterspace>^^Q\MT@warning@nl{This package requires the etex extensions.
+%<letterspace>^^Q               \MessageBreak Exiting}\MT@restore@catcodes\endinput
 %<debug>\MT@dinfo@nl{0}{this is
 %<debug>^^Q not
 %<debug>  etex}
@@ -17248,7 +17251,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10733}
+% \CheckSum{10737}
 %
 % \Finale
 %
