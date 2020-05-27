@@ -1,5 +1,4 @@
 * partly revert c63fdd701 ; check historical luatex
-* move MT@lua definition ; check in letterspace.sty for older luatex
 * stix/xits -> times?
 * split docu?
 * what about polyglossia?

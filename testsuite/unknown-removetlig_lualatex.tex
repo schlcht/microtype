@@ -1,5 +1,9 @@
 % https://github.com/latex3/latex2e/issues/165
 \documentclass{article}
+\makeatletter
+\@ifl@t@r\fmtversion{2015/10/02}\relax
+  {\expandafter\stop} % unknown slots are to be expected with TL15 and earlier
+\makeatother
 \usepackage{microtype}
 \SetProtrusion{font = *}
   {\textquotesingle = {1000,1000},

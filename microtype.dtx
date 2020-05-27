@@ -3868,11 +3868,11 @@
     \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}
     \else
       \def\MT@engine@tooold{1}
+      \let\MT@lua\directlua
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
         \let\pdfprotrudechars\protrudechars
         \let\pdfadjustspacing\adjustspacing
-        \let\MT@lua\directlua
       \fi
     \fi
 %</letterspace>
@@ -4118,6 +4118,7 @@
 %\end{macro}
 %\end{macro}
 %\end{macro}
+% [This line intentionally left blank.]
 %\begin{macro}{\MT@pr@level}
 %\begin{macro}{\MT@ex@level}
 %\begin{macro}{\MT@pr@factor}
@@ -4287,6 +4288,7 @@
 %                             \contributor Ulrike Fischer <news3\at nililand.de>)}
 %                            ^^A private mail, 2019/02/19
 %                            ^^A private mail, 2019/02/26
+%\changes{v2.8}{2020/05/26}{fix for \pkg{luatexbase}}
 %    \begin{macrocode}
 %<*luafile>
 
@@ -4302,7 +4304,7 @@ local catpackage
 if luatexbase.registernumber then
   catpackage = luatexbase.registernumber("catcodetable@atletter") -- LaTeX
 else
-  catpackage = luatexbase.catcodetables.CatcodeTableAtletter   -- luatexbase
+  catpackage = luatexbase.catcodetables.CatcodeTableLaTeXAtLetter -- luatexbase
 end
 function microtype.sprint (...)
   tex.sprint(catpackage, ...)
@@ -5801,7 +5803,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \ifnum\fontdimen6\MT@font=\z@
     \fontdimen6\MT@font=%
 %<pdftex-def>      \pdffontsize\MT@font
-%<luatex-def>      \dimexpr\pdffeedback fontsize\MT@font
+%<luatex-def>      \MT@requires@luatex4{\pdffeedback fontsize}{\pdffontsize}\MT@font
 %<xetex-def>      \MT@size pt
     \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
              (new value: \the\fontdimen6\MT@font)}%
@@ -17251,7 +17253,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10737}
+% \CheckSum{10738}
 %
 % \Finale
 %
