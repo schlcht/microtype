@@ -2176,7 +2176,7 @@
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
 %                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|),
-%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}}
+%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Latin Modern Roman\footnote{Alias: New Computer Modern}
@@ -13159,6 +13159,13 @@ end
 \DeclareMicrotypeAlias{STEP-TLF}{ptmx}     % step
 \DeclareMicrotypeAlias{STEP-TOsF}{ptmj}    %   "
 %    \end{macrocode}
+% The \pkg{stix} and \pkg{stix2} packages (the latter has departed a bit from being
+% a Times clone, but still seems close enough).
+%\changes{v2.8}{2020/05/31}{declare aliases for \pkg{stix} and \pkg{stix2} fonts}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{stix} {ptm}         % stix
+\DeclareMicrotypeAlias{stix2}{ptm}         % stix2
+%    \end{macrocode}
 %\todo{check Times variants}
 % More Times variants, to be checked: |pns|, |mns| (TimesNewRomanPS); |mnt|
 % (Times\-NewRomanMT, TimesNRSevenMT), |mtm| (TimesSmallTextMT); |pte|
@@ -17253,7 +17260,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10738}
+% \CheckSum{10740}
 %
 % \Finale
 %
