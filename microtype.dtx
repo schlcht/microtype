@@ -1214,34 +1214,9 @@
 %
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
-%\Describe{Option}{DVIoutput}{true,*false}
-% \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
-% spit out <DVI> files. In fact, all recent \TeX\ systems are using \pdftex\ as
-% the default engine also for <DVI> output, and \luatex\ too can be called
-% in <DVI> mode. However, since changing the output mode inside the document
-% may have undesired effects, this option should be considered deprecated;
-% instead, it is recommended to just call the respective program (|latex| resp.
-% |dvilualatex|).
-%\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
-% For \xetex, this option is not applicable.
-%
-%\iffalse
-%\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
-% The latter can be ordered with the option \opt{DVIoutput}, which will set
-% \cmd\pdfoutput\ to zero.
-% Note that this will confuse packages that depend on the value of
-% \cmd\pdfoutput\ if they were loaded earlier, as they had been made believe
-% that they were called to generate <PDF> output where they actually weren't.
-% These packages are, among others: \pkg{graphics}, \pkg{color},
-% \pkg{hyperref}, \pkg{pstricks} and, obviously, \pkg{ifpdf}. Either load these
-% packages after \microtype\ or else issue the command |\pdfoutput=0| earlier
-% -- in the latter case, the \opt{DVIoutput} option is redundant.
-%\fi
-%
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{draft}' option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\medskip
 %\Describe{Option}{draft}{true,!false}
 %\DescribeOption{final}
 % If the \opt{draft} option is passed to the package, \emph{all
@@ -1275,6 +1250,31 @@
 % file, by default \file{microtype.cfg} (see section~\ref{sub:config-file}).
 % You can have a different configuration file loaded instead by specifying its
 % name \emph{without the extension}, \eg, |config=mycrotype|.
+%
+%\medskip
+%\Describe{Option}{DVIoutput}{true,*false}
+% \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
+% spit out <DVI> files. In fact, all recent \TeX\ systems are using \pdftex\ as
+% the default engine also for <DVI> output, and \luatex\ too can be called
+% in <DVI> mode. However, since changing the output mode inside the document
+% may have undesired effects, this option should be considered deprecated;
+% instead, it is recommended to just call the respective program (|latex| resp.
+% |dvilualatex|).
+%\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
+% For \xetex, this option is not applicable.
+%
+%\iffalse
+%\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
+% The latter can be ordered with the option \opt{DVIoutput}, which will set
+% \cmd\pdfoutput\ to zero.
+% Note that this will confuse packages that depend on the value of
+% \cmd\pdfoutput\ if they were loaded earlier, as they had been made believe
+% that they were called to generate <PDF> output where they actually weren't.
+% These packages are, among others: \pkg{graphics}, \pkg{color},
+% \pkg{hyperref}, \pkg{pstricks} and, obviously, \pkg{ifpdf}. Either load these
+% packages after \microtype\ or else issue the command |\pdfoutput=0| earlier
+% -- in the latter case, the \opt{DVIoutput} option is redundant.
+%\fi
 %
 %\iffalse ^^A ... waiting for bug reports before documenting yet another option ...
 %\medskip
@@ -2882,9 +2882,10 @@
 %  \contributor Oliver Kopp       <koppdev\at gmail.com>,
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
 % `\contributor d909              <@\at @>', ^^A https://tex.stackexchange.com/users/176404/d909
-%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>
+%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>,
+%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>
 % and
-%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>.
+%  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>.
 %
 %
 %\iffalse
@@ -2982,7 +2983,7 @@
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 2~February 2020.
+%    \newblock 6~May 2020.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -3795,7 +3796,7 @@
 %\end{macro}
 %\changes{v2.2}{2007/05/01}{use catcode trickery for \etex\ test}
 %^^A\changes{v2.3a}{2007/12/29}{removed} ^^A \MT@maybe@etex
-%\changes{v2.8}{2020/05/26}{\letterspace\ only works with \etex\ extensions}
+%\changes{v2.8}{2020/05/26}{\letterspace\ works with \etex\ only}
 % For definitions that depend on \etex\ features.
 %    \begin{macrocode}
 \ifcase 0%
@@ -5510,8 +5511,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \ifx\SOUL@\@undefined\else
     \soulregister\lsstyle 0%
     \soulregister\textls  1%
-    \let\MT@SOUL@doword\SOUL@doword
-    \def\SOUL@doword{\pdfadjustspacing=\z@ \MT@SOUL@doword}%
+    \ifx\XeTeXrevision\@undefined
+      \let\MT@SOUL@doword\SOUL@doword
+      \def\SOUL@doword{\pdfadjustspacing=\z@ \MT@SOUL@doword}%
+    \fi
   \fi
 %<*package>
   \MT@with@package@T{tikz}\MT@tikz@setup
@@ -5787,7 +5790,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.3e}{2009/08/31}{fix: gobbling settings with tracking failed
 %                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
 %                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
-%\changes{v2.8}{2020/05/25}{try to fix \fontdim6}
+%\changes{v2.8}{2020/05/25}{try to fix zero \fontdim6}
 %\begin{macro}{\MT@dimen@six}
 % If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
 % won't work, and we could skip the settings (for example, the \pkg{dsfont}
@@ -17260,7 +17263,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10740}
+% \CheckSum{10744}
 %
 % \Finale
 %
