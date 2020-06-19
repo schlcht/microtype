@@ -3369,7 +3369,7 @@
 %^^A  \tagcode,\letterspacefont,\pdfcopyfont,\pdffontexpand,\pdfnoligatures,
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(ap,pre)pendkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
-%\DoNotIndex{\XeTeXversion,\XeTeXrevision}                                   ^^A xetex
+%\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}                           ^^A xetex
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
 %^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}
 %\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
@@ -4617,19 +4617,21 @@ microtype.if_dimen = if_dimen
 %                           (found by \contributor Wiebke Petersen <petersew\at uni-duesseldorf.de>)}
 %                                               ^^A MID: <esmd6k$954$1@news1.rz.uni-duesseldorf.de>
 %\changes{v2.2}{2007/05/10}{employ \luatex\ features if available}
+%\changes{v2.8}{2020/06/18}{use \xetex's \cmd\stringcmp}
 %    \begin{macrocode}
-%<*pdftex-def>
-\MT@requires@pdftex5{
+%<*pdftex-def|xetex-def>
+%<pdftex-def>\MT@requires@pdftex5{
 \def\MT@ifstreq#1#2{%
-  \ifcase\pdfstrcmp{#1}{#2}\relax
+%<pdftex-def>  \ifnum\pdfstrcmp{#1}{#2}=\z@
+%<xetex-def>  \ifnum\strcmp{#1}{#2}=\z@
     \expandafter\@firstoftwo
   \else
     \expandafter\@secondoftwo
   \fi
 }
+%</pdftex-def|xetex-def>
+%<*pdftex-def>
 }{
-%</pdftex-def>
-%<*pdftex-def|xetex-def>
 \def\MT@ifstreq#1#2{%
   \edef\MT@res@a{#1}%
   \edef\MT@res@b{#2}%
@@ -4639,8 +4641,8 @@ microtype.if_dimen = if_dimen
     \expandafter\@secondoftwo
   \fi
 }
-%</pdftex-def|xetex-def>
-%<pdftex-def>}
+}
+%</pdftex-def>
 %<luatex-def>\def\MT@ifstreq#1#2{\csname\MT@lua{microtype.if_str_eq([[#1]],[[#2]])}\endcsname}
 %<*luafile>
 local function if_str_eq(s1, s2)
@@ -6850,8 +6852,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@ex@opt@{stretch}{Setting stretch limit to \number\MT@stretch@}%
   \MT@get@ex@opt@{shrink} {Setting shrink limit to \number\MT@shrink@}%
   \MT@get@ex@opt@{step}   {Setting expansion step to \number\MT@step@}%
-%<pdftex-def>  \def\@tempa{autoexpand}%
-%<pdftex-def>  \MT@get@ex@opt@{auto}{\ifx\@tempa\MT@auto@ En\else Dis\fi abling automatic expansion}%
+%<pdftex-def>  \MT@get@ex@opt@{auto}{\MT@ifstreq{\MT@auto@}{autoexpand}{En}{Dis}abling automatic expansion}%
   \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @preset}{%
     \MT@preset@ex
     \let\MT@reset@ef@codes\relax
@@ -17263,7 +17264,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10744}
+% \CheckSum{10742}
 %
 % \Finale
 %
