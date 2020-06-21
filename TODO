@@ -1,4 +1,3 @@
-* partly revert c63fdd701 ; check historical luatex
 * split docu?
 * what about polyglossia?
 * check contexts in lua again

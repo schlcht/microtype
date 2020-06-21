@@ -4881,19 +4881,10 @@ microtype.if_str_eq = if_str_eq
 %<luatex-def>  microtype.if_luaotf_font()
 %<*luafile|letterspace>
 %<luafile>local function if_luaotf_font()
-  if fonts then
-    local thefont
-    if fonts.ids then
-      thefont = fonts.ids[font.current()]
-    else
-      thefont = fonts.hashes.identifiers[font.current()]
-    end
-    if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
-      then tex.write("@firstoftwo")
-      else tex.write("@secondoftwo")
-    end
-  else
-    tex.write("@secondoftwo")
+  local thefont = font.getfont(font.current())
+  if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
+    then tex.write("@firstoftwo")
+    else tex.write("@secondoftwo")
   end
 %<luafile>end
 %<luafile>microtype.if_luaotf_font = if_luaotf_font
@@ -4915,6 +4906,7 @@ microtype.if_str_eq = if_str_eq
 %\changes{v2.6a}{2015/05/10}{fix \texttt{lua} function
 %                            (reported by \contributor Herbert Vo\ss{} <Herbert.Voss\at FU-Berlin.DE>)}
 %                             ^^A private mail, 2016/05/10
+%\changes{v2.8}{2020/06/20}{simplify \texttt{lua} function}
 %    \begin{macrocode}
 %<*luatex-def>
 \def\MT@do@font#1{%
@@ -4930,13 +4922,7 @@ microtype.if_str_eq = if_str_eq
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
-  if fonts then
-    local thefont
-    if fonts.ids then       --- legacy luaotfload
-      thefont = fonts.ids[font.current()]
-    else                    --- new location
-      thefont = fonts.hashes.identifiers[font.current()]
-    end
+    local thefont = font.getfont(font.current())
     if thefont then
       for i,v in next,thefont.characters do
         if v.index == nil or v.index > 0 then
@@ -4944,7 +4930,6 @@ local function do_font()
         end
       end
     end
-  end
 end
 microtype.do_font = do_font
 
@@ -5484,7 +5469,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           ^^A private mail, 2011/04/30
 %                           ^^A (beta:07)
 %    \begin{macrocode}
-    \def\space{ }%
+      \def\space{ }%
 %    \end{macrocode}
 %\changes{v1.9b}{2005/12/23}{compatibility with the \texttt{extendedchar} option of
 %                            the \pkg{listings} package}
@@ -6714,7 +6699,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\MT@stretch@  \MT@stretch
     \let\MT@shrink@   \MT@shrink
     \let\MT@step@     \MT@step
-%<pdftex-def>    \let\MT@auto@     \MT@auto
+    \let\MT@auto@     \MT@auto
     \let\MT@ex@factor@\MT@ex@factor
   }%
   \MT@reset@ef@codes
@@ -6733,30 +6718,33 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@expandfont}
-% Expand the font.
+% Expand the font. For some reason, older \luatex\ versions freeze if
+% the |autoexpand| modifier is missing. Can't be bothered to find out why.
+% For newer versions, we could also use the function |font.setexpansion|,
+% or, in the future, \pkg{luaotfload}'s expansion font feature. ^^A https://github.com/latex3/luaotfload/commit/4907e23407c52437cca56966d11d3b4548bba585
+%\iffalse
 % In \luatex, we try to go the |lua| way, if the |font.setexpansion| function exists.
 %\changes{v2.7d}{2019/11/17}{use \luatex\ function \texttt{font.}\penalty\exhyphenpenalty\texttt{setexpansion} if available}
+%\fi
 %    \begin{macrocode}
 %<*luatex-def>
-\MT@lua{\detokenize{
-  if font.setexpansion == nil then
-    tex.print("\\@firstoftwo")
-  else
-    tex.print("\\@secondoftwo")
-  end
-}}{
+\MT@requires@luatex3{
 \MT@requires@luatex4{\let\pdffontexpand\expandglyphsinfont}\relax
+\ifnum\luatexversion<79
+\def\MT@expandfont{%
+  \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ autoexpand\relax
+}
+\else
+\def\MT@expandfont{%
+  \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@\relax
+}
+\fi
+}{
 %</luatex-def>
 \def\MT@expandfont{%
   \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ \MT@auto@\relax
 }
-%<*luatex-def>
-}{
-\def\MT@expandfont{%
-  \MT@lua{font.setexpansion(font.current(),\MT@stretch@,\MT@shrink@,\MT@step@)}%
-}
-}
-%</luatex-def>
+%<luatex-def>}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@all@ex}
@@ -6852,7 +6840,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@ex@opt@{stretch}{Setting stretch limit to \number\MT@stretch@}%
   \MT@get@ex@opt@{shrink} {Setting shrink limit to \number\MT@shrink@}%
   \MT@get@ex@opt@{step}   {Setting expansion step to \number\MT@step@}%
-%<pdftex-def>  \MT@get@ex@opt@{auto}{\MT@ifstreq{\MT@auto@}{autoexpand}{En}{Dis}abling automatic expansion}%
+%<luatex-def>  \MT@requires@luatex3\relax{%
+  \MT@get@ex@opt@{auto}{\MT@ifstreq{\MT@auto@}{autoexpand}{En}{Dis}abling automatic expansion}%
+%<luatex-def>  }%
   \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @preset}{%
     \MT@preset@ex
     \let\MT@reset@ef@codes\relax
@@ -8796,17 +8786,17 @@ else
   local function name_to_slot(name, unsafe)
     if fonts then
       local unicodes
-      if fonts.ids then       --- legacy luaotfload
+      if fonts.ids then       -- legacy luaotfload
         local tfmdata = fonts.ids[font.current()]
         if not tfmdata then return end
         unicodes = tfmdata.shared.otfdata.luatex.unicodes
-      else --- new location
+      else                    -- new location
         local tfmdata = fonts.hashes.identifiers[font.current()]
         if not tfmdata then return end
         unicodes = tfmdata.resources.unicodes
       end
       local unicode = unicodes[name]
-      if unicode then --- does the 'or' branch actually exist?
+      if unicode then -- does the 'or' branch actually exist?
         return type(unicode) == "number" and unicode or unicode[1]
       end
     end
@@ -11053,23 +11043,19 @@ end
 %\changes{v1.7}{2005/03/07}{disallow automatic expansion if \pdftex\ too old}
 %\changes{v2.7a}{2017/08/08}{disallow non-automatic expansion with \luatex}
 %    \begin{macrocode}
-%<*pdftex-def>
-    \MT@requires@pdftex4{%
-      \MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}%
-    }{%
-      \MT@warning{pdftex too old for automatic font expansion}%
-    }
-%</pdftex-def>
+%<pdftex-def>    \MT@requires@pdftex4%
+%<luatex-def>    \MT@requires@luatex3\relax
+      {\MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}}%
+%<pdftex-def>      {\MT@warning{pdftex too old for automatic font expansion}}%
   \else
-%<*pdftex-def>
-    \MT@requires@pdftex4{%
-      \MT@glet@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty
-    }\relax
-%</pdftex-def>
+%<pdftex-def>    \MT@requires@pdftex4%
 %<*luatex-def>
-    \MT@warning{Non-automatic font expansion doesn't work with\MessageBreak
-                luatex}%
+    \MT@requires@luatex3{%
+      \MT@warning{Non-automatic font expansion doesn't work with\MessageBreak
+                  luatex}}%
 %</luatex-def>
+      {\MT@glet@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty}%
+%<pdftex-def>      \relax
   \fi
 }
 %    \end{macrocode}
@@ -12317,7 +12303,7 @@ end
 % positioned as if they were transformed, without actually being transformed.
 % Since this could still be considered a viable option, we don't disable
 % the feature completely, but issue a warning.
-%\changes{v2.8}{2020/02/09}{warrning when expanding in <DVI> mode with \luatex\
+%\changes{v2.8}{2020/02/09}{warning when expanding in <DVI> mode with \luatex\
 %                           (reported by \contributor d909 <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/531413/dvipdfmx-and-dvips-do-not-expand-fonts-properly-with-lualatex-in-dvi-mode
 %    \begin{macrocode}
@@ -12410,10 +12396,9 @@ end
 %                            (reported by \contributor Ulrike Fischer <news3\at nililand.de>)}
 %                            ^^A private mail, 2017/10/29
 % In \luatex\ 1.0.6, the `|autoexpand|' option seems to have been removed altogether
-% and would trigger an error.
+% and would trigger a warning.
 %    \begin{macrocode}
-%<luatex-def>    \let\MT@auto@\@empty
-%<pdftex-def>    \let\MT@auto\@empty
+    \let\MT@auto\@empty
     \ifMT@auto
 %    \end{macrocode}
 %\end{macro}
@@ -12453,6 +12438,7 @@ end
         \def\MT@auto{1000 }%
       }%
 %</pdftex-def>
+%<luatex-def>      \MT@requires@luatex3\relax{\def\MT@auto{autoexpand}}%
     \else
 %<*pdftex-def>
 %    \end{macrocode}
@@ -17264,7 +17250,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10742}
+% \CheckSum{10757}
 %
 % \Finale
 %
