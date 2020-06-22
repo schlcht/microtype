@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{microtype}
+\DeclareMicrotypeSet*{test}{encoding = U, family = dsrom }
+\SetProtrusion[unit=1em]{encoding = U, family = dsrom }
+        {A = {500,500}}
+\begin{document}
+\def\test#1{#1\dotfill #1\linebreak}
+\tracingoutput1
+\showboxbreadth\maxdimen
+\showboxdepth\maxdimen
+\noindent
+\test{A}
+\test{{\fontencoding{U}\fontfamily{dsrom}\selectfont A}}
+\end{document}
+
+grep '\kern-5.0 (right margin)'
+

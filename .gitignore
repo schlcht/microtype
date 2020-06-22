@@ -41,4 +41,5 @@ make-doc-sty
 *.pdf
 *.zip
 
+test.tex
 tests/*

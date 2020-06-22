@@ -91,7 +91,7 @@
  \def\SourceSansPro@scale{1.02}
  \def\ttdefault{blg}
  {\ttfamily\selectfont
-  \DeclareFontShape{T1}{blg}{k}{n}{<-> ssub * blg/b/n}{}}
+  \DeclareFontShape{T1}{blg}{eb}{n}{<-> ssub * blg/b/n}{}}
 \usepackage{textcomp}
 \usepackage{iftex}
 %<*!docsty>
@@ -218,15 +218,15 @@
 \def\section{\@startsection {section}{1}{\z@}%
   {-3.5ex \@plus -1ex \@minus -.2ex}%
   {2.3ex \@plus.2ex}%
-  {\normalfont\Large\ifcmr\fontseries{bx}\else\fontseries{k}\fi\sffamily\color{sectioning}}}
+  {\normalfont\Large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
 \def\subsection{\@startsection{subsection}{2}{\z@}%
   {-3.25ex\@plus -1ex \@minus -.2ex}%
   {1.5ex \@plus .2ex}%
-  {\normalfont\large\ifcmr\fontseries{bx}\else\fontseries{k}\fi\sffamily\color{sectioning}}}
+  {\normalfont\large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
 \def\subsubsection{\@startsection{subsubsection}{3}{\z@}%
   {-3.25ex\@plus -1ex \@minus -.2ex}%
   {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\ifcmr\fontseries{bx}\else\fontseries{k}\fi\sffamily\color{sectioning}}}
+  {\normalfont\normalsize\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
 \def\paragraph{\@startsection{paragraph}{4}%
   {0pt}{8pt plus 2pt minus 1pt}{-1em}%
   {\normalfont\normalsize\itshape}}
@@ -1214,34 +1214,9 @@
 %
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
-%\Describe{Option}{DVIoutput}{true,*false}
-% \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
-% spit out <DVI> files. In fact, all recent \TeX\ systems are using \pdftex\ as
-% the default engine also for <DVI> output, and \luatex\ too can be called
-% in <DVI> mode. However, since changing the output mode inside the document
-% may have undesired effects, this option should be considered deprecated;
-% instead, it is recommended to just call the respective program (|latex| resp.
-% |dvilualatex|).
-%\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
-% For \xetex, this option is not applicable.
-%
-%\iffalse
-%\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
-% The latter can be ordered with the option \opt{DVIoutput}, which will set
-% \cmd\pdfoutput\ to zero.
-% Note that this will confuse packages that depend on the value of
-% \cmd\pdfoutput\ if they were loaded earlier, as they had been made believe
-% that they were called to generate <PDF> output where they actually weren't.
-% These packages are, among others: \pkg{graphics}, \pkg{color},
-% \pkg{hyperref}, \pkg{pstricks} and, obviously, \pkg{ifpdf}. Either load these
-% packages after \microtype\ or else issue the command |\pdfoutput=0| earlier
-% -- in the latter case, the \opt{DVIoutput} option is redundant.
-%\fi
-%
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{draft}' option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\medskip
 %\Describe{Option}{draft}{true,!false}
 %\DescribeOption{final}
 % If the \opt{draft} option is passed to the package, \emph{all
@@ -1275,6 +1250,31 @@
 % file, by default \file{microtype.cfg} (see section~\ref{sub:config-file}).
 % You can have a different configuration file loaded instead by specifying its
 % name \emph{without the extension}, \eg, |config=mycrotype|.
+%
+%\medskip
+%\Describe{Option}{DVIoutput}{true,*false}
+% \pdftex\ and \luatex\ are not only able to generate <PDF> output but can also
+% spit out <DVI> files. In fact, all recent \TeX\ systems are using \pdftex\ as
+% the default engine also for <DVI> output, and \luatex\ too can be called
+% in <DVI> mode. However, since changing the output mode inside the document
+% may have undesired effects, this option should be considered deprecated;
+% instead, it is recommended to just call the respective program (|latex| resp.
+% |dvilualatex|).
+%\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
+% For \xetex, this option is not applicable.
+%
+%\iffalse
+%\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
+% The latter can be ordered with the option \opt{DVIoutput}, which will set
+% \cmd\pdfoutput\ to zero.
+% Note that this will confuse packages that depend on the value of
+% \cmd\pdfoutput\ if they were loaded earlier, as they had been made believe
+% that they were called to generate <PDF> output where they actually weren't.
+% These packages are, among others: \pkg{graphics}, \pkg{color},
+% \pkg{hyperref}, \pkg{pstricks} and, obviously, \pkg{ifpdf}. Either load these
+% packages after \microtype\ or else issue the command |\pdfoutput=0| earlier
+% -- in the latter case, the \opt{DVIoutput} option is redundant.
+%\fi
 %
 %\iffalse ^^A ... waiting for bug reports before documenting yet another option ...
 %\medskip
@@ -1413,13 +1413,13 @@
 % normal font. Size selection commands are possible, too, however, ranges are
 % not allowed.
 %
-%\newcounter{fontsets}
+%\newcounter{nrfontsets}
 %\begin{table}\microtypesetup{protrusion=false}\small
 %\caption{Predefined font sets}\label{tab:predefined-font-sets}
 %\catcode`\!=13 \def!{\textcolor{thered}{$\varnothing$}}
 %\catcode`\/=13 \def/#1/{\textcolor{thegreen}{#1}}
 %\def<#1>{\textcolor{theblue}{\acronym{#1}}}
-%\def\s#1{|#1|\stepcounter{fontsets}}
+%\def\s#1{|#1|\stepcounter{nrfontsets}}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -1500,13 +1500,13 @@
 %\vskip4pt
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
+%\ifcase\c@nrfontsets\or\or\or\or\or\or\or\or\or\or\or
+%   \def\@currentlabel{eleven}\or \def\@currentlabel{twelve}\else
+%   \PackageError{\MT@MT}{I cannot count any further}{}\fi\label{nrfontsets}
 %\end{table}
-%\def\nrfontsets{\ifx\c@fontsets\relax???\else\ifcase\c@fontsets
-%                \or\or\or\or\or\or\or\or\or\or\or eleven\or twelve\else
-%                \PackageError{\MT@MT}{I cannot count any further}{}\fi\fi}
 %
 %\medskip\noindent
-% Table~\ref{tab:predefined-font-sets} lists the \nrfontsets\ predefined font sets.
+% Table~\ref{tab:predefined-font-sets} lists the \ref*{nrfontsets} predefined font sets.
 % They may also be activated by passing their name to the feature options
 % \opt{protrusion}, \opt{expansion}, \opt{tracking}, \opt{kerning} and
 % \opt{spacing} when loading the package, for example:
@@ -2178,7 +2178,7 @@
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
 %                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|),
-%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}}
+%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % Latin Modern Roman\footnote{Alias: New Computer Modern}
@@ -2880,14 +2880,14 @@
 %  \contributor Phelype Oleinik   <phe.h.o1\at gmail.com>,
 %  \contributor Falk Hanisch      <falk.hanisch\at tu-dresden.de>,
 %  \contributor Markus Kohm       <komascript\at gmx.info>,
-%  \contributor Paolo Polesana    <@\at @>, ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
+%  \contributor Paolo Polesana    <@\at @>,  ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
 %  \contributor Oliver Kopp       <koppdev\at gmail.com>,
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
-% `\contributor d909              <@\at @>',
-%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>
+% `\contributor d909              <@\at @>', ^^A https://tex.stackexchange.com/users/176404/d909
+%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>,
+%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>
 % and
-%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>.
-
+%  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>.
 %
 %
 %\iffalse
@@ -2985,7 +2985,7 @@
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 2~February 2020.
+%    \newblock 6~May 2020.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -3371,7 +3371,7 @@
 %^^A  \tagcode,\letterspacefont,\pdfcopyfont,\pdffontexpand,\pdfnoligatures,
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(ap,pre)pendkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
-%\DoNotIndex{\XeTeXversion,\XeTeXrevision}                                   ^^A xetex
+%\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}                           ^^A xetex
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
 %^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}
 %\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
@@ -3517,7 +3517,7 @@
   }%
   \catcode#1=#2\relax
 }
-%<package>\MT@fix@catcode{17}{14}% ^^Q (comment)
+\MT@fix@catcode{17}{14}% ^^Q (comment)
 \MT@fix@catcode{24} {9}% ^^X (ignore)
 %<package>\MT@fix@catcode{33}{12}% !
 %<package>\MT@fix@catcode{34}{12}% "
@@ -3798,6 +3798,7 @@
 %\end{macro}
 %\changes{v2.2}{2007/05/01}{use catcode trickery for \etex\ test}
 %^^A\changes{v2.3a}{2007/12/29}{removed} ^^A \MT@maybe@etex
+%\changes{v2.8}{2020/05/26}{\letterspace\ works with \etex\ only}
 % For definitions that depend on \etex\ features.
 %    \begin{macrocode}
 \ifcase 0%
@@ -3809,6 +3810,8 @@
 \else
   \catcode`\^^Q=9 \catcode`\^^X=14
 \fi
+%<letterspace>^^Q\MT@warning@nl{This package requires the etex extensions.
+%<letterspace>^^Q               \MessageBreak Exiting}\MT@restore@catcodes\endinput
 %<debug>\MT@dinfo@nl{0}{this is
 %<debug>^^Q not
 %<debug>  etex}
@@ -3868,11 +3871,11 @@
     \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}
     \else
       \def\MT@engine@tooold{1}
+      \let\MT@lua\directlua
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
         \let\pdfprotrudechars\protrudechars
         \let\pdfadjustspacing\adjustspacing
-        \let\MT@lua\directlua
       \fi
     \fi
 %</letterspace>
@@ -4118,6 +4121,7 @@
 %\end{macro}
 %\end{macro}
 %\end{macro}
+% [This line intentionally left blank.]
 %\begin{macro}{\MT@pr@level}
 %\begin{macro}{\MT@ex@level}
 %\begin{macro}{\MT@pr@factor}
@@ -4287,6 +4291,7 @@
 %                             \contributor Ulrike Fischer <news3\at nililand.de>)}
 %                            ^^A private mail, 2019/02/19
 %                            ^^A private mail, 2019/02/26
+%\changes{v2.8}{2020/05/26}{fix for \pkg{luatexbase}}
 %    \begin{macrocode}
 %<*luafile>
 
@@ -4302,7 +4307,7 @@ local catpackage
 if luatexbase.registernumber then
   catpackage = luatexbase.registernumber("catcodetable@atletter") -- LaTeX
 else
-  catpackage = luatexbase.catcodetables.CatcodeTableAtletter   -- luatexbase
+  catpackage = luatexbase.catcodetables.CatcodeTableLaTeXAtLetter -- luatexbase
 end
 function microtype.sprint (...)
   tex.sprint(catpackage, ...)
@@ -4614,19 +4619,21 @@ microtype.if_dimen = if_dimen
 %                           (found by \contributor Wiebke Petersen <petersew\at uni-duesseldorf.de>)}
 %                                               ^^A MID: <esmd6k$954$1@news1.rz.uni-duesseldorf.de>
 %\changes{v2.2}{2007/05/10}{employ \luatex\ features if available}
+%\changes{v2.8}{2020/06/18}{use \xetex's \cmd\stringcmp}
 %    \begin{macrocode}
-%<*pdftex-def>
-\MT@requires@pdftex5{
+%<*pdftex-def|xetex-def>
+%<pdftex-def>\MT@requires@pdftex5{
 \def\MT@ifstreq#1#2{%
-  \ifcase\pdfstrcmp{#1}{#2}\relax
+%<pdftex-def>  \ifnum\pdfstrcmp{#1}{#2}=\z@
+%<xetex-def>  \ifnum\strcmp{#1}{#2}=\z@
     \expandafter\@firstoftwo
   \else
     \expandafter\@secondoftwo
   \fi
 }
+%</pdftex-def|xetex-def>
+%<*pdftex-def>
 }{
-%</pdftex-def>
-%<*pdftex-def|xetex-def>
 \def\MT@ifstreq#1#2{%
   \edef\MT@res@a{#1}%
   \edef\MT@res@b{#2}%
@@ -4636,8 +4643,8 @@ microtype.if_dimen = if_dimen
     \expandafter\@secondoftwo
   \fi
 }
-%</pdftex-def|xetex-def>
-%<pdftex-def>}
+}
+%</pdftex-def>
 %<luatex-def>\def\MT@ifstreq#1#2{\csname\MT@lua{microtype.if_str_eq([[#1]],[[#2]])}\endcsname}
 %<*luafile>
 local function if_str_eq(s1, s2)
@@ -4876,19 +4883,10 @@ microtype.if_str_eq = if_str_eq
 %<luatex-def>  microtype.if_luaotf_font()
 %<*luafile|letterspace>
 %<luafile>local function if_luaotf_font()
-  if fonts then
-    local thefont
-    if fonts.ids then
-      thefont = fonts.ids[font.current()]
-    else
-      thefont = fonts.hashes.identifiers[font.current()]
-    end
-    if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
-      then tex.write("@firstoftwo")
-      else tex.write("@secondoftwo")
-    end
-  else
-    tex.write("@secondoftwo")
+  local thefont = font.getfont(font.current())
+  if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
+    then tex.write("@firstoftwo")
+    else tex.write("@secondoftwo")
   end
 %<luafile>end
 %<luafile>microtype.if_luaotf_font = if_luaotf_font
@@ -4910,6 +4908,7 @@ microtype.if_str_eq = if_str_eq
 %\changes{v2.6a}{2015/05/10}{fix \texttt{lua} function
 %                            (reported by \contributor Herbert Vo\ss{} <Herbert.Voss\at FU-Berlin.DE>)}
 %                             ^^A private mail, 2016/05/10
+%\changes{v2.8}{2020/06/20}{simplify \texttt{lua} function}
 %    \begin{macrocode}
 %<*luatex-def>
 \def\MT@do@font#1{%
@@ -4925,13 +4924,7 @@ microtype.if_str_eq = if_str_eq
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
-  if fonts then
-    local thefont
-    if fonts.ids then       --- legacy luaotfload
-      thefont = fonts.ids[font.current()]
-    else                    --- new location
-      thefont = fonts.hashes.identifiers[font.current()]
-    end
+    local thefont = font.getfont(font.current())
     if thefont then
       for i,v in next,thefont.characters do
         if v.index == nil or v.index > 0 then
@@ -4939,7 +4932,6 @@ local function do_font()
         end
       end
     end
-  end
 end
 microtype.do_font = do_font
 
@@ -5479,7 +5471,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           ^^A private mail, 2011/04/30
 %                           ^^A (beta:07)
 %    \begin{macrocode}
-    \def\space{ }%
+      \def\space{ }%
 %    \end{macrocode}
 %\changes{v1.9b}{2005/12/23}{compatibility with the \texttt{extendedchar} option of
 %                            the \pkg{listings} package}
@@ -5508,8 +5500,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \ifx\SOUL@\@undefined\else
     \soulregister\lsstyle 0%
     \soulregister\textls  1%
-    \let\MT@SOUL@doword\SOUL@doword
-    \def\SOUL@doword{\pdfadjustspacing=\z@ \MT@SOUL@doword}%
+    \ifx\XeTeXrevision\@undefined
+      \let\MT@SOUL@doword\SOUL@doword
+      \def\SOUL@doword{\pdfadjustspacing=\z@ \MT@SOUL@doword}%
+    \fi
   \fi
 %<*package>
   \MT@with@package@T{tikz}\MT@tikz@setup
@@ -5764,6 +5758,39 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % prevent a different design size being selected.
 %
 %\bigskip
+%\begin{macro}{\MT@fix@fontdimen@six}
+%\changes{v1.8}{2005/05/03}{new macro: test whether \fontdim6 is defined}
+%\changes{v2.3e}{2009/08/31}{fix: gobbling settings with tracking failed
+%                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
+%                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
+%\changes{v2.8}{2020/05/25}{try to fix zero \fontdim6}
+%\begin{macro}{\MT@dimen@six}
+% If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
+% won't work, and we could skip the settings (for example, the \pkg{dsfont}
+% fonts don't specify this dimension; this is probably a bug -- the \pkg{fourier}
+% and \pkg{newpx}/\pkg{newtx} packages have been fixed in the meantime).
+% However, we can fix it ourselves -- only tracking still doesn't work (it seems
+% that \cmd\letterspacefont\ uses the \fontdim6 from the original font).
+% \xetex\ doesn't provide an equivalent to \cmd\pdffontsize, so we use the
+% nominal size instead.
+%    \begin{macrocode}
+%<*pdftex-def|luatex-def|xetex-def>
+\def\MT@fix@fontdimen@six{%
+  \ifnum\fontdimen6\MT@font=\z@
+    \fontdimen6\MT@font=%
+%<pdftex-def>      \pdffontsize\MT@font
+%<luatex-def>      \MT@requires@luatex4{\pdffeedback fontsize}{\pdffontsize}\MT@font
+%<xetex-def>      \MT@size pt
+    \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
+             (new value: \the\fontdimen6\MT@font)}%
+    \MT@glet@nc{\MT@@font-fake6}\@empty
+  \fi
+  \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
+}
+%</pdftex-def|luatex-def|xetex-def>
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@split@name}
 %\changes{v1.7}{2005/02/27}{don't define \cs{MT@encoding} \&c. \cmd\global ly}
 %\changes{v2.0}{2006/12/19}{adjust to possible letterspacing}
@@ -5787,6 +5814,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \def\MT@series  {#3}%
   \def\MT@shape   {#4}%
   \def\MT@size    {#5}%
+  \MT@fix@fontdimen@six
 %    \end{macrocode}
 %\begin{macro}{\MT@familyalias}
 % Alias family?
@@ -6048,56 +6076,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@glet@nc{\MT@encoding-\MT@family-settings}\@empty
       }%
     \fi
-    \MT@get@font@dimen@six{%
-      \MT@get@opt
-      \MT@reset@pr@codes
+    \MT@get@opt
+    \MT@reset@pr@codes
 %    \end{macrocode}
 % Get the name of the inheritance list and parse it.
 %    \begin{macrocode}
-      \MT@get@inh@list
+    \MT@get@inh@list
 %    \end{macrocode}
 % Set an input encoding?
 %    \begin{macrocode}
-      \MT@set@inputenc{c}%
+    \MT@set@inputenc{c}%
 %    \end{macrocode}
 % Load additional lists?
 %    \begin{macrocode}
-      \MT@load@list\MT@pr@c@name
-      \MT@set@listname
+    \MT@load@list\MT@pr@c@name
+    \MT@set@listname
 %    \end{macrocode}
 % Load the main list.
 %    \begin{macrocode}
-      \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
-      \expandafter\MT@set@codes\@tempc,\relax,}%
+    \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
+    \expandafter\MT@set@codes\@tempc,\relax,%
   }\MT@reset@pr@codes
 }
 %    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@get@font@dimen@six}
-%\changes{v1.8}{2005/05/03}{new macro: test whether \fontdim6 is defined}
-%\changes{v2.3e}{2009/08/31}{fix: gobbling settings with tracking failed
-%                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
-%                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
-%\begin{macro}{\MT@dimen@six}
-% If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
-% won't work, and we can skip the settings (for example, the \pkg{dsfont} and
-% \pkg{fourier} fonts don't specify this dimension; this is probably a bug in
-% the fonts).
-%    \begin{macrocode}
-\def\MT@get@font@dimen@six{%
-  \ifnum\fontdimen6\MT@font=\z@
-    \MT@warning@nl{%
-      Font `\MT@@font' does not specify its\MessageBreak
-      \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
-      \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
-    \expandafter\@gobble
-  \else
-    \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
-    \expandafter\@firstofone
-  \fi
-}
-%    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@all@pr}
 %\changes{v2.2}{2007/06/16}{(et al.) allow empty values}
@@ -6684,7 +6685,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\MT@stretch@  \MT@stretch
     \let\MT@shrink@   \MT@shrink
     \let\MT@step@     \MT@step
-%<pdftex-def>    \let\MT@auto@     \MT@auto
+    \let\MT@auto@     \MT@auto
     \let\MT@ex@factor@\MT@ex@factor
   }%
   \MT@reset@ef@codes
@@ -6703,30 +6704,33 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@expandfont}
-% Expand the font.
+% Expand the font. For some reason, older \luatex\ versions freeze if
+% the |autoexpand| modifier is missing. Can't be bothered to find out why.
+% For newer versions, we could also use the function |font.setexpansion|,
+% or, in the future, \pkg{luaotfload}'s expansion font feature. ^^A https://github.com/latex3/luaotfload/commit/4907e23407c52437cca56966d11d3b4548bba585
+%\iffalse
 % In \luatex, we try to go the |lua| way, if the |font.setexpansion| function exists.
 %\changes{v2.7d}{2019/11/17}{use \luatex\ function \texttt{font.}\penalty\exhyphenpenalty\texttt{setexpansion} if available}
+%\fi
 %    \begin{macrocode}
 %<*luatex-def>
-\MT@lua{\detokenize{
-  if font.setexpansion == nil then
-    tex.print("\\@firstoftwo")
-  else
-    tex.print("\\@secondoftwo")
-  end
-}}{
+\MT@requires@luatex3{
 \MT@requires@luatex4{\let\pdffontexpand\expandglyphsinfont}\relax
+\ifnum\luatexversion<79
+\def\MT@expandfont{%
+  \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ autoexpand\relax
+}
+\else
+\def\MT@expandfont{%
+  \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@\relax
+}
+\fi
+}{
 %</luatex-def>
 \def\MT@expandfont{%
   \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ \MT@auto@\relax
 }
-%<*luatex-def>
-}{
-\def\MT@expandfont{%
-  \MT@lua{font.setexpansion(font.current(),\MT@stretch@,\MT@shrink@,\MT@step@)}%
-}
-}
-%</luatex-def>
+%<luatex-def>}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@all@ex}
@@ -6822,8 +6826,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@ex@opt@{stretch}{Setting stretch limit to \number\MT@stretch@}%
   \MT@get@ex@opt@{shrink} {Setting shrink limit to \number\MT@shrink@}%
   \MT@get@ex@opt@{step}   {Setting expansion step to \number\MT@step@}%
-%<pdftex-def>  \def\@tempa{autoexpand}%
-%<pdftex-def>  \MT@get@ex@opt@{auto}{\ifx\@tempa\MT@auto@ En\else Dis\fi abling automatic expansion}%
+%<luatex-def>  \MT@requires@luatex3\relax{%
+  \MT@get@ex@opt@{auto}{\MT@ifstreq{\MT@auto@}{autoexpand}{En}{Dis}abling automatic expansion}%
+%<luatex-def>  }%
   \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @preset}{%
     \MT@preset@ex
     \let\MT@reset@ef@codes\relax
@@ -6883,15 +6888,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@set@sp@codes{%
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six{%
-      \MT@get@opt
-      \MT@reset@sp@codes
-      \MT@get@inh@list
-      \MT@set@inputenc{c}%
-      \MT@load@list\MT@sp@c@name
-      \MT@set@listname
-      \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
-      \expandafter\MT@set@codes\@tempc,\relax,}%
+    \MT@get@opt
+    \MT@reset@sp@codes
+    \MT@get@inh@list
+    \MT@set@inputenc{c}%
+    \MT@load@list\MT@sp@c@name
+    \MT@set@listname
+    \MT@let@cn\@tempc{MT@sp@c@\MT@sp@c@name}%
+    \expandafter\MT@set@codes\@tempc,\relax,%
   }\MT@reset@sp@codes
 }
 %    \end{macrocode}
@@ -7000,15 +7004,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@set@kn@codes{%
   \MT@if@list@exists{%
-    \MT@get@font@dimen@six{%
-      \MT@get@opt
-      \MT@reset@kn@codes
-      \MT@get@inh@list
-      \MT@set@inputenc{c}%
-      \MT@load@list\MT@kn@c@name
-      \MT@set@listname
-      \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
-      \expandafter\MT@set@codes\@tempc,\relax,}%
+    \MT@get@opt
+    \MT@reset@kn@codes
+    \MT@get@inh@list
+    \MT@set@inputenc{c}%
+    \MT@load@list\MT@kn@c@name
+    \MT@set@listname
+    \MT@let@cn\@tempc{MT@kn@c@\MT@kn@c@name}%
+    \expandafter\MT@set@codes\@tempc,\relax,%
   }\MT@reset@kn@codes
 }
 %    \end{macrocode}
@@ -7133,12 +7136,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % The tracking amount is determined by the optional argument to \cs{textls},
 % settings from \cs{SetTracking}, or the global \opt{letterspace} option, in
 % this order.
+%
+% Tracking won't work if the original font's \fontdim6 is zero, in which
+% case we issue a warning (once for every font).
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def|letterspace>
 \def\MT@set@tr@codes{%
 %<*pdftex-def|luatex-def>
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
-  \MT@get@font@dimen@six{%
+  \MT@ifdefined@n@TF{\MT@@font-fake6}{%
+    \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
+      \MT@warning@nl{%
+        Font `\MT@@font' does not specify its\MessageBreak
+        \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
+        \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
+      \MT@glet@nc{\MT@@font-fake6}\relax
+    \fi
+  }{%
   \MT@if@list@exists
     \MT@get@tr@opt
     \relax
@@ -7461,12 +7475,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.7}{2016/08/03}{fix: prevent infinite loop with \pkg{psnfss} and \pkg{exscale} packages
 %                            (reported by \contributor user11126 <@\at @>,
 %                             solution by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>)}
-% Setting \cmd\glb@currsize\ to \cmd\@empty\ (our previous solution) could
+%                           ^^A https://tex.stackexchange.com/questions/316231/microtype-and-exscale-crashing-in-texlive-2016#comment771828_316252
+% Setting \cmd\glb@currsize\ globally to \cmd\@empty\ (our previous solution) could
 % throw us into an infinite loop (\eg, with the \pkg{psnfss} packages,
 % via \cmd\every@math@size), so we issue \cmd\glb@settings\ instead.
+%\changes{v2.8}{2020/05/26}{fix: enforce math setup, again}
+% However, in certain situations, we may still miss some math fonts, so
+% let's try to also enforce it by emptying \cmd\glb@currsize, fingers crossed.
+% The overhead seems small.
 %    \begin{macrocode}
 \DeclareRobustCommand\lsstyle{%
   \not@math@alphabet\lsstyle\textls
+  \let\glb@currsize\@empty
 %<pdftex-def|luatex-def>  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
 %<pdftex-def|luatex-def>  \def\MT@feat{tr}%
   \let\MT@tracking\MT@set@tr@codes
@@ -8752,17 +8772,17 @@ else
   local function name_to_slot(name, unsafe)
     if fonts then
       local unicodes
-      if fonts.ids then       --- legacy luaotfload
+      if fonts.ids then       -- legacy luaotfload
         local tfmdata = fonts.ids[font.current()]
         if not tfmdata then return end
         unicodes = tfmdata.shared.otfdata.luatex.unicodes
-      else --- new location
+      else                    -- new location
         local tfmdata = fonts.hashes.identifiers[font.current()]
         if not tfmdata then return end
         unicodes = tfmdata.resources.unicodes
       end
       local unicode = unicodes[name]
-      if unicode then --- does the 'or' branch actually exist?
+      if unicode then -- does the 'or' branch actually exist?
         return type(unicode) == "number" and unicode or unicode[1]
       end
     end
@@ -11010,23 +11030,19 @@ end
 %\changes{v1.7}{2005/03/07}{disallow automatic expansion if \pdftex\ too old}
 %\changes{v2.7a}{2017/08/08}{disallow non-automatic expansion with \luatex}
 %    \begin{macrocode}
-%<*pdftex-def>
-    \MT@requires@pdftex4{%
-      \MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}%
-    }{%
-      \MT@warning{pdftex too old for automatic font expansion}%
-    }
-%</pdftex-def>
+%<pdftex-def>    \MT@requires@pdftex4%
+%<luatex-def>    \MT@requires@luatex3\relax
+      {\MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}}%
+%<pdftex-def>      {\MT@warning{pdftex too old for automatic font expansion}}%
   \else
-%<*pdftex-def>
-    \MT@requires@pdftex4{%
-      \MT@glet@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty
-    }\relax
-%</pdftex-def>
+%<pdftex-def>    \MT@requires@pdftex4%
 %<*luatex-def>
-    \MT@warning{Non-automatic font expansion doesn't work with\MessageBreak
-                luatex}%
+    \MT@requires@luatex3{%
+      \MT@warning{Non-automatic font expansion doesn't work with\MessageBreak
+                  luatex}}%
 %</luatex-def>
+      {\MT@glet@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty}%
+%<pdftex-def>      \relax
   \fi
 }
 %    \end{macrocode}
@@ -12274,7 +12290,7 @@ end
 % positioned as if they were transformed, without actually being transformed.
 % Since this could still be considered a viable option, we don't disable
 % the feature completely, but issue a warning.
-%\changes{v2.8}{2020/02/09}{warrning when expanding in <DVI> mode with \luatex\
+%\changes{v2.8}{2020/02/09}{warning when expanding in <DVI> mode with \luatex\
 %                           (reported by \contributor d909 <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/531413/dvipdfmx-and-dvips-do-not-expand-fonts-properly-with-lualatex-in-dvi-mode
 %    \begin{macrocode}
@@ -12367,10 +12383,9 @@ end
 %                            (reported by \contributor Ulrike Fischer <news3\at nililand.de>)}
 %                            ^^A private mail, 2017/10/29
 % In \luatex\ 1.0.6, the `|autoexpand|' option seems to have been removed altogether
-% and would trigger an error.
+% and would trigger a warning.
 %    \begin{macrocode}
-%<luatex-def>    \let\MT@auto@\@empty
-%<pdftex-def>    \let\MT@auto\@empty
+    \let\MT@auto\@empty
     \ifMT@auto
 %    \end{macrocode}
 %\end{macro}
@@ -12410,6 +12425,7 @@ end
         \def\MT@auto{1000 }%
       }%
 %</pdftex-def>
+%<luatex-def>      \MT@requires@luatex3\relax{\def\MT@auto{autoexpand}}%
     \else
 %<*pdftex-def>
 %    \end{macrocode}
@@ -13119,6 +13135,13 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{STEP-TLF}{ptmx}     % step
 \DeclareMicrotypeAlias{STEP-TOsF}{ptmj}    %   "
+%    \end{macrocode}
+% The \pkg{stix} and \pkg{stix2} packages (the latter has departed a bit from being
+% a Times clone, but still seems close enough).
+%\changes{v2.8}{2020/05/31}{declare aliases for \pkg{stix} and \pkg{stix2} fonts}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{stix} {ptm}         % stix
+\DeclareMicrotypeAlias{stix2}{ptm}         % stix2
 %    \end{macrocode}
 %\todo{check Times variants}
 % More Times variants, to be checked: |pns|, |mns| (TimesNewRomanPS); |mnt|
@@ -17214,7 +17237,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10676}
+% \CheckSum{10757}
 %
 % \Finale
 %

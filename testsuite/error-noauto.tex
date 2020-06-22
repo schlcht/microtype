@@ -1,6 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage{iftex}
-\ifluatex
+\ifdefined\directlua
 \pdfextension mapfile{+pkpmm}
 \pdfvariable compresslevel=0
 \else

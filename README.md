@@ -77,4 +77,3 @@ provided that: (1) the original copyright statement is not removed, and
 
 ------------------------------------------------------
 Copyright (c) 2004--2020  R Schlicht `<w.m.l@gmx.net>`
-------------------------------------------------------
