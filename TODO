@@ -1,3 +1,5 @@
+* different md* (etc.) for different fonts
+* add mt-EBGaramond.cfg ?
 * split docu?
 * what about polyglossia?
 * check contexts in lua again
