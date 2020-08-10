@@ -9114,10 +9114,12 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@is@tlig}
-% This might have to change again with the next \LaTeX\ release. ^^A see https://github.com/latex3/latex2e/issues/165
+% This might have to change again with the next \LaTeX\ release, ^^A see https://github.com/latex3/latex2e/issues/165
+% \dots\ or so I feared, but it still seems to be fine.
 %    \begin{macrocode}
 \def\MT@is@tlig#1#2{%
   \ifx#1\remove@tlig
+%<debug>    \MT@dinfo@nl{3}{> `\the\MT@toks' (removing remove@tlig)}%
     \MT@is@number #2\relax\relax
   \fi
 }
@@ -17250,7 +17252,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10757}
+% \CheckSum{10760}
 %
 % \Finale
 %
