@@ -560,7 +560,8 @@
               colorlinks,linkcolor=theblue,citecolor=theblue,urlcolor=thered,
               hyperindex=false,hyperfootnotes=false]
              {hyperref}
-  \usepackage{hyperxmp}
+  \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
+  \usepackage{hyperxmp} % (hyperxmp loads totpages)
   \usepackage{attachfile}
   \usepackage{pdfpages}
   \hypersetup{
@@ -2971,7 +2972,7 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX3 Project Team, \emph{\LaTeXe\ font selection},
-%   \newblock October 2019.
+%   \newblock July 2020.
 %   \newblock (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
@@ -2983,7 +2984,7 @@
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 6~May 2020.
+%    \newblock 2~September 2020.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -4922,14 +4923,14 @@ microtype.if_str_eq = if_str_eq
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
-    local thefont = font.getfont(font.current())
-    if thefont then
-      for i,v in next,thefont.characters do
-        if v.index == nil or v.index > 0 then
-          microtype.sprint([[\@tempcnta=]]..i..[[\relax\MT@dofont@function]])
-        end
+  local thefont = font.getfont(font.current())
+  if thefont then
+    for i,v in next,thefont.characters do
+      if v.index == nil or v.index > 0 then
+        microtype.sprint([[\@tempcnta=]]..i..[[\relax\MT@dofont@function]])
       end
     end
+  end
 end
 microtype.do_font = do_font
 
@@ -6400,7 +6401,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@get@opt}
 % The optional argument to the configuration commands (except for
-% \cs{SetExpansion}, which is being dealt with in \cs{MT@get@ex@opt}).
+% \cs{SetExpansion} and \cs{SetTracking}, which are being dealt with
+% in \cs{MT@get@ex@opt} and \cs{MT@get@tr@opt}, resp.).
 %    \begin{macrocode}
 \def\MT@get@opt{%
   \MT@set@listname
@@ -7408,23 +7410,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*pdftex-def|luatex-def>
 \def\MT@get@tr@opt{%
   \MT@set@listname
-  \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name}{%
-    \MT@let@cn\MT@letterspace{MT@tr@c@\MT@tr@c@name}%
+  \let\MT@tr@factor@\@m
 %    \end{macrocode}
 %\begin{macro}{\MT@tr@unit@}
-% Different unit?
+% Different unit (for |letterspace| and/or |(outer)spacing|)?
+%\changes{v2.8}{2020/11/22}{fix: allow unit regardless whether letterspacing is set}
 %    \begin{macrocode}
-    \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name @unit}{%
-      \MT@let@cn\MT@tr@unit@{MT@tr@c@\MT@tr@c@name @unit}%
-      \ifdim\MT@tr@unit@=1em
-        \let\MT@tr@unit@\@undefined
-      \else
-        \MT@let@cn\@tempb{MT@tr@c@\MT@tr@c@name}%
-        \MT@get@unit\MT@tr@unit@
-        \let\MT@tr@factor@\@m
-        \MT@scale@to@em
-        \edef\MT@letterspace{\number\@tempcntb}%
-      \fi
+  \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name @unit}{%
+    \MT@let@cn\MT@tr@unit@{MT@tr@c@\MT@tr@c@name @unit}%
+    \ifdim\MT@tr@unit@=1em
+      \let\MT@tr@unit@\@undefined
+    \else
+      \MT@get@unit\MT@tr@unit@
+    \fi
+  }%
+  \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name}{%
+    \MT@let@cn\MT@letterspace{MT@tr@c@\MT@tr@c@name}%
+    \MT@ifdefined@c@T\MT@tr@unit@{%
+      \let\@tempb\MT@letterspace
+      \MT@scale@to@em
+      \edef\MT@letterspace{\number\@tempcntb}%
     }%
   }%
 %    \end{macrocode}
@@ -7645,16 +7650,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@tr@set@space@}
 % If settings for outer spacing \meta{\#2} don't exist, they will be inherited
 % from the inner spacing settings \meta{\#1}.
+%\changes{v2.8}{2020/11/24}{simplified}
 %    \begin{macrocode}
 \def\MT@tr@set@space@#1#2#3#4{%
   \MT@ifempty{#2}{%
-    \MT@ifempty{#1}{%
-      \edef\MT@temp{\MT@temp#4\the\fontdimen#3\MT@lsfont}%
-    }{%
+    \MT@ifempty{#1}\relax{%
       \MT@tr@set@space@@{#1}{#3}{1000}%
-      \edef\MT@temp{\MT@temp#4\the\@tempdima}%
       \fontdimen#3\MT@lsfont=\@tempdima
     }%
+    \edef\MT@temp{\MT@temp#4\the\fontdimen#3\MT@lsfont}%
   }{%
     \MT@tr@set@space@@{#2}{#3}{2000}%
     \edef\MT@temp{\MT@temp#4\the\@tempdima}%
@@ -7676,8 +7680,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@ifdefined@c@TF\MT@tr@unit@
       {\edef\@tempb{#1}\MT@scale@to@em}
       {\@tempcntb=#1\relax}%
-    \@tempdima=\dimexpr \dimexpr\@tempcntb sp*\MT@dimen@six/1000\relax
-                       -\fontdimen#2\MT@lsfont\relax
+    \@tempdima=\dimexpr\@tempcntb sp*\MT@dimen@six/1000\relax
 %    \end{macrocode}
 % For \fontdim2, we also have to subtract the kerning that letterspacing adds
 % to each side of the characters (only half if it's for outer spacing).
@@ -7685,7 +7688,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \ifnum#2=\tw@
       \advance\@tempdima -\dimexpr\MT@letterspace@ sp*\MT@dimen@six/#3\relax
     \fi
-    \@tempdima=\dimexpr \fontdimen#2\MT@lsfont+\@tempdima\relax
   }{%
     \MT@ifempty\@tempa{\let\@tempa\MT@letterspace@}\relax
     \@tempdima=\dimexpr \numexpr1000+\@tempa sp *\fontdimen#2\MT@lsfont/1000\relax
@@ -17252,7 +17254,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10760}
+% \CheckSum{10748}
 %
 % \Finale
 %
