@@ -180,7 +180,7 @@ $(TDS_ZIP): $(ALL_FILES)
 	@cd $(TEXMFROOT) && zip -9 ../$@ -r . $(REDIRECT)
 	@$(RM) -r -- $(TEXMFROOT)
 
-install: $(ALL_FILES)
+install: doc $(ALL_FILES)
 	@if test ! -n "$(TEXMFROOT)" ; then \
 		echo "Cannot locate your home texmf tree. Specify manually with\n\n    make install TEXMFROOT=/path/to/texmf\n" ; \
 		false ; \
