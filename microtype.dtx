@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.8"
+% !DTXversion:: "2.9"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2020/12/07 v2.8
+  [2020/99/99 v2.9
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -2884,9 +2884,10 @@
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
 % `\contributor d909              <@\at @>', ^^A https://tex.stackexchange.com/users/176404/d909
 %  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>,
-%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>
+%  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
+%  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>
 % and
-%  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>.
+%  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>.
 %
 %
 %\iffalse
@@ -3036,6 +3037,8 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\Version{2.8}{2020/12/07}
 %  \item New default font sets for expansion and spacing: `|alltext-nott|'
 %        \refsection{\ref{sec:font-sets}, table~\ref{tab:predefined-font-sets}}
 %
@@ -10091,19 +10094,8 @@ end
   \else
     \MT@let@cn\@tempa{\MT@val}%
   \fi
-  \ifx\@tempa\relax \else
-%    \end{macrocode}
-% The \pkg{relsize} solution of parsing \cmd\@setfontsize\ does not work with the
-% <AMS> classes, among others. I hope my hijacking doesn't do any harm.
-%\changes{v1.2}{2004/09/26}{hijack \cmd\set@fontsize\ instead of \cmd\@setfontsize}
-% We redefine \cmd\set@fontsize\ instead of \cmd\@setfontsize\ because some classes
-% might define the size selection commands by simply using \cmd\fontsize\
-% (\eg, the \pkg{a0poster} class).
-%\changes{v2.3b}{2008/03/07}{grouping}
-%    \begin{macrocode}
-    \begingroup
-      \def\set@fontsize##1##2##3##4\@nil{\endgroup\def\MT@val{##2}}%
-      \@tempa\@nil
+  \ifx\@tempa\relax\else
+    \MT@get@size@
   \fi
 %    \end{macrocode}
 % Test whether we finally got a number or dimension so that we can strip the
@@ -10120,6 +10112,42 @@ end
   }%
 }
 %    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@get@size@}
+%\begin{macro}{\MT@get@size@@}
+% The \pkg{relsize} solution of parsing \cmd\@setfontsize\ does not work with the
+% <AMS> classes, among others. I hope my hijacking doesn't do any harm.
+%\changes{v1.2}{2004/09/26}{hijack \cmd\set@fontsize\ instead of \cmd\@setfontsize}
+% We redefine \cmd\set@fontsize\ instead of \cmd\@setfontsize\ because some classes
+% might define the size selection commands by simply using \cmd\fontsize\
+% (\eg, the \pkg{a0poster} class).
+%\changes{v2.3b}{2008/03/07}{grouping}
+%    \begin{macrocode}
+\def\MT@get@size@@{%
+  \begingroup
+    \def\set@fontsize##1##2##3##4\@nil{\endgroup\def\MT@val{##2}}%
+    \@tempa\@nil
+}
+%    \end{macrocode}
+% The \pkg{svjour3} class defines the size commands using conditionals;
+% we close any leftovers here.
+%\changes{v2.9}{2020/12/10}{compatibility with \pkg{svjour3}
+%                           (reported by \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com> (no relation))}
+%                           ^^A https://groups.google.com/g/de.comp.text.tex/c/46sJ1jFRq-I
+%                           ^^A MID: <9aa52497-19b5-4ca7-a668-c076cec4ceadn@googlegroups.com>, 2020/11/09
+%    \begin{macrocode}
+\@ifclassloaded{svjour3}{%
+  \def\MT@get@size@{%
+    \@tempcnta=\currentiflevel
+    \MT@get@size@@
+    \loop
+      \ifnum\numexpr\currentiflevel-1>\@tempcnta
+      \csname fi\endcsname
+    \repeat
+  }%
+}{\let\MT@get@size@\MT@get@size@@}
+%    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\changes{v1.9}{2005/07/13}{\cs{DeclareMicrotypeSet}: new key: \texttt{font}}
 %\begin{macro}{\MT@define@set@key@font}
@@ -17254,7 +17282,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10748}
+% \CheckSum{10768}
 %
 % \Finale
 %
