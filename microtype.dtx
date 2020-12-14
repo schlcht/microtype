@@ -196,7 +196,7 @@
   \DeclareRobustCommand\TeX{\textoractual{\OrigTeX}{TeX}}
   \setlength\textheight{49\baselineskip}
 \else
-  \let\bfdefault\bfdefault@previous % undo mathdesign's \def\bdefault{b}
+  \let\bfdefault\bfdefault@previous % undo mathdesign's \def\bfdefault{b}
   \def\Module#1{{\color{theblue}\textoractual{$\langle$}{<}\textit{#1}\textoractual{$\rangle$}{>}}}
   \DeclareRobustCommand\TeX{\textoractual{T\kern-.1em\lower.4ex\hbox{E}\kern-.075emX\@}{TeX}}
   \DeclareRobustCommand\LaTeX{\textoractual{L\kern-.26em{\sbox\z@ T\vbox to\ht\z@{%
@@ -2882,8 +2882,7 @@
 %  \contributor Paolo Polesana    <@\at @>,  ^^A https://tex.stackexchange.com/users/95083/paolo-polesana
 %  \contributor Oliver Kopp       <koppdev\at gmail.com>,
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
-% `\contributor d909              <@\at @>', ^^A https://tex.stackexchange.com/users/176404/d909
-%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>,
+%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>, ^^A also https://tex.stackexchange.com/users/176404/d909
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>
 % and
@@ -10130,22 +10129,24 @@ end
 }
 %    \end{macrocode}
 % The \pkg{svjour3} class defines the size commands using conditionals;
-% we close any leftovers here.
+% using \etex\ primitives, we close any leftovers here.
 %\changes{v2.9}{2020/12/10}{compatibility with \pkg{svjour3}
-%                           (reported by \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com> (no relation))}
+%                           (reported by \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com> (no relation!!))}
 %                           ^^A https://groups.google.com/g/de.comp.text.tex/c/46sJ1jFRq-I
 %                           ^^A MID: <9aa52497-19b5-4ca7-a668-c076cec4ceadn@googlegroups.com>, 2020/11/09
 %    \begin{macrocode}
-\@ifclassloaded{svjour3}{%
-  \def\MT@get@size@{%
-    \@tempcnta=\currentiflevel
-    \MT@get@size@@
-    \loop
-      \ifnum\numexpr\currentiflevel-1>\@tempcnta
-      \csname fi\endcsname
-    \repeat
-  }%
-}{\let\MT@get@size@\MT@get@size@@}
+^^X\@ifclassloaded{svjour3}{%
+^^X  \def\MT@get@size@{%
+^^X    \@tempcnta=\currentiflevel
+^^X    \MT@get@size@@
+^^X    \loop
+^^X      \ifnum\numexpr\currentiflevel-1>\@tempcnta
+^^X      \csname fi\endcsname
+^^X    \repeat
+^^X  }%
+^^X}{%
+  \let\MT@get@size@\MT@get@size@@
+^^X}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12336,7 +12337,7 @@ end
 % Since this could still be considered a viable option, we don't disable
 % the feature completely, but issue a warning.
 %\changes{v2.8}{2020/02/09}{warning when expanding in <DVI> mode with \luatex\
-%                           (reported by \contributor d909 <@\at @>)}
+%                           (reported by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)} ^^A aka `d909'
 %                           ^^A https://tex.stackexchange.com/questions/531413/dvipdfmx-and-dvips-do-not-expand-fonts-properly-with-lualatex-in-dvi-mode
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def>
