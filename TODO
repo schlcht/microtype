@@ -1,3 +1,5 @@
+* inheritance for New Computer Modern
+* account for fontspec's NFSSfamily
 * different md* (etc.) for different fonts
 * add mt-EBGaramond.cfg ?
 * split docu?

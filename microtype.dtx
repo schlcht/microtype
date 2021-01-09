@@ -2891,9 +2891,10 @@
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
 %  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>, ^^A also https://tex.stackexchange.com/users/176404/d909
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
-%  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>
+%  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
+%  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>
 % and
-%  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>.
+% `\contributor Canageek          <@\at @>'. ^^A https://tex.stackexchange.com/users/7880/canageek
 %
 %
 %\iffalse
@@ -13119,8 +13120,14 @@ end
 %    \end{macrocode}
 % Another, new Computer Modern extension.
 %\changes{v2.8}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
+% The \pkg{newcomputermodern} package loads it by file name.
+%\changes{v2.9}{2021/01/09}{also reference New Computer Modern by file name
+%                           (reported by \contributor Canageek <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/578121/how-do-i-properly-tell-microtype-that-newcomputermodern-is-the-same-as-comput
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{New Computer Modern}{Latin Modern Roman}
+\DeclareMicrotypeAlias{NewCM10-Book.otf}   {Latin Modern Roman}
+\DeclareMicrotypeAlias{NewCM10-Regular.otf}{Latin Modern Roman}
 %    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
@@ -17290,7 +17297,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10768}
+% \CheckSum{10770}
 %
 % \Finale
 %
