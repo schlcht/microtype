@@ -1043,7 +1043,7 @@
 %\begin{table}\small
 %\changes{v2.3a}{2008/02/25}{add table of available and enabled features}
 %\changes{v2.9}{2020/12/23}{reorganise table~\ref{tab:available-features} for clarification
-%                           (suggested by \contributor Daniel B. Miller <dbmiller\at dbmiller.org>)}
+%                           (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
 %                           ^^A private mail, 2020/12/10
 %\caption{Availability of micro-typographic features}\label{tab:available-features}
 %\catcode`\!=13 \def!{\textcolor{thegreen}{\hskip.9em $\bigstar$}}
@@ -2158,7 +2158,7 @@
 %      & n, (it, sl, sc)\fnref{fn:incmpl} \\
 % Computer Modern Roman (|cmr|)\footnote{Aliases: Latin Modern Roman (|lmr|),
 %                                        \pkg{ae} (|aer|), \pkg{zefonts} (|zer|),
-%                                        \pkg{eco} (|cmor|), \pkg{hfoldsty} (|hfor|)}
+%                                        \pkg{eco} (|cmor|), \pkg{hfoldsty} (|hfor|), \pkg{mlmodern}~(|mlmr|)}
 %      & <OT1>, <OT4>, <T1>, <T2A>, <T5>, <LY1>, <TS1>
 %      & n, it, sl, sc \\
 % Bitstream Charter (|bch|)\footnote{Aliases: \pkg{mathdesign}/Charter (|mdbch|),
@@ -13099,17 +13099,20 @@ end
 \fi
 %    \end{macrocode}
 % The Latin Modern fonts, the virtual fonts from the
-% \pkg{ae} and \pkg{zefonts}, and the \pkg{eco} and \pkg{hfoldsty} packages
-% (oldstyle numerals) all inherit the (basic) settings from Computer Modern
-% Roman. Some of them are in part overwritten later.
+% \pkg{ae} and \pkg{zefonts} and the \pkg{eco} and \pkg{hfoldsty} packages
+% (oldstyle numerals), as well as \pkg{mlmodern}, all inherit the (basic) settings
+% from Computer Modern Roman. Some of them are in part overwritten later.
 %\changes{v1.2}{2004/10/03}{declare \texttt{cmor} as an alias of \texttt{cmr}}
 %\changes{v1.3}{2004/10/22}{declare \texttt{aer}, \texttt{zer} and \texttt{hfor}
-%                           as aliases of \texttt{cmr}}
+%                           as aliases of \texttt{cmr}}^^A
 % We mustn't forget the Latin Modern math fonts.
 %\changes{v2.5}{2012/07/17}{declare \texttt{lmsy} and \texttt{lmm} as aliases
 %                           of \texttt{cmsy} resp. \texttt{cmm}
 %                           (reported by \contributor Jonas Hogstrom <hjb981\at gmail.com>)}
 %                           ^^A https://tex.stackexchange.com/questions/63558/how-to-get-microtype-to-work-with-mathematical-minus-sign-and-package-lmodern
+%\changes{v2.9}{2021/01/13}{declare \pkg{mlmodern} fonts as aliases of Latin Modern
+%                           (reported by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
+%                           ^^A private mail, 2021/01/12
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{lmsy}{cmsy}         %   "
 \DeclareMicrotypeAlias{lmm} {cmm}          %   "
@@ -13117,11 +13120,14 @@ end
 \DeclareMicrotypeAlias{zer} {cmr}          % zefonts
 \DeclareMicrotypeAlias{cmor}{cmr}          % eco
 \DeclareMicrotypeAlias{hfor}{cmr}          % hfoldsty
+\DeclareMicrotypeAlias{mlmr}{cmr}          % mlmodern
+\DeclareMicrotypeAlias{mlmsy}{cmsy}        %   "
+\DeclareMicrotypeAlias{mlmm} {cmm}         %   "
 %    \end{macrocode}
 % Another, new Computer Modern extension.
 %\changes{v2.8}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
 % The \pkg{newcomputermodern} package loads it by file name.
-%\changes{v2.9}{2021/01/09}{also reference New Computer Modern by file name
+%\changes{v2.9}{2021/01/09}{reference New Computer Modern also by file name
 %                           (reported by \contributor Canageek <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/578121/how-do-i-properly-tell-microtype-that-newcomputermodern-is-the-same-as-comput
 %    \begin{macrocode}
@@ -17297,7 +17303,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10770}
+% \CheckSum{10773}
 %
 % \Finale
 %
