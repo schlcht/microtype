@@ -11126,6 +11126,7 @@ end
 %\changes{v1.9d}{2006/02/09}{fix: empty context}
 %\changes{v1.9e}{2006/07/26}{new key `\texttt{inputenc}' to set the input encoding}
 %\changes{v2.5}{2010/05/18}{allow more than one encoding}
+%\changes{v2.9}{2021/01/15}{skip settings for tracking}
 % This macro may be used in the configuration files to declare characters that
 % should inherit protrusion resp. expansion values from other characters. Thus,
 % there is no need to define all accented characters (\eg, |\`a|, |\'a|,
@@ -11152,18 +11153,20 @@ end
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@inh@list}
-% Safe category codes.
+% No need to create an inheritance list for tracking.
 %    \begin{macrocode}
 \def\MT@set@inh@list#1#2{%
   \MT@ifempty\MT@inh@feat{%
-    \MT@map@clist@c\MT@features{{\MT@declare@char@inh{##1}{#1}{#2}}}%
+    \MT@map@clist@c\MT@features{{%
+      \MT@ifstreq{##1}{tr}\relax{\MT@declare@char@inh{##1}{#1}{#2}}%
+    }}%
   }{%
     \MT@map@clist@c\MT@inh@feat{{%
       \KV@@sp@def\@tempa{##1}%
       \MT@ifempty\@tempa\relax{%
-        \MT@exp@one@n\MT@declare@char@inh
-          {\csname MT@rbba@\@tempa\endcsname}{#1}{#2}%
-      }%
+        \edef\@tempa{\csname MT@rbba@\@tempa\endcsname}%
+        \MT@ifstreq\@tempa{tr}\relax{%
+          \MT@exp@one@n\MT@declare@char@inh{\@tempa}{#1}{#2}}}%
     }}%
   }%
   \MT@end@catcodes
@@ -17303,7 +17306,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10773}
+% \CheckSum{10781}
 %
 % \Finale
 %

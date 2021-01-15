@@ -13,7 +13,6 @@
 %%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax
 * what to do about lualatex -ini ?
 * fix (outer) spacing with luatex
-* don't set up inheritance list for tracking
 * make tracking work with xetex (shouldn't be a problem?)
 ---
 % from Vadim Radionov <@>
