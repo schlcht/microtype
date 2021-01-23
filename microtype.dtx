@@ -505,44 +505,39 @@
       \textrm{Text lost! Please install the \pkg{listings} package.}}}%
     \@beginparpenalty\predisplaypenalty\@verbatim\MacroFont
     \frenchspacing\@vobeyspaces\expandafter\@xverbatim\@gobble}}
-\IfFileExists{listings.sty}{
- \usepackage{listings}
- \lstset{
-   gobble=1,columns=flexible,keepspaces,upquote,escapechar=",
-   basicstyle=\MacroFont,
-   keywords=[0]{\microtypesetup,\DeclareMicrotypeSet,\UseMicrotypeSet,
-     \DeclareMicrotypeSetDefault,\SetProtrusion,\SetExpansion,\SetTracking,
-     \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
-     \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
-     \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
-     \textls,\lsstyle,\lslig,\Microtype@Hook},
-   keywordstyle=[0]\color{thegreen},
-   keywords=[1]{protrusion,expansion,activate,DVIoutput,draft,final,verbose,
-     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
-     spacing,letterspace,babel,context,
-    %defersetup,copyfonts,enable,disable,% undocumented
-     no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
-   keywordstyle=[1]\color{thered},
-   comment=[l]\%,
-   commentstyle=\color{thegrey}\itshape,
-   alsoother={0123456789_},
-   frame=single,backgroundcolor=\color{theshade},rulecolor=\color{theframe},
-   framerule=\fboxrule,xleftmargin=3.4pt,xrightmargin=3.4pt,belowskip=\smallskipamount
- }
- \let\verbatim\relax
- \lstnewenvironment{verbatim}[1][]{\lstset{##1}}{}
- \ifpdf \IfFileExists{dummy-space.pfb}{%
-   \pdfmapline{=dummy-space <dummy-space.pfb}
-   \font\dummyspace=dummy-space
-   \pdfglyphtounicode{space}{0020}
-   \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
-     \setbox0\hbox{ }\@tempdima\wd0
-     \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
-     \unhbox0 \kern\@tempdima}
-  }\relax \fi
-}{
- \let\lstset\@gobble
+\usepackage{listings}
+\lstset{
+  gobble=1,columns=flexible,keepspaces,upquote,escapechar=",
+  basicstyle=\MacroFont,
+  keywords=[0]{\microtypesetup,\DeclareMicrotypeSet,\UseMicrotypeSet,
+    \DeclareMicrotypeSetDefault,\SetProtrusion,\SetExpansion,\SetTracking,
+    \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
+    \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
+    \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
+    \textls,\lsstyle,\lslig,\Microtype@Hook},
+  keywordstyle=[0]\color{thegreen},
+  keywords=[1]{protrusion,expansion,activate,DVIoutput,draft,final,verbose,
+    config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
+    spacing,letterspace,babel,context,
+   %defersetup,copyfonts,enable,disable,% undocumented
+    no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
+  keywordstyle=[1]\color{thered},
+  comment=[l]\%,
+  commentstyle=\color{thegrey}\itshape,
+  alsoother={0123456789_},
+  frame=single,backgroundcolor=\color{theshade},rulecolor=\color{theframe},
+  framerule=\fboxrule,xleftmargin=3.4pt,xrightmargin=3.4pt,belowskip=\smallskipamount
 }
+\let\verbatim\relax
+\lstnewenvironment{verbatim}[1][]{\lstset{#1}}{}
+\ifpdf
+  \font\dummyspace=dummy-space
+  \pdfglyphtounicode{space}{0020}
+  \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
+    \setbox0\hbox{ }\@tempdima\wd0
+    \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
+    \unhbox0 \kern\@tempdima}
+\fi
 \def\todo#1{\changes{zTo Do}{0000/00/00}{#1}%
   \marginpar{\rightskip2\marginparsep plus1em\hangindent1.5em\hangafter-2
     \smash{\rlap{\raisebox{-3.3ex}{\colorbox{thered}{\Large\color{white}!}}}}%
@@ -565,6 +560,7 @@
   \usepackage{attachfile}
   \usepackage{pdfpages}
   \hypersetup{
+    keeppdfinfo,
     pdftitle={The microtype package},
     pdfauthor={R Schlicht <w.m.l@gmx.net>},
     pdfsubject={Subliminal refinements towards typographical perfection},
@@ -580,7 +576,7 @@
   }
   \pdfcatalog{/Lang(en-GB)}
   \ifnum\pdftexversion < 130 \else
-    \IfFileExists{hypdestopt.sty}{\usepackage{hypdestopt}}\relax\fi
+    \usepackage{hypdestopt}\fi
   \def\usage#1{\textbf{\hyperpage{#1}}}% for indexing of \DescribeMacro ...
   \def\changes@#1#2#3{% ... the changes ...
     \protected@edef\@tempa{\noexpand\glossary{#1\levelchar
@@ -2130,7 +2126,6 @@
 % This package ships with configuration files for a number of font families.
 % Table~\ref{tab:fonts} lists them all.
 %
-%\enlargethispage{\baselineskip} ^^A layout
 %\begin{table}[t]\small
 %\changes{v1.6a}{2005/02/02}{add table of fonts with tailored protrusion settings}
 %\caption{Fonts with tailored protrusion settings}\label{tab:fonts}
@@ -2244,6 +2239,7 @@
 %\begin{verbatim}
 %\DeclareMicrotypeAlias{lmr}{cmr}
 %\end{verbatim}
+%\ifcmr\else\pagebreak\fi ^^A layout
 % which would make the package, whenever it encounters the font |lmr| and does
 % not find settings for it, also try the font |cmr|. In fact, you will find
 % this very line, along with some others, in the default configuration file.
@@ -2389,7 +2385,6 @@
 % the \opt{letterspace} package option, with decreasing significance in this
 % order.
 %
-%\pagebreak ^^A layout
 %\medskip
 %\Describe{Macro}{\lslig}{ligature}
 % Since the commands \cs{textls} and \cs{lsstyle} will also evaluate the
@@ -2667,7 +2662,6 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
-%\ifcmr\else\pagebreak\fi ^^A layout
 %\changes{v1.9a}{2005/11/15}{add explanation for error message with non-Type\,1 fonts}
 %  \item
 %\begin{verbatim}
