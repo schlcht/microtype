@@ -4003,10 +4003,11 @@
 % \item + default \cmd\efcode\,=\,1000;
 %         \cmd\protrusionboundary\ [not yet supported] ($\geq$~0.90)
 %\todo{interface for \cmd\protrusionboundary}
+% \item + \cmd\glet ($\geq$~1.10)
 %\end{enum}
 %\changes{v2.6}{2016/04/22}{update for \luatex\ 0.85 (renamed primitives)}
 % Also, sometime between 1.0.4 and 1.0.7, the function |font.setexpansion|
-% has been introduced, but we'll test this directly later.
+% has been introduced (but we're not using it for now).
 %    \begin{macrocode}
 %<*luatex-def>
 %<debug>\MT@dinfo@nl0{this is luatex (\the\luatexversion)}
@@ -4019,16 +4020,19 @@
 %\changes{v2.3d}{2009/03/25}{update for \luatex\ 0.36}
 %    \begin{macrocode}
 \let\MT@lua\directlua
-\def\MT@luatex@no{5}
-\ifnum\luatexversion<90
-  \def\MT@luatex@no{4}
-  \ifnum\luatexversion<85
-    \def\MT@luatex@no{3}
-    \ifnum\luatexversion<62
-      \def\MT@luatex@no{2}
-      \ifnum\luatexversion<36
-        \def\MT@lua{\directlua0}
-        \def\MT@luatex@no{1}
+\def\MT@luatex@no{6}
+\ifnum\luatexversion<110
+  \def\MT@luatex@no{5}
+  \ifnum\luatexversion<90
+    \def\MT@luatex@no{4}
+    \ifnum\luatexversion<85
+      \def\MT@luatex@no{3}
+      \ifnum\luatexversion<62
+        \def\MT@luatex@no{2}
+        \ifnum\luatexversion<36
+          \def\MT@lua{\directlua0}
+          \def\MT@luatex@no{1}
+        \fi
       \fi
     \fi
   \fi
@@ -4321,8 +4325,11 @@ end
 % To be continued, but first back to primitives.
 %\begin{macro}{\MT@glet}
 %\changes{v1.9f}{2006/08/09}{new macro}
-% Here's the forgotten one.
+% Here's the forgotten one
+%\changes{v2.9}{2020/02/01}{use \luatex's \cmd\glet, if available}
+% (finally implemented in \luatex).
 %    \begin{macrocode}
+%<luatex-def>\MT@requires@luatex6{\let\MT@glet\glet}\relax
 %<*package|letterspace>
 \def\MT@glet{\global\let}
 %    \end{macrocode}
@@ -17300,7 +17307,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10781}
+% \CheckSum{10791}
 %
 % \Finale
 %
