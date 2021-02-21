@@ -13,6 +13,7 @@ help:
 	@echo '            help - (this message)'
 	@echo '          unpack - extract all files'
 	@echo '             doc - compile documentation'
+	@echo '            docc - compile base documentation only'
 	@echo '          utfdoc - compile Unicode documentation'
 	@echo '            ctan - generate archive for CTAN'
 	@echo '             all - unpack & doc'
@@ -141,6 +142,19 @@ $(NAME)-utf.tmp: $(DTX)
 	@echo "Re-compiling documentation"
 	@$(DO_MAKEINDEX)
 	@$(DO_PDFLATEX)
+
+docc:	$(DTX)
+	@echo "Compiling documentation"
+	@$(DO_MAKEINDEX)
+	@$(DO_PDFLATEX) -draft
+	@echo "Re-compiling documentation"
+	@$(DO_MAKEINDEX)
+	@$(DO_PDFLATEX)
+	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
+		echo "Re-compiling documentation" ; \
+		$(DO_MAKEINDEX) ; \
+		$(DO_PDFLATEX) ; \
+	done
 
 $(UNPACKED): $(INS) $(DTX) docstrip.cfg 
 	@echo "Extracting package"
