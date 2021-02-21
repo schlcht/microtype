@@ -2886,9 +2886,10 @@
 %  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>, ^^A also https://tex.stackexchange.com/users/176404/d909
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
-%  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>
+%  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
+% `\contributor Canageek          <@\at @>' ^^A https://tex.stackexchange.com/users/7880/canageek
 % and
-% `\contributor Canageek          <@\at @>'. ^^A https://tex.stackexchange.com/users/7880/canageek
+% `\contributor dsedivec          <@\at @>'.^^A https://tex.stackexchange.com/users/1680/dsedivec
 %
 %
 %\iffalse
@@ -13591,7 +13592,7 @@ end
 % should be overridden by font-specific ones.
 %    \begin{macrocode}
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2,TU} }
+   { encoding = {TU,EU1,EU2} }
    { A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A,\u A},
      a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a,\u a},
      C = {\'C,\c C,\v C},
@@ -13625,6 +13626,50 @@ end
      Z = {\'Z,\.Z,\v Z},
      z = {\'z,\.z,\v z}
    }
+
+%    \end{macrocode}
+% Less characters in the Lato font \dots
+%\changes{v2.8a}{2021/02/21}{settings for the Lato font
+%                            (reported by \contributor dsedivec <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/380812/microtype-warning-unknown-slot-number-of-character-with-lato-font
+%    \begin{macrocode}
+\DeclareCharacterInheritance
+   { encoding = {TU,EU1,EU2},
+     family   = {Lato} }
+   { A = {\`A,\'A,\^A,\~A,\"A,\r A,\k A},
+     a = {\`a,\'a,\^a,\~a,\"a,\r a,\k a},
+     C = {\'C,\c C},
+     c = {\'c,\c c},
+     D = {\DH},
+     d = {\dj},
+     E = {\`E,\'E,\^E,\"E,\k E},
+     e = {\`e,\'e,\^e,\"e,\k e},
+     I = {\`I,\'I,\^I,\"I},
+     i = {\`i,\'i,\^i,\"i,\i},
+     L = {\L},
+     l = {\l},
+     N = {\'N,\~N},
+     n = {\'n,\~n},
+     O = {\O,\`O,\'O,\^O,\~O,\"O},
+     o = {\o,\`o,\'o,\^o,\~o,\"o},
+     S = {\'S,\v S}, % \SS
+     s = {\'s,\v s},
+     U = {\`U,\'U,\^U,\"U},
+     u = {\`u,\'u,\^u,\"u},
+     Y = {\'Y,\"Y},
+     y = {\'y,\"y},
+     Z = {\'Z,\.Z,\v Z},
+     z = {\'z,\.z,\v z}
+   }
+
+%    \end{macrocode}
+% \dots\ and even less in the purportedly awesone Font Awesome font.
+%\changes{v2.8a}{2021/02/21}{settings for the Font Awesome font}
+%    \begin{macrocode}
+\DeclareCharacterInheritance
+  { encoding = {TU,EU1,EU2},
+    family   = {FontAwesome} }
+  { }
 
 %</m-t>
 %    \end{macrocode}
@@ -17307,7 +17352,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10791}
+% \CheckSum{10873}
 %
 % \Finale
 %
