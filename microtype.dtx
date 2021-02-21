@@ -1,11 +1,11 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.9"
+% !DTXversion:: "2.8a"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
-%           Copyright (c) 2004--2020 R Schlicht <w.m.l@gmx.net>
+%           Copyright (c) 2004--2021 R Schlicht <w.m.l@gmx.net>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License, either version 1.3c of this license or (at
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2020/99/99 v2.9
+  [2021/02/21 v2.8a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -567,7 +567,7 @@
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
       character protrusion, margin kerning, optical alignment, font expansion,
       font scaling, hz, kerning, spacing, glue, letterspacing, tracking, ligatures},
-    pdfcopyright={\textcopyright\ 2004--2020 R Schlicht\012%
+    pdfcopyright={\textcopyright\ 2004--2021 R Schlicht\012%
       This work may be distributed and/or modified under the conditions
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\012%
@@ -810,7 +810,7 @@
 % other extensions (see section~\ref{sec:lettersp}).
 %
 %\bigskip\noindent
-% This package is copyright \textcopyright\ 2004\kern.09em--2020 R Schlicht.
+% This package is copyright \textcopyright\ 2004\kern.09em--2021 R Schlicht.
 % It may be distributed and/or modified under the conditions of the
 % \IfFileExists{lppl.tex}{\hyperref[LPPL:LPPL]}{\href{http://www.latex-project.org/lppl/}}
 %   {\LaTeX\ Project Public License},
@@ -1038,9 +1038,9 @@
 %
 %\begin{table}\small
 %\changes{v2.3a}{2008/02/25}{add table of available and enabled features}
-%\changes{v2.9}{2020/12/23}{reorganise table~\ref{tab:available-features} for clarification
-%                           (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
-%                           ^^A private mail, 2020/12/10
+%\changes{v2.8a}{2020/12/23}{reorganise table~\ref{tab:available-features} for clarification
+%                            (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
+%                            ^^A private mail, 2020/12/10
 %\caption{Availability of micro-typographic features}\label{tab:available-features}
 %\catcode`\!=13 \def!{\textcolor{thegreen}{\hskip.9em $\bigstar$}}
 %\catcode`\?=13 \def?{\textcolor{theblue} {\hskip 1em $\boxtimes$}}
@@ -2974,7 +2974,7 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX3 Project Team, \emph{\LaTeXe\ font selection},
-%   \newblock July 2020.
+%   \newblock November 2020.
 %   \newblock (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
@@ -2986,7 +2986,7 @@
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %    \emph{The \pkg{luaotfload} package},
-%    \newblock 2~September 2020.
+%    \newblock 8~January 2021.
 %    \newblock (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -3037,7 +3037,7 @@
 %
 %\begin{History}
 %
-%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
 %\Version{2.8}{2020/12/07}
 %  \item New default font sets for expansion and spacing: `|alltext-nott|'
@@ -4326,7 +4326,7 @@ end
 %\begin{macro}{\MT@glet}
 %\changes{v1.9f}{2006/08/09}{new macro}
 % Here's the forgotten one
-%\changes{v2.9}{2020/02/01}{use \luatex's \cmd\glet, if available}
+%\changes{v2.8a}{2020/02/01}{use \luatex's \cmd\glet, if available}
 % (finally implemented in \luatex).
 %    \begin{macrocode}
 %<luatex-def>\MT@requires@luatex6{\let\MT@glet\glet}\relax
@@ -10139,10 +10139,10 @@ end
 %    \end{macrocode}
 % The \pkg{svjour3} class defines the size commands using conditionals;
 % using \etex\ primitives, we close any leftovers here.
-%\changes{v2.9}{2020/12/10}{compatibility with \pkg{svjour3}
-%                           (reported by \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com> (no relation!!))}
-%                           ^^A https://groups.google.com/g/de.comp.text.tex/c/46sJ1jFRq-I
-%                           ^^A MID: <9aa52497-19b5-4ca7-a668-c076cec4ceadn@googlegroups.com>, 2020/11/09
+%\changes{v2.8a}{2020/12/10}{compatibility with \pkg{svjour3}
+%                            (reported by \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com> (no relation!!))}
+%                            ^^A https://groups.google.com/g/de.comp.text.tex/c/46sJ1jFRq-I
+%                            ^^A MID: <9aa52497-19b5-4ca7-a668-c076cec4ceadn@googlegroups.com>, 2020/11/09
 %    \begin{macrocode}
 ^^X\@ifclassloaded{svjour3}{%
 ^^X  \def\MT@get@size@{%
@@ -11127,7 +11127,7 @@ end
 %\changes{v1.9d}{2006/02/09}{fix: empty context}
 %\changes{v1.9e}{2006/07/26}{new key `\texttt{inputenc}' to set the input encoding}
 %\changes{v2.5}{2010/05/18}{allow more than one encoding}
-%\changes{v2.9}{2021/01/15}{skip settings for tracking}
+%\changes{v2.8a}{2021/01/15}{skip settings for tracking}
 % This macro may be used in the configuration files to declare characters that
 % should inherit protrusion resp. expansion values from other characters. Thus,
 % there is no need to define all accented characters (\eg, |\`a|, |\'a|,
@@ -13114,9 +13114,9 @@ end
 %                           of \texttt{cmsy} resp. \texttt{cmm}
 %                           (reported by \contributor Jonas Hogstrom <hjb981\at gmail.com>)}
 %                           ^^A https://tex.stackexchange.com/questions/63558/how-to-get-microtype-to-work-with-mathematical-minus-sign-and-package-lmodern
-%\changes{v2.9}{2021/01/13}{declare \pkg{mlmodern} fonts as aliases of Latin Modern
-%                           (reported by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
-%                           ^^A private mail, 2021/01/12
+%\changes{v2.8a}{2021/01/13}{declare \pkg{mlmodern} fonts as aliases of Latin Modern
+%                            (reported by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
+%                            ^^A private mail, 2021/01/12
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{lmsy}{cmsy}         %   "
 \DeclareMicrotypeAlias{lmm} {cmm}          %   "
@@ -13131,8 +13131,8 @@ end
 % Another, new Computer Modern extension.
 %\changes{v2.8}{2019/11/22}{declare New Computer Modern as an alias of Latin Modern Roman}
 % The \pkg{newcomputermodern} package loads it by file name.
-%\changes{v2.9}{2021/01/09}{reference New Computer Modern also by file name
-%                           (reported by \contributor Canageek <@\at @>)}
+%\changes{v2.8a}{2021/01/09}{reference New Computer Modern also by file name
+%                            (reported by \contributor Canageek <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/578121/how-do-i-properly-tell-microtype-that-newcomputermodern-is-the-same-as-comput
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{New Computer Modern}{Latin Modern Roman}
