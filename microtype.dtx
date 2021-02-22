@@ -2887,9 +2887,10 @@
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
 %  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
-% `\contributor Canageek          <@\at @>' ^^A https://tex.stackexchange.com/users/7880/canageek
+% `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
+% `\contributor dsedivec          <@\at @>'  ^^A https://tex.stackexchange.com/users/1680/dsedivec
 % and
-% `\contributor dsedivec          <@\at @>'.^^A https://tex.stackexchange.com/users/1680/dsedivec
+% `\contributor DORpapst          <@\at @>'. ^^A https://tex.stackexchange.com/users/104965/dorpapst
 %
 %
 %\iffalse
@@ -17084,6 +17085,17 @@ end
    }
 
 %    \end{macrocode}
+% Empty settings to prevent spurious warnings.
+%\changes{v2.8a}{2021/02/22}{add dummy settings
+%                            (reported by \contributor DORpapst <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/584373/package-microtype-warning-i-cannot-find-a-spacing-list-for-font-microtype
+%    \begin{macrocode}
+\SetExtraSpacing
+   [ name = empty ]
+   { encoding = {TS1} }
+   { }
+
+%    \end{macrocode}
 %
 % \subsection{Additional kerning}
 %\GeneralChanges{Kerning}
@@ -17352,7 +17364,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10873}
+% \CheckSum{10874}
 %
 % \Finale
 %
