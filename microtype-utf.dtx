@@ -31,6 +31,8 @@
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
 %<PalatinoLinotype>  {mt-PalatinoLinotype.cfg}[2012/03/10 v1.0 microtype config. file: Palatino Linotype and similar fonts (LBD)]
+%<Lato>  {mt-Lato.cfg}[2021/02/22 v1.0 microtype config. file: Lato (RS)]
+%<FontAwesome>  {mt-FontAwesome.cfg}[2021/02/22 v1.0 microtype config. file: Font Awesome (RS)]
 %<*driver>
 \documentclass[10pt,a4paper]{ltxdoc}
 \usepackage{fontspec}
@@ -47,6 +49,7 @@
  \newfontface\PalatinoLinotype{TeX Gyre Pagella}
 % \newfontface\PalatinoLinotype[RawFeature={fallback=charisfallback}]{TeX Gyre Pagella}
 % \directlua{luaotfload.add_fallback("charisfallback",{"CharisSIL:color=F70A12;mode=harf;"})}
+ \newfontface\Lato{Lato}
 \usepackage{luacode}
 \tracinglostchars2
 % we replace any missing characters (in Palatino) with CharisSIL
@@ -425,6 +428,57 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %}
 %    \begin{macrocode}
 %</PalatinoLinotype>
+%    \end{macrocode}
+% Less characters in the Lato font \dots
+%\changes{v2.8a}{2021/02/21}{settings for the Lato font
+%                            (reported by \contributor dsedivec <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/380812/microtype-warning-unknown-slot-number-of-character-with-lato-font
+%    \begin{macrocode}
+%<*Lato>
+\DeclareCharacterInheritance
+   { encoding = {TU,EU1,EU2},
+     family   = {Lato} }
+%    \end{macrocode}
+%{\setmacrofont\Lato
+%    \begin{macrocode}
+   { A = {À,Á,Â,Ã,Ä,Å,Ą},
+     a = {à,á,â,ã,ä,å,ą},
+     C = {Ć,Ç},
+     c = {ć,ç},
+     D = {Ð},
+     E = {È,É,Ê,Ë,Ę},
+     e = {è,é,ê,ë,ę},
+     I = {Ì,Í,Î,Ï},
+     i = {ì,í,î,ï,ı},
+     L = {Ł},
+     l = {ł},
+     N = {Ń,Ñ},
+     n = {ń,ñ},
+     O = {Ø,Ò,Ó,Ô,Õ,Ö},
+     o = {ø,ò,ó,ô,õ,ö},
+     S = {Ś,Š}, % \SS
+     s = {ś,š},
+     U = {Ù,Ú,Û,Ü},
+     u = {ù,ú,û,ü},
+     Y = {Ý,Ÿ},
+     y = {ý,ÿ},
+     Z = {Ź,Ż,Ž},
+     z = {ź,ż,ž}
+   }
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+%</Lato>
+%    \end{macrocode}
+% \dots\ and even less in the purportedly awesone Font Awesome font.
+%\changes{v2.8a}{2021/02/21}{dummy settings for the Font Awesome font}
+%    \begin{macrocode}
+%<*FontAwesome>
+\DeclareCharacterInheritance
+  { encoding = {TU,EU1,EU2},
+    family   = {FontAwesome} }
+  { }
+%</FontAwesome>
 %    \end{macrocode}
 %
 %\subsection{Character protrusion}
@@ -1293,6 +1347,14 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
    }
 %</PalatinoLinotype>
+%<Lato> %% No settings yet.
+%<*FontAwesome>
+\SetProtrusion
+   [ name = empty ]
+   { encoding = {TU,EU1,EU2},
+     family   = {FontAwesome} }
+   { }
+%</FontAwesome>
 
 %    \end{macrocode}
 %\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
