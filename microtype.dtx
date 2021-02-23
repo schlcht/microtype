@@ -62,7 +62,7 @@
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
 %<cmr>  {mt-cmr.cfg}[2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)]
-%<pad>  {mt-pad.cfg}[2005/11/07 v1.5 microtype config. file: Adobe Garamond (RS)]
+%<ebg>  {mt-EBGaramond.cfg}[2021/02/22 v1.6 microtype config. file: EB Garamond / Adobe Garamond (RS)]
 %<pmn>  {mt-pmn.cfg}[2009/11/14 v1.3 microtype config. file: Adobe Minion (HH/KK)]
 %<ppl>  {mt-ppl.cfg}[2005/11/16 v1.6 microtype config. file: Palatino (RS)]
 %<ptm>  {mt-ptm.cfg}[2006/04/20 v1.7 microtype config. file: Times (RS)]
@@ -2134,10 +2134,10 @@
 %\begin{minipage}{\textwidth}
 %\def\arraystretch{1.2}
 %\long\def\@makefntext#1{%
-%  \leftskip 1em
-%  \parindent -1em
-%  \everypar{\parindent -1em}%
-%  \leavevmode\hbox to 1em{\@thefnmark\hss}#1}
+%  \leftskip 1.2em
+%  \parindent -1.2em
+%  \everypar{\parindent -1.2em}%
+%  \leavevmode\hbox to 1.2em{\@thefnmark\hss}#1}
 %\let\footnoterule\relax
 %\def\fnref#1{\textsuperscript{\itshape\ifpdf\ref*{#1}\else\ref{#1}\fi}}
 %\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}*3l@{}}
@@ -2159,7 +2159,7 @@
 %                                    MicroPress's \pkg{chmath} (|chr|), \pkg{XCharter}}
 %      & <OT1>, <T1>, <T5>, <LY1>, <TS1>
 %      & n, it, (sl)\footnote{Settings inherited from italic shape\label{fn:it-sl}}, sc \\
-% Adobe Garamond (|pad|, |padx|, |padj|)
+% <EB> Garamond\footnote{Aliases: Adobe Garamond (|pad|, |padx|, |padj|)}
 %      & <OT1>, <T1>, <LY1>, <TS1>
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
 % <URW> Garamond (|ugm|)\footnote{Aliases: \pkg{mathdesign}/<URW> Garamond (|mdugm|), \pkg{garamondx} (|zgmx|, |zgmj|)}
@@ -2219,13 +2219,13 @@
 % On its search for a configuration file, the package will also try to remove
 % from the font name a suffix of one or more letters that denotes a `variant'
 % of the base font (cf. Karl Berry's \cite{fontname}). It is thus possible to
-% put settings for, \eg, the fonts |padx|~(expert set), |padj| (oldstyle
-% numerals) and |pad| (plain) into one and the same file \file{mt-pad.cfg}.
+% put settings for, \eg, the fonts |pplx|~(expert set), |pplj| (oldstyle
+% numerals) and |ppl| (plain) into one and the same file \file{mt-ppl.cfg}.
 % This command expects a comma-separated list of variant suffixes. The starred
 % version appends the suffix(es) to the existing list. The default declaration
 % in \file{microtype.cfg} is:
 %\begin{verbatim}
-%\DeclareMicrotypeVariants{x,j,w,a,d,0,1}
+%\DeclareMicrotypeVariants{x,j,w,a,d,0,1,-LF,-TLF,-OsF,-TOsF}
 %\end{verbatim}
 %
 %\medskip
@@ -3458,7 +3458,7 @@
 %      \item[|bch|]   Settings for Bitstream Charter (\file{mt-bch.cfg}).
 %      \item[|blg|]   Settings for Bitstream Letter Gothic (\file{mt-blg.cfg}).
 %      \item[|cmr|]   Settings for Computer Modern Roman (\file{mt-cmr.cfg}).
-%      \item[|pad|]   Settings for Adobe Garamond (\file{mt-pad.cfg}).
+%      \item[|ebg|]   Settings for <EB> Garamond (\file{mt-EBGaramond.cfg}).
 %      \item[|ppl|]   Settings for Palatino (\file{mt-ppl.cfg}).
 %      \item[|ptm|]   Settings for Times (\file{mt-ptm.cfg}).
 %      \item[|pmn|]   Settings for Adobe Minion (\file{mt-pmn.cfg}).
@@ -8370,7 +8370,7 @@ end
 %\begin{macro}{\MT@get@basefamily@}
 % This will only remove one suffix (the longest match), so that
 % \emph{combinations} of suffixes would have be to added manually (\eg,
-% |\DeclareMicrotypeVariants*{aw}|). But otherwise, something like `|padx|'
+% |\DeclareMicrotypeVariants*{aw}|). But otherwise, something like `|pplx|'
 % would be truncated to `|p|'.
 %    \begin{macrocode}
 \def\MT@get@basefamily@#1#2\@nil{%
@@ -12964,6 +12964,9 @@ end
 %
 %\section{Configuration files}
 %\changes{v1.6}{2005/01/24}{restructure \file{dtx} file}
+%\changes{v2.8a}{2021/02/22}{rename \file{mt-pad.cfg} to \file{mt-EBGaramond.cfg}
+%                            (requested by \contributor Karl Berry <karl\at freefriends.org>)}
+%                            ^^A private mail, 2021/02/22
 %
 % Let's now write the font configuration files.
 %    \begin{macrocode}
@@ -13083,11 +13086,14 @@ end
 %
 % These are the variants I happen to be using (expert encoding, oldstyle
 % numerals, swashes, alternative, display, inferior and superior numerals):
+% Additionally, we add the now common variants for Lining, Tabular, Oldstyle,
+% and Tabular Oldstyle numbers.
+%\changes{v2.8a}{2021/02/22}{add \texttt{-LF}, \texttt{-TLF}, \texttt{-OsF} and \texttt{-TOsF} as variants}
 %    \begin{macrocode}
 %%% -----------------------------------------------------------------------
 %%% FONT VARIANTS AND ALIASES
 
-\DeclareMicrotypeVariants{x,j,w,a,d,0,1}
+\DeclareMicrotypeVariants{x,j,w,a,d,0,1,-LF,-TLF,-OsF,-TOsF}
 %    \end{macrocode}
 % Other candidates: |2|~(proportional digits), |e|~(engraved), |f|~(Fraktur),
 % |g|~(small text), |h|~(shadow), |l|~(outline), |n|~(informal),
@@ -13216,13 +13222,13 @@ end
 % The \pkg{tempora} package.
 %\changes{v2.7}{2017/02/25}{declare aliases for \pkg{tempora}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{Tempora-TLF}{ptmx}  % tempora
+\DeclareMicrotypeAlias{Tempora-TLF} {ptmx} % tempora
 \DeclareMicrotypeAlias{Tempora-TOsF}{ptmj} %    "
 \DeclareMicrotypeAlias{qtm}{ptm}           % TeX Gyre Termes (formerly: qfonts/QuasiTimes)
 %    \end{macrocode}
 % The \pkg{step} package.
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{STEP-TLF}{ptmx}     % step
+\DeclareMicrotypeAlias{STEP-TLF} {ptmx}    % step
 \DeclareMicrotypeAlias{STEP-TOsF}{ptmj}    %   "
 %    \end{macrocode}
 % The \pkg{stix} and \pkg{stix2} packages (the latter has departed a bit from being
@@ -13269,6 +13275,13 @@ end
 \DeclareMicrotypeAlias{zgmj}{ugm}          %    "
 \DeclareMicrotypeAlias{zgmI}{ugm}          %    "
 \DeclareMicrotypeAlias{zgmq}{ugm}          %    "
+%    \end{macrocode}
+% Because a configuration file for Adobe Garamond wouldn't be permitted
+% for \texlive\ distribution, we use <EB> Garamond as the base font.
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{pad} {EBGaramond-LF}% Adobe Garamond
+\DeclareMicrotypeAlias{padx}{EBGaramond-TLF}%   "
+\DeclareMicrotypeAlias{padj}{EBGaramond-TOsF}%  "
 %% --
 %    \end{macrocode}
 % <URW> Letter Gothic is similar enough to Bitstream Letter Gothic to share the
@@ -13915,9 +13928,9 @@ end
 %    \begin{macrocode}
 %<cmr>   [ name     = cmr-default ]
 %    \end{macrocode}
-%  \item Adobe Garamond (|pad|, |padx|, |padj|)
+%  \item <EB> Garamond
 %    \begin{macrocode}
-%<pad>   [ name     = pad-default ]
+%<ebg>   [ name     = EBGaramond-default ]
 %    \end{macrocode}
 %  \item Minion\footnote{Contributed by \contributor Harald Harders <h.harders\at tu-bs.de>
 %                        and \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
@@ -13942,82 +13955,82 @@ end
 %    \begin{macrocode}
 %<ugm>   [ name     = ugm-default ]
 %<m-t|cmr|pmn>   { }
-%<bch|blg|pad|ugm>   { encoding = OT1,
+%<bch|blg|ebg|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch }
 %<blg>     family   = blg }
-%<pad>     family   = {pad,padx,padj} }
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-OsF,EBGaramond-TLF,EBGaramond-TOsF} }
 %<ppl>     family   = {ppl,pplx,pplj} }
 %<ptm>     family   = {ptm,ptmx,ptmj} }
 %<ugm>     family   = ugm }
    {
-%<m-t|bch|blg|cmr|pad|pmn|ppl|ptm>     A = {50,50},
+%<m-t|bch|blg|cmr|ebg|pmn|ppl|ptm>     A = {50,50},
 %<ugm>     A = {50,100},
-%<pad|ptm>   \AE = {50,  },
+%<ebg|ptm>   \AE = {50,  },
 %<ugm>   \AE = {150,50},
 %<ugm>     B = {  ,50},
-%<bch|pad|pmn|ugm>     C = {50,  },
-%<bch|pad|pmn>     D = {  ,50},
+%<bch|ebg|pmn|ugm>     C = {50,  },
+%<bch|ebg|pmn>     D = {  ,50},
 %<ugm>     D = {  ,70},
 %<ugm>     E = {  ,50},
-%<m-t|bch|cmr|pad|pmn|ptm>     F = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ptm>     F = {  ,50},
 %<ugm>     F = {  ,70},
-%<bch|pad|pmn>     G = {50,  },
+%<bch|ebg|pmn>     G = {50,  },
 %<ugm>     G = {50,50},
 %<blg>     I = {150,150},
-%<m-t|cmr|pad|pmn|ppl|ptm|ugm>     J = {50,  },
+%<m-t|cmr|ebg|pmn|ppl|ptm|ugm>     J = {50,  },
 %<bch|blg>     J = {100,  },
 %<!blg>     K = {  ,50},
 %<blg>     K = {50,  },
-%<m-t|bch|cmr|pad|pmn|ppl>     L = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ppl>     L = {  ,50},
 %<blg>     L = {  ,150},
 %<ptm>     L = {  ,80},
 %<ugm>     L = {  ,120},
-%<bch|pad|pmn|ugm>     O = {50,50},
-%<pad>   \OE = {50,  },
+%<bch|ebg|pmn|ugm>     O = {50,50},
+%<ebg>   \OE = {50,  },
 %<ugm>   \OE = {50,50},
 %<blg>     P = {  ,100},
 %<ugm>     P = {  ,50},
-%<bch|pad|pmn>     Q = {50,70},
+%<bch|ebg|pmn>     Q = {50,70},
 %<ugm>     Q = {50,50},
 %<bch>     R = {  ,50},
 %<ugm>     R = {  ,70},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     T = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     T = {50,50},
 %<blg>     T = {100,100},
 %<ugm>     T = {70,70},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     V = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     V = {50,50},
 %<blg|ugm>     V = {70,70},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     W = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     W = {50,50},
 %<ugm>     W = {70,70},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     X = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     X = {50,50},
 %<ugm>     X = {50,70},
-%<m-t|bch|cmr|pad|pmn|ppl>     Y = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl>     Y = {50,50},
 %<blg|ptm|ugm>     Y = {80,80},
 %<ugm>     Z = {50,50},
 %<blg>     f = {150,100},
 %<blg>     i = {150,150},
 %<blg>     j = {100,100},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     k = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     k = {  ,50},
 %<ugm>     k = {  ,70},
 %<blg>     l = {150,150},
 %<pmn>     l = {  ,-50},
-%<pad|ppl>     p = {50,50},
+%<ebg|ppl>     p = {50,50},
 %<ugm>     p = {  ,50},
-%<pad|ppl>     q = {50,  },
+%<ebg|ppl>     q = {50,  },
 %<!blg>     r = {  ,50},
 %<blg>     r = {100, 80},
-%<cmr|pad|pmn>     t = {  ,70},
+%<cmr|ebg|pmn>     t = {  ,70},
 %<bch>     t = {  ,50},
 %<blg>     t = {150, 80},
 %<ugm>     t = {  ,100},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     v = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     v = {50,50},
 %<blg>     v = {100,100},
 %<ugm>     v = {50,70},
-%<m-t|bch|cmr|pad|pmn|ppl|ptm>     w = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     w = {50,50},
 %<ugm>     w = {50,70},
 %<!blg>     x = {50,50},
 %<blg>     x = {100,100},
-%<m-t|bch|pad|pmn>     y = {  ,50},
+%<m-t|bch|ebg|pmn>     y = {  ,50},
 %<blg>     y = { 50,100},
 %<cmr|ppl|ptm>     y = {50,70},
 %<ugm>     y = {  ,70},
@@ -14028,59 +14041,59 @@ end
 %    \begin{macrocode}
 %<cmr>     0 = {  ,50},
 %<m-t>     1 = {50,50},
-%<bch|blg|pad|ptm|ugm>     1 = {150,150},
+%<bch|blg|ebg|ptm|ugm>     1 = {150,150},
 %<cmr>     1 = {100,200},
 %<pmn>     1 = {  ,50},
 %<ppl>     1 = {100,100},
-%<bch|cmr|pad|ugm>     2 = {50,50},
+%<bch|cmr|ebg|ugm>     2 = {50,50},
 %<blg>     2 = {  ,100},
 %<bch|pmn>     3 = {50,  },
-%<cmr|pad|ugm>     3 = {50,50},
+%<cmr|ebg|ugm>     3 = {50,50},
 %<blg>     3 = {100,  },
-%<m-t|pad>     4 = {50,50},
+%<m-t|ebg>     4 = {50,50},
 %<bch>     4 = {100,50},
 %<blg>     4 = {100,  },
 %<cmr|ugm>     4 = {70,70},
 %<pmn>     4 = {50,  },
 %<ptm>     4 = {70,  },
 %<cmr>     5 = {  ,50},
-%<pad>     5 = {50,50},
+%<ebg>     5 = {50,50},
 %<bch>     6 = {50,  },
 %<cmr>     6 = {  ,50},
-%<pad>     6 = {50,50},
+%<ebg>     6 = {50,50},
 %<m-t>     7 = {50,50},
-%<bch|pad|pmn|ugm>     7 = {50,80},
+%<bch|ebg|pmn|ugm>     7 = {50,80},
 %<blg>     7 = {100,100},
 %<cmr|ptm>     7 = {50,100},
 %<ppl>     7 = {  ,50},
 %<cmr>     8 = {  ,50},
-%<bch|pad>     9 = {50,50},
+%<bch|ebg>     9 = {50,50},
 %<cmr>     9 = {  ,50},
-%<m-t|cmr|pad|pmn|ppl|ptm|ugm>     . = { ,700},
+%<m-t|cmr|ebg|pmn|ppl|ptm|ugm>     . = { ,700},
 %<bch>     . = { ,600},
 %<blg>     . = {400,500},
 %<!blg>    {,}= { ,500},
 %<blg>    {,}= {300,400},
-%<m-t|cmr|pad|pmn|ppl|ptm|ugm>     : = { ,500},
+%<m-t|cmr|ebg|pmn|ppl|ptm|ugm>     : = { ,500},
 %<bch>     : = { ,400},
 %<blg>     : = {300,400},
-%<m-t|bch|pad|pmn|ptm>     ; = { ,300},
+%<m-t|bch|ebg|pmn|ptm>     ; = { ,300},
 %<blg>     ; = {200,300},
 %<cmr|ppl>     ; = { ,500},
 %<ugm>     ; = { ,400},
 %<!blg>     ! = { ,100},
 %<blg>     ! = {200,200},
-%<m-t|pad|pmn|ptm>     ? = { ,100},
+%<m-t|ebg|pmn|ptm>     ? = { ,100},
 %<bch|cmr|ppl|ugm>     ? = { ,200},
 %<blg>     ? = {150,150},
 %<pmn>     " = {300,300},
-%<m-t|bch|cmr|pad|pmn|ppl>     @ = {50,50},
+%<m-t|bch|cmr|ebg|pmn|ppl>     @ = {50,50},
 %<ptm>     @ = {100,100},
-%<m-t|bch|blg|cmr|pad|pmn|ppl|ptm>     ~ = {200,250},
+%<m-t|bch|blg|cmr|ebg|pmn|ppl|ptm>     ~ = {200,250},
 %<ugm>     ~ = {300,350},
-%<pad|ppl|ptm>     & = {50,100},
+%<ebg|ppl|ptm>     & = {50,100},
 %<ugm>     & = {  ,100},
-%<m-t|cmr|pad|pmn>    \% = {50,50},
+%<m-t|cmr|ebg|pmn>    \% = {50,50},
 %<bch>    \% = {  ,50},
 %<ppl|ptm>    \% = {100,100},
 %<ugm>    \% = {50,100},
@@ -14088,14 +14101,14 @@ end
 %<m-t|ppl|ptm|ugm>     * = {200,200},
 %<bch|pmn>     * = {200,300},
 %<blg>     * = {150,200},
-%<cmr|pad>     * = {300,300},
+%<cmr|ebg>     * = {300,300},
 %<m-t|cmr|ppl|ptm>     + = {250,250},
 %<bch>     + = {150,250},
-%<pad>     + = {300,300},
+%<ebg>     + = {300,300},
 %<blg|pmn>     + = {150,200},
 %<ugm>     + = {250,300},
 %<blg|ugm>    {=}= {200,200},
-%<m-t|pad|pmn|ptm>     ( = {100,   },    ) = {   ,200},
+%<m-t|ebg|pmn|ptm>     ( = {100,   },    ) = {   ,200},
 %<bch|ugm>     ( = {200,   },    ) = {   ,200},
 %<cmr|blg>     ( = {300,   },    ) = {   ,300},
 %<ppl>     ( = {100,   },    ) = {   ,300},
@@ -14105,7 +14118,7 @@ end
 %\changes{v1.7}{2005/03/15}{fix: remove \textbackslash\ from <OT1>,
 %                           add \cmd\textbackslash\ to <T1> encoding}
 %    \begin{macrocode}
-%<m-t|pad|pmn|ptm>     / = {100,200},
+%<m-t|ebg|pmn|ptm>     / = {100,200},
 %<bch>     / = { ,200},
 %<blg>     / = {300,300},
 %<cmr|ppl>     / = {200,300},
@@ -14113,7 +14126,7 @@ end
 %<m-t|ptm>     - = {500,500},
 %<bch|cmr|ppl>     - = {400,500},
 %<blg>     - = {300,400},
-%<pad>     - = {300,500},
+%<ebg>     - = {300,500},
 %<pmn>     - = {200,400},
 %<ugm>     - = {500,600},
 %<blg>     < = {200,100},    > = {100,200},
@@ -14122,7 +14135,7 @@ end
 %<m-t|pmn>     \textendash       = {200,200},   \textemdash        = {150,150},
 %<bch>     \textendash       = {200,300},   \textemdash        = {150,250},
 %<cmr>     \textendash       = {400,300},   \textemdash        = {300,200},
-%<pad|ppl|ptm>     \textendash       = {300,300},   \textemdash        = {200,200},
+%<ebg|ppl|ptm>     \textendash       = {300,300},   \textemdash        = {200,200},
 %<ugm>     \textendash       = {250,300},   \textemdash        = {250,250},
 %    \end{macrocode}
 % Why settings for left \emph{and} right quotes? Because in some languages they
@@ -14131,13 +14144,13 @@ end
 %<m-t|bch|pmn>     \textquoteleft    = {300,400},   \textquoteright    = {300,400},
 %<blg>     \textquoteleft     = {400,600},   \textquoteright    = {400,600},
 %<cmr>     \textquoteleft    = {500,700},   \textquoteright    = {500,600},
-%<pad|ppl>     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
+%<ebg|ppl>     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
 %<ptm>     \textquoteleft    = {500,500},   \textquoteright    = {300,500},
 %<ugm>     \textquoteleft    = {300,600},   \textquoteright    = {300,600},
 %<m-t|bch|pmn>     \textquotedblleft = {300,300},   \textquotedblright = {300,300}
 %<blg>     \textquotedblright = {300,400}
 %<cmr>     \textquotedblleft = {500,300},   \textquotedblright = {200,600}
-%<pad|ppl|ptm>     \textquotedblleft = {300,400},   \textquotedblright = {300,400}
+%<ebg|ppl|ptm>     \textquotedblleft = {300,400},   \textquotedblright = {300,400}
 %<ugm>     \textquotedblleft = {400,400},   \textquotedblright = {400,400}
    }
 
@@ -14196,7 +14209,7 @@ end
 %<bch>   [ name     = bch-T1,
 %<blg>   [ name     = blg-T1,
 %<cmr>   [ name     = cmr-T1,
-%<pad>   [ name     = pad-T1,
+%<ebg>   [ name     = EBGaramond-T1,
 %<pmn>   [ name     = pmnj-T1,
 %<ppl>   [ name     = ppl-T1,
 %<ptm>   [ name     = ptm-T1,
@@ -14205,18 +14218,18 @@ end
 %<bch>     load     = bch-default ]
 %<blg>     load     = blg-default ]
 %<cmr>     load     = cmr-default ]
-%<pad>     load     = pad-default ]
+%<ebg>     load     = EBGaramond-default ]
 %<pmn>     load     = pmnj-default ]
 %<ppl>     load     = ppl-default ]
 %<ptm>     load     = ptm-default ]
 %<ugm>     load     = ugm-default ]
 %<m-t>   { encoding = {T1,LY1,EU1,EU2,TU} }
-%<bch|cmr|pad|pmn|ppl>   { encoding = {T1,LY1},
+%<bch|cmr|ebg|pmn|ppl>   { encoding = {T1,LY1},
 %<blg|ptm|ugm>   { encoding = {T1},
 %<bch>     family   = bch }
 %<blg>     family   = blg }
 %<cmr>     family   = cmr }
-%<pad>     family   = {pad,padx,padj} }
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF} }
 %<pmn>     family   = pmnj }
 %<ppl>     family   = {ppl,pplx,pplj} }
 %<ptm>     family   = {ptm,ptmx,ptmj} }
@@ -14232,10 +14245,10 @@ end
 %<blg>     127 =  {300,400},
 %<blg>     156 =  {100,   }, % IJ
 %<blg>     188 =  { 80, 80}, % ij
-%<m-t|bch|pad|pmn|ppl|ptm>       _ = {100,100},
+%<m-t|bch|ebg|pmn|ppl|ptm>       _ = {100,100},
 %<cmr>       _ = {200,200},
 %<ugm>       _ = {100,200},
-%<m-t|pad|pmn|ptm>     \textbackslash    = {100,200},
+%<m-t|ebg|pmn|ptm>     \textbackslash    = {100,200},
 %<bch>     \textbackslash    = {150,200},
 %<blg>     \textbackslash    = {250,300},
 %<cmr|ppl>     \textbackslash    = {200,300},
@@ -14250,24 +14263,24 @@ end
 % The <EC> fonts do something weird: they insert an implicit kern between quote
 % and boundary character. Therefore, we must override the settings from <OT1>.
 %    \begin{macrocode}
-%<m-t|cmr|pad|ppl|ptm|ugm>     \quotesinglbase   = {400,400},   \quotedblbase      = {400,400},
+%<m-t|cmr|ebg|ppl|ptm|ugm>     \quotesinglbase   = {400,400},   \quotedblbase      = {400,400},
 %<blg>     \quotesinglbase   = {400,400},   \quotedblbase      = {300,400},
 %<bch|pmn>     \quotesinglbase   = {400,400},   \quotedblbase      = {300,300},
 %<m-t|bch|pmn>     \guilsinglleft    = {400,300},   \guilsinglright    = {300,400},
 %<blg>     \guilsinglleft    = {300,500},   \guilsinglright    = {300,500},
-%<cmr|pad|ppl|ptm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
+%<cmr|ebg|ppl|ptm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
 %<ugm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,600},
 %<m-t>     \guillemotleft    = {200,200},   \guillemotright    = {200,200},
 %<cmr>     \guillemotleft    = {300,200},   \guillemotright    = {100,400},
 %<bch|pmn>     \guillemotleft    = {200,200},   \guillemotright    = {150,300},
-%<blg|pad|ppl|ptm>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
+%<blg|ebg|ppl|ptm>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
 %<ugm>     \guillemotleft    = {300,400},   \guillemotright    = {300,400},
-%<m-t|bch|cmr|pad|pmn|ppl|ugm>     \textexclamdown   = {100,   },   \textquestiondown  = {100,   },
+%<m-t|bch|cmr|ebg|pmn|ppl|ugm>     \textexclamdown   = {100,   },   \textquestiondown  = {100,   },
 %<blg>     \textexclamdown   = {200,   },   \textquestiondown  = {100,   },
 %<ptm>     \textexclamdown   = {200,   },   \textquestiondown  = {200,   },
-%<m-t|cmr|pad|ppl|ptm|ugm>     \textbraceleft    = {400,200},   \textbraceright    = {200,400},
+%<m-t|cmr|ebg|ppl|ptm|ugm>     \textbraceleft    = {400,200},   \textbraceright    = {200,400},
 %<bch|blg|pmn>     \textbraceleft    = {200,   },   \textbraceright    = {   ,300},
-%<m-t|bch|cmr|pad|ppl|ptm|ugm>     \textless         = {200,100},   \textgreater       = {100,200}
+%<m-t|bch|cmr|ebg|ppl|ptm|ugm>     \textless         = {200,100},   \textgreater       = {100,200}
 %<pmn>     \textless         = {100,   },   \textgreater       = {   ,100},
 %<pmn>     \textvisiblespace = {100,100} % not in LY1
 %    \end{macrocode}
@@ -14541,65 +14554,65 @@ end
 %<blg>   [ name     = blg-it,
 %<blg>     load     = blg-default ]
 %<cmr>   [ name     = cmr-it   ]
-%<pad>   [ name     = pad-it   ]
+%<ebg>   [ name     = EBGaramond-it   ]
 %<pmn>   [ name     = pmnj-it  ]
 %<ppl>   [ name     = ppl-it   ]
 %<ptm>   [ name     = ptm-it   ]
 %<ugm>   [ name     = ugm-it   ]
-%<m-t|bch|blg|pad|ugm>   { encoding = OT1,
+%<m-t|bch|blg|ebg|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch,
 %<blg>     family   = blg,
-%<pad>     family   = {pad,padx,padj},
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
 %<ugm>     family   = ugm,
-%<m-t|bch|pad|ppl|ptm>     shape    = {it,sl}  }
+%<m-t|bch|ebg|ppl|ptm>     shape    = {it,sl}  }
 %<blg|ugm>     shape    = it  }
 %<cmr|pmn>   { }
    {
 %<cmr>     A = {100,100},
 %<ptm>     A = {100,50},
-%<pad|pmn>     A = {50,  },
+%<ebg|pmn>     A = {50,  },
 %<ugm>     A = {  ,150},
 %<ppl>     A = {50,50},
 %<ptm>   \AE = {100,  },
-%<pad|ppl>   \AE = {50,  },
+%<ebg|ppl>   \AE = {50,  },
 %<cmr>     B = {83,-40},
-%<pad|ppl|ptm>     B = {50,  },
+%<ebg|ppl|ptm>     B = {50,  },
 %<pmn>     B = {20,-50},
 %<bch|ppl|ptm|ugm>     C = {50,  },
 %<cmr>     C = {165,-75},
-%<pad>     C = {100, },
+%<ebg>     C = {100, },
 %<pmn>     C = {50,-50},
 %<cmr>     D = {75, -28},
-%<pad|ppl|ptm>     D = {50,50},
+%<ebg|ppl|ptm>     D = {50,50},
 %<pmn>     D = {20,  },
 %<cmr>     E = {80,-55},
-%<pad|ppl|ptm>     E = {50,  },
+%<ebg|ppl|ptm>     E = {50,  },
 %<pmn>     E = {20,-50},
 %<cmr>     F = {85,-80},
-%<pad|ptm>     F = {100, },
+%<ebg|ptm>     F = {100, },
 %<pmn>     F = {10,  },
 %<ppl>     F = {50,  },
 %<bch|ppl|ptm|ugm>     G = {50,  },
 %<cmr>     G = {153,-15},
-%<pad>     G = {100, },
+%<ebg>     G = {100, },
 %<pmn>     G = {50,-50},
 %<cmr>     H = {73,-60},
-%<pad|ppl|ptm>     H = {50,  },
+%<ebg|ppl|ptm>     H = {50,  },
 %<cmr>     I = {140,-120},
-%<pad|ptm>     I = {50,  },
+%<ebg|ptm>     I = {50,  },
 %<pmn>     I = {20,-50},
 %<cmr>     J = {135,-80},
-%<pad>     J = {50,  },
+%<ebg>     J = {50,  },
 %<pmn>     J = {20,  },
 %<ptm>     J = {100, },
 %<cmr>     K = {70,-30},
-%<pad|ppl|ptm>     K = {50,  },
+%<ebg|ppl|ptm>     K = {50,  },
 %<pmn>     K = {20,  },
 %<cmr>     L = {87, 40},
-%<pad|ppl|ptm>     L = {50,  },
+%<ebg|ppl|ptm>     L = {50,  },
 %<pmn>     L = {20,50},
 %<ugm>     L = {  ,100},
 %<cmr>     M = {67,-45},
@@ -14610,37 +14623,37 @@ end
 %<ptm>     N = {50,  },
 %<bch|pmn|ppl|ptm>     O = {50,  },
 %<cmr>     O = {150,-30},
-%<pad>     O = {100, },
+%<ebg>     O = {100, },
 %<ugm>     O = {70,50},
 %<ppl|ptm>   \OE = {50,  },
-%<pad>   \OE = {100, },
+%<ebg>   \OE = {100, },
 %<cmr>     P = {82,-50},
-%<pad|ppl|ptm>     P = {50,  },
+%<ebg|ppl|ptm>     P = {50,  },
 %<pmn>     P = {20,-50},
 %<bch|pmn|ppl|ptm>     Q = {50,  },
 %<cmr>     Q = {150,-30},
-%<pad>     Q = {100, },
+%<ebg>     Q = {100, },
 %<ugm>     Q = {70,50},
 %<cmr>     R = {75, 15},
-%<pad|ppl|ptm>     R = {50,  },
+%<ebg|ppl|ptm>     R = {50,  },
 %<pmn>     R = {20,  },
-%<bch|pad|ppl|ptm>     S = {50,  },
+%<bch|ebg|ppl|ptm>     S = {50,  },
 %<cmr>     S = {90,-65},
 %<pmn>     S = {20,-30},
-%<bch|pad|ppl|ptm>     $ = {50,  },
+%<bch|ebg|ppl|ptm>     $ = {50,  },
 %<cmr>     $ = {100,-20},
 %<pmn>     $ = {20,-30},
 %<bch|pmn|ugm>     T = {70,  },
 %<cmr>     T = {220,-85},
-%<pad|ppl|ptm>     T = {100, },
+%<ebg|ppl|ptm>     T = {100, },
 %<cmr>     U = {230,-55},
-%<pad|ppl|ptm>     U = {50,  },
+%<ebg|ppl|ptm>     U = {50,  },
 %<pmn>     U = {50,-50},
 %<cmr>     V = {260,-60},
-%<pad|pmn|ugm>     V = {100, },
+%<ebg|pmn|ugm>     V = {100, },
 %<ppl|ptm>     V = {100,50},
 %<cmr>     W = {185,-55},
-%<pad|pmn|ugm>     W = {100, },
+%<ebg|pmn|ugm>     W = {100, },
 %<ppl>     W = {50,  },
 %<ptm>     W = {100,50},
 %<cmr>     X = {70,-30},
@@ -14658,7 +14671,7 @@ end
 %<pmn>     d = {  ,-50},
 %<cmr>     e = {180, },
 %<cmr>     f = {  ,-250},
-%<pad|pmn>     f = { ,-100},
+%<ebg|pmn>     f = { ,-100},
 %<cmr>     g = {150,-10},
 %<cmr>     h = {100, },
 %<cmr>     i = {210, },
@@ -14694,12 +14707,12 @@ end
 %<cmr>     0 = {170,-85},
 %<bch|ptm>     1 = {150,100},
 %<cmr>     1 = {230,110},
-%<pad>     1 = {150, },
+%<ebg>     1 = {150, },
 %<pmn>     1 = {50,  },
 %<ppl>     1 = {100, },
 %<ugm>     1 = {150,150},
 %<cmr>     2 = {130,-70},
-%<pad|ppl|ptm>     2 = {50,  },
+%<ebg|ppl|ptm>     2 = {50,  },
 %<pmn>     2 = {-50,  },
 %<bch>     3 = {50,  },
 %<cmr>     3 = {140,-70},
@@ -14707,31 +14720,31 @@ end
 %<ptm>     3 = {100,50},
 %<bch>     4 = {100, },
 %<cmr>     4 = {130,80},
-%<pad>     4 = {150, },
+%<ebg>     4 = {150, },
 %<ppl|ptm>     4 = {50,  },
 %<cmr>     5 = {160, },
 %<ptm>     5 = {50,  },
 %<bch>     6 = {50,  },
 %<cmr>     6 = {175,-30},
-%<bch|pad|ptm>     7 = {100, },
+%<bch|ebg|ptm>     7 = {100, },
 %<cmr>     7 = {250,-150},
 %<pmn>     7 = {20,  },
 %<ppl>     7 = {50,  },
 %<cmr>     8 = {130,-40},
 %<cmr>     9 = {155,-80},
-%<m-t|cmr|pad|pmn|ppl>     . = { ,500},
+%<m-t|cmr|ebg|pmn|ppl>     . = { ,500},
 %<blg>     . = {400,600},
 %<bch|ptm|ugm>     . = { ,700},
 %<blg>    {,}= {300,500},
-%<m-t|pad|pmn|ppl>    {,}= { ,500},
+%<m-t|ebg|pmn|ppl>    {,}= { ,500},
 %<cmr>    {,}= { ,450},
 %<bch|ugm>    {,}= { ,600},
 %<ptm>    {,}= { ,700},
-%<m-t|cmr|pad|ppl>     : = { ,300},
+%<m-t|cmr|ebg|ppl>     : = { ,300},
 %<bch|ugm>     : = { ,400},
 %<pmn>     : = { ,200},
 %<ptm>     : = { ,500},
-%<m-t|cmr|pad|ppl>     ; = { ,300},
+%<m-t|cmr|ebg|ppl>     ; = { ,300},
 %<bch|ugm>     ; = { ,400},
 %<pmn>     ; = { ,200},
 %<ptm>     ; = { ,500},
@@ -14740,11 +14753,11 @@ end
 %<ptm>     ? = { ,100},
 %<ppl>     ? = { ,300},
 %<pmn>     " = {400,200},
-%<m-t|pad|pmn|ppl|ptm>     & = {50,50},
+%<m-t|ebg|pmn|ppl|ptm>     & = {50,50},
 %<bch>     & = {  ,80},
 %<cmr>     & = {130,30},
 %<ugm>     & = {50,100},
-%<m-t|pad|pmn>    \% = {100, },
+%<m-t|ebg|pmn>    \% = {100, },
 %<cmr>    \% = {180,50},
 %<bch>    \% = {50,50},
 %<ppl|ptm>    \% = {100,100},
@@ -14752,27 +14765,27 @@ end
 %<m-t|pmn|ppl>     * = {200,200},
 %<bch>     * = {300,200},
 %<cmr>     * = {380,20},
-%<pad>     * = {500,100},
+%<ebg>     * = {500,100},
 %<ptm|ugm>     * = {400,200},
 %<m-t|pmn|ppl>     + = {150,200},
 %<cmr>     + = {180,200},
 %<bch|ugm>     + = {250,250},
-%<pad|ptm>     + = {250,200},
-%<m-t|pad|pmn|ppl>     @ = {50,50},
+%<ebg|ptm>     + = {250,200},
+%<m-t|ebg|pmn|ppl>     @ = {50,50},
 %<bch>     @ = {80,50},
 %<cmr>     @ = {180,10},
 %<ptm>     @ = {150,150},
 %<m-t|bch|ugm>     ~ = {150,150},
-%<cmr|pad|pmn|ppl|ptm>     ~ = {200,150},
+%<cmr|ebg|pmn|ppl|ptm>     ~ = {200,150},
 %<ugm>    {=}= {200,200},
-%<m-t|bch|pad|pmn|ppl|ptm|ugm>     ( = {200, },    ) = {  ,200},
+%<m-t|bch|ebg|pmn|ppl|ptm|ugm>     ( = {200, },    ) = {  ,200},
 %<cmr>     ( = {300, },    ) = {  ,70},
-%<m-t|pad|ppl|ptm|ugm>     / = {100,200},
+%<m-t|ebg|ppl|ptm|ugm>     / = {100,200},
 %<cmr>     / = {100,100},
 %<bch>     / = {  ,150},
 %<pmn>     / = {100,150},
 %<m-t>     - = {300,300},
-%<bch|pad>     - = {300,400},
+%<bch|ebg>     - = {300,400},
 %<pmn>     - = {200,300},
 %<cmr>     - = {500,300},
 %<ppl>     - = {300,500},
@@ -14782,17 +14795,17 @@ end
 %<m-t|pmn>     \textendash       = {200,200},   \textemdash        = {150,150},
 %<bch>     \textendash       = {200,300},   \textemdash        = {150,200},
 %<cmr>     \textendash       = {500,300},   \textemdash        = {400,170},
-%<pad|ppl|ptm|ugm>     \textendash       = {300,300},   \textemdash        = {200,200},
+%<ebg|ppl|ptm|ugm>     \textendash       = {300,300},   \textemdash        = {200,200},
 %<m-t|bch|pmn|ugm>     \textquoteleft    = {400,200},   \textquoteright    = {400,200},
 %<blg>     \textquoteleft     = {400,400},    \textquoteright    = {400,400},
 %<cmr>     \textquoteleft    = {800,200},   \textquoteright    = {800,-20},
-%<pad>     \textquoteleft    = {800,200},   \textquoteright    = {800,200},
+%<ebg>     \textquoteleft    = {800,200},   \textquoteright    = {800,200},
 %<ppl>     \textquoteleft    = {700,400},   \textquoteright    = {700,400},
 %<ptm>     \textquoteleft    = {800,500},   \textquoteright    = {800,500},
 %<m-t|bch|pmn>     \textquotedblleft = {400,200},   \textquotedblright = {400,200}
 %<blg>     \textquotedblright = {300,300}
 %<cmr>     \textquotedblleft = {540,100},   \textquotedblright = {500,100}
-%<pad>     \textquotedblleft = {700,200},   \textquotedblright = {700,200}
+%<ebg>     \textquotedblleft = {700,200},   \textquotedblright = {700,200}
 %<ppl>     \textquotedblleft = {500,300},   \textquotedblright = {500,300}
 %<ptm>     \textquotedblleft = {700,400},   \textquotedblright = {700,400}
 %<ugm>     \textquotedblleft = {600,200},   \textquotedblright = {600,200}
@@ -14836,7 +14849,7 @@ end
 %<bch>   [ name     = bch-it-T1,
 %<blg>   [ name     = blg-it-T1,
 %<cmr>   [ name     = cmr-it-T1,
-%<pad>   [ name     = pad-it-T1,
+%<ebg>   [ name     = EBGaramond-it-T1,
 %<pmn>   [ name     = pmnj-it-T1,
 %<ppl>   [ name     = ppl-it-T1,
 %<ptm>   [ name     = ptm-it-T1,
@@ -14846,27 +14859,27 @@ end
 %<blg>     load     = blg-T1   ]
 %<cmr>     load     = cmr-it   ]
 %<pmn>     load     = pmnj-it  ]
-%<pad>     load     = pad-it   ]
+%<ebg>     load     = EBGaramond-it   ]
 %<ppl>     load     = ppl-it   ]
 %<ptm>     load     = ptm-it   ]
 %<ugm>     load     = ugm-it   ]
-%<m-t|bch|cmr|pad|pmn|ppl>   { encoding = {T1,LY1},
+%<m-t|bch|cmr|ebg|pmn|ppl>   { encoding = {T1,LY1},
 %<blg|ptm|ugm>   { encoding = T1,
 %<bch>     family   = bch,
 %<blg>     family   = blg,
 %<cmr>     family   = cmr,
 %<pmn>     family   = pmnj,
-%<pad>     family   = {pad,padx,padj},
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
 %<ugm>     family   = ugm,
-%<m-t|bch|pad|pmn|ppl|ptm>     shape    = {it,sl}  }
+%<m-t|bch|ebg|pmn|ppl|ptm>     shape    = {it,sl}  }
 %<blg|cmr|ugm>     shape    = it       }
    {
 %<m-t|bch|pmn>     _ = {  ,100},
 %<blg>     _ = {0,300},
 %<cmr|ugm>     _ = {100,200},
-%<pad|ppl|ptm>     _ = {100,100},
+%<ebg|ppl|ptm>     _ = {100,100},
 %<blg>     . = {400,600},
 %<blg>    {,}= {300,500},
 %<cmr>     \AE = {100,   },
@@ -14875,11 +14888,11 @@ end
 %<cmr>     \OE = {100,   },
 %<pmn>     031 = { ,-100}, % ffl
 %<cmr|ptm>     156 = {100, },  % IJ
-%<pad>     156 = {50,  },  % IJ
+%<ebg>     156 = {50,  },  % IJ
 %<pmn>     156 = {20,  },  % IJ
 %<pmn>     188 = {  ,-30}, % ij
 %<pmn>   \v t = { ,100},
-%<m-t|pad|ppl|ptm>     \textbackslash    = {100,200},
+%<m-t|ebg|ppl|ptm>     \textbackslash    = {100,200},
 %<cmr|ugm>     \textbackslash    = {300,300},
 %<bch>     \textbackslash    = {150,150},
 %<pmn>     \textbackslash    = {100,150},
@@ -14891,27 +14904,27 @@ end
 %<m-t|ptm>     \quotesinglbase   = {300,700},   \quotedblbase      = {400,500},
 %<cmr>     \quotesinglbase   = {300,700},   \quotedblbase      = {200,600},
 %<bch|pmn>     \quotesinglbase   = {200,500},   \quotedblbase      = {150,500},
-%<pad|ppl>     \quotesinglbase   = {500,500},   \quotedblbase      = {400,400},
+%<ebg|ppl>     \quotesinglbase   = {500,500},   \quotedblbase      = {400,400},
 %<ugm>     \quotesinglbase   = {300,700},   \quotedblbase      = {300,500},
 %<m-t|ppl|ptm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,500},
 %<bch|pmn>     \guilsinglleft    = {300,400},   \guilsinglright    = {200,500},
 %<cmr>     \guilsinglleft    = {500,300},   \guilsinglright    = {400,400},
-%<pad>     \guilsinglleft    = {500,400},   \guilsinglright    = {300,500},
+%<ebg>     \guilsinglleft    = {500,400},   \guilsinglright    = {300,500},
 %<ugm>     \guilsinglleft    = {400,400},   \guilsinglright    = {300,600},
 %<m-t|ppl>     \guillemotleft    = {300,300},   \guillemotright    = {300,300},
 %<bch|pmn>     \guillemotleft    = {200,300},   \guillemotright    = {150,400},
 %<cmr>     \guillemotleft    = {400,100},   \guillemotright    = {200,300},
-%<pad>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
+%<ebg>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
 %<ptm>     \guillemotleft    = {300,400},   \guillemotright    = {200,400},
 %<ugm>     \guillemotleft    = {300,400},   \guillemotright    = {300,400},
-%<m-t|pad|ppl|ugm>     \textexclamdown   = {100,   },   \textquestiondown  = {200,   },
+%<m-t|ebg|ppl|ugm>     \textexclamdown   = {100,   },   \textquestiondown  = {200,   },
 %<cmr|ptm>     \textexclamdown   = {200,   },   \textquestiondown  = {200,   },
 %<pmn>     \textexclamdown   = {-50,   },   \textquestiondown  = {-50,   },
 %<m-t|ppl|ugm>     \textbraceleft    = {200,100},   \textbraceright    = {200,200},
 %<bch|pmn>     \textbraceleft    = {200,   },   \textbraceright    = {   ,200},
-%<cmr|pad|ptm>     \textbraceleft    = {400,100},   \textbraceright    = {200,200},
+%<cmr|ebg|ptm>     \textbraceleft    = {400,100},   \textbraceright    = {200,200},
 %<bch|pmn>     \textless         = {100,   },   \textgreater       = {   ,100},
-%<cmr|pad|ppl|ptm>     \textless         = {300,100},   \textgreater       = {200,100}
+%<cmr|ebg|ppl|ptm>     \textless         = {300,100},   \textgreater       = {200,100}
 %<pmn>     \textvisiblespace = {100,100}
   }
 
@@ -15231,47 +15244,47 @@ end
 %<m-t>   [ name     = OT1-sc,
 %<bch>   [ name     = bch-sc,
 %<cmr>   [ name     = cmr-sc-OT1,
-%<pad>   [ name     = pad-sc,
+%<ebg>   [ name     = EBGaramond-sc,
 %<pmn>   [ name     = pmnj-sc,
 %<ppl>   [ name     = ppl-sc,
 %<ptm>   [ name     = ptm-sc,
 %<m-t>     load     = default ]
 %<bch>     load     = bch-default ]
 %<cmr>     load     = cmr-OT1 ]
-%<pad>     load     = pad-default ]
+%<ebg>     load     = EBGaramond-default ]
 %<pmn>     load     = pmnj-default ]
 %<ppl>     load     = ppl-default ]
 %<ptm>     load     = ptm-default ]
-%<m-t|bch|pad|pmn>   { encoding = OT1,
+%<m-t|bch|ebg|pmn>   { encoding = OT1,
 %<cmr|ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch,
 %<cmr>     family   = cmr,
-%<pad>     family   = {pad,padx,padj},
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<pmn>     family   = pmnj,
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
      shape    = sc }
    {
      a = {50,50},
-%<cmr|pad|ppl|ptm>   \ae = {50,  },
+%<cmr|ebg|ppl|ptm>   \ae = {50,  },
 %<bch|pmn>     c = {50,  },
-%<bch|pad|pmn>     d = {  ,50},
-%<m-t|bch|cmr|pad|pmn|ptm>     f = {  ,50},
-%<bch|pad|pmn>     g = {50,  },
-%<m-t|cmr|pad|pmn|ppl|ptm>     j = {50,  },
+%<bch|ebg|pmn>     d = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ptm>     f = {  ,50},
+%<bch|ebg|pmn>     g = {50,  },
+%<m-t|cmr|ebg|pmn|ppl|ptm>     j = {50,  },
 %<bch>     j = {100,  },
-%<m-t|bch|cmr|pad|pmn|ppl>     l = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ppl>     l = {  ,50},
 %<ptm>     l = {  ,80},
-%<m-t|bch|cmr|pad|pmn|ppl>   013 = {  ,50}, % fl
+%<m-t|bch|cmr|ebg|pmn|ppl>   013 = {  ,50}, % fl
 %<ptm>   013 = {  ,80}, % fl
-%<bch|pad|pmn>     o = {50,50},
-%<pad|pmn>   \oe = {50,  },
+%<bch|ebg|pmn>     o = {50,50},
+%<ebg|pmn>   \oe = {50,  },
 %<ppl>     p = { 0, 0},
-%<bch|pad|pmn>     q = {50,70},
+%<bch|ebg|pmn>     q = {50,70},
 %<ppl>     q = { 0,  },
-%<m-t|cmr|pad|pmn|ppl|ptm>     r = {  , 0},
+%<m-t|cmr|ebg|pmn|ppl|ptm>     r = {  , 0},
      t = {50,50},
-%<m-t|bch|cmr|pad|pmn|ppl>     y = {50,50}
+%<m-t|bch|cmr|ebg|pmn|ppl>     y = {50,50}
 %<ptm>     y = {80,80}
    }
 
@@ -15279,46 +15292,46 @@ end
 %<m-t>   [ name     = T1-sc,
 %<bch>   [ name     = bch-sc-T1,
 %<cmr>   [ name     = cmr-sc-T1,
-%<pad>   [ name     = pad-sc-T1,
+%<ebg>   [ name     = EBGaramond-sc-T1,
 %<pmn>   [ name     = pmnj-sc-T1,
 %<ppl>   [ name     = ppl-sc-T1,
 %<ptm>   [ name     = ptm-sc-T1,
 %<m-t>     load     = T1-default ]
 %<bch>     load     = bch-T1     ]
 %<cmr>     load     = cmr-T1     ]
-%<pad>     load     = pad-T1     ]
+%<ebg>     load     = EBGaramond-T1     ]
 %<pmn>     load     = pmnj-T1    ]
 %<ppl>     load     = ppl-T1     ]
 %<ptm>     load     = ptm-T1     ]
    { encoding = {T1,LY1},
 %<bch>     family   = bch,
 %<cmr>     family   = cmr,
-%<pad>     family   = {pad,padx,padj},
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<pmn>     family   = pmnj,
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
      shape    = sc }
    {
      a = {50,50},
-%<cmr|pad|ppl|ptm>   \ae = {50,  },
+%<cmr|ebg|ppl|ptm>   \ae = {50,  },
 %<bch|pmn>     c = {50,  },
-%<bch|pad|pmn>     d = {  ,50},
-%<m-t|bch|cmr|pad|pmn|ptm>     f = {  ,50},
-%<bch|pad|pmn>     g = {50,  },
-%<m-t|cmr|pad|pmn|ppl|ptm>     j = {50,  },
+%<bch|ebg|pmn>     d = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ptm>     f = {  ,50},
+%<bch|ebg|pmn>     g = {50,  },
+%<m-t|cmr|ebg|pmn|ppl|ptm>     j = {50,  },
 %<bch>     j = {100,  },
-%<m-t|bch|cmr|pad|pmn|ppl>     l = {  ,50},
+%<m-t|bch|cmr|ebg|pmn|ppl>     l = {  ,50},
 %<ptm>     l = {  ,80},
-%<m-t|bch|cmr|pad|pmn|ppl>   029 = {  ,50}, % fl
+%<m-t|bch|cmr|ebg|pmn|ppl>   029 = {  ,50}, % fl
 %<ptm>   029 = {  ,80}, % fl
-%<bch|pad|pmn>     o = {50,50},
-%<bch|pad|pmn>   \oe = {50,  },
+%<bch|ebg|pmn>     o = {50,50},
+%<bch|ebg|pmn>   \oe = {50,  },
 %<ppl>     p = { 0, 0},
-%<bch|pad|pmn>     q = {50,70},
+%<bch|ebg|pmn>     q = {50,70},
 %<ppl>     q = { 0,  },
-%<m-t|cmr|pad|pmn|ppl|ptm>     r = {  , 0},
+%<m-t|cmr|ebg|pmn|ppl|ptm>     r = {  , 0},
      t = {50,50},
-%<m-t|bch|cmr|pad|pmn|ppl>     y = {50,50}
+%<m-t|bch|cmr|ebg|pmn|ppl>     y = {50,50}
 %<ptm>     y = {80,80}
    }
 
@@ -15527,7 +15540,7 @@ end
 %<bch>   [ name     = bch-textcomp ]
 %<blg>   [ name     = blg-textcomp ]
 %<cmr>   [ name     = cmr-textcomp ]
-%<pad>   [ name     = pad-textcomp ]
+%<ebg>   [ name     = EBGaramond-textcomp ]
 %<pmn>   [ name     = pmn-textcomp ]
 %<ppl>   [ name     = ppl-textcomp ]
 %<ptm>   [ name     = ptm-textcomp ]
@@ -15537,7 +15550,7 @@ end
 %<bch>     family   = bch }
 %<blg>     family   = blg }
 %<cmr>     family   = cmr }
-%<pad>     family   = {pad,padx,padj} }
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF} }
 %<pmn>     family   = {pmnx,pmnj} }
 %<ppl>     family   = {ppl,pplx,pplj} }
 %<ptm>     family   = {ptm,ptmx,ptmj} }
@@ -15545,71 +15558,71 @@ end
    {
 %<blg>     \textquotestraightbase    = {400,500},
 %<cmr>     \textquotestraightbase    = {300,300},
-%<pad|pmn>     \textquotestraightbase    = {400,400},
+%<ebg|pmn>     \textquotestraightbase    = {400,400},
 %<blg>     \textquotestraightdblbase = {300,400},
 %<cmr|pmn>     \textquotestraightdblbase = {300,300},
-%<pad>     \textquotestraightdblbase = {400,400},
-%<bch|cmr|pad|pmn|ugm>     \texttwelveudash          = {200,200},
-%<bch|cmr|pad|pmn>     \textthreequartersemdash  = {150,150},
+%<ebg>     \textquotestraightdblbase = {400,400},
+%<bch|cmr|ebg|pmn|ugm>     \texttwelveudash          = {200,200},
+%<bch|cmr|ebg|pmn>     \textthreequartersemdash  = {150,150},
 %<ugm>     \textthreequartersemdash  = {200,200},
 %<blg>     \textquotesingle          = {500,600},
 %<cmr|pmn>     \textquotesingle          = {300,400},
-%<pad>     \textquotesingle          = {400,500},
+%<ebg>     \textquotesingle          = {400,500},
 %<ptm>     \textquotesingle          = {500,500},
 %<ugm>     \textquotesingle          = {300,500},
 %<bch|cmr|pmn>     \textasteriskcentered     = {200,300},
 %<blg>     \textasteriskcentered     = {150,200},
-%<pad>     \textasteriskcentered     = {300,300},
+%<ebg>     \textasteriskcentered     = {300,300},
 %<ugm>     \textasteriskcentered     = {100,200},
 %<pmn>     \textfractionsolidus      = {-200,-200},
 %<cmr>     \textoneoldstyle          = {100,100},
 %<pmn>     \textoneoldstyle          = {   , 50},
 %<cmr>     \textthreeoldstyle        = {   , 50},
-%<pad|pmn>     \textthreeoldstyle        = { 50,   },
+%<ebg|pmn>     \textthreeoldstyle        = { 50,   },
 %<cmr>     \textfouroldstyle         = { 50, 50},
-%<pad|pmn>     \textfouroldstyle         = { 50,   },
-%<cmr|pad|pmn>     \textsevenoldstyle        = { 50, 80},
+%<ebg|pmn>     \textfouroldstyle         = { 50,   },
+%<cmr|ebg|pmn>     \textsevenoldstyle        = { 50, 80},
 %<cmr>     \textlangle               = {400,   },
 %<cmr>     \textrangle               = {   ,400},
 %<m-t|bch|pmn|ptm>     \textminus                = {200,200},
-%<cmr|pad|ppl>     \textminus                = {300,300},
+%<cmr|ebg|ppl>     \textminus                = {300,300},
 %<blg|ugm>     \textminus                = {250,300},
-%<bch|pad|pmn>     \textlbrackdbl            = {100,   },
+%<bch|ebg|pmn>     \textlbrackdbl            = {100,   },
 %<blg>     \textlbrackdbl            = {200,   },
-%<bch|pad|pmn>     \textrbrackdbl            = {   ,100},
+%<bch|ebg|pmn>     \textrbrackdbl            = {   ,100},
 %<blg>     \textrbrackdbl            = {   ,200},
 %<pmn>     \textasciigrave           = {200,500},
-%<bch|blg|cmr|pad|pmn>     \texttildelow             = {200,250},
+%<bch|blg|cmr|ebg|pmn>     \texttildelow             = {200,250},
 %<pmn>     \textasciibreve           = {300,400},
 %<pmn>     \textasciicaron           = {300,400},
 %<pmn>     \textacutedbl             = {200,300},
 %<pmn>     \textgravedbl             = {150,300},
 %<bch|pmn|ugm>     \textdagger               = { 80, 80},
 %<blg>     \textdagger               = {200,200},
-%<cmr|pad>     \textdagger               = {100,100},
+%<cmr|ebg>     \textdagger               = {100,100},
 %<ptm>     \textdagger               = {150,150},
 %<blg>     \textdaggerdbl            = {150,150},
-%<cmr|pad|pmn>     \textdaggerdbl            = { 80, 80},
+%<cmr|ebg|pmn>     \textdaggerdbl            = { 80, 80},
 %<ptm>     \textdaggerdbl            = {100,100},
 %<bch>     \textbardbl               = {100,100},
 %<blg|ugm>     \textbardbl               = {150,150},
 %<bch>     \textbullet               = {200,200},
 %<blg>     \textbullet               = {400,500},
-%<cmr|pad|pmn>     \textbullet               = {   ,100},
+%<cmr|ebg|pmn>     \textbullet               = {   ,100},
 %<ptm>     \textbullet               = {150,150},
 %<ugm>     \textbullet               = { 50,100},
 %<bch|cmr|pmn>     \textcelsius              = { 50,   },
-%<pad>     \textcelsius              = { 80,   },
+%<ebg>     \textcelsius              = { 80,   },
 %<bch>     \textflorin               = { 50, 50},
 %<blg>     \textflorin               = {100,100},
-%<pad|ugm>     \textflorin               = {   ,100},
+%<ebg|ugm>     \textflorin               = {   ,100},
 %<pmn>     \textflorin               = { 50,100},
 %<ptm>     \textflorin               = { 50, 70},
 %<cmr>     \textcolonmonetary        = {   , 50},
-%<pad|pmn>     \textcolonmonetary        = { 50,   },
+%<ebg|pmn>     \textcolonmonetary        = { 50,   },
 %<pmn>     \textinterrobang          = {   ,100},
 %<pmn>     \textinterrobangdown      = {100,   },
-%<m-t|pad|ptm>     \texttrademark            = {100,100},
+%<m-t|ebg|ptm>     \texttrademark            = {100,100},
 %<bch>     \texttrademark            = {150,150},
 %<blg|cmr|ppl>     \texttrademark            = {200,200},
 %<pmn>     \texttrademark            = { 50, 50},
@@ -15622,54 +15635,54 @@ end
 %<blg>     \textbrokenbar            = {250,250},
 %<ugm>     \textbrokenbar            = {200,300},
 %<pmn>     \textasciidieresis        = {300,400},
-%<m-t|bch|cmr|pad|ptm|ugm>     \textcopyright            = {100,100},
+%<m-t|bch|cmr|ebg|ptm|ugm>     \textcopyright            = {100,100},
 %<pmn>     \textcopyright            = {100,150},
 %<ppl>     \textcopyright            = {200,200},
 %<bch|cmr|ugm>     \textordfeminine          = {100,200},
-%<pad|pmn>     \textordfeminine          = {200,200},
-%<bch|cmr|pad|pmn|ugm>     \textlnot                 = {200,   },
+%<ebg|pmn>     \textordfeminine          = {200,200},
+%<bch|cmr|ebg|pmn|ugm>     \textlnot                 = {200,   },
 %<blg>     \textlnot                 = {200,100},
-%<m-t|bch|cmr|pad|ptm|ugm>     \textregistered           = {100,100},
+%<m-t|bch|cmr|ebg|ptm|ugm>     \textregistered           = {100,100},
 %<pmn>     \textregistered           = { 50,150},
 %<ppl>     \textregistered           = {200,200},
 %<pmn>     \textasciimacron          = {150,200},
 %<m-t|ppl|ptm>     \textdegree               = {300,300},
 %<bch>     \textdegree               = {150,200},
 %<blg|ugm>     \textdegree               = {200,200},
-%<cmr|pad>     \textdegree               = {400,400},
+%<cmr|ebg>     \textdegree               = {400,400},
 %<pmn>     \textdegree               = {150,400},
-%<bch|cmr|pad|pmn|ugm>     \textpm                   = {150,200},
+%<bch|cmr|ebg|pmn|ugm>     \textpm                   = {150,200},
 %<blg>     \textpm                   = {100,100},
 %<ptm>     \textpm                   = { 50, 80},
 %<bch|blg|ugm>     \texttwosuperior          = {100,200},
 %<cmr>     \texttwosuperior          = { 50,100},
-%<pad|pmn>     \texttwosuperior          = {200,200},
+%<ebg|pmn>     \texttwosuperior          = {200,200},
 %<ptm>     \texttwosuperior          = { 50, 50},
 %<bch|blg|ugm>     \textthreesuperior        = {100,200},
 %<cmr>     \textthreesuperior        = { 50,100},
-%<pad|pmn>     \textthreesuperior        = {200,200},
+%<ebg|pmn>     \textthreesuperior        = {200,200},
 %<ptm>     \textthreesuperior        = { 50, 50},
 %<pmn>     \textasciiacute           = {300,400},
 %<bch|ugm>     \textmu                   = {   ,100},
-%<bch|pad|pmn>     \textparagraph            = {   ,100},
-%<bch|cmr|pad|pmn>     \textperiodcentered       = {300,400},
+%<bch|ebg|pmn>     \textparagraph            = {   ,100},
+%<bch|cmr|ebg|pmn>     \textperiodcentered       = {300,400},
 %<blg>     \textperiodcentered       = {400,500},
 %<ptm>     \textperiodcentered       = {300,300},
 %<ugm>     \textperiodcentered       = {200,500},
 %<bch|blg|ugm>     \textonesuperior          = {200,300},
-%<cmr|pad|pmn>     \textonesuperior          = {200,200},
+%<cmr|ebg|pmn>     \textonesuperior          = {200,200},
 %<ptm>     \textonesuperior          = {100,100},
-%<bch|pad|pmn|ugm>     \textordmasculine         = {200,200},
+%<bch|ebg|pmn|ugm>     \textordmasculine         = {200,200},
 %<blg|cmr>     \textordmasculine         = {100,200},
 %<bch|cmr|pmn>     \texteuro                 = {100,   },
-%<pad>     \texteuro                 = { 50,100},
+%<ebg>     \texteuro                 = { 50,100},
 %<bch>     \texttimes                = {200,200},
 %<blg|ptm>     \texttimes                = {100,100},
 %<cmr>     \texttimes                = {150,250},
-%<pad>     \texttimes                = {100,150},
+%<ebg>     \texttimes                = {100,150},
 %<pmn>     \texttimes                = { 70,100},
 %<ugm>     \texttimes                = {200,300},
-%<bch|pad|pmn>     \textdiv                  = {150,200}
+%<bch|ebg|pmn>     \textdiv                  = {150,200}
 %<blg>     \textdiv                  = {100,100}
 %<cmr>     \textdiv                  = {150,250}
 %<ptm>     \textdiv                  = { 50,100},
@@ -15732,83 +15745,83 @@ end
 %    \begin{macrocode}
    }
 
-%<*cmr|pad|pmn|ugm>
+%<*cmr|ebg|pmn|ugm>
 \SetProtrusion
 %<cmr>   [ name     = cmr-textcomp-it ]
-%<pad>   [ name     = pad-textcomp-it ]
+%<ebg>   [ name     = EBGaramond-textcomp-it ]
 %<pmn>   [ name     = pmn-textcomp-it ]
 %<ugm>   [ name     = ugm-textcomp-it ]
    { encoding = TS1,
 %<cmr>     family   = cmr,
-%<pad>     family   = {pad,padx,padj},
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<pmn>     family   = {pmnx,pmnj},
 %<ugm>     family   = ugm,
 %<!ugm>     shape    = {it,sl} }
 %<ugm>     shape    = it }
    {
 %<cmr>     \textquotestraightbase    = {300,600},
-%<pad|pmn>     \textquotestraightbase    = {400,400},
+%<ebg|pmn>     \textquotestraightbase    = {400,400},
 %<cmr>     \textquotestraightdblbase = {300,600},
-%<pad>     \textquotestraightdblbase = {300,400},
+%<ebg>     \textquotestraightdblbase = {300,400},
 %<pmn>     \textquotestraightdblbase = {300,300},
      \texttwelveudash          = {200,200},
-%<cmr|pad|pmn>     \textthreequartersemdash  = {150,150},
+%<cmr|ebg|pmn>     \textthreequartersemdash  = {150,150},
 %<ugm>     \textthreequartersemdash  = {200,200},
 %<cmr>     \textquotesingle          = {600,300},
-%<pad>     \textquotesingle          = {800,100},
+%<ebg>     \textquotesingle          = {800,100},
 %<pmn>     \textquotesingle          = {300,200},
 %<ugm>     \textquotesingle          = {500,500},
 %<cmr>     \textasteriskcentered     = {300,200},
-%<pad>     \textasteriskcentered     = {500,100},
+%<ebg>     \textasteriskcentered     = {500,100},
 %<pmn>     \textasteriskcentered     = {200,300},
 %<ugm>     \textasteriskcentered     = {300,150},
 %<pmn>     \textfractionsolidus      = {-200,-200},
 %<cmr>     \textoneoldstyle          = {100, 50},
-%<pad>     \textoneoldstyle          = {100,   },
+%<ebg>     \textoneoldstyle          = {100,   },
 %<pmn>     \textoneoldstyle          = { 50,   },
-%<pad>     \texttwooldstyle          = { 50,   },
+%<ebg>     \texttwooldstyle          = { 50,   },
 %<pmn>     \texttwooldstyle          = {-50,   },
 %<cmr>     \textthreeoldstyle        = {100, 50},
 %<pmn>     \textthreeoldstyle        = {-100,  },
 %<cmr>     \textfouroldstyle         = { 50, 50},
-%<pad>     \textfouroldstyle         = { 50,100},
+%<ebg>     \textfouroldstyle         = { 50,100},
 %<cmr>     \textsevenoldstyle        = { 50, 80},
-%<pad>     \textsevenoldstyle        = { 50,   },
+%<ebg>     \textsevenoldstyle        = { 50,   },
 %<pmn>     \textsevenoldstyle        = { 20,   },
 %<cmr>     \textlangle               = {400,   },
 %<cmr>     \textrangle               = {   ,400},
-%<cmr|pad>     \textminus                = {300,300},
+%<cmr|ebg>     \textminus                = {300,300},
 %<pmn>     \textminus                = {200,200},
 %<ugm>     \textminus                = {250,300},
-%<pad|pmn>     \textlbrackdbl            = {100,   },
-%<pad|pmn>     \textrbrackdbl            = {   ,100},
+%<ebg|pmn>     \textlbrackdbl            = {100,   },
+%<ebg|pmn>     \textrbrackdbl            = {   ,100},
 %<pmn>     \textasciigrave           = {300,300},
-%<cmr|pad|pmn>     \texttildelow             = {200,250},
+%<cmr|ebg|pmn>     \texttildelow             = {200,250},
 %<pmn>     \textasciibreve           = {300,300},
 %<pmn>     \textasciicaron           = {300,300},
 %<pmn>     \textacutedbl             = {200,300},
 %<pmn>     \textgravedbl             = {150,300},
 %<cmr>     \textdagger               = {100,100},
-%<pad>     \textdagger               = {200,100},
+%<ebg>     \textdagger               = {200,100},
 %<pmn>     \textdagger               = { 80, 50},
 %<ugm>     \textdagger               = { 80, 80},
-%<cmr|pad>     \textdaggerdbl            = { 80, 80},
+%<cmr|ebg>     \textdaggerdbl            = { 80, 80},
 %<pmn>     \textdaggerdbl            = { 80, 50},
 %<ugm>     \textbardbl               = {150,150},
 %<cmr>     \textbullet               = {200,100},
-%<pad>     \textbullet               = {300,   },
+%<ebg>     \textbullet               = {300,   },
 %<pmn>     \textbullet               = { 30, 70},
 %<ugm>     \textbullet               = { 50,100},
 %<cmr>     \textcelsius              = {100,   },
-%<pad>     \textcelsius              = {200,   },
+%<ebg>     \textcelsius              = {200,   },
 %<pmn>     \textcelsius              = { 50,-50},
-%<pad>     \textflorin               = {100,   },
+%<ebg>     \textflorin               = {100,   },
 %<pmn>     \textflorin               = { 50,100},
 %<ugm>     \textflorin               = {   ,100},
 %<cmr>     \textcolonmonetary        = {150,   },
-%<pad>     \textcolonmonetary        = {100,   },
+%<ebg>     \textcolonmonetary        = {100,   },
 %<pmn>     \textcolonmonetary        = { 50,-50},
-%<cmr|pad>     \texttrademark            = {200,   },
+%<cmr|ebg>     \texttrademark            = {200,   },
 %<pmn>     \texttrademark            = { 50,100},
 %<ugm>     \texttrademark            = {150, 50},
 %<ugm>     \textcent                 = { 50,   },
@@ -15816,35 +15829,35 @@ end
 %<ugm>     \textbrokenbar            = {200,300},
 %<pmn>     \textasciidieresis        = {300,200},
 %<cmr>     \textcopyright            = {100,   },
-%<pad>     \textcopyright            = {200,100},
+%<ebg>     \textcopyright            = {200,100},
 %<pmn>     \textcopyright            = {100,150},
 %<ugm>     \textcopyright            = {300,   },
 %<cmr>     \textordfeminine          = {100,100},
 %<pmn>     \textordfeminine          = {200,200},
 %<ugm>     \textordfeminine          = {100,200},
-%<cmr|pad>     \textlnot                 = {300,   },
+%<cmr|ebg>     \textlnot                 = {300,   },
 %<pmn|ugm>     \textlnot                 = {200,   },
 %<cmr>     \textregistered           = {100,   },
-%<pad>     \textregistered           = {200,100},
+%<ebg>     \textregistered           = {200,100},
 %<pmn>     \textregistered           = { 50,150},
 %<ugm>     \textregistered           = {300,   },
 %<pmn>     \textasciimacron          = {150,200},
-%<cmr|pad>     \textdegree               = {500,100},
+%<cmr|ebg>     \textdegree               = {500,100},
 %<pmn>     \textdegree               = {150,150},
 %<ugm>     \textdegree               = {300,200},
 %<cmr>     \textpm                   = {150,100},
-%<pad>     \textpm                   = {200,150},
+%<ebg>     \textpm                   = {200,150},
 %<pmn|ugm>     \textpm                   = {150,200},
 %<cmr>     \textonesuperior          = {400,   },
-%<pad>     \textonesuperior          = {300,100},
+%<ebg>     \textonesuperior          = {300,100},
 %<pmn>     \textonesuperior          = {200,100},
 %<ugm>     \textonesuperior          = {300,300},
 %<cmr>     \texttwosuperior          = {400,   },
-%<pad>     \texttwosuperior          = {300,   },
+%<ebg>     \texttwosuperior          = {300,   },
 %<pmn>     \texttwosuperior          = {200,100},
 %<ugm>     \texttwosuperior          = {300,200},
 %<cmr>     \textthreesuperior        = {400,   },
-%<pad>     \textthreesuperior        = {300,   },
+%<ebg>     \textthreesuperior        = {300,   },
 %<pmn>     \textthreesuperior        = {200,100},
 %<ugm>     \textthreesuperior        = {300,200},
 %<ugm>     \textmu                   = {   ,100},
@@ -15852,18 +15865,18 @@ end
 %<cmr>     \textparagraph            = {200,   },
 %<pmn>     \textparagraph            = {   ,100},
 %<cmr>     \textperiodcentered       = {500,500},
-%<pad|pmn|ugm>     \textperiodcentered       = {300,400},
+%<ebg|pmn|ugm>     \textperiodcentered       = {300,400},
 %<cmr>     \textordmasculine         = {100,100},
 %<pmn>     \textordmasculine         = {200,200},
 %<ugm>     \textordmasculine         = {300,200},
 %<cmr>     \texteuro                 = {200,   },
-%<pad>     \texteuro                 = {100,   },
+%<ebg>     \texteuro                 = {100,   },
 %<pmn>     \texteuro                 = {100,-50},
 %<cmr>     \texttimes                = {200,200},
-%<pad>     \texttimes                = {200,100},
+%<ebg>     \texttimes                = {200,100},
 %<pmn>     \texttimes                = { 70,100},
 %<ugm>     \texttimes                = {200,300},
-%<cmr|pad>     \textdiv                  = {200,200}
+%<cmr|ebg>     \textdiv                  = {200,200}
 %<pmn>     \textdiv                  = {150,200}
 %<ugm>     \textdiv                  = {200,300},
 %<ugm>     \textsection              = {   ,200},
@@ -15873,7 +15886,7 @@ end
 %<ugm>     \textsurd                 = {   ,100}
    }
 
-%</cmr|pad|pmn|ugm>
+%</cmr|ebg|pmn|ugm>
 %    \end{macrocode}
 %
 %\subsubsection{Computer Modern math}
@@ -17336,7 +17349,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10797}
+% \CheckSum{10800}
 %
 % \Finale
 %

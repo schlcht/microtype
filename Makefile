@@ -46,7 +46,7 @@ COMPILED = $(DOC)
 UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   microtype-pdftex.def microtype-luatex.def microtype-xetex.def \
 	   mt-bch.cfg mt-blg.cfg mt-cmr.cfg mt-euf.cfg mt-eur.cfg mt-eus.cfg \
-	   mt-msa.cfg mt-msb.cfg mt-pad.cfg mt-ppl.cfg mt-pmn.cfg mt-ptm.cfg \
+	   mt-msa.cfg mt-msb.cfg mt-EBGaramond.cfg mt-ppl.cfg mt-pmn.cfg mt-ptm.cfg \
 	   mt-ugm.cfg mt-mvs.cfg mt-zpeu.cfg \
 	   mt-CharisSIL.cfg mt-LatinModernRoman.cfg mt-Palatino.cfg \
 	   test-microtype.tex
