@@ -30,7 +30,7 @@
 %</driver>
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
-%<PalatinoLinotype>  {mt-PalatinoLinotype.cfg}[2012/03/10 v1.0 microtype config. file: Palatino Linotype and similar fonts (LBD)]
+%<Palatino>  {mt-Palatino.cfg}[2012/03/10 v1.0 microtype config. file: Palatino and similar fonts (LBD)]
 %<Lato>  {mt-Lato.cfg}[2021/02/22 v1.0 microtype config. file: Lato (RS)]
 %<FontAwesome>  {mt-FontAwesome.cfg}[2021/02/22 v1.0 microtype config. file: Font Awesome (RS)]
 %<*driver>
@@ -46,8 +46,8 @@
  \def\setmacrofont#1{\par\def\macro@font{#1}\footnotesize}
  \newfontface\LMR{Latin Modern Roman}
  \newfontface\CharisSIL{Charis SIL}
- \newfontface\PalatinoLinotype{TeX Gyre Pagella}
-% \newfontface\PalatinoLinotype[RawFeature={fallback=charisfallback}]{TeX Gyre Pagella}
+ \newfontface\Palatino{TeX Gyre Pagella}
+% \newfontface\Palatino[RawFeature={fallback=charisfallback}]{TeX Gyre Pagella}
 % \directlua{luaotfload.add_fallback("charisfallback",{"CharisSIL:color=F70A12;mode=harf;"})}
  \newfontface\Lato{Lato}
 \usepackage{luacode}
@@ -119,6 +119,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\StopEventually{}
 %
 % ^^A -------------------------------------------------------------------------
+%\changes{v2.8a}{2021/02/22}{renamed \file{mt-PalatinoLinotype.cfg} to \file{mt-Palatino.cfg}
+%                            (requested by \contributor Karl Berry <karl\at freefriends.org>)}
+%                            ^^A private mail, 2021/02/22
+%
 %\GeneralChanges{Documentation}
 %\changes{v2.5a}{2013/05/15}{include OpenType configuration files}
 %\changes{v2.6}{2015/12/07}{missing characters printed with Charis <SIL>}
@@ -139,9 +143,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %           Latin Modern Roman}
 %   \item {\CharisSIL
 %           Charis <SIL>}\footnote{Available at \url{http://software.sil.org/charis}.}
-%   \item {\PalatinoLinotype
-%           Palatino Linotype}\footnote{These settings have been contributed by
-%                                       \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
+%   \item {\Palatino
+%           Palatino}\footnote{These settings have been contributed by
+%                              \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
 %\end{itemize}
 %
 %\noindent
@@ -361,17 +365,17 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %}
 %    \begin{macrocode}
 %</CharisSIL>
-%<*PalatinoLinotype>
+%<*Palatino>
 \DeclareCharacterInheritance
    { encoding = {EU1,EU2,TU},
-     family = {PalatinoLinotype} }
+     family = {Palatino} }
 %    \end{macrocode}
 % Unfortunately, I don't have a Palatino variant containing all of the following
 % glyphs. The settings are typeset in \TeX\ Gyre Pagella;
 % missing glyphs, printed in red, are taken from Charis <SIL>;
 % glyphs missing even in Charis <SIL> appear as `\char"FFFD@'.
-% To see the real settings, consult \file{mt-PalatinoLinotype.cfg}.
-%{\setmacrofont\PalatinoLinotype
+% To see the real settings, consult \file{mt-Palatino.cfg}.
+%{\setmacrofont\Palatino
 %    \begin{macrocode}
    { A = {À,Á,Â,Ã,Ä,Ā,Ă,Ą,Ǎ,Ǟ,Ǡ,Ȧ,Ǻ,Ȁ,Ȃ,Ḁ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ẵ,Ặ,Ꜳ},
      B = {Ḃ,Ḅ,Ḇ},
@@ -427,7 +431,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
-%</PalatinoLinotype>
+%</Palatino>
 %    \end{macrocode}
 % Less characters in the Lato font \dots
 %\changes{v2.8a}{2021/02/21}{settings for the Lato font
@@ -1113,14 +1117,14 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
    }
 %</CharisSIL>
-%<*PalatinoLinotype>
+%<*Palatino>
 \SetProtrusion
    [ name     = palatino-default ]
    { encoding = {EU1,EU2,TU},
-     family   = {PalatinoLinotype} }
+     family   = {Palatino} }
    {
 %    \end{macrocode}
-%{\setmacrofont\PalatinoLinotype
+%{\setmacrofont\Palatino
 %    \begin{macrocode}
      A = {50,50},
      D = {  ,50},
@@ -1219,11 +1223,11 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 \SetProtrusion
    [ name     = palatino-it   ]
    { encoding = {EU1,EU2,TU},
-     family   = {PalatinoLinotype},
+     family   = {Palatino},
      shape    = {it,sl}  }
    {
 %    \end{macrocode}
-%{\setmacrofont\PalatinoLinotype
+%{\setmacrofont\Palatino
 %    \begin{macrocode}
      A = {50,50},
      Æ = {50,  },
@@ -1318,11 +1322,11 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
    [ name     = palatino-sc,
      load     = palatino-default ]
    { encoding = {EU1,EU2,TU},
-     family   = {PalatinoLinotype},
+     family   = {Palatino},
      shape    = sc }
    {
 %    \end{macrocode}
-%{\setmacrofont\PalatinoLinotype
+%{\setmacrofont\Palatino
 %    \begin{macrocode}
      a = {50,50},
      æ = {50,  },
@@ -1346,7 +1350,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %}
 %    \begin{macrocode}
    }
-%</PalatinoLinotype>
+%</Palatino>
 %<Lato> %% No settings yet.
 %<*FontAwesome>
 \SetProtrusion
