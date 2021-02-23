@@ -73,7 +73,6 @@
 %<eur>  {mt-eur.cfg}[2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)]
 %<eus>  {mt-eus.cfg}[2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)]
 %<zpeu>  {mt-zpeu.cfg}[2006/05/04 v1.0 microtype config. file: Adobe Euro (RS)]
-%<euroitc>  {mt-euroitc.cfg}[2006/05/04 v1.0 microtype config. file: ITC Euro (RS)]
 %<mvs>  {mt-mvs.cfg}[2006/07/05 v1.1 microtype config. file: Marvosym Euro (RS)]
 %</config>
 %
@@ -3477,7 +3476,6 @@
 %    \item[|cfg-e|]  Surrounds Euro symbol configurations.
 %     \begin{description}
 %      \item[|zpeu|]  Settings for Adobe Euro symbol fonts (\file{mt-zpeu.cfg}).
-%      \item[|euroitc|] Settings for <ITC> Euro symbol fonts (\file{mt-euroitc.cfg}).
 %      \item[|mvs|]   Settings for \pkg{marvosym} Euro symbol (\file{mt-mvs.cfg}).
 %     \end{description}
 %   \end{description}
@@ -11261,6 +11259,7 @@ end
 %\end{macro}
 %
 %\subsubsection{Permutation}
+%\label{ssub:permutation}
 %
 %\begin{macro}{\MT@permute}
 %\changes{v1.1}{2004/09/15}{don't use sets for empty encoding}
@@ -11280,8 +11279,27 @@ end
 % currently defined list. Size ranges are held in a separate macro called
 % |\MT@|\meta{list type}|@/|\allowbreak\meta{font axes}|@sizes|, which in turn
 % contains the respective \meta{list name}s attached to the ranges.
+% So,
+%\begin{verbatim}
+%\SetProtrusion
+%   { encoding = U,
+%     family   = {euroitc,euroitcs} }
+%   { E = {100,50} }
+%\SetProtrusion
+%   { encoding = U,
+%     family   = {euroitc,euroitcs},
+%     shape    = it* }
+%   { E = {100,} }
+%\end{verbatim}
+% would yield the following assignments:
 %    \begin{macrocode}
 %<*package>
+\MT@gdef@n{MT@pr@c@U/euroitc///}{euroitc}
+\MT@gdef@n{MT@pr@c@U/euroitcs///}{euroitc}
+\MT@gdef@n{MT@pr@c@U/euroitc//it/}{euroitci}
+\MT@gdef@n{MT@pr@c@U/euroitcs//it/}{euroitci}
+\MT@gdef@n{MT@pr@c@euroitc}{E={100,50}}
+\MT@gdef@n{MT@pr@c@euroitci}{E={100,}}
 \def\MT@permute{%
   \let\MT@cnt@encoding\@ne
   \MT@permute@
@@ -13270,7 +13288,6 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{zpeus}   {zpeu}     % Adobe Euro sans -> serif
 \DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
-\DeclareMicrotypeAlias{euroitcs}{euroitc}  % ITC Euro sans -> serif
 
 %    \end{macrocode}
 %
@@ -16753,34 +16770,34 @@ end
 % \pkg{europs}), <ITC> Euro fonts (package \pkg{euroitc}) and \pkg{marvosym}\footnote{
 %   Of course, there are many more symbols in this font. Feel free to contribute
 %   protrusion settings!}).
+% The \pkg{euroitc} settings are hidden in the package itself (\ref{ssub:permutation})
+% for `free software' compliance reasons.
+% (Not quite sure whether this is what Karl really had in mind~\dots)
+%\changes{v2.8a}{2021/02/22}{hide \pkg{euroitc} settings
+%                (reported by \contributor Karl Berry <karl\at freefriends.org>)}
+%                ^^A private mail, 2021/02/22
 %    \begin{macrocode}
 %<*cfg-e>
 \SetProtrusion
-%<zpeu|euroitc>   { encoding = U,
+%<zpeu>   { encoding = U,
 %<mvs>   { encoding = {OT1,U},
 %<zpeu>     family   = zpeu }
-%<euroitc>     family   = {euroitc,euroitcs} }
 %<mvs>     family   = mvs }
    {
 %<zpeu>     E = {50, }
-%<euroitc>     E = {100,50}
 %<mvs>     164 = {50,50},   % \EUR
 %<mvs>     068 = {50,-100}  % \EURdig
    }
 
-%<*zpeu|euroitc>
+%<*zpeu>
 \SetProtrusion
    { encoding = U,
-%<zpeu>     family   = zpeu,
-%<euroitc>     family   = {euroitc,euroitcs},
+     family   = zpeu,
      shape    = it* }
    {
-%<zpeu>     E = {100,-50}
-%<euroitc>     E = {100,}
+     E = {100,-50}
    }
 
-%</zpeu|euroitc>
-%<*zpeu>
 \SetProtrusion
    { encoding = U,
      family   = {zpeus,eurosans} }
@@ -17320,7 +17337,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10792}
+% \CheckSum{10797}
 %
 % \Finale
 %
