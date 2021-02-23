@@ -1206,7 +1206,7 @@
 %
 %\subsection[Tracking]
 %           {Tracking \requires{\pdftex~1.40,\luatex~0.62}}
-%           \label{sub:option-tracking}
+%           \label{sub:options-tracking}
 %
 %\Describe{Option}{letterspace}{:integer}[100]
 % This option changes the default amount for tracking (see section~\ref{sub:tracking})
@@ -1586,7 +1586,7 @@
 % With \luatex\ or \xetex, you may additionally specify a (font-specific)
 % glyph name, prefixed with `|/|' (\eg, the `fl' ligature as |/f_l|).
 % Note that you also have the possibility to declare lists
-% of characters that should inherit settings (see section~\ref{sub:inherit}).
+% of characters that should inherit settings (see section~\ref{sub:inheritance}).
 %
 %\subsection[Character protrusion]
 %           {Character protrusion \requires{\pdftex~0.14f,\luatex~0.30,\xetex~0.9997}}
@@ -1746,7 +1746,7 @@
 %       This method of employing contexts to temporarily apply different
 %       expansion parameters only works with \pdftex\ version 1.40.4 or later,^^A
 %         \footnote{For older versions, a dirty trick is laid out in
-%                   section~\ref{ssec:font-setup} on page~\pageref{exp-hack}.}
+%                   section~\ref{sub:font-setup} on page~\pageref{exp-hack}.}
 %       or with \luatex.
 %       Also note that both \pdftex\ and \luatex\ prohibit the use of fonts with different expansion
 %       limits or steps (even of different fonts) within one paragraph, hence
@@ -2081,7 +2081,7 @@
 %\end{options}
 %
 %
-%\subsection{Character inheritance}\label{sub:inherit}
+%\subsection{Character inheritance}\label{sub:inheritance}
 %
 % \Describe{Macro}{\DeclareCharacterInheritance}
 %                 {?features,set of fonts,inheritance lists}
@@ -2419,7 +2419,7 @@
 %\bigskip\noindent
 %\DescribePackage{letterspace}
 % These three commands (plus the \opt{letterspace} option, described in
-% section~\ref{sub:option-tracking}) are also available with the alternative
+% section~\ref{sub:options-tracking}) are also available with the alternative
 % \letterspace\ package, which is in fact a much stripped-down version of
 % \microtype, omitting support for all the other extensions (and also omitting
 % the possibilities of the \cs{SetTracking} command -- all `|f|' ligatures will
@@ -3141,7 +3141,7 @@
 %        \refsection{\ref{sub:tracking}, \ref{sub:kerning}, \ref{sub:spacing}}
 %  \item New commands \cs{textls} and \cs{lsstyle} for letterspacing,
 %        new option `\opt{letterspace}'
-%        \refsection{\ref{sub:option-tracking}, \ref{sec:lettersp}}
+%        \refsection{\ref{sub:options-tracking}, \ref{sec:lettersp}}
 %  \item New option `\opt{babel}' for automatic micro-typographic adjustment to
 %        the selected language
 %        \refsection{\ref{sub:options-misc}, \ref{sec:context}}
@@ -3280,7 +3280,7 @@
 %\Version{1.1}{2004/09/21}
 %  \item Protrusion settings for Adobe Minion
 %  \item New command: \cs{DeclareCharacterInheritance}
-%        \refsection{\ref{sub:inherit}}
+%        \refsection{\ref{sub:inheritance}}
 %  \item Characters may also be specified as octal or hexadecimal numbers
 %        \refsection{\ref{sec:fine-tuning}}
 %^^A  \item Configuration file names in lowercase [\ref{sub:config-file}]
@@ -5101,15 +5101,15 @@ microtype.do_font = do_font
 %    \end{macrocode}
 %\end{macro}
 %
-%\subsubsection{Compatibility}\label{sub:compatibility}
+%\subsubsection{Compatibility}\label{ssub:compatibility}
 %
 % For the record, the following \LaTeX\ kernel commands will be modified by
 % \microtype:
 %\begin{itemize}
 %  \item \cmd\pickup@font
 %  \item \cmd\do@subst@correction
-%  \item \cmd\add@accent\ (all in section~\ref{sssec:impl.hook})
-%  \item \cmd\showhyphens\ (in section~\ref{sssec:impl.options})
+%  \item \cmd\add@accent\ (all in section~\ref{ssub:impl.hook})
+%  \item \cmd\showhyphens\ (in section~\ref{ssub:impl.options})
 %\end{itemize}
 %
 % The \pkg{wordcount} package redefines the font-switching commands, which will
@@ -5553,7 +5553,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<package>\expandafter\ifx\the\font\nullfont\normalfont\fi
 %    \end{macrocode}
 %
-%\subsection{Font setup}\label{ssec:font-setup}
+%\subsection{Font setup}\label{sub:font-setup}
 %
 %\begin{macro}{\MT@setupfont}
 % Setting up a font entails checking for each feature whether it should be
@@ -8301,7 +8301,7 @@ end
 %\changes{v1.8}{2005/03/29}{reset catcodes of the remaining <ASCII> characters}
 % OK, now all printable characters up to 127 are `other'. We hope that letters
 % are always letters and numbers other. (\pkg{listings} makes them active, see
-% section~\ref{sub:compatibility}.)
+% section~\ref{ssub:compatibility}.)
 %
 % We leave |^| at catcode 7, so that stuff like `|^^ff|' remains possible.
 %    \begin{macrocode}
@@ -9297,7 +9297,7 @@ end
     \MT@glet\MT@warn@unknown\relax}%
 }
 %
-%\subsubsection{Hook into \LaTeX's font selection}\label{sssec:impl.hook}
+%\subsubsection{Hook into \LaTeX's font selection}\label{ssub:impl.hook}
 %
 % We append \cs{MT@setupfont} to \cmd\pickup@font, which is called by \LaTeX\
 % every time a font is selected. We then check whether we've already seen this
@@ -11258,8 +11258,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %
-%\subsubsection{Permutation}
-%\label{ssub:permutation}
+%\subsubsection{Permutation}\label{ssub:permutation}
 %
 %\begin{macro}{\MT@permute}
 %\changes{v1.1}{2004/09/15}{don't use sets for empty encoding}
@@ -12225,7 +12224,7 @@ end
 %</package>
 %    \end{macrocode}
 %
-%\subsubsection{Processing the options}\label{sssec:impl.options}
+%\subsubsection{Processing the options}\label{ssub:impl.options}
 %
 %\begin{macro}{\MT@ProcessOptionsWithKV}
 % Parse options.
