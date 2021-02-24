@@ -340,6 +340,8 @@
 \setlength\fboxsep{3pt}
 \setlength\arrayrulewidth{0.4pt}
 % tables
+\def\topfraction{1}
+\def\textfraction{0}
 \setlength\tabcolsep{2pt}
 \newbox\mt@box
 \newdimen\mt@unvdimen
@@ -2134,6 +2136,7 @@
 %\begin{minipage}{\textwidth}
 %\def\arraystretch{1.2}
 %\long\def\@makefntext#1{%
+%  \raggedright
 %  \leftskip 1.2em
 %  \parindent -1.2em
 %  \everypar{\parindent -1.2em}%
@@ -2143,8 +2146,9 @@
 %\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}*3l@{}}
 %       \footnotesize Font family (<NFSS> code)
 %      & \multicolumn{2}{l}{\footnotesize Features}\\
-%\cmidrule{2-3}
-%      & \footnotesize Encodings [Scripts]
+%\cmidrule{1-1}\cmidrule{2-3}
+%\itshape\footnotesize Type 1 fonts
+%      & \footnotesize Encodings
 %      & \footnotesize Shapes\\
 %\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
 % Generic
@@ -2181,21 +2185,7 @@
 %                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
 %      & n, it, (sl)\fnref{fn:it-sl}, sc \\
-% Latin Modern Roman\footnote{Alias: New Computer Modern}
-%      & <EU1>/<2>, <TU> [Latin, Greek]
-%      & n, it, (sl)\fnref{fn:it-sl}\\
-% Charis <SIL>
-%      & <EU1>/<2>, <TU> [Latin, Cyrillic, Greek]
-%      & n, it, sc\\
-%\iffalse ^^A provided with the EB Garamond package
-% <EB> Garamond
-%      & <EU1>/<2>, <TU> [Latin, Cyrillic, Greek]
-%      & n, it, sc, si\\
-%\fi
-% Palatino\footnote{Aliases: Palatino Linotype, \TeX\ Gyre Pagella, Palatino <LT> Std, Palatino, Domitian}
-%      & <EU1>/<2>, <TU> [Latin]
-%      & n, it, sc\\
-% Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|)}
+% Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|), \pkg{mlmodern} (|mlmsy|, |mlmm|)}
 %      & <OML>/<OMS>
 %      & n/it \\
 % <AMS> symbols (|msa|, |msb|)
@@ -2207,6 +2197,25 @@
 % Euro symbols (Adobe, <ITC>, \pkg{marvosym})
 %      & <U>/<OT1>
 %      & n, it \\
+%\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
+%\itshape\footnotesize OpenType fonts
+%      & \footnotesize Scripts
+%      & \footnotesize Shapes\\
+%\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
+% Latin Modern Roman\footnote{Alias: New Computer Modern}
+%      & Latin, Greek
+%      & n, it, (sl)\fnref{fn:it-sl}\\
+% Charis <SIL>
+%      & Latin, Cyrillic, Greek
+%      & n, it, sc\\
+%\iffalse ^^A provided with the EB Garamond package
+% <EB> Garamond
+%      & Latin, Cyrillic, Greek
+%      & n, it, sc, si\\
+%\fi
+% Palatino\footnote{Aliases: Palatino Linotype, \TeX\ Gyre Pagella, Palatino <LT> Std, Domitian}
+%      & Latin
+%      & n, it, sc\\
 %\bottomrule
 %\end{tabular*}^^A
 %\end{minipage}^^A
@@ -2238,7 +2247,6 @@
 %\begin{verbatim}
 %\DeclareMicrotypeAlias{lmr}{cmr}
 %\end{verbatim}
-%\ifcmr\else\pagebreak\fi ^^A layout
 % which would make the package, whenever it encounters the font |lmr| and does
 % not find settings for it, also try the font |cmr|. In fact, you will find
 % this very line, along with some others, in the default configuration file.
