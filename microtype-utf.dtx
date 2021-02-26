@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.8a"
+% !DTXversion:: "2.8b"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -26,7 +26,7 @@
 %
 \ProvidesFile
 %<*driver>
-    {\jobname.dtx}[2021/02/22 v2.8a]
+    {\jobname.dtx}[2021/02/25 v2.8b]
 %</driver>
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
@@ -435,7 +435,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %</Palatino>
 %    \end{macrocode}
 % Less characters in the Lato font \dots
-%\changes{v2.8a}{2021/02/21}{settings for the Lato font
+%\changes{v2.8b}{2021/02/21}{settings for the Lato font (\file{mt-Lato.cfg})
 %                            (reported by \contributor dsedivec <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/380812/microtype-warning-unknown-slot-number-of-character-with-lato-font
 %    \begin{macrocode}
@@ -461,7 +461,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      n = {ń,ñ},
      O = {Ø,Ò,Ó,Ô,Õ,Ö},
      o = {ø,ò,ó,ô,õ,ö},
-     S = {Ś,Š}, % \SS
+     S = {Ś,Š},
      s = {ś,š},
      U = {Ù,Ú,Û,Ü},
      u = {ù,ú,û,ü},
@@ -475,8 +475,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %</Lato>
 %    \end{macrocode}
-% \dots\ and even less in the self-professed awesone Font Awesome font.
-%\changes{v2.8a}{2021/02/21}{dummy settings for the Font Awesome font}
+% \dots\ and even less in the self-professedly awesone Font Awesome font.
+%\changes{v2.8b}{2021/02/21}{dummy settings for the Font Awesome font (\file{mt-FontAwesome.cfg})}
 %    \begin{macrocode}
 %<*FontAwesome>
 \DeclareCharacterInheritance

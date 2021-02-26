@@ -49,6 +49,7 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   mt-msa.cfg mt-msb.cfg mt-EBGaramond.cfg mt-ppl.cfg mt-pmn.cfg mt-ptm.cfg \
 	   mt-ugm.cfg mt-mvs.cfg mt-zpeu.cfg \
 	   mt-CharisSIL.cfg mt-LatinModernRoman.cfg mt-Palatino.cfg \
+	   mt-FontAwesome.cfg mt-Lato.cfg \
 	   test-microtype.tex
 SOURCE    = $(ALLDTX) $(INS) $(README)
 GENERATED = $(UNPACKED) $(COMPILED)
