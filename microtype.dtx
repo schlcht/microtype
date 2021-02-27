@@ -25,9 +25,9 @@
 % ------------------------------------------------------------------------
 %
 %<package|letterspace>\NeedsTeXFormat{LaTeX2e}
-%<*driver>
+%<*driver|codedoc>
 \ProvidesFile{\jobname.dtx}
-%</driver>
+%</driver|codedoc>
 %<package|letterspace>\ProvidesPackage
 %<config|pdftex-def|luatex-def|xetex-def>\ProvidesFile
 %<package>  {microtype}
@@ -36,7 +36,7 @@
 %<pdftex-def>  {microtype-pdftex.def}
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
-%<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
+%<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|codedoc>
   [2021/02/25 v2.8b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
@@ -46,7 +46,7 @@
 %<luatex-def>   luatex
 %<xetex-def>   xetex
    (RS)]
-%</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
+%</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|codedoc>
 %<luafile>microtype        = microtype or {}
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
@@ -757,13 +757,30 @@
 \CodelineIndex
 \EnableCrossrefs
 \RecordChanges
-%\OnlyDescription
+\OnlyDescription
+\expandafter\newif\csname ifdoconly\endcsname\doconlytrue
 \begin{document}
   \DocInput{\jobname.dtx}
 \end{document}
 %</driver>
 %</driver|docsty>
+%<*codedoc>
+\documentclass[10pt,a4paper]{ltxdoc}
+\usepackage{microtype-doc}
+\let\printlogo\relax
+\CodelineIndex
+\EnableCrossrefs
+\RecordChanges
+\begin{document}
+  \GetFileInfo{\jobname.dtx}
+  \expandafter\newif\csname ifdoconly\endcsname
+  \DocInput{microtype.dtx}
+  \PrintIndex
+\end{document}
+%</codedoc>
 % \fi
+%\makeatletter
+%
 %
 % ^^A -------------------------------------------------------------------------
 %\GeneralChanges*
@@ -827,6 +844,8 @@
 % \listoftables
 %}
 %
+%
+% \ifdoconly
 %
 %\newpage
 %\section{Micro-typography with \TeX}\label{sec:micro-type}
@@ -3018,6 +3037,8 @@
 %
 %\end{thebibliography}
 %
+%\fi
+%
 %
 %\section{Short history}
 %\changes{v1.5}{2004/12/11}{add `Short history'}
@@ -3337,7 +3358,6 @@
 %    \AppendixSettings
 %  \fi
 %  \PrintIndex
-%  \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %}
 %
 % \GeneralChanges*
@@ -17366,6 +17386,8 @@ normal, and shrunk by 5\%:
 % \CheckSum{10800}
 %
 % \Finale
+%
+% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %
 \endinput
 %

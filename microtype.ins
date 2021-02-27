@@ -150,6 +150,16 @@ microtype-xetex.def, microtype.lua and letterspace.sty.
 
 \usepostamble\emptypostamble
 
+\declarepreamble\falsepreamble
+%\iffalse
+\endpreamble
+\declarepostamble\falsepostamble
+%\fi
+\endpostamble
+\usepreamble\falsepreamble
+\usepostamble\falsepostamble
+\generate{\makefile{microtype-code.dtx}{codedoc}}
+
 %% package for the extra documentation
 %% (microtype-utf.dtx, microtype-logo.dtx, microtype-lssample.dtx):
 %\generate{\makefile{microtype-doc.sty}{docsty}}
