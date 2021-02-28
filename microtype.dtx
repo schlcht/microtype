@@ -93,6 +93,8 @@
   \DeclareFontShape{T1}{blg}{eb}{n}{<-> ssub * blg/b/n}{}}
 \usepackage{textcomp}
 \usepackage{iftex}
+\usepackage{xr,xr-hyper}
+\externaldocument{microtype-code}
 %<*!docsty>
 \ifxetex\else
 \usepackage[latin1]{\ifluatex lua\fi inputenc}
@@ -766,13 +768,19 @@
 %</driver|docsty>
 %<*codedoc>
 \documentclass[10pt,a4paper]{ltxdoc}
+\usepackage[latin1]{inputenc}
+\usepackage{xr,xr-hyper}
 \usepackage{microtype-doc}
 \let\printlogo\relax
 \CodelineIndex
 \EnableCrossrefs
 \RecordChanges
+\externaldocument{microtype}
 \begin{document}
   \GetFileInfo{\jobname.dtx}
+  \newcommand\VersionDate[2]{%
+    \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
+  \InputIfFileExists{microtype-code.tmp}\relax\relax
   \expandafter\newif\csname ifdoconly\endcsname
   \DocInput{microtype.dtx}
   \PrintIndex
@@ -3037,8 +3045,6 @@
 %
 %\end{thebibliography}
 %
-%\fi
-%
 %
 %\section{Short history}
 %\changes{v1.5}{2004/12/11}{add `Short history'}
@@ -3067,7 +3073,11 @@
 %  \vskip\topsep
 %  \nopagebreak}
 %\newcommand\VersionDate[2]{^^A needed in the Change history
-%  \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
+%  \global\expandafter\def\csname MTversiondate#1\endcsname{#2}^^A
+%  \immediate\write\codetmp{\string\VersionDate{#1}{#2}}}
+%
+%\newwrite          \codetmp
+%\immediate\openout \codetmp=microtype-code.tmp
 %
 %\begin{History}
 %
@@ -3323,6 +3333,10 @@
 %\Version{1.0}{2004/09/11}
 %  \item First <CTAN> release
 %\end{History}
+%
+%\immediate\closeout\codetmp
+%
+%\fi
 %
 %
 %\def\AppendixSettings{
