@@ -3392,7 +3392,7 @@
 %\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}                           ^^A xetex
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
 %^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}
-%\DoNotIndex{\directlua,\luatexversion}                                      ^^A luatex
+%\DoNotIndex{\directlua,\glet,\luatexversion}                                ^^A luatex
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
@@ -10162,10 +10162,10 @@ end
 ^^X  \def\MT@get@size@{%
 ^^X    \@tempcnta=\currentiflevel
 ^^X    \MT@get@size@@
-^^X    \loop
+^^X    \MT@loop
 ^^X      \ifnum\numexpr\currentiflevel-1>\@tempcnta
 ^^X      \csname fi\endcsname
-^^X    \repeat
+^^X    \MT@repeat
 ^^X  }%
 ^^X}{%
   \let\MT@get@size@\MT@get@size@@
