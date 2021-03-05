@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.8b"
+% !DTXversion:: "2.8c"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2021/02/25 v2.8b
+  [2021/99/99 v2.8c
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -3051,6 +3051,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{2.8b}{2021/02/25}
 %
 %\VersionDate{2.8a}{2021/02/22}
 %
@@ -9050,8 +9052,8 @@ end
   \ifnum\MT@char@ < \z@
 %    \end{macrocode}
 %\changes{v2.7c}{2019/08/13}{take care of \cs{remove@tlig}}
-% For <TU> encoding, the commands \cmd\textquotesingle, \cmd\textasciigrave\
-% and \cmd\textquotedbl\ are defined by means of the auxiliary macro
+% In <TU> encoding, some commands (currently, \cmd\textquotesingle, \cmd\textasciigrave\
+% and \cmd\textquotedbl) are defined by means of the auxiliary macro
 % \cmd\remove@tlig, which we take care of here.
 %    \begin{macrocode}
     \expandafter\expandafter\expandafter\MT@is@tlig\MT@char\relax\relax
@@ -9144,11 +9146,23 @@ end
 % This might have to change again with the next \LaTeX\ release, ^^A see https://github.com/latex3/latex2e/issues/165
 % \dots\ or so I feared, but it still seems to be fine.
 %    \begin{macrocode}
-\def\MT@is@tlig#1#2{%
-  \ifx#1\remove@tlig
+\def\MT@is@tlig#1#2\relax{%
+  \ifx\remove@tlig#1%
 %<debug>    \MT@dinfo@nl{3}{> `\the\MT@toks' (removing remove@tlig)}%
-    \MT@is@number #2\relax\relax
+    \MT@remove@tlig
   \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@remove@tlig}
+% We remove the \cs{remove@tlig} command and only pass on the number.
+%\changes{v2.8c}{2020/03/04}{fix for text commands containing conditionals
+%                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%                            ^^A private mail, 2021/03/02
+%    \begin{macrocode}
+\def\MT@remove@tlig{%
+  \expandafter\MT@exp@two@c\expandafter\MT@is@number
+  \expandafter\@secondoftwo\MT@char\relax\relax
 }
 %    \end{macrocode}
 %\end{macro}
@@ -17363,7 +17377,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10800}
+% \CheckSum{10810}
 %
 % \Finale
 %
