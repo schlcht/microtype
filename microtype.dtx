@@ -3382,8 +3382,8 @@
 %  \write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\nullfont,\sfcode,\spacefactor,\spaceskip,
 %^^A  \xspaceskip}                                                           ^^A tex
-%\DoNotIndex{\currentgrouplevel,\currentgrouptype,\detokenize,\dimexpr,
-%  \eTeXversion,\ifcsname,\ifdefined,\numexpr}
+%\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
+%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\numexpr}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
 %\DoNotIndex{\pdfannot,\pdfescapestring,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}
@@ -9047,8 +9047,14 @@ end
 \def\MT@is@symbol{%
   \expandafter\def\expandafter\MT@char\expandafter
       {\csname\MT@encoding\MT@detokenize@c\@tempa\endcsname}%
+%    \end{macrocode}
+% Since recently, some glyphs are defined optionally in \LaTeX\
+% by checking if the glyph actually exists in the font (\eg, \cmd\textasteriskcentered).
+%    \begin{macrocode}
+  \expandafter\expandafter\expandafter
+    \MT@is@opt@char\MT@char\iffontchar\char\else\fi\relax
   \expandafter\MT@exp@two@c\expandafter\MT@is@char\expandafter
-      \meaning\expandafter\MT@char\MT@charstring\relax\relax\relax
+    \meaning\expandafter\MT@char\MT@charstring\relax\relax\relax
   \ifnum\MT@char@ < \z@
 %    \end{macrocode}
 %\changes{v2.7c}{2019/08/13}{take care of \cs{remove@tlig}}
@@ -9065,6 +9071,23 @@ end
 %                                              ^^A private mail, 2005/01/28
 %    \begin{macrocode}
       \expandafter\expandafter\expandafter\MT@is@letter\MT@char\relax\relax
+    \fi
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@is@opt@char}
+% This seems adventurous, but we're only redefining the text command within
+% the scope of our setup.
+%\changes{v2.8c}{2021/03/05}{fix for optionally defined glyphs
+%                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%                            ^^A private mail, 2021/03/02
+%    \begin{macrocode}
+\def\MT@is@opt@char#1\iffontchar#2\char#3\else#4\fi\relax{%
+  \ifx\\#1\\%
+    \iffontchar#2%
+      \expandafter\chardef
+        \csname\MT@encoding\MT@detokenize@c\@tempa\endcsname=#3\relax
     \fi
   \fi
 }
@@ -9219,7 +9242,7 @@ end
 % Helper for \cs{DeclareUnicodeComposite}.
 %    \begin{macrocode}
 \def\MT@is@uni@comp#1\iffontchar#2\else#3\fi\relax{%
-  \ifx\\#2\\\else\edef\MT@char{\iffontchar#2\fi}\fi
+  \ifx\\#1\\\edef\MT@char{\iffontchar#2\fi}\fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -17377,7 +17400,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10810}
+% \CheckSum{10842}
 %
 % \Finale
 %
