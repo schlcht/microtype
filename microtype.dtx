@@ -777,7 +777,6 @@
 \RecordChanges
 \externaldocument{microtype}
 \begin{document}
-  \GetFileInfo{\jobname.dtx}
   \newcommand\VersionDate[2]{%
     \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
   \InputIfFileExists{microtype-code.tmp}\relax\relax
@@ -800,7 +799,7 @@
 %\changes{v2.2}{2007/04/01}{logo transparency and amusement}
 % ^^A Adobe Reader 8.0 had serious bugs with transparency. Fixed in 8.1.
 %
-% \GetFileInfo{microtype.dtx}
+% \GetFileInfo{\jobname.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
 %        \textls[40]{The \microtype\ package}\\[.3\baselineskip]\large
 %        Subliminal refinements towards typographical perfection}
