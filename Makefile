@@ -30,7 +30,7 @@ help:
 	@echo '     testunknown -    ...  part'
 	@echo '     testoutput  -    ...  of it'
 	@echo ' test... COMPAT=<TeX Live> - test with other TeX Live release'
-	@echo ' test... DEV=1 - test with current developer version'
+	@echo ' test... DEV=1 - test with development version'
 
 NAME = microtype
 DOC  = $(NAME).pdf
@@ -233,8 +233,19 @@ clean: mostlyclean
 # testing the package
 TESTDIR = ./testsuite
 WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
-COMPAT = $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
-TLPATH = ~/Library/texlive/$(COMPAT)/bin/x86_64-darwin
+COMPAT   := $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
+ARCH     := x86_64-darwinlegacy
+ifeq ($(shell expr $(COMPAT) \< 2021 ),1)
+  ARCH := x86_64-darwin
+endif
+ifeq ($(shell expr $(COMPAT) \< 2014 ),1)
+  ARCH := universal-darwin
+endif
+TLPATH := ~/Library/texlive/$(COMPAT)/bin/$(ARCH)
+ifdef DEV
+  override DEV=-dev
+endif
+
 test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.log
 	@$(RM) $(TESTDIR)/*.aux
@@ -268,9 +279,6 @@ testoutput: $(wildcard $(TESTDIR)/output-*.tex)
 	@cd $(TESTDIR) && \
 		$(foreach file,$^,$(call run-output-file,$(notdir $(basename $(file)))))
 
-ifdef DEV
-override DEV=-dev
-endif
 # parts of the filename after `_' signify an engine other than pdflatex
 run-test-file = \
 	echo " - $(subst $1-,,$2)" | sed 's/\(.*\)_\(.*\)/\1 (\2)/' ; \
