@@ -3411,7 +3411,7 @@
 %  \on@line,\p@,\set@display@protect,\strip@prefix,\strip@pt,\tw@,\z@,\z@skip,
 %  \zap@space,\active,\documentclass,\fmtversion,\leavevmode,\makeatletter,
 %  \mbox,\newcommand,\newcount,\newdimen,\newif,\newskip,\newtoks,\nobreak,
-%  \nonfrenchspacing,\normalsize,\renewcommand,\space,\AtBeginDocument,
+%  \nonfrenchspacing,\normalsize,\renewcommand,\space,\AddToHook,\AtBeginDocument,
 %  \AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareRobustCommand,\IfFileExists,
 %  \InputIfFileExists,\MessageBreak,\PackageError,\PackageInfo,\PackageWarning,
 %  \RequirePackage,\@@enc@update,\cf@encoding,\f@encoding}
@@ -5226,7 +5226,7 @@ microtype.do_font = do_font
 %                           ^^A private mail, 2012/06/30
 % They are also part of recent \xetex.
 %\changes{v2.5a}{2013/03/25}{support for \pkg{eledmac}}
-%\changes{v2.6}{2015/08/10}{support for \pkg{reledmac}}
+%\changes{v2.6}{2015/08/10}{support for \pkg{reledmac}}^^A
 % The successor packages \pkg{eledmac} and \pkg{reledmac} are also supported.
 %    \begin{macrocode}
 %</package>
@@ -5289,17 +5289,24 @@ microtype.do_font = do_font
 \def\MT@restore@p@h{\chardef\%`\% \chardef\#`\# }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\ifMT@xunicode}
 %\begin{macro}{\ifMT@fontspec}
+%\begin{macro}{\ifMT@xunicode}
 % Two new conditionals for use with \xetex\ or \luatex.
 %    \begin{macrocode}
-\newif\ifMT@xunicode
-\MT@with@package@T{xunicode}\MT@xunicodetrue
 \newif\ifMT@fontspec
 \MT@with@package@T{fontspec}\MT@fontspectrue
+\newif\ifMT@xunicode
+\MT@with@package@T{xunicode}\MT@xunicodetrue
 %    \end{macrocode}
 %\end{macro}
+%\changes{v2.8c}{2021/03/12}{add to hook for \pkg{fontspec}}
 %\end{macro}
+% We need the correct value of the former for configuration commands
+% inside the preamble (to get the default families right).
+%    \begin{macrocode}
+\@ifl@t@r\fmtversion{2020/10/01}
+  {\AddToHook{package/after/fontspec}{\MT@fontspectrue}}\relax
+%    \end{macrocode}
 %\begin{macro}{\MT@maybe@gobble@with@tikz}
 %\begin{macro}{\MT@tikz@setup}
 %\changes{v2.3e}{2009/11/02}{compatibility with \pkg{tikz} (first reported by
@@ -17400,7 +17407,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10842}
+% \CheckSum{10847}
 %
 % \Finale
 %

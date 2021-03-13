@@ -1,7 +1,7 @@
 * account for fontspec's NFSSfamily
 * different md* (etc.) for different fonts
-* add mt-EBGaramond.cfg ?
-* split docu?
+* mt-EBGaramond.cfg OpenType
+* split docu -> splitdoc
 * what about polyglossia?
 * check contexts in lua again
 * cm-unicode alias
