@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2021/99/99 v2.8c
+  [2021/03/14 v2.8c
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -51,8 +51,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.8b",
-%<luafile>    date         = "2021/02/25",
+%<luafile>    version      = "2.8c",
+%<luafile>    date         = "2021/03/14",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -9089,6 +9089,7 @@ end
 %\changes{v2.8c}{2021/03/05}{fix for optionally defined glyphs
 %                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2021/03/02
+%                            ^^A also: https://github.com/latex3/latex2e/issues/525
 %    \begin{macrocode}
 \def\MT@is@opt@char#1\iffontchar#2\char#3\else#4\fi\relax{%
   \ifx\\#1\\%
