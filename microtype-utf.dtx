@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.8b"
+% !DTXversion:: "2.8d"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -32,7 +32,7 @@
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
 %<Palatino>  {mt-Palatino.cfg}[2012/03/10 v1.0 microtype config. file: Palatino and similar fonts (LBD)]
 %<Lato>  {mt-Lato.cfg}[2021/02/22 v1.0 microtype config. file: Lato (RS)]
-%<FontAwesome>  {mt-FontAwesome.cfg}[2021/02/22 v1.0 microtype config. file: Font Awesome (RS)]
+%<FontAwesome>  {mt-FontAwesome.cfg}[2021/03/15 v1.1 microtype config. file: Font Awesome (RS)]
 %<*driver>
 \documentclass[10pt,a4paper]{ltxdoc}
 \usepackage{fontspec}
@@ -481,7 +481,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<*FontAwesome>
 \DeclareCharacterInheritance
   { encoding = {TU,EU1,EU2},
-    family   = {FontAwesome} }
+    family   = {FontAwesome,fontawesomefree,fontawesomebrands,fontawesomepro} }
   { }
 %</FontAwesome>
 %    \end{macrocode}
@@ -1357,7 +1357,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 \SetProtrusion
    [ name = empty ]
    { encoding = {TU,EU1,EU2},
-     family   = {FontAwesome} }
+     family   = {FontAwesome,fontawesomefree,fontawesomebrands,fontawesomepro} }
    { }
 %</FontAwesome>
 

@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % !Mode:: "TeX:DTX:UK"
 % !smartQuote:: "English"
-% !DTXversion:: "2.8c"
+% !DTXversion:: "2.8d"
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -37,7 +37,7 @@
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
-  [2021/03/14 v2.8c
+  [2021/99/99 v2.8d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<m-t>   microtype main configuration file
@@ -3051,6 +3051,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{2.8c}{2021/03/14}
 %
 %\VersionDate{2.8b}{2021/02/25}
 %
@@ -13359,6 +13361,13 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{zpeus}   {zpeu}     % Adobe Euro sans -> serif
 \DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
+%    \end{macrocode}
+% The \pkg{fontawesome5} package.
+%\changes{v2.8d}{2021/03/15}{declares aliases for \pkg{fontawesome5}}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{fontawesomefree}  {FontAwesome} % fontawesome5
+\DeclareMicrotypeAlias{fontawesomepro}   {FontAwesome}
+\DeclareMicrotypeAlias{fontawesomebrands}{FontAwesome}
 
 %    \end{macrocode}
 %
@@ -17408,7 +17417,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10847}
+% \CheckSum{10850}
 %
 % \Finale
 %
