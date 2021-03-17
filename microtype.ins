@@ -148,15 +148,13 @@ microtype-xetex.def, microtype.lua and letterspace.sty.
     \makefile{test-microtype.tex}{test}
 }
 
-%% code documentation
-\generate{\makefile{microtype-code.dtx}{codedoc}}
-%% package for extra documentation
-%% (microtype-code.dtx, microtype-utf.dtx, microtype-logo.dtx, microtype-lssample.dtx):
+\usepostamble\emptypostamble
+
+%% package for the extra documentation
+%% (microtype-utf.dtx, microtype-logo.dtx, microtype-lssample.dtx):
 %\generate{\makefile{microtype-doc.sty}{docsty}}
 %% makeindex style
 %\generate{\makefile{microtype-gind.ist}{docist}}
-
-\usepostamble\emptypostamble
 
 \def\MetaPrefix{--}
 \generate{
