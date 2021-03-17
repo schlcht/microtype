@@ -774,7 +774,7 @@
 \ifdoconly
   \OnlyDescription
 \else
-  \let\printlogo\relax
+  \let\printlogo\undefined
   \newcommand\VersionDate[2]{%
     \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
   \InputIfFileExists{microtype-code.tmp}\relax\relax
@@ -800,7 +800,9 @@
 %
 % \GetFileInfo{\jobname.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
-%        \textls[40]{The \microtype\ package}\\[.3\baselineskip]\large
+%        \textls[40]{The \microtype\ package}%
+%        {\ifdoconly\else\\\Large--- \textls[60]{IMPLEMENTATION} ---\fi}%
+%        \\[.3\baselineskip]\large
 %        Subliminal refinements towards typographical perfection}
 % \author{R Schlicht\\\mailtoRS}
 % \date{\fileversion\\\filedate}
@@ -3348,11 +3350,14 @@
 %
 %
 %\def\AppendixSettings{
-%  \addtolength\textwidth{50pt}
-%  \addtolength{\oddsidemargin}{-50pt}
-%  \setlength{\columnwidth}{\textwidth}
-%  \setlength{\hsize}{\textwidth}
-%  \setlength{\linewidth}{\textwidth}
+%  \ifdoconly\else
+%    \addtolength\textwidth{50pt}
+%    \addtolength{\oddsidemargin}{-50pt}
+%    \setlength{\columnwidth}{\textwidth}
+%    \setlength{\hsize}{\textwidth}
+%    \setlength{\linewidth}{\textwidth}
+%    \newpage
+%  \fi
 %  \footnotesize
 %}
 %
@@ -3375,8 +3380,6 @@
 %\StopEventually{
 %  \GeneralChanges{Documentation}
 %  \ifx\Finale\relax
-%    \newpage
-%    \appendix
 %    \AppendixSettings
 %  \fi
 %  \PrintIndex
