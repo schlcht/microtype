@@ -365,9 +365,9 @@
   \vskip-\mt@unvdimen}
 % index and change log
 \IndexPrologue{\section{Index}%
+  \ifdoconly\else
   Numbers in upright shape refer to the page where the corresponding entry
   is described (bold face) resp. occurs.
-  \ifdoconly\else
   Numbers in italics refer to the code line where the corresponding entry
   is defined (underlined) resp. used.
   \fi
@@ -785,8 +785,6 @@
 %</driver>
 %</driver|docsty>
 % \fi
-%\makeatletter
-%
 %
 % ^^A -------------------------------------------------------------------------
 %\GeneralChanges*
@@ -833,7 +831,7 @@
 %
 % The alternative package \letterspace, which also works with plain \TeX,
 % provides the user commands for letterspacing only, omitting support for all
-% other extensions (see section~\ref{sec:lettersp}).
+% other extensions (see section~\ref{sec:lettersp}\ifdoconly\else\space of the User manual\fi).
 %
 %\bigskip\noindent
 % This package is copyright \textcopyright\ 2004\kern.09em--2021 R Schlicht.
@@ -1785,7 +1783,7 @@
 %       This method of employing contexts to temporarily apply different
 %       expansion parameters only works with \pdftex\ version 1.40.4 or later,^^A
 %         \footnote{For older versions, a dirty trick is laid out in
-%                   section~\ref{sub:font-setup} on page~\pageref{exp-hack}.}
+%                   the Implementation part, section~\ref{sub:font-setup}, page~\pageref{exp-hack}.}
 %       or with \luatex.
 %       Also note that both \pdftex\ and \luatex\ prohibit the use of fonts with different expansion
 %       limits or steps (even of different fonts) within one paragraph, hence
@@ -2299,7 +2297,7 @@
 % to extend settings defined in a file that would otherwise not be loaded
 % automatically, or would be loaded too late.\footnote{
 %    Font package authors might also want to have a look at the hook
-%    \cs{Microtype@Hook}, described in the implementation part,
+%    \cs{Microtype@Hook}, described in the Implementation part,
 %     section~\ref{sub:hook}.}
 % This command will load the file `|mt-|\meta{font name}|.cfg|'.
 %
@@ -2764,8 +2762,8 @@
 % \href{http://mirror.ctan.org/macros/latex/contrib/microtype/}
 %      {\acronym{CTAN}}.
 % For the source code of the logo on the title page and of the letterspacing
-% sample from section~\ref{sub:tracking}, see the appendices~\ref{sec:title-logo}
-% and \ref{sec:letterspace-ill}.
+% sample from section~\ref{sub:tracking}, see the Implementation part,
+% appendices~\ref{sec:title-logo} and \ref{sec:letterspace-ill}.
 %\changes{v2.5a}{2013/05/23}{add notes on typesetting the documentation}
 % If you want to re-typeset the documentation, read the comments at the end of
 % \file{microtype.dtx}.
@@ -3063,7 +3061,7 @@
 % \expandafter\ifx\csname r@sec:changes\endcsname\relax
 %     obtained by running `\texttt{makeindex \mbox{-s gglo.ist}
 %                                  \mbox{-o microtype.gls} microtype.glo}'\else
-%     found in appendix~\ref{sec:changes}\fi.
+%     found in the Implementation part, appendix~\ref{sec:changes}\fi.
 % The following is a list of all changes relevant in the user land; bug and
 % compatibility fixes are swept under the rug. Numbers in brackets indicate
 % the relevant section in this manual.
@@ -3277,7 +3275,7 @@
 %  \item New command \cs{LoadMicrotypeFile} to load a configuration file manually
 %        \refsection{\ref{sub:config-file}}
 %  \item New command \cs{Microtype@Hook} for font package authors
-%        \refsection{\ref{sub:hook}}
+%        \refsection{Implementation, \ref{sub:hook}}
 %  \item New option `\opt{verbose}|=errors|' to turn all warnings into errors
 %^^A  \item Disable expansion inside \cmd\showhyphens
 %  \item Warning when running in draft mode
