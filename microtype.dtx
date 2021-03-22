@@ -82,9 +82,9 @@
 % --jobname=microtype-code
 % will produce the document microtype-code.pdf,
 % containing only the Implementation.
-\expandafter\newif\csname ifdoconly\endcsname
-\ifnum\pdfstrcmp{\jobname}{microtype-code}=0 \else
-  \doconlytrue
+\expandafter\newif\csname ifcodedoc\endcsname
+\ifnum\pdfstrcmp{\jobname}{microtype-code}=0
+  \codedoctrue
 \fi
 \documentclass[10pt,a4paper]{ltxdoc}
 \makeatletter
@@ -365,7 +365,7 @@
   \vskip-\mt@unvdimen}
 % index and change log
 \IndexPrologue{\section{Index}%
-  \ifdoconly\else
+  \ifcodedoc
   Numbers in upright shape refer to the page where the corresponding entry
   is described (bold face) resp. occurs.
   Numbers in italics refer to the code line where the corresponding entry
@@ -569,14 +569,14 @@
               colorlinks,linkcolor=theblue,citecolor=theblue,urlcolor=thered,
               hyperindex=false,hyperfootnotes=false]
              {hyperref}
-  \externaldocument{microtype\ifdoconly-code\fi}
+  \externaldocument{microtype\ifcodedoc\else-code\fi}
   \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
   \usepackage{hyperxmp} % (hyperxmp loads totpages)
   \usepackage{attachfile}
   \usepackage{pdfpages}
   \hypersetup{
     keeppdfinfo,
-    pdftitle={The microtype package\ifdoconly\else\space-- Implementation\fi},
+    pdftitle={The microtype package\ifcodedoc\space-- Implementation\fi},
     pdfauthor={R Schlicht <w.m.l@gmx.net>},
     pdfsubject={Subliminal refinements towards typographical perfection},
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
@@ -771,13 +771,13 @@
 \CodelineIndex
 \EnableCrossrefs
 \RecordChanges
-\ifdoconly
-  \OnlyDescription
-\else
+\ifcodedoc
   \let\printlogo\undefined
   \newcommand\VersionDate[2]{%
     \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
   \InputIfFileExists{microtype-code.tmp}\relax\relax
+\else
+  \OnlyDescription
 \fi
 \begin{document}
   \DocInput{microtype.dtx}
@@ -799,7 +799,7 @@
 % \GetFileInfo{\jobname.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
 %        \textls[40]{The \microtype\ package}%
-%        {\ifdoconly\else\\\Large--- \textls[60]{IMPLEMENTATION} ---\fi}%
+%        {\ifcodedoc\\\Large--- \textls[60]{IMPLEMENTATION} ---\fi}%
 %        \\[.3\baselineskip]\large
 %        Subliminal refinements towards typographical perfection}
 % \author{R Schlicht\\\mailtoRS}
@@ -831,7 +831,7 @@
 %
 % The alternative package \letterspace, which also works with plain \TeX,
 % provides the user commands for letterspacing only, omitting support for all
-% other extensions (see section~\ref{sec:lettersp}\ifdoconly\else\space of the User manual\fi).
+% other extensions (see section~\ref{sec:lettersp}\ifcodedoc\space of the User manual\fi).
 %
 %\bigskip\noindent
 % This package is copyright \textcopyright\ 2004\kern.09em--2021 R Schlicht.
@@ -852,16 +852,16 @@
 % \vskip2\baselineskip
 % \Large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}
 % \noindent
-%  \ifdoconly
-%    \href{file:microtype-code.pdf}{Implementation}
-%  \else
+%  \ifcodedoc
 %    \href{file:microtype.pdf}{User documentation}
+%  \else
+%    \href{file:microtype-code.pdf}{Implementation}
 %  \fi
 %  \normalfont\normalsize (external document)
 %}
 %
 %
-%\ifdoconly
+%\ifcodedoc\else
 %
 %\newpage
 %\section{Micro-typography with \TeX}\label{sec:micro-type}
@@ -3344,11 +3344,11 @@
 %
 %\immediate\closeout\codetmp
 %
-%\fi ^^A ifdoconly
+%\fi ^^A ifcodedoc
 %
 %
 %\def\AppendixSettings{
-%  \ifdoconly\else
+%  \ifcodedoc
 %    \addtolength\textwidth{50pt}
 %    \addtolength{\oddsidemargin}{-50pt}
 %    \setlength{\columnwidth}{\textwidth}
