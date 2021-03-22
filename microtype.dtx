@@ -2899,9 +2899,10 @@
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
 %  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
 % `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
-% `\contributor dsedivec          <@\at @>'  ^^A https://tex.stackexchange.com/users/1680/dsedivec
+% `\contributor dsedivec          <@\at @>', ^^A https://tex.stackexchange.com/users/1680/dsedivec
+% `\contributor DORpapst          <@\at @>'  ^^A https://tex.stackexchange.com/users/104965/dorpapst
 % and
-% `\contributor DORpapst          <@\at @>'. ^^A https://tex.stackexchange.com/users/104965/dorpapst
+% `\contributor reportaman        <@\at @>'. ^^A https://tex.stackexchange.com/users/192717/reportaman
 %
 %
 %\iffalse
@@ -4294,19 +4295,21 @@
 %\changes{v2.7}{2017/02/08}{drop \pkg{luatexbase} with recent \LaTeX}
 % we load the \pkg{luatexbase} package.
 %    \begin{macrocode}
-%<*luatex-def>
-\@ifl@t@r\fmtversion{2016/01/01}\relax{\RequirePackage{luatexbase}}
+%<luatex-def>\@ifl@t@r\fmtversion{2016/01/01}\relax{\RequirePackage{luatexbase}}
 %    \end{macrocode}
 % We load \pkg{luaotfload}, because some of its functions are
 % required in \file{microtype.lua}. This eliminates the need for the user to
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
 %\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
+%\changes{v2.8d}{2021/03/21}{\letterspace\ loads \file{microtype.lua}}
 % Since 2017/01/01, it is already loaded in the format.
 %    \begin{macrocode}
-\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
-\MT@lua{require("microtype")}
-%</luatex-def>
+%<luatex-def>\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
+%<letterspace>\MT@pdf@or@lua\relax{
+%<letterspace>\ifx\newluafunction\undefined \input ltluatex \fi
+%<luatex-def|letterspace>\MT@lua{require("microtype")}
+%<letterspace>}
 %    \end{macrocode}
 % Here it begins. The module was contributed by \'Elie Roux.
 %\changes{v2.4}{2009/11/12}{new file \file{microtype.lua} containing the \texttt{lua} functions
@@ -4907,22 +4910,24 @@ microtype.if_str_eq = if_str_eq
 % For fonts loaded by \pkg{luaotfload} we query the font's table.
 %    \begin{macrocode}
 %<letterspace>\MT@pdf@or@lua{\let\MT@if@luaotf@font\@secondoftwo}{
-%<luatex-def|letterspace>\def\MT@if@luaotf@font{\csname\MT@lua{%
-%<luatex-def>  microtype.if_luaotf_font()
-%<*luafile|letterspace>
-%<luafile>local function if_luaotf_font()
+%<*luatex-def|letterspace>
+\def\MT@if@luaotf@font{\csname\MT@lua{%
+  microtype.if_luaotf_font()
+  }\endcsname
+}
+%</luatex-def|letterspace>
+%<letterspace>}
+%<*luafile>
+local function if_luaotf_font()
   local thefont = font.getfont(font.current())
   if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
     then tex.write("@firstoftwo")
     else tex.write("@secondoftwo")
   end
-%<luafile>end
-%<luafile>microtype.if_luaotf_font = if_luaotf_font
-%<luafile>
-%</luafile|letterspace>
-%<luatex-def|letterspace> }\endcsname
-%<luatex-def|letterspace>}
-%<letterspace>}
+end
+microtype.if_luaotf_font = if_luaotf_font
+
+%</luafile>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@do@font}
@@ -7252,10 +7257,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@if@luaotf@font{%
 %<luatex-def&debug>\MT@dinfo@nl{1}{... luaotf font: \MessageBreak
 %<luatex-def&debug>         \expandafter\fontname\font@name}%
-        \ifnum\MT@letterspace@<\z@\def\MT@minus{-}\else\let\MT@minus\@empty\fi
-        \global\expandafter\font\MT@lsfont=%
-          \expandafter\MT@exp@two@c\expandafter\MT@ls@fontspec@font
-            \expandafter\fontname\expandafter\font@name\space \@nil
+        \global\expandafter\font\MT@lsfont=\MT@ls@fontspec@font
       }{%
 %</luatex-def|letterspace>
 %<luatex-def&debug>\MT@dinfo@nl{1}{... legacy font}%
@@ -7417,28 +7419,42 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</pdftex-def|luatex-def|letterspace>
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@ls@fontspec@colon}
 %\begin{macro}{\MT@ls@fontspec@font}
 %\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
 %\changes{v2.7}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
 %                            (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
 %                            ^^A http://tug.org/pipermail/lualatex-dev/2017-February/001670.html
-% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}
-% (we might have to add the colon ourselves).
+%\changes{v2.8d}{2021/03/19}{use \texttt{lua} to parse font spec\slash fix for font spec containing spaces
+%                            (reported by \contributor reportaman <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/567698/luatex-microtype-fontspec-luaotfload-buggy-interaction-canceling-each-others-s
+% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}.
 %    \begin{macrocode}
 %<*luatex-def|letterspace>
-\def\MT@ls@fontspec@colon#1:#2:#3:#4\@nil{\ifx\\#3\\#1:#2\else#1:#2:#3\fi}
-\def\MT@ls@fontspec@font#1 #2\@nil{%
-  "\MT@ls@fontspec@colon#1:::\relax\@nil
-    kernfactor=\MT@minus \ifnum\MT@letterspace@=1000 1\else 0.%
-         \ifnum\MT@minus\MT@letterspace@<100 0\fi
-         \ifnum\MT@minus\MT@letterspace@<10  0\fi
-        \number\MT@minus\MT@letterspace@ \fi;"
-  \ifx\\#2\\ at \f@size pt\else#2\fi\relax
+\def\MT@ls@fontspec@font{%
+  \MT@lua{microtype.add_ls([[\MT@letterspace@]])}%
 }
 %</luatex-def|letterspace>
+%<*luafile>
+local function add_ls(k)
+  local f = tex.fontname(font.current())
+  local spec,size = match(f,'^(.+)( at .+)$')
+  if not spec then spec = f end
+  local a,b,c = match(spec,'^([^:]+):?([^:]*):?(.*)$')
+  local ls = "kernfactor=" .. k/1000 .. ';'
+  microtype.sprint(a..':')
+  if (a == "name" or a == "file") then
+    microtype.sprint(b..':'..ls..c)
+  else
+    microtype.sprint(ls..b)
+  end
+  if size then
+    microtype.sprint(size)
+  end
+end
+microtype.add_ls = add_ls
+
+%</luafile>
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@get@tr@opt}
 % Various settings (only for the \microtype\ version).
@@ -8024,11 +8040,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@ls@too@large#1{%
   \ifnum#1>\MT@tr@max
     \MT@warning{Maximum for option `letterspace' is \number\MT@tr@max}%
-    \let#1\MT@tr@max
+    \edef#1{\number\MT@tr@max}%
   \else
     \ifnum#1<\MT@tr@min
       \MT@warning{Minimum for option `letterspace' is \number\MT@tr@min}%
-      \let#1\MT@tr@min
+      \edef#1{\number\MT@tr@min}%
     \fi
   \fi
 }
@@ -17417,7 +17433,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10850}
+% \CheckSum{10803}
 %
 % \Finale
 %
@@ -17481,4 +17497,5 @@ pdflatex microtype.dtx
 % -----------------------------------------------------------------------------
 %
 % vim: ts=2:sw=2:et:
+
 %
