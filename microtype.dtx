@@ -91,6 +91,7 @@
 \ifx\@tempa\@tempb
   \codedoctrue
 \fi
+%<docsty>\codedoctrue
 % Let's abolish CM! We use Charter and Letter Gothic
 % (for the pre-built documentation on CTAN):
 \usepackage[T1]{fontenc}
@@ -383,9 +384,7 @@
 \setcounter{IndexColumns}{2}
 \def\IndexMin{12\baselineskip}
 \g@addto@macro\IndexParms{%
-  \ifcodedoc
-  \footnotesize
-  \else\small\fi
+  \ifcodedoc\footnotesize\else\small\fi
   \def\indexspace#1{%
     \end{multicols}
     \vspace*{-20pt}%
@@ -595,9 +594,9 @@
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\012%
       This work has the LPPL maintenance status `author-maintained'.},
-    pdflicenseurl={http://www.latex-project.org/lppl/}
+    pdflicenseurl={http://www.latex-project.org/lppl/},
+    pdflang={en-GB}
   }
-  \pdfcatalog{/Lang(en-GB)}
   % we no longer use hypdestopt, as it would break the external references
   \def\changes@#1#2#3{% recording the changes ...
     \protected@edef\@tempa{\noexpand\glossary{#1\levelchar
@@ -785,7 +784,7 @@
 %\DeclareRobustCommand\@contributor[2]{\href{mailto:#2}{\textit{#1}}}
 %\DeclareRobustCommand\@contributor[2]{\textit{#1}%
 %    \expandafter\index\expandafter{\@getlastname#1 \@nil\actualchar %\href{mailto:#2}{#1}
-%          #1 (contributor)\encapchar hyperpage}}
+%          #1 (contributor)\encapchar \ifcodedoc\else doc\fi hyperpage}}
 %\def\@getlastname#1 #2\@nil{\ifx\@nil#2\@nil#1\else\@getlastname#2\@nil\fi}
 %<*driver>
 \CodelineIndex

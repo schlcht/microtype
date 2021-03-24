@@ -39,10 +39,11 @@ DTX  = $(NAME).dtx
 README = README.md
 UTFDOC = $(NAME)-utf.pdf
 UTFDTX = $(NAME)-utf.dtx
+CODEDOC = $(NAME)-code.pdf
 ALLDTX = $(DTX) $(UTFDTX)
 
 # Files grouped by generation mode
-COMPILED = $(DOC)
+COMPILED = $(DOC) $(CODEDOC)
 UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   microtype-pdftex.def microtype-luatex.def microtype-xetex.def \
 	   mt-bch.cfg mt-blg.cfg mt-cmr.cfg mt-euf.cfg mt-eur.cfg mt-eus.cfg \
@@ -90,12 +91,13 @@ DO_MAKEINDEX = touch $(subst .dtx,.glo,$(ALLDTX)) && \
 # makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
 
 all: $(GENERATED)
-doc:    make-doc-sty $(COMPILED) make-normal-sty
-utfdoc: make-doc-sty $(UTFDOC)   make-normal-sty
-unpack: docstrip.cfg $(UNPACKED) 
-ctan:   $(CTAN_ZIP)
-tds:    $(TDS_ZIP)
-world:  all ctan
+doc:     make-doc-sty $(COMPILED) make-normal-sty
+utfdoc:  make-doc-sty $(UTFDOC)   make-normal-sty
+codedoc: make-doc-sty $(CODEDOC)  make-normal-sty
+unpack:  docstrip.cfg $(UNPACKED)
+ctan:    $(CTAN_ZIP)
+tds:     $(TDS_ZIP)
+world:   all ctan
 
 .PHONY: help install sty-install manifest mostlyclean clean \
 	test testerrors testunknown testoutput
