@@ -82,6 +82,13 @@ DO_MAKEINDEX = touch $(subst .dtx,.glo,$(ALLDTX)) && \
 	       makeindex -s gglo.ist -t $(subst .dtx,.glg,$<) -o $(subst .dtx,.gls,$<) \
 	                 $(subst .dtx,.glo,$(ALLDTX)) $(REDIRECT)  2>&1
 
+# microtype index:
+# makeindex -s microtype-gind.ist -t microtype.ilg -o microtype.ind microtype.idx
+# microtype-code index:
+# makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
+# microtype-code history:
+# makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
+
 all: $(GENERATED)
 doc:    make-doc-sty $(COMPILED) make-normal-sty
 utfdoc: make-doc-sty $(UTFDOC)   make-normal-sty
