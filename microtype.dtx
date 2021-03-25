@@ -17249,8 +17249,14 @@ end
 %\ifpdf
 %\GeneralChanges{Documentation}
 %^^A The OpenType configuration files are outsourced to an external file,
-%^^A since they are typeset with \luatex.
+%^^A since they have to be typeset with \luatex.
 %
+%\begingroup
+%\@tempswafalse
+%\InputIfFileExists{microtype-utf.tmp}
+%  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}}
+%  {\@tempswatrue}
+%\if@tempswa
 %\newwrite          \utftmp
 %\immediate\openout \utftmp=microtype-utf.tmp
 %\immediate\write   \utftmp{\string\setcounter{section}{\the\c@section}}
@@ -17258,14 +17264,18 @@ end
 %\immediate\write   \utftmp{\string\setcounter{page}{\the\c@page}}
 %\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
 %\immediate\closeout\utftmp
+%\fi
+%\endgroup
 %
-%\InputIfFileExists{microtype.tmp}\relax{\def\utfsectioni{1}\def\utfsectionii{1}}
+%\newcounter{utfsectioni}
+%\newcounter{utfsectionii}
+%\InputIfFileExists{microtype.tmp}\relax{\secounter{utfsectioni}{1}\setcounter{utfsectionii}{1}}
 %
 %\IfFileExists{microtype-utf.pdf}
 %   {\includepdf[pages=-,
 %                addtotoc={1,section,1,OpenType configuration files,sec:OpenType,
-%                          \utfsectioni,subsection,2,Character inheritance,sub:OT-inheritance,
-%                          \utfsectionii,subsection,2,Character protrusion,sub:OT-protrusion}]
+%                          \the\c@utfsectioni,subsection,2,Character inheritance,sub:OT-inheritance,
+%                          \the\c@utfsectionii,subsection,2,Character protrusion,sub:OT-protrusion}]
 %               {microtype-utf.pdf}}
 %   {\section{OpenType configuration settings}
 %       To view the OpenType configuration settings, first typeset

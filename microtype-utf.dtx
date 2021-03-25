@@ -129,11 +129,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\changes{v2.6}{2015/12/07}{missing characters printed with Charis <SIL>}
 %\ImplementationSettings
 %\InputIfFileExists{microtype-utf.tmp}\relax\relax
+%\newcounter{utfsectioni}
+%\newcounter{utfsectionii}
 %\edef\startpage{\thepage}
 %\stepcounter{page}
-%
-%\newwrite\utftmp
-%\immediate\openout\utftmp=microtype.tmp
 %
 %\section{OpenType configuration files}
 %
@@ -154,8 +153,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %
 %\subsection{Character inheritance}
 %\GeneralChanges{Inheritance}
-%\edef\x{\string\def\string\utfsectioni{\number\numexpr\thepage-\startpage\relax}}
-%\immediate\write\expandafter\utftmp\expandafter{\x}
+%\setcounter{utfsectioni}{\numexpr\thepage-\startpage}
 %
 % OpenType fonts may differ considerably in how complete their arsenal of glyphs is.
 % Therefore, each font family should have their own inheritance settings.
@@ -488,8 +486,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %
 %\subsection{Character protrusion}
 %\GeneralChanges{Protrusion}
-%\edef\x{\string\def\string\utfsectionii{\number\numexpr\thepage-\startpage\relax}}
-%\immediate\write\expandafter\utftmp\expandafter{\x}
+%\setcounter{utfsectionii}{\numexpr\thepage-\startpage}
 %
 %    \begin{macrocode}
 
@@ -1362,8 +1359,20 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %</FontAwesome>
 
 %    \end{macrocode}
+%\begingroup
+%\@tempswafalse
+%\InputIfFileExists{microtype.tmp}
+%  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}}
+%  {\@tempswatrue}
+%\if@tempswa
+%\newwrite\utftmp
+%\immediate\openout\utftmp=microtype.tmp
+%\immediate\write   \utftmp{\string\setcounter{utfsectioni} {\the\c@utfsectioni}}
+%\immediate\write   \utftmp{\string\setcounter{utfsectionii}{\the\c@utfsectionii}}
 %\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
 %\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
 %\immediate\closeout\utftmp
+%\fi
+%\endgroup
 %
 \endinput
