@@ -6260,6 +6260,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
         {MT@inh@\MT@pr@inh@name @\MT@char @}%
         \MT@set@pr@heirs
     }%
+    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @l}{%
+      \MT@exp@cs\MT@map@tlist@c
+        {MT@inh@\MT@pr@inh@name @\MT@char @l}%
+        \MT@set@pr@lheirs
+    }%
+    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @r}{%
+      \MT@exp@cs\MT@map@tlist@c
+        {MT@inh@\MT@pr@inh@name @\MT@char @r}%
+        \MT@set@pr@rheirs
+    }%
   }%
 }
 %    \end{macrocode}
@@ -6630,6 +6640,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<debug>\MT@dinfo@nl{2}{-- heir of \MT@char: #1}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font\MT@char\space/%
 %<debug>                                \number\rpcode\MT@font\MT@char\space}%
+}
+\def\MT@set@pr@lheirs#1{%
+  \@tempcnta=\numexpr(\fontcharwd\MT@font
+%<xetex-def>    \@gobble
+    #1-\MT@count)*1000/\MT@dimen@six\relax
+  \lpcode\MT@font #1=\numexpr\lpcode\MT@font\MT@char+\@tempcnta\relax
+  \rpcode\MT@font #1=\rpcode\MT@font\MT@char\relax
+%<debug>\MT@dinfo@nl{2}{-- (left) heir of \MT@char: #1}%
+%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font#1\space/%
+%<debug>                                \number\rpcode\MT@font#1\space}%
+}
+\def\MT@set@pr@rheirs#1{%
+  \@tempcnta=\numexpr(\fontcharwd\MT@font
+%<xetex-def>    \@gobble
+    #1-\MT@count)*1000/\MT@dimen@six\relax
+  \lpcode\MT@font #1=\lpcode\MT@font\MT@char\relax
+  \rpcode\MT@font #1=\numexpr\rpcode\MT@font\MT@char+\@tempcnta\relax
+%<debug>\MT@dinfo@nl{2}{-- (right) heir of \MT@char: #1}%
+%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font#1\space/%
+%<debug>                                \number\rpcode\MT@font#1\space}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -11312,6 +11342,7 @@ end
 \def\MT@inh@split#1=#2=#3\relax{%
   \def\@tempa{#1}%
   \ifx\@tempa\@empty \else
+    \expandafter\MT@inh@is@lr\@tempa()\relax\@nil
     \MT@get@slot
 %<pdftex-def|luatex-def>    \ifnum\MT@char > \m@ne
 %<xetex-def>    \ifx\MT@char\@empty\else
@@ -11322,13 +11353,22 @@ end
           \MT@get@slot
 %<pdftex-def|luatex-def>          \ifnum\MT@char > \m@ne
 %<xetex-def>          \ifx\MT@char\@empty\else
-            \MT@exp@cs\MT@xadd{MT@inh@\MT@listname @\MT@val @}{{\MT@char}}%
+              \MT@exp@cs\MT@xadd{MT@inh@\MT@listname @\MT@val @\MT@islr}{{\MT@char}}%
           \fi
         \fi
       }%
 %<debug>\MT@dinfo@nl{2}{children of #1 (\MT@val):
-%<debug>                \@nameuse{MT@inh@\MT@listname @\MT@val @}}%
+%<debug>                \@nameuse{MT@inh@\MT@listname @\MT@val @\MT@islr}}%
     \fi
+  \fi
+}
+\def\MT@inh@is@lr#1(#2)#3#4\@nil{%
+  \ifx\relax#3%
+    \def\@tempa{#1#2}%
+    \let\MT@islr\@empty
+  \else
+    \def\@tempa{#3}%
+    \def\MT@islr{#2}%
   \fi
 }
 %</pdftex-def|xetex-def|luatex-def>
