@@ -2097,10 +2097,11 @@
 % list. Additionally, it accepts the \key{inputenc} key to set the input encoding
 % for this list. The font set can be declared in the usual way. The inheritance
 % lists are declared as pairs of \meta{base character}\,|=|\,\meta{list of
-% inheriting characters}. Unless you are using a different encoding or a very
-% peculiarly shaped font, there should be no need to change the default
-% character inheritance settings.
+% inheriting characters}.
 %
+% With \pdftex, there should be no need to change the default
+% character inheritance settings, unless you are using a different encoding or
+% a very peculiarly shaped font.
 % The situation is different with \luatex\ and \xetex, however: the default
 % inheritance settings only contain those glyhps that can safely be assumed to
 % exist in any font; but since OpenType fonts may contain many more glyphs for
@@ -2108,6 +2109,24 @@
 % settings are necessary, which should be specified in the font's configuration
 % file (see next section).
 %
+% For protrusion, this command also provides the possibility to have \pkg{microtype}
+% automatically calculate the desired protrusion based on the difference of character widths:
+% If you precede the base character with either `|(l)|', `|(r)|' or `|(lr)|',
+% the inheriting characters will be additionally protruded by the result of
+% |charwidth(|\meta{inheriting character}|)-charwidth(|\meta{base character}|)|:
+% for `|(l)|' and `|(r)|', this amount will be added to the given protrusion on
+% the respective side, for `|(lr)|' half of the amount will be added to both sides.
+% So that, \eg, with
+%\begin{verbatim}
+%\DeclareCharacterInheritance
+%  { encoding = TU, family = {GFS Porson} }
+%  {  (l)H = {`H},
+%    (lr)I = {T}  }
+%\end{verbatim}
+% the accent before the `H' would be fully protruded into the left margin,
+% while the stem of the `T' would be aligned with that of the `I'.
+% This feature is especially useful for Greek typography, where capital letters
+% at the beginning of a line would be placed as if they had no accent.
 %
 %
 %\subsection{Configuration files}\label{sub:config-file}
@@ -6638,15 +6657,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@pr@prefixheirs}
-% 
+% Inheriting characters that have been specified in a prefixed list.
 %    \begin{macrocode}
 \def\MT@set@pr@prefixheirs{%
-  \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @prefixes}{%
-    \MT@exp@cs\MT@map@tlist@c
-      {MT@inh@\MT@pr@inh@name @prefixes}%
-      \MT@set@pr@prefixes
+  \MT@ifdefined@c@T\MT@pr@inh@name{%
+    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @prefixes}{%
+      \MT@exp@cs\MT@map@tlist@c
+        {MT@inh@\MT@pr@inh@name @prefixes}%
+        \MT@set@pr@prefixes
+    }%
   }%
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@set@pr@prefixes}
+%\begin{macro}{\MT@set@pr@prefixes@}
+% Add |charwidth(inheriting char)-charwidth(base char)| to either left or
+% right side or half the amount to both sides.
+%    \begin{macrocode}
 \def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
 \def\MT@set@pr@prefixes@#1#2#3#4{%
   \ifnum#3>\z@
@@ -6662,6 +6690,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
                                 \number\rpcode\MT@font#2}%
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@preset@pr}
 %\begin{macro}{\MT@preset@pr@}
@@ -11374,6 +11403,9 @@ end
 % If the inheriting character is preceded by |(|\meta{prefix}|)|, where
 % \meta{prefix} is one of |l|, |r| or |lr|, this has a special meaning
 % for protrusion. For the other features, we ignore these settings.
+%\changes{v2.8d}{2021/03/27}{new: automatical protrusion based on char widths difference
+%                            (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
+%                            ^^A private mail, 2020/12/24
 %    \begin{macrocode}
 \def\MT@has@inh@prefix#1(#2)#3#4\@nil{%
   \let\MT@temp\relax
@@ -17502,7 +17534,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10982}
+% \CheckSum{10927}
 %
 % \Finale
 %
