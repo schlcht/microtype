@@ -6152,6 +6152,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
     \expandafter\MT@set@codes\@tempc,\relax,%
+%    \end{macrocode}
+% Set unconditional heirs.
+%    \begin{macrocode}
+    \MT@set@pr@prefixheirs
   }\MT@reset@pr@codes
 }
 %    \end{macrocode}
@@ -6242,13 +6246,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@ifempty\@tempb\relax{%
     \MT@scale@to@em
     \lpcode\MT@font\MT@char=\MT@the@pr@code
-%<debug>\MT@dinfo@nl{4}{;;; lp (\MT@char): \number\lpcode\MT@font\MT@char\space: [#1]}%
+%<debug>\MT@dinfo@nl{4}{;;; lp (\MT@char): \number\lpcode\MT@font\MT@char: [#1]}%
   }%
   \def\@tempb{#2}%
   \MT@ifempty\@tempb\relax{%
     \MT@scale@to@em
     \rpcode\MT@font\MT@char=\MT@the@pr@code
-%<debug>\MT@dinfo@nl{4}{;;; rp (\MT@char): \number\rpcode\MT@font\MT@char\space: [#2]}%
+%<debug>\MT@dinfo@nl{4}{;;; rp (\MT@char): \number\rpcode\MT@font\MT@char: [#2]}%
   }%
 %    \end{macrocode}
 % Now we can set the values for the inheriting characters. Their slot numbers
@@ -6259,21 +6263,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@exp@cs\MT@map@tlist@c
         {MT@inh@\MT@pr@inh@name @\MT@char @}%
         \MT@set@pr@heirs
-    }%
-    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @lr}{%
-      \MT@exp@cs\MT@map@tlist@c
-        {MT@inh@\MT@pr@inh@name @\MT@char @lr}%
-        \MT@set@pr@lrheirs
-    }%
-    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @l}{%
-      \MT@exp@cs\MT@map@tlist@c
-        {MT@inh@\MT@pr@inh@name @\MT@char @l}%
-        \MT@set@pr@lheirs
-    }%
-    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @r}{%
-      \MT@exp@cs\MT@map@tlist@c
-        {MT@inh@\MT@pr@inh@name @\MT@char @r}%
-        \MT@set@pr@rheirs
     }%
   }%
 }
@@ -6643,38 +6632,34 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \lpcode\MT@font #1=\lpcode\MT@font\MT@char\relax
   \rpcode\MT@font #1=\rpcode\MT@font\MT@char\relax
 %<debug>\MT@dinfo@nl{2}{-- heir of \MT@char: #1}%
-%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font\MT@char\space/%
-%<debug>                                \number\rpcode\MT@font\MT@char\space}%
+%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font\MT@char/%
+%<debug>                                \number\rpcode\MT@font\MT@char}%
 }
-\def\MT@set@pr@lheirs#1{%
-  \@tempcnta=\numexpr(\fontcharwd\MT@font
-%<xetex-def>    \@gobble
-    #1-\MT@count)*1000/\MT@dimen@six\relax
-  \lpcode\MT@font #1=\numexpr\lpcode\MT@font\MT@char+\@tempcnta\relax
-  \rpcode\MT@font #1=\rpcode\MT@font\MT@char\relax
-%<debug>\MT@dinfo@nl{2}{-- (left) heir of \MT@char: #1}%
-%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font#1\space/%
-%<debug>                                \number\rpcode\MT@font#1\space}%
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@set@pr@prefixheirs}
+% 
+%    \begin{macrocode}
+\def\MT@set@pr@prefixheirs{%
+  \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @prefixes}{%
+    \MT@exp@cs\MT@map@tlist@c
+      {MT@inh@\MT@pr@inh@name @prefixes}%
+      \MT@set@pr@prefixes
+  }%
 }
-\def\MT@set@pr@rheirs#1{%
-  \@tempcnta=\numexpr(\fontcharwd\MT@font
-%<xetex-def>    \@gobble
-    #1-\MT@count)*1000/\MT@dimen@six\relax
-  \lpcode\MT@font #1=\lpcode\MT@font\MT@char\relax
-  \rpcode\MT@font #1=\numexpr\rpcode\MT@font\MT@char+\@tempcnta\relax
-%<debug>\MT@dinfo@nl{2}{-- (right) heir of \MT@char: #1}%
-%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font#1\space/%
-%<debug>                                \number\rpcode\MT@font#1\space}%
-}
-\def\MT@set@pr@lrheirs#1{%
-  \@tempcnta=\numexpr(\fontcharwd\MT@font
-%<xetex-def>    \@gobble
-    #1-\MT@count)*500/\MT@dimen@six\relax
-  \lpcode\MT@font #1=\numexpr\lpcode\MT@font\MT@char+\@tempcnta\relax
-  \rpcode\MT@font #1=\numexpr\rpcode\MT@font\MT@char+\@tempcnta\relax
-%<debug>\MT@dinfo@nl{2}{-- (right) heir of \MT@char: #1}%
-%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#1): \number\lpcode\MT@font#1\space/%
-%<debug>                                \number\rpcode\MT@font#1\space}%
+\def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
+\def\MT@set@pr@prefixes@#1#2#3#4{%
+  \ifnum#3>\z@
+    \@tempcnta=\numexpr(\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)*#3/\MT@dimen@six\relax
+    \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
+  \fi
+  \ifnum#4>\z@
+    \@tempcnta=\numexpr(\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)*#4/\MT@dimen@six\relax
+    \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
+  \fi
+\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
+\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
+                                \number\rpcode\MT@font#2}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -11368,12 +11353,17 @@ end
           \MT@get@slot
 %<pdftex-def|luatex-def>          \ifnum\MT@char > \m@ne
 %<xetex-def>          \ifx\MT@char\@empty\else
-              \MT@exp@cs\MT@xadd{MT@inh@\MT@listname @\MT@val @\MT@inh@prefix}{{\MT@char}}%
+            \ifx\MT@inh@prefix\@empty
+              \MT@exp@cs\MT@xadd{MT@inh@\MT@listname @\MT@val @}{{\MT@char}}%
+            \else
+              \MT@exp@cs\MT@xadd{MT@inh@\MT@listname @prefixes}%
+                  {{{\MT@val}{\MT@char}\MT@inh@prefix@}}%
+            \fi
           \fi
         \fi
       }%
 %<debug>\MT@dinfo@nl{2}{children of #1 (\MT@val):
-%<debug>                \@nameuse{MT@inh@\MT@listname @\MT@val @\MT@inh@prefix}}%
+%<debug>    \@nameuse{MT@inh@\MT@listname @\ifx\MT@inh@prefix\@empty\MT@val @\else prefixes\fi}}%
     \fi
   \fi
 }
@@ -11392,9 +11382,9 @@ end
     \let\MT@inh@prefix\@empty
   \else
     \MT@ifstreq{\MT@feat}{pr}{%
-      \MT@ifstreq{#2}{l}{\@firstoftwo}{%
-        \MT@ifstreq{#2}{r}{\@firstoftwo}{%
-          \MT@ifstreq{#2}{lr}{\@firstoftwo}{%
+      \MT@ifstreq{#2}{l}{\def\MT@inh@prefix@{{1000}{0}}\@firstoftwo}{%
+        \MT@ifstreq{#2}{r}{\def\MT@inh@prefix@{{0}{1000}}\@firstoftwo}{%
+          \MT@ifstreq{#2}{lr}{\def\MT@inh@prefix@{{500}{500}}\@firstoftwo}{%
             \MT@warning@nl{`#2' is not a valid prefix in inheritance list%
               \MessageBreak\MT@listname. Ignoring it}%
             \@secondoftwo}}}%
