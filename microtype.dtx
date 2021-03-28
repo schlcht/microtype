@@ -2109,8 +2109,8 @@
 % settings are necessary, which should be specified in the font's configuration
 % file (see next section).
 %
-% For protrusion, this command also provides the possibility to have \pkg{microtype}
-% automatically calculate the desired protrusion based on the difference of character widths:
+% Additionally, this command provides the possibility to have the desired
+% protrusion automatically calculated based on the difference of character widths.
 % If you precede the base character with either `|(l)|', `|(r)|' or `|(lr)|',
 % the inheriting characters will be additionally protruded by the result of
 % |charwidth(|\meta{inheriting character}|)-charwidth(|\meta{base character}|)|:
@@ -2123,10 +2123,16 @@
 %  {  (l)H = {`H},
 %    (lr)I = {T}  }
 %\end{verbatim}
-% the accent before the `H' would be fully protruded into the left margin,
-% while the stem of the `T' would be aligned with that of the `I'.
+% the stem of the `T' would be aligned with that of the `I' if at either margin,
+% while the accent before the `H' would be fully protruded into the left margin.
 % This feature is especially useful for Greek typography, where capital letters
-% at the beginning of a line would be placed as if they had no accent.
+% at the beginning of a line would be placed as if they had no accent (the `H' in
+% the example above).
+% Base characters may have both unprefixed and prefixed inheritance lists.
+% Likewise, inheriting characters may appear in both unprefixed and prefixed lists,
+% and also in `|(l)|' and `|(r)|'-prefixed lists at the same time, whereas lists
+% prefixed with `|(l)|' or `|(r)|' are mutually exclusive with a `|(lr)|'-prefixed list.
+% For all other features except protrusion, these prefixed lists will be ignored.
 %
 %
 %\subsection{Configuration files}\label{sub:config-file}
@@ -3071,6 +3077,9 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+% \item Possibility of automatical protrusion based on the difference of character widths
+%       \refsection{\ref{sub:inheritance}}
 %
 %\VersionDate{2.8c}{2021/03/14}
 %
@@ -6685,9 +6694,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \@tempcnta=\numexpr(\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)*#4/\MT@dimen@six\relax
     \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
   \fi
-\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
-\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
-                                \number\rpcode\MT@font#2}%
+%<debug>\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
+%<debug>\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
+%<debug>                                \number\rpcode\MT@font#2}%
 }
 %    \end{macrocode}
 %\end{macro}
