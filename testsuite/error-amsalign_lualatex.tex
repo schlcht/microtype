@@ -1,0 +1,12 @@
+% https://tex.stackexchange.com/questions/590265/improper-halign-inside-s-with-lmodern-microtype-fontspec/590298#590298
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{lmodern}           % (1)
+\usepackage{fontspec}          % (2)
+\usepackage{microtype}         % (3)
+\setmainfont{Libertinus Serif} % (4)
+\begin{document}
+    \begin{align}
+        a & b
+    \end{align}
+\end{document}

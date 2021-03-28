@@ -2900,9 +2900,10 @@
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
 %  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
 % `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
-% `\contributor dsedivec          <@\at @>'  ^^A https://tex.stackexchange.com/users/1680/dsedivec
+% `\contributor dsedivec          <@\at @>', ^^A https://tex.stackexchange.com/users/1680/dsedivec
+% `\contributor DORpapst          <@\at @>'  ^^A https://tex.stackexchange.com/users/104965/dorpapst
 % and
-% `\contributor DORpapst          <@\at @>'. ^^A https://tex.stackexchange.com/users/104965/dorpapst
+% `\contributor chsk              <@\at @>'. ^^A https://tex.stackexchange.com/users/158639/chsk
 %
 %
 %\iffalse
@@ -11232,20 +11233,23 @@ end
 %\end{macro}
 %\begin{macro}{\MT@set@inh@list}
 % No need to create an inheritance list for tracking.
+%\changes{v2.8d}{2021/03/27}{fix: grouping with \cmd\begingroup\dots\cmd\endgroup\ instead of \texttt{\{}\dots\texttt{\}}
+%                            (reported by \contributor chsk <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/590265/improper-halign-inside-s-with-lmodern-microtype-fontspec
 %    \begin{macrocode}
 \def\MT@set@inh@list#1#2{%
   \MT@ifempty\MT@inh@feat{%
-    \MT@map@clist@c\MT@features{{%
+    \MT@map@clist@c\MT@features{\begingroup
       \MT@ifstreq{##1}{tr}\relax{\MT@declare@char@inh{##1}{#1}{#2}}%
-    }}%
+    \endgroup}%
   }{%
-    \MT@map@clist@c\MT@inh@feat{{%
+    \MT@map@clist@c\MT@inh@feat{\begingroup
       \KV@@sp@def\@tempa{##1}%
       \MT@ifempty\@tempa\relax{%
         \edef\@tempa{\csname MT@rbba@\@tempa\endcsname}%
         \MT@ifstreq\@tempa{tr}\relax{%
           \MT@exp@one@n\MT@declare@char@inh{\@tempa}{#1}{#2}}}%
-    }}%
+    \endgroup}%
   }%
   \MT@end@catcodes
 }
@@ -17435,7 +17439,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10803}
+% \CheckSum{10807}
 %
 % \Finale
 %
