@@ -12,9 +12,8 @@ help:
 	@echo ' '
 	@echo '            help - (this message)'
 	@echo '          unpack - extract all files'
-	@echo '             doc - compile documentation'
-	@echo '            docc - compile base documentation only'
-	@echo '          utfdoc - compile Unicode documentation'
+	@echo '             doc - compile user and code documentation'
+	@echo '         codedoc - compile code documentation'
 	@echo '            ctan - generate archive for CTAN'
 	@echo '             all - unpack & doc'
 	@echo '           world - all & ctan'
@@ -76,23 +75,21 @@ CTAN_ZIP = $(NAME).zip
 TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
-DO_PDFLATEX  = pdflatex --interaction=nonstopmode $< $(REDIRECT)
-DO_LUALATEX  = lualatex --interaction=nonstopmode $< $(REDIRECT)
-DO_MAKEINDEX = touch $(subst .dtx,.glo,$(ALLDTX)) && \
-	       makeindex -s microtype-gind.ist $(subst .dtx,,$<) $(REDIRECT)  2>&1 && \
-	       makeindex -s gglo.ist -t $(subst .dtx,.glg,$<) -o $(subst .dtx,.gls,$<) \
-	                 $(subst .dtx,.glo,$(ALLDTX)) $(REDIRECT)  2>&1
+DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $< $(REDIRECT)
+DO_PDFLATEX_CODE = pdflatex --jobname=microtype-code --interaction=nonstopmode $< $(REDIRECT)
+DO_LUALATEX      = lualatex --interaction=nonstopmode $< $(REDIRECT)
+DO_MAKEINDEX_DOC  = \
+   makeindex -s microtype-gind.ist -t microtype.ilg -o microtype.ind microtype.idx $(REDIRECT) 2>&1
+DO_MAKEINDEX_CODE = \
+   makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind \
+             microtype.idx microtype-code.idx $(REDIRECT) 2>&1 && \
+   makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls \
+             microtype.glo microtype-code.glo microtype-utf.glo $(REDIRECT) 2>&1
+DO_MAKEINDEX = $(DO_MAKEINDEX_DOC) && $(DO_MAKEINDEX_CODE)
 
-# microtype index:
-# makeindex -s microtype-gind.ist -t microtype.ilg -o microtype.ind microtype.idx
-# microtype-code index:
-# makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
-# microtype-code history:
-# makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
-
-all: $(GENERATED)
+all:     $(GENERATED)
 doc:     make-doc-sty $(COMPILED) make-normal-sty
-utfdoc:  make-doc-sty $(UTFDOC)   make-normal-sty
+userdoc: make-doc-sty $(DOC)      make-normal-sty
 codedoc: make-doc-sty $(CODEDOC)  make-normal-sty
 unpack:  docstrip.cfg $(UNPACKED)
 ctan:    $(CTAN_ZIP)
@@ -122,49 +119,55 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-doc-sty
 	@touch make-normal-sty
 
-$(DOC): $(DTX) $(UTFDOC) 
-	@echo "Compiling documentation (including Unicode part)"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX)
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
-		echo "Re-compiling documentation" ; \
-		$(DO_MAKEINDEX) ; \
-		$(DO_PDFLATEX) ; \
+$(DOC): $(DTX) $(NAME)-code.ind $(UTFDOC) $(NAME).ind
+	@echo "Compiling user documentation"
+	@$(DO_PDFLATEX_DOC)
+
+$(NAME).ind: $(DTX) $(NAME).idx
+	@-$(DO_MAKEINDEX_DOC)
+
+$(NAME).idx: $(DTX)
+	@echo "Compiling user documentation (index)"
+	@$(DO_PDFLATEX_DOC)
+
+$(NAME)-code.ind: $(DTX) $(NAME)-code.idx
+	@-$(DO_MAKEINDEX_CODE)
+
+$(NAME)-code.idx: $(DTX)
+	@echo "Compiling code documentation (index)"
+	@$(DO_PDFLATEX_CODE)
+
+$(CODEDOC): $(DTX) $(DOC) $(UTFDOC)
+	@echo "Compiling code documentation (including Unicode part)"
+	@-$(DO_MAKEINDEX_CODE)
+	@$(DO_PDFLATEX_CODE)
+	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME)-code.log > /dev/null` ; do \
+		echo "Re-compiling documentation (1)" ; \
+		$(DO_MAKEINDEX_CODE) ; \
+		$(DO_PDFLATEX_CODE) ; \
 	done
-	@touch $(NAME)-utf.tmp
-	@touch $(UTFDOC)
-	@touch $(DOC)
+#	@touch $(NAME)-utf.tmp
+#	@touch $(UTFDOC)
+#	@touch $(DOC)
 
 $(UTFDOC): $(UTFDTX) $(NAME)-utf.tmp 
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
+	-@$(DO_MAKEINDEX)
 
 # microtype-utf.tmp is used to communicate counters
-# from microtype.dtx to microtype-utf.dtx
+# from microtype.dtx (code) to microtype-utf.dtx
 $(NAME)-utf.tmp: $(DTX) 
 	@echo "Compiling documentation (without Unicode part)"
-	-@$(DO_PDFLATEX)
-	@if ! grep -i '* Checksum passed *' $(NAME).log > /dev/null ; then \
-		if grep 'has no checksum\|Checksum not passed' $(NAME).log ; then \
+	@$(DO_PDFLATEX_CODE)
+	@if ! grep -i '* Checksum passed *' $(NAME)-code.log > /dev/null ; then \
+		if grep 'has no checksum\|Checksum not passed' $(NAME)-code.log ; then \
 			false ; \
 		fi ; \
 	fi
-	@echo "Re-compiling documentation"
+	@echo "Re-compiling documentation (2)"
 	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX)
-
-docc:	$(DTX)
-	@echo "Compiling documentation"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX) -draft
-	@echo "Re-compiling documentation"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX)
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
-		echo "Re-compiling documentation" ; \
-		$(DO_MAKEINDEX) ; \
-		$(DO_PDFLATEX) ; \
-	done
+	@$(DO_PDFLATEX_CODE)
 
 $(UNPACKED): $(INS) $(DTX) docstrip.cfg 
 	@echo "Extracting package"
