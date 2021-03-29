@@ -9944,16 +9944,16 @@ end
 %    \begin{macrocode}
 \newcommand\MT@DeclareSet[3][]{%
   \MT@ifempty{#1}{%
-    \MT@map@clist@c\MT@features{{\MT@declare@sets{##1}{#2}{#3}}}%
+    \MT@map@clist@c\MT@features{\begingroup\MT@declare@sets{##1}{#2}{#3}\endgroup}%
   }{%
-    \MT@map@clist@n{#1}{{%
+    \MT@map@clist@n{#1}{\begingroup
       \MT@ifempty{##1}\relax{%
         \MT@is@feature{##1}{set declaration `#2'}{%
           \MT@exp@one@n\MT@declare@sets
             {\csname MT@rbba@##1\endcsname}{#2}{#3}%
         }%
       }%
-    }}%
+    \endgroup}%
   }%
   \MT@end@catcodes
 }
@@ -10342,16 +10342,16 @@ end
 %    \begin{macrocode}
 \newcommand*\MT@UseMicrotypeSet[2][]{%
   \MT@ifempty{#1}{%
-    \MT@map@clist@c\MT@features{{\MT@use@set{##1}{#2}}}%
+    \MT@map@clist@c\MT@features{\begingroup\MT@use@set{##1}{#2}\endgroup}%
   }{%
-    \MT@map@clist@n{#1}{{%
+    \MT@map@clist@n{#1}{\begingroup
       \MT@ifempty{##1}\relax{%
         \MT@is@feature{##1}{activation of set `#2'}{%
           \MT@exp@one@n\MT@use@set
             {\csname MT@rbba@##1\endcsname}{#2}%
         }%
       }%
-    }}%
+    \endgroup}%
   }%
   \MT@end@catcodes
 }
@@ -10404,16 +10404,16 @@ end
 %    \begin{macrocode}
 \newcommand*\MT@DeclareMicrotypeSetDefault[2][]{%
   \MT@ifempty{#1}{%
-    \MT@map@clist@c\MT@features{{\MT@set@default@set{##1}{#2}}}%
+    \MT@map@clist@c\MT@features{\begingroup\MT@set@default@set{##1}{#2}\endgroup}%
   }{%
-    \MT@map@clist@n{#1}{{%
+    \MT@map@clist@n{#1}{\begingroup
       \MT@ifempty{##1}\relax{%
         \MT@is@feature{##1}{declaration of default set `#2'}{%
           \MT@exp@one@n\MT@set@default@set
             {\csname MT@rbba@##1\endcsname}{#2}%
         }%
       }%
-    }}%
+    \endgroup}%
   }%
   \MT@end@catcodes
 }
@@ -17439,7 +17439,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10807}
+% \CheckSum{10819}
 %
 % \Finale
 %
