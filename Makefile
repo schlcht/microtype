@@ -13,6 +13,7 @@ help:
 	@echo '            help - (this message)'
 	@echo '          unpack - extract all files'
 	@echo '             doc - compile user and code documentation'
+	@echo '         userdoc - compile user documentation'
 	@echo '         codedoc - compile code documentation'
 	@echo '            ctan - generate archive for CTAN'
 	@echo '             all - unpack & doc'
@@ -31,15 +32,17 @@ help:
 	@echo ' test... COMPAT=<TeX Live> - test with other TeX Live release'
 	@echo ' test... DEV=1 - test with current developer version'
 
-NAME = microtype
-DOC  = $(NAME).pdf
-INS  = $(NAME).ins
-DTX  = $(NAME).dtx
-README = README.md
-UTFDOC = $(NAME)-utf.pdf
-UTFDTX = $(NAME)-utf.dtx
+NAME    = microtype
+NAMEC   = $(NAME)-code
+NAMEU   = $(NAME)-utf
+DOC     = $(NAME).pdf
 CODEDOC = $(NAME)-code.pdf
-ALLDTX = $(DTX) $(UTFDTX)
+UTFDOC  = $(NAME)-utf.pdf
+INS     = $(NAME).ins
+DTX     = $(NAME).dtx
+README  = README.md
+UTFDTX  = $(NAME)-utf.dtx
+ALLDTX  = $(DTX) $(UTFDTX)
 
 # Files grouped by generation mode
 COMPILED = $(DOC) $(CODEDOC)
@@ -75,18 +78,6 @@ CTAN_ZIP = $(NAME).zip
 TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
-DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $< $(REDIRECT)
-DO_PDFLATEX_CODE = pdflatex --jobname=microtype-code --interaction=nonstopmode $< $(REDIRECT)
-DO_LUALATEX      = lualatex --interaction=nonstopmode $< $(REDIRECT)
-DO_MAKEINDEX_DOC  = \
-   makeindex -s microtype-gind.ist -t microtype.ilg -o microtype.ind microtype.idx $(REDIRECT) 2>&1
-DO_MAKEINDEX_CODE = \
-   makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind \
-             microtype.idx microtype-code.idx $(REDIRECT) 2>&1 && \
-   makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls \
-             microtype.glo microtype-code.glo microtype-utf.glo $(REDIRECT) 2>&1
-DO_MAKEINDEX = $(DO_MAKEINDEX_DOC) && $(DO_MAKEINDEX_CODE)
-
 all:     $(GENERATED)
 doc:     make-doc-sty $(COMPILED) make-normal-sty
 userdoc: make-doc-sty $(DOC)      make-normal-sty
@@ -119,54 +110,80 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-doc-sty
 	@touch make-normal-sty
 
-$(DOC): $(DTX) $(NAME)-code.ind $(UTFDOC) $(NAME).ind
+define rerun-check
+	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
+		echo "Re-compiling utf documentation" ; \
+		$(DO_MAKEINDEX_CODE) ; \
+		$(DO_LUALATEX) ; \
+	done
+	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
+		echo "Re-compiling code documentation" ; \
+		$(DO_MAKEINDEX_CODE) ; \
+		$(DO_PDFLATEX_CODE) ; \
+		echo "Re-compiling user documentation" ; \
+		$(DO_MAKEINDEX_DOC) ; \
+		$(DO_PDFLATEX_DOC) ; \
+	done
+	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
+		echo "Re-compiling user documentation" ; \
+		$(DO_MAKEINDEX_DOC) ; \
+		$(DO_PDFLATEX_DOC) ; \
+	done
+endef
+
+DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
+DO_MAKEINDEX_DOC  = \
+   makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1
+DO_MAKEINDEX_CODE = \
+   makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
+   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1
+DO_MAKEINDEX = $(DO_MAKEINDEX_DOC) && $(DO_MAKEINDEX_CODE)
+
+$(DOC): $(DTX) $(NAME).aux $(NAME)-stamp
 	@echo "Compiling user documentation"
 	@$(DO_PDFLATEX_DOC)
 
-$(NAME).ind: $(DTX) $(NAME).idx
-	@-$(DO_MAKEINDEX_DOC)
-
-$(NAME).idx: $(DTX)
-	@echo "Compiling user documentation (index)"
-	@$(DO_PDFLATEX_DOC)
-
-$(NAME)-code.ind: $(DTX) $(NAME)-code.idx
-	@-$(DO_MAKEINDEX_CODE)
-
-$(NAME)-code.idx: $(DTX)
-	@echo "Compiling code documentation (index)"
-	@$(DO_PDFLATEX_CODE)
-
-$(CODEDOC): $(DTX) $(DOC) $(UTFDOC)
+$(CODEDOC): $(DTX) $(DOC) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@echo "Compiling code documentation (including Unicode part)"
-	@-$(DO_MAKEINDEX_CODE)
 	@$(DO_PDFLATEX_CODE)
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME)-code.log > /dev/null` ; do \
-		echo "Re-compiling documentation (1)" ; \
-		$(DO_MAKEINDEX_CODE) ; \
-		$(DO_PDFLATEX_CODE) ; \
-	done
-#	@touch $(NAME)-utf.tmp
-#	@touch $(UTFDOC)
-#	@touch $(DOC)
+	$(rerun-check)
 
-$(UTFDOC): $(UTFDTX) $(NAME)-utf.tmp 
+$(UTFDOC): $(UTFDTX) $(NAMEU).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
-	-@$(DO_MAKEINDEX)
+
+$(NAME).aux: $(DTX)
+	@echo "Compiling user documentation (aux)"
+	@$(DO_PDFLATEX_DOC)
+
+$(NAME).ind: $(DTX)
+	@-$(DO_MAKEINDEX_DOC)
+
+$(NAME)-stamp: $(NAME).idx
+	@shasum $^ > $@2
+	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
+
+$(NAMEC).ind $(NAME)-code.gls: $(DTX) $(NAMEC)-stamp
+	@-$(DO_MAKEINDEX_CODE)
+
+$(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
+	@shasum $^ > $@2
+	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
 # microtype-utf.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
-$(NAME)-utf.tmp: $(DTX) 
-	@echo "Compiling documentation (without Unicode part)"
+$(NAMEU).tmp: $(DTX)
+	@echo "Compiling code documentation (without Unicode part)"
 	@$(DO_PDFLATEX_CODE)
-	@if ! grep -i '* Checksum passed *' $(NAME)-code.log > /dev/null ; then \
-		if grep 'has no checksum\|Checksum not passed' $(NAME)-code.log ; then \
+	@if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
+		if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
 			false ; \
 		fi ; \
 	fi
-	@echo "Re-compiling documentation (2)"
-	@$(DO_MAKEINDEX)
+	@echo "Re-compiling code documentation (for Unicode part)"
+	@-$(DO_MAKEINDEX_CODE)
 	@$(DO_PDFLATEX_CODE)
 
 $(UNPACKED): $(INS) $(DTX) docstrip.cfg 
@@ -237,7 +254,7 @@ manifest: $(SOURCE)
 
 mostlyclean:
 	@$(RM) -- *.log *.aux *.toc *.idx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
-		docstrip.cfg $(UTFDOC) microtype-doc.sty microtype-gind.ist make-*-sty 
+		docstrip.cfg $(UTFDOC) microtype-doc.sty microtype-gind.ist make-*-sty *-stamp
 
 clean: mostlyclean
 	@$(RM) -- $(GENERATED) $(ZIPS)
