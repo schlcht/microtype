@@ -287,11 +287,12 @@
   \widowpenalty 4000}
 \def\@biblabel#1{}
 % footnotes
+\def\@makefnmark{\raisebox{0.3ex}{\sffamily\footnotesize\,\@thefnmark}}
 \long\def\@makefntext#1{%
   \leftskip 0pt
   \parindent 0pt
   \everypar{\parindent 0pt}%
-  \leavevmode\llap{\@thefnmark\hskip\marginparsep}#1}
+  \leavevmode\llap{\sffamily\@thefnmark\hskip\marginparsep}#1}
 \renewcommand\footnoterule{%
   \kern-3\p@
   \hrule\@width \columnwidth
@@ -2140,9 +2141,9 @@
 %  \leftskip 1.2em
 %  \parindent -1.2em
 %  \everypar{\parindent -1.2em}%
-%  \leavevmode\hbox to 1.2em{\@thefnmark\hss}#1}
+%  \leavevmode\hbox to 1.2em{\sffamily\@thefnmark\hss}#1}
 %\let\footnoterule\relax
-%\def\fnref#1{\textsuperscript{\itshape\ifpdf\ref*{#1}\else\ref{#1}\fi}}
+%\def\fnref#1{\raisebox{0.3ex}{\sffamily\itshape\footnotesize\,\ifpdf\ref*{#1}\else\ref{#1}\fi}}
 %\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}*3l@{}}
 %       \footnotesize Font family (<NFSS> code)
 %      & \multicolumn{2}{l}{\footnotesize Features}\\
