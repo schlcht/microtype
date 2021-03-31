@@ -174,7 +174,7 @@ $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
 
 # microtype-utf.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
-$(NAMEU).tmp: $(DTX)
+$(NAMEU).tmp:
 	@echo "Compiling code documentation (without Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	@if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
