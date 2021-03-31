@@ -83,7 +83,7 @@
 %</driver>
 % Let's abolish CM! We use Charter and Letter Gothic
 % (for the pre-built documentation on CTAN):
-\usepackage[T1]{fontenc}
+\usepackage[LGR,T1]{fontenc}
 \usepackage[charter]{mathdesign}
  \def\rmdefault{bch} % not scaled
  \def\sfdefault{SourceSansPro-TLF}
@@ -2110,7 +2110,7 @@
 % file (see next section).
 %
 % Additionally, this command provides the possibility to have the desired
-% protrusion automatically calculated based on the difference of character widths.
+% protrusion calculated automatically based on the difference of character widths.
 % If you precede the base character with either `|(l)|', `|(r)|' or `|(lr)|',
 % the inheriting characters will be additionally protruded by the result of
 % |charwidth(|\meta{inheriting character}|)-charwidth(|\meta{base character}|)|:
@@ -2120,13 +2120,13 @@
 %\begin{verbatim}
 %\DeclareCharacterInheritance
 %  { encoding = TU, family = {GFS Porson} }
-%  {  (l)H = {`H},
+%  {  (l)"\fontfamily{SourceSansPro-LF}\selectfont H" = {"\fontencoding{LGR}\fontfamily{SourceSansPro-LF}\selectfont\~>\textEta"},
 %    (lr)I = {T}  }
 %\end{verbatim}
 % the stem of the `T' would be aligned with that of the `I' if at either margin,
 % while the accent before the `H' would be fully protruded into the left margin.
 % This feature is especially useful for Greek typography, where capital letters
-% at the beginning of a line would be placed as if they had no accent (the `H' in
+% at the beginning of a line should be placed as if they had no accent (the `H' in
 % the example above).
 % Base characters may have both unprefixed and prefixed inheritance lists.
 % Likewise, inheriting characters may appear in both unprefixed and prefixed lists,
