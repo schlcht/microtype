@@ -113,7 +113,6 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 define rerun-check
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
 		echo "Re-compiling utf documentation" ; \
-		$(DO_MAKEINDEX_CODE) ; \
 		$(DO_LUALATEX) ; \
 	done
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
@@ -145,7 +144,7 @@ $(DOC): $(DTX) $(NAME).aux $(NAME)-stamp
 	@echo "Compiling user documentation"
 	@$(DO_PDFLATEX_DOC)
 
-$(CODEDOC): $(DTX) $(DOC) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
+$(CODEDOC): $(DTX) make-doc-sty $(DOC) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@echo "Compiling code documentation (including Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	$(rerun-check)
@@ -171,6 +170,9 @@ $(NAMEC).ind $(NAME)-code.gls: $(DTX) $(NAMEC)-stamp
 $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
+
+$(NAMEC).glo $(NAMEC).idx: $(DTX)
+	@$(DO_PDFLATEX_CODE)
 
 # microtype-utf.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
