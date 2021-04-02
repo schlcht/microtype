@@ -474,14 +474,19 @@
 \def\CatIndeX#1#2#3{\index{#2\actualchar#1\ (#3)\encapchar \ifcodedoc\else doc\fi hyperpage}}
 \def\SpecialOptionIndex#1{\@bsphack
   \index{\quotechar/#1% sort options as `Symbols'
-    \actualchar{\protect\ttfamily#1}\encapchar usage}%
+    \actualchar{\protect\ttfamily#1}\encapchar docmain}%
   \CatIndex{#1}{option}\@esphack}
 \def\SpecialUsageIndex#1{\@bsphack
   \index{\quotechar1% sort commands as `Numbers'
     \actualchar\string\verb
-      \quotechar*\verbatimchar\string#1\verbatimchar\encapchar usage}%
-  {\let\special@index\index\SpecialIndex@{#1}{\encapchar usage}}\@esphack}
+      \quotechar*\verbatimchar\string#1\verbatimchar\encapchar docmain}%
+  {\let\special@index\index\SpecialIndex@{#1}{\encapchar docmain}}\@esphack}
 \def\SpecialEnvIndex#1{\CatIndex{#1}{environment}}
+\def\cmd#1{\orig@cs{\expandafter\cmd@to@cs\string#1}}
+\DeclareRobustCommand\orig@cs[1]{\texttt{\char`\\#1}}
+\DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}%
+  {\let\special@index\index
+   \expandafter\SpecialIndex@\expandafter{\csname#1\endcsname}{\encapchar \ifcodedoc\else doc\fi hyperpage}}}
 %</driver|docsty>
 % microtype's index style (microtype-gind.ist):
 %<docist>actual '='
@@ -578,7 +583,7 @@
              {hyperref}
   \externaldocument{microtype\ifcodedoc\else-code\fi}
   \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
-  \usepackage{hyperxmp} % (hyperxmp loads totpages)
+  \usepackage{hyperxmp}                  % (hyperxmp loads totpages)
   \usepackage{attachfile}
   \usepackage{pdfpages}
   \hypersetup{
@@ -610,6 +615,13 @@
     % indexing \DescribeMacro ...
     \def\dochyperpage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{U\MTrmn{#1}}}
     \def\usage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{\textbf{U\MTrmn{#1}}}}
+    \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
+    \let\docmain\usage
+    \def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
+        \string#1\actualchar
+        \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
+        \encapchar codeline}%
+      \@esphack}
   \else
     % write references to the User manual intermediarily in roman numerals
     % in order to separate them from those in the Implementation part
@@ -617,21 +629,21 @@
     \def\HyInd@pagelink#1{\begingroup\toks@={}\edef\x{\MTrmn{#1} }\expandafter\HyInd@removespaces\x\@nil\endgroup}
     \let\dochyperpage\hyperpage
     \let\usage\hyperpage
+    \def\docmain#1{\textbf{\hyperpage{#1}}}
+    \def\SpecialIndex#1{\@bsphack\index{\expandafter\@gobble
+        \string#1\actualchar
+        \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
+        \encapchar dochyperpage}%
+      \@esphack}
   \fi
   \def\theCodelineNo{% ... and everything else
     \reset@font\sffamily\color{thegrey}\scriptsize
     \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
     \hypertarget{L:\number\@tempcnta}
       {\textoractual{\arabic{CodelineNo}\ }{}}}% don't copy line numbers
-  \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
   \def\codeline#1{{\itshape\link@sanitize#1-\@nil{#1}}}
   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
   \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
-  \def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
-      \string#1\actualchar
-      \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
-      \encapchar codeline}%
-    \@esphack}
   \def\ctanurl#1{Available from \acronym{CTAN} at
                  \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
   \def\ctanpkgurl#1{Available from \acronym{CTAN} at
@@ -727,6 +739,7 @@
   \newcommand\hyperref[2][]{#2}
   \let\hyperpage\@firstofone
   \let\dochyperpage\@firstofone
+  \let\docmain\main
   \let\texorpdfstring\@firstoftwo
   \def\ctanurl{Available from \acronym{CTAN} at \url}
   \let\ctanpkgurl\ctanurl
@@ -3276,7 +3289,7 @@
 %  \item New option `\opt{unit}' to measure protrusion factors relative to a
 %        dimension instead of the character width
 %        \refsection{\ref{sub:protrusion}}
-%  \item Renamed commands from \cs{..MicroType..} to \cs{..Microtype..}
+%  \item Renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}
 %  \item Protrusion settings for <AMS> math fonts
 %  \item Protrusion settings for Times in <LY1> encoding completed
 %  \item The `|allmath|' font set also includes <U> encoding
@@ -3670,7 +3683,7 @@
 %    \end{macrocode}
 %\begin{macro}{\MT@old@cmd}
 % The old command names had one more hunch.
-%\changes{v1.8}{2005/04/28}{renamed commands from \cs{..MicroType..} to \cs{..Microtype..}}
+%\changes{v1.8}{2005/04/28}{renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}}
 %    \begin{macrocode}
 \def\MT@old@cmd#1#2{%
   \newcommand*#1{\MT@warning{%
@@ -4503,15 +4516,15 @@ end
 %    \end{macrocode}
 %\end{macro}
 % You do not wonder why |\MT@exp@one@c| doesn't exist, do you?
-%\changes{v1.6}{2005/01/19}{use \etex's \cs{ifcsname} and \cs{ifdefined} if defined}
+%\changes{v1.6}{2005/01/19}{use \etex's \orig@cs{ifcsname} and \orig@cs{ifdefined} if defined}
 %\begin{macro}{\MT@ifdefined@c@T}
 %\changes{v1.9a}{2005/11/08}{new macros: true case only}
 %\begin{macro}{\MT@ifdefined@c@TF}
 %\begin{macro}{\MT@ifdefined@n@T}
 %\begin{macro}{\MT@ifdefined@n@TF}
 % Wrapper for testing whether command resp. \cmd\csname\ sequence is defined.
-% If we are running \etex, we will use its primitives \cs{ifdefined} and
-% \cs{ifcsname}, which decreases memory use substantially.
+% If we are running \etex, we will use its primitives \orig@cs{ifdefined} and
+% \orig@cs{ifcsname}, which decreases memory use substantially.
 %    \begin{macrocode}
 \def\MT@ifdefined@c@T#1{%
 ^^X  \ifdefined#1\expandafter\@firstofone\else\expandafter\@gobble\fi
@@ -4791,7 +4804,7 @@ microtype.if_str_eq = if_str_eq
   \fi
 }
 %    \end{macrocode}
-%\todo{think \cs{@nil} should be defined as itself}
+%\todo{think \cmd\@nil\ should be defined as itself}
 %    \begin{macrocode}
 \def\MT@map@clist@c#1{\MT@exp@one@n\MT@map@clist@n#1}
 \def\MT@map@clist@#1,{%
@@ -5058,7 +5071,7 @@ microtype.do_font = do_font
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@scale}
-%\changes{v1.7}{2005/02/12}{new macro: use \etex's \cs{numexpr} if available}
+%\changes{v1.7}{2005/02/12}{new macro: use \etex's \cmd\numexpr\ if available}
 %\changes{v1.8}{2005/03/30}{fix: remove spaces in \nonetex\ variant
 %               (reported by \contributor Mark Rossi <mark.rossi\at de.bosch.com>)}
 %                               ^^A MID: <d6uhag$qoi$1@ns2.fe.internet.bosch.com>
@@ -6320,8 +6333,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.5}{2004/12/10}{don't use \cmd\lpcode\ and \cmd\rpcode\ for the
 %                           calculation}
 % Unlike \file{protcode.tex} and \pkg{pdfcprot}, we do not calculate with
-% \cs{lpcode} resp. \cs{rpcode}, since this would disallow protrusion factors
-% larger than the character width (since \cs{[lr]pcode}'s limit is 1000). Now,
+% \cmd\lpcode\ resp. \cmd\rpcode, since this would disallow protrusion factors
+% larger than the character width (since \verb!\[lr]pcode!'s limit is 1000). Now,
 % the maximum protrusion is \EM{1} of the font.
 %
 % The unit is in \cs{MT@count}, the desired factor in \cmd\@tempb, and the
@@ -6334,7 +6347,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % For really huge fonts (100\,pt or so), an arithmetic overflow could occur
 % with vanilla \TeX. Using \etex, this can't happen, since the intermediate
 % value is 64\,bit, which could only be reached with a character width larger
-% than \cs{maxdimen}.
+% than \cmd\maxdimen.
 %    \begin{macrocode}
   \MT@scale\@tempcntb \@tempb \MT@dimen@six
   \ifnum\@tempcntb=\z@ \else
@@ -7841,8 +7854,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@if@outer@next}
-% We avoid using \cs{ifx} tests, in case \cs{MT@tr@outer@next} is \cmd\let\ to
-% \cs{fi} etc.
+% We avoid using \orig@cs{ifx} tests, in case \cs{MT@tr@outer@next} is \cmd\let\ to
+% \orig@cs{fi} etc.
 %\changes{v2.5}{2012/02/20}{fix: conflict with \pkg{amsmath}
 %                           (reported by \contributor Scott Pakin <scott\at pakin.org>)}
 %                            ^^A private mail, 2012/02/09
@@ -8582,7 +8595,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@if@list@exists}
-%\changes{v1.7}{2005/02/06}{don't define \cs{MT@\#1@c@name} \cmd\global ly,
+%\changes{v1.7}{2005/02/06}{don't define \cs{MT@pr@c@name} etc. \cmd\global ly,
 %                           here and elsewhere}
 %\begin{macro}{\MT@context}
 %    \begin{macrocode}
@@ -8687,7 +8700,7 @@ end
 %
 %\begin{macro}{\MT@char}
 %\begin{macro}{\MT@char@}
-% The character is in \cs{@tempa}, we want its slot number in \cs{MT@char}.
+% The character is in \cmd\@tempa, we want its slot number in \cs{MT@char}.
 %    \begin{macrocode}
 \def\MT@get@slot{%
   \escapechar`\\
@@ -8719,8 +8732,8 @@ end
 %
 %        If |\|\meta{encoding}|\|\meta{command} (that's \emph{one} command) is
 %        defined, we try to extract the slot number.
-%\changes{v1.7}{2005/02/27}{test whether \cs{}\meta{encoding}\cs{}\meta{...} is defined}
-%\changes{v1.8}{2005/04/04}{test whether \cs{}\meta{encoding}\cs{}\meta{...} is defined
+%\changes{v1.7}{2005/02/27}{test whether \texttt{\string\bslash}\meta{encoding}\texttt{\string\bslash}\meta{...} is defined}
+%\changes{v1.8}{2005/04/04}{test whether \texttt{\string\bslash}\meta{encoding}\texttt{\string\bslash}\meta{...} is defined
 %                           made more robust}
 %
 %        We must be cautious not to stumble over accented characters consisting
@@ -9102,7 +9115,7 @@ end
 % Instead of simply expanding |\|\meta{command}, we construct the command
 % |\|\meta{encoding}|\|\meta{command} and see whether its meaning is
 % \cmd\char|"|\meta{hex number}, which is the case for everything that has
-% been defined with \cs{DeclareTextSymbol} in the encoding definition files.
+% been defined with \cmd\DeclareTextSymbol in the encoding definition files.
 %\changes{v2.0}{2006/09/15}{made even more robust}
 %    \begin{macrocode}
 \def\MT@is@symbol{%
@@ -9112,7 +9125,7 @@ end
       \meaning\expandafter\MT@char\MT@charstring\relax\relax\relax
   \ifnum\MT@char@ < \z@
 %    \end{macrocode}
-%\changes{v2.7c}{2019/08/13}{take care of \cs{remove@tlig}}
+%\changes{v2.7c}{2019/08/13}{take care of \cmd\remove@tlig}
 % For <TU> encoding, the commands \cmd\textquotesingle, \cmd\textasciigrave\
 % and \cmd\textquotedbl\ are defined by means of the auxiliary macro
 % \cmd\remove@tlig, which we take care of here.
@@ -9121,7 +9134,7 @@ end
     \ifnum\MT@char@ < \z@
 %    \end{macrocode}
 %\changes{v2.2}{2007/03/07}{expand once more (for \pkg{frenchpro})}
-% Finally, if it hasn't been defined by \cs{DeclareTextSymbol}, it could be a letter
+% Finally, if it hasn't been defined by \cmd\DeclareTextSymbol, it could be a letter
 % (\eg, \cmd\i, when using \pkg{frenchpro}). ^^A as noted by Bernard Gaulle
 %                                              ^^A private mail, 2005/01/28
 %    \begin{macrocode}
@@ -9227,7 +9240,7 @@ end
 % Again, we construct a control sequence, this time of the form:
 % |\\|\meta{encoding}\allowbreak|\|\meta{accent}|-|\meta{character}, \eg,
 % |\\T1\"-a|, which we then expand once to see if it is a letter (if it has
-% been defined by \cs{DeclareTextComposite}). This should be robust, finally,
+% been defined by \cmd\DeclareTextComposite). This should be robust, finally,
 % especially, since we also \cmd\detokenize\ the input instead of only
 % \cmd\string ifying it. Thus, we will die gracefully even on wrong Unicode
 % input without |utf8|.
@@ -9237,9 +9250,9 @@ end
                     \MT@detokenize@n{#1}-\MT@detokenize@n{#2}\endcsname}%
 %    \end{macrocode}
 % In 2017, \LaTeX\ introduced a new way of declaring accented
-% Unicode commands (\cs{DeclareUnicodeComposite}), which we take care of here
-% (\cs{UnicodeEncodingName} has been introduced at the same time):
-%\changes{v2.7}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cs{DeclareUnicodeComposite})
+% Unicode commands (\cmd\DeclareUnicodeComposite), which we take care of here
+% (\cmd\UnicodeEncodingName\ has been introduced at the same time):
+%\changes{v2.7}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cmd\DeclareUnicodeComposite)
 %                            (reported by \contributor Ulrike Fischer <news3\at nililand.de> and
 %                             `\contributor jcr <@\at @>')}
 %                             ^^A (1) private mail, 2017/04/25
@@ -9265,7 +9278,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@is@uni@comp}
-% Helper for \cs{DeclareUnicodeComposite}.
+% Helper for \cmd\DeclareUnicodeComposite.
 %    \begin{macrocode}
 \def\MT@is@uni@comp#1\iffontchar#2\else#3\fi\relax{%
   \ifx\\#2\\\else\edef\MT@char{\iffontchar#2\fi}\fi
@@ -9296,7 +9309,7 @@ end
 % Some warning messages, for performance reasons separated here.
 %\begin{macro}{\MT@curr@list@name}
 %\changes{v1.8}{2005/06/08}{new macro: current list type and name}
-%\changes{v1.9f}{2006/08/03}{fix: \cs{MessageBreak} must not be expanded}
+%\changes{v1.9f}{2006/08/03}{fix: \cmd\MessageBreak\ must not be expanded}
 %\begin{macro}{\MT@set@listname}
 % The type and name of the current list, defined at various places.
 %    \begin{macrocode}
@@ -10037,7 +10050,7 @@ end
     \MT@ifempty\@tempa{\def\@tempa{#1}}\relax
 %    \end{macrocode}
 % Test whether the command is actually defined.
-%\changes{v2.7a}{2017/11/17}{test whether \cs{\dots default} is defined}
+%\changes{v2.7a}{2017/11/17}{test whether \cmd{\...default} is defined}
 %    \begin{macrocode}
     \MT@ifdefined@n@TF{\@tempa default}%
       {\edef\MT@val{\expandafter\noexpand\csname \@tempa default\endcsname}}%
@@ -10171,7 +10184,7 @@ end
 %    \begin{macrocode}
 \def\MT@get@size{%
 %    \end{macrocode}
-% A single star would mean \cs{sizedefault}, which doesn't exist, so we define
+% A single star would mean \cmd\sizedefault, which doesn't exist, so we define
 % it to be \cmd\normalsize.
 %    \begin{macrocode}
   \if*\MT@val\relax
@@ -12995,7 +13008,7 @@ end
   \fi
 }
 %    \end{macrocode}
-% Now we close the \cs{fi} from \cs{ifMT@draft}.
+% Now we close the \orig@cs{fi} from \cs{ifMT@draft}.
 %    \begin{macrocode}
 \MT@addto@setup{\fi
 %    \end{macrocode}
