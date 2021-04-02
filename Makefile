@@ -112,20 +112,26 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 
 define rerun-check
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
-		echo "Re-compiling utf documentation" ; \
+		echo "Re-compiling Unicode documentation" ; \
 		$(DO_LUALATEX) ; \
 	done
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
 		echo "Re-compiling code documentation" ; \
-		$(DO_MAKEINDEX_CODE) ; \
+		shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx > $(NAMEC)-stamp2 ; \
+		if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
+		else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
 		$(DO_PDFLATEX_CODE) ; \
 		echo "Re-compiling user documentation" ; \
-		$(DO_MAKEINDEX_DOC) ; \
+		shasum $(NAME).idx > $(NAME)-stamp2 ; \
+		if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
+		else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
 		$(DO_PDFLATEX_DOC) ; \
 	done
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
 		echo "Re-compiling user documentation" ; \
-		$(DO_MAKEINDEX_DOC) ; \
+		shasum $(NAME).idx > $(NAME)-stamp2 ; \
+		if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
+		else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
 		$(DO_PDFLATEX_DOC) ; \
 	done
 endef
@@ -144,7 +150,7 @@ $(DOC): $(DTX) $(NAME).aux $(NAME)-stamp
 	@echo "Compiling user documentation"
 	@$(DO_PDFLATEX_DOC)
 
-$(CODEDOC): $(DTX) make-doc-sty $(DOC) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
+$(CODEDOC): $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@echo "Compiling code documentation (including Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	$(rerun-check)
@@ -152,6 +158,10 @@ $(CODEDOC): $(DTX) make-doc-sty $(DOC) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 $(UTFDOC): $(UTFDTX) $(NAMEU).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
+	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; then \
+		echo "Re-compiling Unicode documentation" ; \
+		$(DO_LUALATEX) ; \
+	fi
 
 $(NAME).aux: $(DTX)
 	@echo "Compiling user documentation (aux)"
@@ -177,16 +187,18 @@ $(NAMEC).glo $(NAMEC).idx: $(DTX)
 # microtype-utf.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
 $(NAMEU).tmp:
-	@echo "Compiling code documentation (without Unicode part)"
+	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	@if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
 		if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
 			false ; \
 		fi ; \
 	fi
-	@echo "Re-compiling code documentation (for Unicode part)"
-	@-$(DO_MAKEINDEX_CODE)
-	@$(DO_PDFLATEX_CODE)
+	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; then \
+		echo "Re-compiling code documentation (for Unicode part)" ; \
+		@-$(DO_MAKEINDEX_CODE) ; \
+		$(DO_PDFLATEX_CODE) ; \
+	fi
 
 $(UNPACKED): $(INS) $(DTX) docstrip.cfg 
 	@echo "Extracting package"
