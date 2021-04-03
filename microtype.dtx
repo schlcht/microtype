@@ -6682,16 +6682,28 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@set@pr@prefixes}
 %\begin{macro}{\MT@set@pr@prefixes@}
 % Add |charwidth(inheriting char)-charwidth(base char)| to either left or
-% right side or half the amount to both sides.
+% right side or half the amount to both sides. For \xetex, we may have to
+% translate to glyph numbers because \cmd\fontcharwd\ doesn't have the nice
+% feature of understanding the `|U|' or `|/|' prefixes.
 %    \begin{macrocode}
 \def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
 \def\MT@set@pr@prefixes@#1#2#3#4{%
+%<*xetex-def>
+  \edef\@tempa{\expandafter\ifx\@car#1\@nil U\@gobble#1\else\number\XeTeXglyphindex"#1" \fi}%
+  \edef\@tempb{\expandafter\ifx\@car#2\@nil U\@gobble#2\else\number\XeTeXglyphindex"#2" \fi}%
+%</xetex-def>
   \ifnum#3>\z@
-    \@tempcnta=\numexpr(\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)*#3/\MT@dimen@six\relax
+    \@tempcnta=\numexpr
+%<luatex-def|pdftex-def>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
+%<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
+      *#3/\MT@dimen@six\relax
     \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
   \fi
   \ifnum#4>\z@
-    \@tempcnta=\numexpr(\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)*#4/\MT@dimen@six\relax
+    \@tempcnta=\numexpr
+%<luatex-def|pdftex-def>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
+%<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
+      *#4/\MT@dimen@six\relax
     \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
   \fi
 %<debug>\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
@@ -8843,8 +8855,10 @@ end
   \else
 %    \end{macrocode}
 % There are more possibilities for \xetex:
-% It may also be a glyph name (prefixed with~`|/|'). We indicate this to
-% \cs{MT@get@charwd} by reversing the sign of \cs{MT@char@}.
+% It may be a Unicode codepoint (prefixed with `|U|') or a glyph name (prefixed with~`|/|').\footnote{
+%    This doesn't seem to be documented anywhere, but it has been announced here:
+%    \url{https://tug.org/pipermail/xetex/2010-May/016531.html}}
+% We indicate glyph names to \cs{MT@get@charwd} by reversing the sign of \cs{MT@char@}.
 %    \begin{macrocode}
     \ifnum\MT@char=47\relax
       \ifMT@norest \edef\MT@char{U47}%
@@ -8864,7 +8878,7 @@ end
         \ifMT@norest
 %    \end{macrocode}
 % Or, it's a Unicode number, which we mustn't translate into a glyph number,
-% since the latter is font-specific.
+% since the latter is font-specific. But we add the `|U|' prefix.
 %    \begin{macrocode}
           \@tempcnta=\XeTeXcharglyph\MT@char\relax
           \ifnum\@tempcnta=\z@
@@ -17543,7 +17557,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10927}
+% \CheckSum{10961}
 %
 % \Finale
 %
