@@ -2113,7 +2113,7 @@
 % protrusion calculated automatically based on the difference of character widths.
 % If you precede the base character with either `|(l)|', `|(r)|' or `|(lr)|',
 % the inheriting characters will be additionally protruded by the result of
-% |charwidth(|\meta{inheriting character}|)-charwidth(|\meta{base character}|)|:
+% |charwidth(|\meta{inheriting character}|)|$-$|charwidth(|\meta{base character}|)|:
 % for `|(l)|' and `|(r)|', this amount will be added to the given protrusion on
 % the respective side, for `|(lr)|' half of the amount will be added to both sides.
 % So that, \eg, with
@@ -2123,8 +2123,8 @@
 %  {  (l)"\rlap{\sffamily H}"  = {"\fontencoding{LGR}\sffamily\~>\textEta"},
 %    (lr)I = {T}  }
 %\end{verbatim}
-% the stem of the `T' would be aligned with that of the `I' if at either margin,
-% while the accent before the `H' would be fully protruded into the left margin.
+% the accent before the `H' would be fully protruded into the left margin,
+% while the stem of the `T' would be aligned with that of the `I' if at either margin.
 % This feature is especially useful for Greek typography, where capital letters
 % at the beginning of a line should be placed as if they had no accent (the `H' in
 % the example above).
@@ -3078,7 +3078,7 @@
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
-% \item Possibility of automatical protrusion based on the difference of character widths
+% \item Possibility of automatical protrusion based on difference of character widths
 %       \refsection{\ref{sub:inheritance}}
 %
 %\VersionDate{2.8c}{2021/03/14}
@@ -3429,7 +3429,7 @@
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
-%\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
+%\DoNotIndex{\@backslashchar,\@car,\@cclv,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
 %  \@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,
 %  \@ifpackageloaded,\@ifstar,\@ifundefined,\@let@token,\@m,\@makeother,
@@ -3462,7 +3462,7 @@
 %\DoNotIndex{\define@key,\KV@@sp@def,\setkeys}                               ^^A keyval
 %\DoNotIndex{\l@dunhbox@line}                                                ^^A ((r)e)ledmac,((r)e)ledpar
 %\DoNotIndex{\lst@ProcessLetter}                                             ^^A listings
-%\DoNotIndex{\RequireLuaModule}                                              ^^A luatexbase
+%\DoNotIndex{\newluafunction,\RequireLuaModule}                              ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\SOUL@,\SOUL@doword,\soulregister}                              ^^A soul
