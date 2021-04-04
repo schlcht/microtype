@@ -129,12 +129,14 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\changes{v2.6}{2015/12/07}{missing characters printed with Charis <SIL>}
 %\ImplementationSettings
 %\InputIfFileExists{microtype-utf.tmp}\relax\relax
-%\newcounter{utfsectioni}
-%\newcounter{utfsectionii}
 %\edef\startpage{\thepage}
 %\stepcounter{page}
+%\let\UTF@bookmarks\@gobble
+%\def\addtoUTFbookmarks#1{^^A section,level,heading,label
+%  \edef\UTF@bookmarks{\UTF@bookmarks,\number\numexpr\thepage-\startpage,#1}}
 %
 %\section{OpenType configuration files}
+%\addtoUTFbookmarks{section,1,OpenType configuration files,sec:OpenType}
 %
 % These are the configuration files for the following OpenType fonts:\footnote{This is file \file{\jobname.dtx}.}
 %
@@ -153,7 +155,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %
 %\subsection{Character inheritance}
 %\GeneralChanges{Inheritance}
-%\setcounter{utfsectioni}{\numexpr\thepage-\startpage}
+%\addtoUTFbookmarks{subsection,2,Character inheritance,sub:OT-inheritance}
 %
 % OpenType fonts may differ considerably in how complete their arsenal of glyphs is.
 % Therefore, each font family should have their own inheritance settings.
@@ -165,6 +167,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %%% INHERITANCE
 
 %% for xetex (EU1) and luatex (EU2), resp. both (TU)
+%    \end{macrocode}
+%\subsubsection{Latin Modern Roman}
+%\addtoUTFbookmarks{subsubsection,3,Latin Modern Roman,subsub:OT-inh-LMR}
+%    \begin{macrocode}
 %<*LatinModernRoman>
 \DeclareCharacterInheritance
    { encoding = {EU1,EU2,TU},
@@ -233,6 +239,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %}
 %    \begin{macrocode}
 %</LatinModernRoman>
+%    \end{macrocode}
+%\subsubsection{Charis SIL}
+%\addtoUTFbookmarks{subsubsection,3,Charis SIL,subsub:OT-inh-Charis}
+%    \begin{macrocode}
 %<*CharisSIL>
 \DeclareCharacterInheritance
    { encoding = {EU1,EU2,TU},
@@ -364,6 +374,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %}
 %    \begin{macrocode}
 %</CharisSIL>
+%    \end{macrocode}
+%\subsubsection{Palatino}
+%\addtoUTFbookmarks{subsubsection,3,Palatino,subsub:OT-inh-Palatino}
+%    \begin{macrocode}
 %<*Palatino>
 \DeclareCharacterInheritance
    { encoding = {EU1,EU2,TU},
@@ -432,6 +446,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %</Palatino>
 %    \end{macrocode}
+%\subsubsection{Lato}
+%\addtoUTFbookmarks{subsubsection,3,Lato,subsub:OT-inh-Lato}
 % Less characters in the Lato font \dots
 %\changes{v2.8b}{2021/02/21}{settings for the Lato font (\file{mt-Lato.cfg})
 %                            (reported by \contributor dsedivec <@\at @>)}
@@ -473,6 +489,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %</Lato>
 %    \end{macrocode}
+%\subsubsection{Font Awesome}
+%\addtoUTFbookmarks{subsubsection,3,Font Awesome,subsub:OT-inh-FontAwesome}
 % \dots\ and even less in the self-professedly awesone Font Awesome font.
 %\changes{v2.8b}{2021/02/21}{dummy settings for the Font Awesome font (\file{mt-FontAwesome.cfg})}
 %    \begin{macrocode}
@@ -486,13 +504,17 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %
 %\subsection{Character protrusion}
 %\GeneralChanges{Protrusion}
-%\setcounter{utfsectionii}{\numexpr\thepage-\startpage}
+%\addtoUTFbookmarks{subsection,2,Character protrusion,sub:OT-protrusion}
 %
 %    \begin{macrocode}
 
 %%% -----------------------------------------------------------------------
 %%% PROTRUSION
 
+%    \end{macrocode}
+%\subsubsection{Latin Modern Roman}
+%\addtoUTFbookmarks{subsubsection,3,Latin Modern Roman,subsub:OT-inh-LMR}
+%    \begin{macrocode}
 %<*LatinModernRoman>
 \SetProtrusion
    [ name     = LMR-default ]
@@ -748,6 +770,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
    }
 %</LatinModernRoman>
+%    \end{macrocode}
+%\subsubsection{Charis SIL}
+%\addtoUTFbookmarks{subsubsection,3,Charis SIL,subsub:OT-inh-Charis}
+%    \begin{macrocode}
 %<*CharisSIL>
 \SetProtrusion
    [ name     = Charis-default ]
@@ -1115,6 +1141,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
    }
 %</CharisSIL>
+%    \end{macrocode}
+%\subsubsection{Palatino}
+%\addtoUTFbookmarks{subsubsection,3,Palatino,subsub:OT-inh-Palatino}
+%    \begin{macrocode}
 %<*Palatino>
 \SetProtrusion
    [ name     = palatino-default ]
@@ -1349,7 +1379,15 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
    }
 %</Palatino>
+%    \end{macrocode}
+%\subsubsection{Lato}
+%\addtoUTFbookmarks{subsubsection,3,Lato,subsub:OT-inh-Lato}
+%    \begin{macrocode}
 %<Lato> %% No settings yet.
+%    \end{macrocode}
+%\subsubsection{Font Awesome}
+%\addtoUTFbookmarks{subsubsection,3,Font Awesome,subsub:OT-inh-FontAwesome}
+%    \begin{macrocode}
 %<*FontAwesome>
 \SetProtrusion
    [ name = empty ]
@@ -1362,15 +1400,15 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\begingroup
 %\@tempswafalse
 %\InputIfFileExists{microtype.tmp}
-%  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}}
+%  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}
+%   \def\UTF@setbookmarks##1{\MT@ifstreq{##1}{\UTF@bookmarks}\relax{\@tempswatrue}}}
 %  {\@tempswatrue}
 %\if@tempswa
 %\newwrite\utftmp
-%\immediate\openout\utftmp=microtype.tmp
-%\immediate\write   \utftmp{\string\setcounter{utfsectioni} {\the\c@utfsectioni}}
-%\immediate\write   \utftmp{\string\setcounter{utfsectionii}{\the\c@utfsectionii}}
+%\immediate\openout \utftmp=microtype.tmp
 %\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
 %\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
+%\immediate\write   \utftmp{\string\UTF@setbookmarks{\UTF@bookmarks}}
 %\immediate\closeout\utftmp
 %\fi
 %\endgroup

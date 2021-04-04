@@ -17280,16 +17280,12 @@ end
 %\fi
 %\endgroup
 %
-%\newcounter{utfsectioni}
-%\newcounter{utfsectionii}
-%\InputIfFileExists{microtype.tmp}\relax{\setcounter{utfsectioni}{1}\setcounter{utfsectionii}{1}}
+%\InputIfFileExists{microtype.tmp}
+%  {\def\UTF@setbookmarks##1{\def\UTFBookmarks{##1}}}
+%  {\let\UTFBookmarks\@empty}
 %
 %\IfFileExists{microtype-utf.pdf}
-%   {\includepdf[pages=-,
-%                addtotoc={1,section,1,OpenType configuration files,sec:OpenType,
-%                          \the\c@utfsectioni,subsection,2,Character inheritance,sub:OT-inheritance,
-%                          \the\c@utfsectionii,subsection,2,Character protrusion,sub:OT-protrusion}]
-%               {microtype-utf.pdf}}
+%   {\edef\x{\noexpand\includepdf[pages=-,addtotoc={\UTFBookmarks}]{microtype-utf.pdf}}\x}
 %   {\section{OpenType configuration settings}
 %       To view the OpenType configuration settings, first typeset
 %       \file{microtype-utf.dtx} with \luatex.}
