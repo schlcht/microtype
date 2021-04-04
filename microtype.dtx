@@ -805,9 +805,9 @@
 \RecordChanges
 \ifcodedoc
   \let\printlogo\undefined
-  \newcommand\VersionDate[2]{%
-    \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
-  \InputIfFileExists{microtype-code.tmp}\relax\relax
+  \InputIfFileExists{microtype-hist.tmp}
+    {\def\VersionDate##1##2{\global\expandafter\def\csname MTversiondate##1\endcsname{##2}}}
+    \relax
 \else
   \OnlyDescription
 \fi
@@ -3113,10 +3113,10 @@
 %  \nopagebreak}
 %\newcommand\VersionDate[2]{^^A needed in the Change history
 %  \global\expandafter\def\csname MTversiondate#1\endcsname{#2}^^A
-%  \immediate\write\codetmp{\string\VersionDate{#1}{#2}}}
+%  \immediate\write\histtmp{\string\VersionDate{#1}{#2}}}
 %
-%\newwrite          \codetmp
-%\immediate\openout \codetmp=microtype-code.tmp
+%\newwrite          \histtmp
+%\immediate\openout \histtmp=microtype-hist.tmp
 %
 %\begin{History}
 %
@@ -3373,7 +3373,7 @@
 %  \item First <CTAN> release
 %\end{History}
 %
-%\immediate\closeout\codetmp
+%\immediate\closeout\histtmp
 %
 %\fi ^^A ifcodedoc
 %
@@ -17266,21 +17266,21 @@ end
 %
 %\begingroup
 %\@tempswafalse
-%\InputIfFileExists{microtype-utf.tmp}
+%\InputIfFileExists{microtype-code.tmp}
 %  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}}
 %  {\@tempswatrue}
 %\if@tempswa
-%\newwrite          \utftmp
-%\immediate\openout \utftmp=microtype-utf.tmp
-%\immediate\write   \utftmp{\string\setcounter{section}{\the\c@section}}
-%\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
-%\immediate\write   \utftmp{\string\setcounter{page}{\the\c@page}}
-%\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
-%\immediate\closeout\utftmp
+%\newwrite          \codetmp
+%\immediate\openout \codetmp=microtype-code.tmp
+%\immediate\write   \codetmp{\string\setcounter{section}{\the\c@section}}
+%\immediate\write   \codetmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
+%\immediate\write   \codetmp{\string\setcounter{page}{\the\c@page}}
+%\immediate\write   \codetmp{\string\setcounter{footnote}{\the\c@footnote}}
+%\immediate\closeout\codetmp
 %\fi
 %\endgroup
 %
-%\InputIfFileExists{microtype.tmp}
+%\InputIfFileExists{microtype-utf.tmp}
 %  {\def\UTF@setbookmarks##1{\def\UTFBookmarks{##1}}}
 %  {\let\UTFBookmarks\@empty}
 %

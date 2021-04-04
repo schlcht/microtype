@@ -128,7 +128,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\changes{v2.5a}{2013/05/15}{include OpenType configuration files}
 %\changes{v2.6}{2015/12/07}{missing characters printed with Charis <SIL>}
 %\ImplementationSettings
-%\InputIfFileExists{microtype-utf.tmp}\relax\relax
+%\InputIfFileExists{microtype-code.tmp}\relax\relax
 %\edef\startpage{\thepage}
 %\stepcounter{page}
 %\let\UTF@bookmarks\@gobble
@@ -141,12 +141,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 % These are the configuration files for the following OpenType fonts:\footnote{This is file \file{\jobname.dtx}.}
 %
 %\begin{itemize}
-%   \item {\LMR
-%           Latin Modern Roman}
-%   \item {\CharisSIL
-%           Charis <SIL>}\footnote{Available at \url{http://software.sil.org/charis}.}
-%   \item {\Palatino
-%           Palatino}\footnote{These settings have been contributed by
+%   \item {\LMR       Latin Modern Roman}
+%   \item {\CharisSIL Charis <SIL>}
+%   \item {\Palatino  Palatino}\footnote{These settings have been contributed by
 %                              \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
 %\end{itemize}
 %
@@ -1399,13 +1396,13 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %\begingroup
 %\@tempswafalse
-%\InputIfFileExists{microtype.tmp}
+%\InputIfFileExists{microtype-utf.tmp}
 %  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}
 %   \def\UTF@setbookmarks##1{\MT@ifstreq{##1}{\UTF@bookmarks}\relax{\@tempswatrue}}}
 %  {\@tempswatrue}
 %\if@tempswa
 %\newwrite\utftmp
-%\immediate\openout \utftmp=microtype.tmp
+%\immediate\openout \utftmp=microtype-utf.tmp
 %\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
 %\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
 %\immediate\write   \utftmp{\string\UTF@setbookmarks{\UTF@bookmarks}}

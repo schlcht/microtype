@@ -36,13 +36,13 @@ NAME    = microtype
 NAMEC   = $(NAME)-code
 NAMEU   = $(NAME)-utf
 DOC     = $(NAME).pdf
-CODEDOC = $(NAME)-code.pdf
-UTFDOC  = $(NAME)-utf.pdf
+CODEDOC = $(NAMEC).pdf
+UTFDOC  = $(NAMEU).pdf
 INS     = $(NAME).ins
 DTX     = $(NAME).dtx
-README  = README.md
-UTFDTX  = $(NAME)-utf.dtx
+UTFDTX  = $(NAMEU).dtx
 ALLDTX  = $(DTX) $(UTFDTX)
+README  = README.md
 
 # Files grouped by generation mode
 COMPILED = $(DOC) $(CODEDOC)
@@ -116,22 +116,22 @@ define rerun-check
 		$(DO_LUALATEX) ; \
 	done
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
-		echo "Re-compiling code documentation" ; \
 		shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx > $(NAMEC)-stamp2 ; \
 		if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
 		else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
+		echo "Re-compiling code documentation" ; \
 		$(DO_PDFLATEX_CODE) ; \
-		echo "Re-compiling user documentation" ; \
 		shasum $(NAME).idx > $(NAME)-stamp2 ; \
 		if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
 		else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
+		echo "Re-compiling user documentation" ; \
 		$(DO_PDFLATEX_DOC) ; \
 	done
 	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
-		echo "Re-compiling user documentation" ; \
 		shasum $(NAME).idx > $(NAME)-stamp2 ; \
 		if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
 		else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
+		echo "Re-compiling user documentation" ; \
 		$(DO_PDFLATEX_DOC) ; \
 	done
 endef
@@ -144,7 +144,6 @@ DO_MAKEINDEX_DOC  = \
 DO_MAKEINDEX_CODE = \
    makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
    makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1
-DO_MAKEINDEX = $(DO_MAKEINDEX_DOC) && $(DO_MAKEINDEX_CODE)
 
 $(DOC): $(DTX) $(NAME)-stamp
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
@@ -157,7 +156,7 @@ $(CODEDOC): $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@$(DO_PDFLATEX_CODE)
 	$(rerun-check)
 
-$(UTFDOC): $(UTFDTX) $(NAMEU).tmp
+$(UTFDOC): $(UTFDTX) $(NAMEC).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; then \
@@ -186,9 +185,9 @@ $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
 $(NAMEC).glo $(NAMEC).idx: $(DTX)
 	@$(DO_PDFLATEX_CODE)
 
-# microtype-utf.tmp is used to communicate counters
+# microtype-code.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
-$(NAMEU).tmp:
+$(NAMEC).tmp:
 	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	@if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
