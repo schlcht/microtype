@@ -146,9 +146,11 @@ DO_MAKEINDEX_CODE = \
    makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1
 DO_MAKEINDEX = $(DO_MAKEINDEX_DOC) && $(DO_MAKEINDEX_CODE)
 
-$(DOC): $(DTX) $(NAME).aux $(NAME)-stamp
-	@echo "Compiling user documentation"
-	@$(DO_PDFLATEX_DOC)
+$(DOC): $(DTX) $(NAME)-stamp
+	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
+		echo "Re-compiling user documentation" ; \
+		$(DO_PDFLATEX_DOC) ; \
+	fi
 
 $(CODEDOC): $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@echo "Compiling code documentation (including Unicode part)"
@@ -163,8 +165,8 @@ $(UTFDOC): $(UTFDTX) $(NAMEU).tmp
 		$(DO_LUALATEX) ; \
 	fi
 
-$(NAME).aux: $(DTX)
-	@echo "Compiling user documentation (aux)"
+$(NAME).idx: $(DTX)
+	@echo "Compiling user documentation (idx)"
 	@$(DO_PDFLATEX_DOC)
 
 $(NAME).ind: $(DTX)
