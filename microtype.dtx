@@ -17457,23 +17457,22 @@ normal, and shrunk by 5\%:
 
  *** Typesetting the documentation ***
 
-  The documentation of this package (microtype.pdf) can be found on CTAN,
-  if it isn't already installed in your TeX system, so there should be no
-  need to re-typeset it.
+  The documentation of this package (microtype.pdf and microtype-code.pdf)
+  can be found on CTAN, if it isn't already installed in your TeX system,
+  so there should be no need to re-typeset it.
   If you still want to do this, there are some requirements to consider
   and some steps to follow:
 
-#  (1) In microtype.ins, uncomment the lines:
+#  (1) In microtype.ins, uncomment the lines
 %\generate{\makefile{microtype-gind.ist}{docist}}
 #      and
 %\generate{\makefile{microtype-doc.sty}{docsty}}
-#  (2) Install the package by running:
+#  (2) Install the package by running
 pdflatex microtype.ins
 #  (3) Extract microtype-lssample.dtx and microtype-logo.dtx from
 #      microtype.pdf (ie., from the file you are about to recreate ...).
 #      This can be done, eg., with Adobe Reader or with the pdftk tool.
-#  (4) Run
-pdflatex microtype.dtx
+#  (4) To typeset the user documentation (microtype.pdf) run
 pdflatex microtype.dtx
 #      [ The following fonts are required:
 #        - Bitstream Charter
@@ -17483,11 +17482,11 @@ pdflatex microtype.dtx
 #        - Adobe Zapf Chancery (alternatively URW Zapf Chancery)
 #        - Adobe Kepler MM (for microtype-logo.dtx, input by microtype.dtx)
 #        - Adobe Caslon (for microtype-lssample.dtx, input by microtype.dtx) ]
-#  (5) Run
+#  (5) To create the index run
 makeindex -s microtype-gind.ist microtype
-#  (6) Run
-makeindex -s gglo.ist -o microtype.gls microtype.glo microtype-utf.glo
-#  (7) Run
+#  (6) To typeset the implementation documentation (microtype-code.pdf) run
+pdflatex --jobname=microtype-code microtype.dtx
+#  (7) To typeset the OpenType configuration (to be included in microtype-code.pdf) run
 lualatex microtype-utf.dtx
 #      [ The following fonts are required:
 #        - Bitstream Charter (Type 1)
@@ -17496,14 +17495,13 @@ lualatex microtype-utf.dtx
 #        - Latin Modern Roman (OpenType)
 #        - Charis SIL (OpenType)
 #        - TeX Gyre Pagella (OpenType) ]
-#  (8) Run
-pdflatex microtype.dtx
-#  (9) Run
-makeindex -s microtype-gind.ist microtype
-# (10) Run
-makeindex -s gglo.ist -o microtype.gls microtype.glo microtype-utf.glo
-# (11) Run
-pdflatex microtype.dtx
+#  (8) To create the code index and history run
+makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
+makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
+#
+# All three output files (microtype.pdf, microtype-code.pdf, microtype-utf.pdf)
+# are interdependent, so you need to repeat steps 4 to 8 until all Rerun
+# warnings have been resolved.
 #
 # That's it, although I still may have forgotten some things ...
 %
