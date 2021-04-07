@@ -629,17 +629,11 @@
     \def\docmain#1{\textbf{\hyperpage{#1}}}
     %\let\dochyperpage\hyperpage
     % let's go the extra mile and remove double entries
-    \def\dochyperpage#1{\@ifnextchar,%
-      {\def\MT@curr@index{#1}\expandafter\dochyperpage@\@gobble}%
-      {\hyperpage{#1}}}
-    \def\dochyperpage@{\@ifnextchar\docmain
-      \dochyperpage@@
-      {\expandafter\hyperpage\expandafter{\MT@curr@index}, }}
-    \def\dochyperpage@@\docmain#1{%
-      \MT@ifstreq{#1}{\MT@curr@index}%
-        {\typeout{=== Suppressing index reference `\MTrmn{#1}'}}%
-        {\expandafter\hyperpage\expandafter{\MT@curr@index}, }%
-      \docmain{#1}}
+    \def\dochyperpage#1{\def\MT@curr@index{#1}\@ifnextchar,\dochyperpage@{\hyperpage{#1}}}
+    \def\dochyperpage@,{\@ifnextchar\docmain\dochyperpage@@\dochyperpage@x}
+    \def\dochyperpage@@\docmain#1{\MT@ifstreq{#1}{\MT@curr@index}%
+      {\typeout{=== Suppressing index reference `\MTrmn{#1}'}}\dochyperpage@x \docmain{#1}}
+    \def\dochyperpage@x{\expandafter\hyperpage\expandafter{\MT@curr@index}, }
   \fi
   \def\theCodelineNo{% ... and everything else
     \reset@font\sffamily\color{thegrey}\scriptsize
