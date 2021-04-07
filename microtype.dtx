@@ -611,37 +611,30 @@
       :\levelchar #3\encapchar \ifcodedoc\else doc\fi hyperpage}}%
     \@tempa\endgroup\@esphack}
   \def\MTrmn#1{\ifrmnum{#1}{\rmntonum{#1}}{#1}}
+  % remove double entries (\dochyperpage followed by \docmain)
+  \def\dochyperpage#1{\def\MT@curr@index{#1}\@ifnextchar,\dochyperpage@{\doc@hyperpage{#1}}}
+  \def\dochyperpage@,{\@ifnextchar\docmain\dochyperpage@@\dochyperpage@x}
+  \def\dochyperpage@@\docmain#1{\MT@ifstreq{#1}{\MT@curr@index}\relax\dochyperpage@x\docmain{#1}}
+  \def\dochyperpage@x{\expandafter\doc@hyperpage\expandafter{\MT@curr@index}, }
+  % indexing user doc ...
   \ifcodedoc
-    % indexing \DescribeMacro ...
-    \def\dochyperpage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{U\MTrmn{#1}}}
-    \def\usage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{\textbf{U\MTrmn{#1}}}}
+    \def\doc@hyperpage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{U\MTrmn{#1}}}
+    \def\docmain#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{\textbf{U\MTrmn{#1}}}}
     \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
-    \let\docmain\usage
-    \def\SpecialIndex#1{\@bsphack\special@index{%
-        \expandafter\@gobble\string#1\actualchar
-        \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
-        \encapchar codeline}\@esphack}
   \else
     % write references to the User manual intermediarily in roman numerals
     % in order to separate them from those in the Implementation part
     \def\@wrindex#1{\protected@write\@indexfile{\let\@roman\relax}{\string\indexentry{#1}{\@roman\thepage}}\endgroup\@esphack}
     \def\HyInd@pagelink#1{\begingroup\toks@={}\edef\x{\MTrmn{#1} }\expandafter\HyInd@removespaces\x\@nil\endgroup}
-    \let\usage\hyperpage
     \def\docmain#1{\textbf{\hyperpage{#1}}}
-    %\let\dochyperpage\hyperpage
-    % let's go the extra mile and remove double entries
-    \def\dochyperpage#1{\def\MT@curr@index{#1}\@ifnextchar,\dochyperpage@{\hyperpage{#1}}}
-    \def\dochyperpage@,{\@ifnextchar\docmain\dochyperpage@@\dochyperpage@x}
-    \def\dochyperpage@@\docmain#1{\MT@ifstreq{#1}{\MT@curr@index}%
-      {\typeout{=== Suppressing index reference `\MTrmn{#1}'}}\dochyperpage@x \docmain{#1}}
-    \def\dochyperpage@x{\expandafter\hyperpage\expandafter{\MT@curr@index}, }
+    \let\doc@hyperpage\hyperpage
   \fi
-  \def\theCodelineNo{% ... and everything else
+  \def\theCodelineNo{% ... and implementation
     \reset@font\sffamily\color{thegrey}\scriptsize
     \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
     \hypertarget{L:\number\@tempcnta}
       {\textoractual{\arabic{CodelineNo}\ }{}}}% don't copy line numbers
-  \def\codeline#1{{\itshape\link@sanitize#1-\@nil{#1}}}
+  \def\usage#1{{\itshape\link@sanitize#1-\@nil{#1}}}
   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
   \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
   \def\ctanurl#1{Available from \acronym{CTAN} at
@@ -12110,7 +12103,7 @@ end
 %    {\let\Microtype@Hook\MinionPro@MT@Hook}
 %    {\g@addto@macro\Microtype@Hook{\MinionPro@MT@Hook}}}
 %\end{verbatim}
-% \cs{MicroType@Hook} with a capital |T| (which only existed in version 1.7) is
+% \orig@cs{MicroType@Hook} with a capital |T| (which only existed in version 1.7) is
 % provided for compatibility reasons. At some point in the future, it will no
 % longer be available, hence it should not be used.
 %    \begin{macrocode}
