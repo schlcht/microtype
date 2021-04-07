@@ -145,7 +145,7 @@ DO_MAKEINDEX_CODE = \
    makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
    makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1
 
-$(DOC): $(DTX) $(NAME)-stamp
+$(DOC): $(DTX) $(NAME).ind
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
 		echo "Re-compiling user documentation" ; \
 		$(DO_PDFLATEX_DOC) ; \
@@ -168,14 +168,14 @@ $(NAME).idx: $(DTX)
 	@echo "Compiling user documentation (idx)"
 	@$(DO_PDFLATEX_DOC)
 
-$(NAME).ind: $(DTX)
+$(NAME).ind: $(NAME)-stamp
 	@-$(DO_MAKEINDEX_DOC)
 
 $(NAME)-stamp: $(NAME).idx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
-$(NAMEC).ind $(NAME)-code.gls: $(DTX) $(NAMEC)-stamp
+$(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
 	@-$(DO_MAKEINDEX_CODE)
 
 $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
