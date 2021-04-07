@@ -502,7 +502,6 @@
 %<docist>headings_flag      1
 %<docist>symhead_positive  "Options"
 %<docist>numhead_positive  "Commands"
-%<docist>page_precedence   "rn"
 %<*driver|docsty>
 \def\PrintDescribeMacro#1{\strut\MacroFont\color{thegreen}\string #1}
 \def\PrintDescribeEnv#1{\strut\MacroFont\bslash begin\{{\color{thegreen}#1}\}%
@@ -602,7 +601,7 @@
     pdflicenseurl={http://www.latex-project.org/lppl/},
     pdflang={en-GB}
   }
-  % we no longer use hypdestopt, as it would break the external references
+  % we no longer use {hypdestopt}, as it would break the external references
   \def\changes@#1#2#3{% recording the changes ...
     \protected@edef\@tempa{\noexpand\glossary{#1\levelchar
       \ifx\saved@macroname\@empty \space\actualchar\generalname
@@ -617,24 +616,30 @@
     \def\usage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{\textbf{U\MTrmn{#1}}}}
     \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
     \let\docmain\usage
-    \def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
-        \string#1\actualchar
+    \def\SpecialIndex#1{\@bsphack\special@index{%
+        \expandafter\@gobble\string#1\actualchar
         \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
-        \encapchar codeline}%
-      \@esphack}
+        \encapchar codeline}\@esphack}
   \else
     % write references to the User manual intermediarily in roman numerals
     % in order to separate them from those in the Implementation part
     \def\@wrindex#1{\protected@write\@indexfile{\let\@roman\relax}{\string\indexentry{#1}{\@roman\thepage}}\endgroup\@esphack}
     \def\HyInd@pagelink#1{\begingroup\toks@={}\edef\x{\MTrmn{#1} }\expandafter\HyInd@removespaces\x\@nil\endgroup}
-    \let\dochyperpage\hyperpage
     \let\usage\hyperpage
     \def\docmain#1{\textbf{\hyperpage{#1}}}
-    \def\SpecialIndex#1{\@bsphack\index{\expandafter\@gobble
-        \string#1\actualchar
-        \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
-        \encapchar dochyperpage}%
-      \@esphack}
+    %\let\dochyperpage\hyperpage
+    % let's go the extra mile and remove double entries
+    \def\dochyperpage#1{\@ifnextchar,%
+      {\def\MT@curr@index{#1}\expandafter\dochyperpage@\@gobble}%
+      {\hyperpage{#1}}}
+    \def\dochyperpage@{\@ifnextchar\docmain
+      \dochyperpage@@
+      {\expandafter\hyperpage\expandafter{\MT@curr@index}, }}
+    \def\dochyperpage@@\docmain#1{%
+      \MT@ifstreq{#1}{\MT@curr@index}%
+        {\typeout{=== Suppressing index reference `\MTrmn{#1}'}}%
+        {\expandafter\hyperpage\expandafter{\MT@curr@index}, }%
+      \docmain{#1}}
   \fi
   \def\theCodelineNo{% ... and everything else
     \reset@font\sffamily\color{thegrey}\scriptsize
