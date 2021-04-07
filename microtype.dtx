@@ -441,7 +441,7 @@
   \begingroup\MakePrivateLetters\Describe@Package}
 \def\Describe@Package#1{\endgroup
   \marginpar{\raggedleft\PrintDescribeOption{#1.sty}}%
-  \CatIndex{#1}{package}\@esphack\ignorespaces}
+  \CatMainIndex{#1}{package}\@esphack\ignorespaces}
 \def\DescribeValues#1#2{%
   \let\@tempa\@empty \let\Option@default\@empty
   \@for\@tempb:=#2\do{%
@@ -472,16 +472,17 @@
 \def\PrintValues[#1]{{\MacroFont\expandafter\@gobble\@tempa\hfill #1}\\*[.25\baselineskip]}
 \def\CatIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar \ifcodedoc\else doc\fi hyperpage}}
 \def\CatIndeX#1#2#3{\index{#2\actualchar#1\ (#3)\encapchar \ifcodedoc\else doc\fi hyperpage}}
+\def\CatMainIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar docmain}}
 \def\SpecialOptionIndex#1{\@bsphack
   \index{\quotechar/#1% sort options as `Symbols'
     \actualchar{\protect\ttfamily#1}\encapchar docmain}%
-  \CatIndex{#1}{option}\@esphack}
+  \CatMainIndex{#1}{option}\@esphack}
 \def\SpecialUsageIndex#1{\@bsphack
   \index{\quotechar1% sort commands as `Numbers'
     \actualchar\string\verb
       \quotechar*\verbatimchar\string#1\verbatimchar\encapchar docmain}%
   {\let\special@index\index\SpecialIndex@{#1}{\encapchar docmain}}\@esphack}
-\def\SpecialEnvIndex#1{\CatIndex{#1}{environment}}
+\def\SpecialEnvIndex#1{\CatMainIndex{#1}{environment}}
 \def\cmd#1{\orig@cs{\expandafter\cmd@to@cs\string#1}}
 \DeclareRobustCommand\orig@cs[1]{\texttt{\char`\\#1}}
 \DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}%
