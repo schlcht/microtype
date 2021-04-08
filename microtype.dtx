@@ -621,6 +621,10 @@
     \def\doc@hyperpage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{U\MTrmn{#1}}}
     \def\docmain#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{\textbf{U\MTrmn{#1}}}}
     \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
+    \def\SpecialIndex#1{\@bsphack\special@index{%
+       \expandafter\@gobble\string#1\actualchar
+       \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
+       \encapchar codeline}\@esphack}
   \else
     % write references to the User manual intermediarily in roman numerals
     % in order to separate them from those in the Implementation part
@@ -634,7 +638,7 @@
     \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
     \hypertarget{L:\number\@tempcnta}
       {\textoractual{\arabic{CodelineNo}\ }{}}}% don't copy line numbers
-  \def\usage#1{{\itshape\link@sanitize#1-\@nil{#1}}}
+  \def\codeline#1{{\itshape\link@sanitize#1-\@nil{#1}}}
   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
   \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
   \def\ctanurl#1{Available from \acronym{CTAN} at
@@ -1261,7 +1265,7 @@
 % When applying font expansion, it is possible to restrict the expansion of some
 % characters that are more sensitive to deformation than others (\eg, the `O',
 % in contrast to the `I'). This is called \emph{selected expansion}, and its
-% usage allows increasing the stretch and shrink limits (to, say, 30 instead
+% use allows increasing the stretch and shrink limits (to, say, 30 instead
 % of 20); however, the gain is limited since at the same time the average
 % stretch variance will be decreased. Therefore, this option is by default
 % set to |false|, so that all characters will be expanded by the same amount.

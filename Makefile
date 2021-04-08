@@ -111,39 +111,41 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-normal-sty
 
 define rerun-check
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
-		echo "Re-compiling Unicode documentation" ; \
-		$(DO_LUALATEX) ; \
-	done
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
-		shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx > $(NAMEC)-stamp2 ; \
-		if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
-		else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
-		echo "Re-compiling code documentation" ; \
-		$(DO_PDFLATEX_CODE) ; \
-		shasum $(NAME).idx > $(NAME)-stamp2 ; \
-		if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
-		else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
-		echo "Re-compiling user documentation" ; \
-		$(DO_PDFLATEX_DOC) ; \
-	done
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
-		shasum $(NAME).idx > $(NAME)-stamp2 ; \
-		if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
-		else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
-		echo "Re-compiling user documentation" ; \
-		$(DO_PDFLATEX_DOC) ; \
-	done
+@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
+   echo "Re-compiling Unicode documentation" ; \
+   $(DO_LUALATEX) ; \
+done
+@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
+   shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx > $(NAMEC)-stamp2 ; \
+   if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
+   else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
+   echo "Re-compiling code documentation" ; \
+   $(DO_PDFLATEX_CODE) ; \
+   shasum $(NAME).idx > $(NAME)-stamp2 ; \
+   if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
+   else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
+   echo "Re-compiling user documentation" ; \
+   $(DO_PDFLATEX_DOC) ; \
+done
+@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
+   shasum $(NAME).idx > $(NAME)-stamp2 ; \
+   if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
+   else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
+   echo "Re-compiling user documentation" ; \
+   $(DO_PDFLATEX_DOC) ; \
+done
 endef
 
 DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
 DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT)
 DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
 DO_MAKEINDEX_DOC  = \
-   makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1
+   makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
+   echo "Creating doc index"
 DO_MAKEINDEX_CODE = \
    makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
-   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1
+   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1 && \
+   echo "Creating code index"
 
 $(DOC): $(DTX) $(NAME).ind
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
