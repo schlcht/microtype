@@ -171,14 +171,14 @@ $(NAME).idx: $(DTX)
 	@$(DO_PDFLATEX_DOC)
 
 $(NAME).ind: $(NAME)-stamp
-	@-$(DO_MAKEINDEX_DOC)
+	@$(DO_MAKEINDEX_DOC)
 
 $(NAME)-stamp: $(NAME).idx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
 $(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
-	@-$(DO_MAKEINDEX_CODE)
+	@$(DO_MAKEINDEX_CODE)
 
 $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
 	@shasum $^ > $@2
@@ -199,7 +199,7 @@ $(NAMEC).tmp:
 	fi
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; then \
 		echo "Re-compiling code documentation (for Unicode part)" ; \
-		@-$(DO_MAKEINDEX_CODE) ; \
+		$(DO_MAKEINDEX_CODE) ; \
 		$(DO_PDFLATEX_CODE) ; \
 	fi
 
