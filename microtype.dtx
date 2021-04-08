@@ -387,7 +387,7 @@
   \ifcodedoc\footnotesize\else\small\fi
   \def\indexspace#1{%
     \end{multicols}
-    \vspace*{-20pt}%
+    \vspace{-20pt}%
     \begin{multicols}{2}
       \ifpdf{\let\bfseries\empty\let\hfil\empty\phantomsection\pdfbookmark[2]{#1}{#1}}\fi
       \setbox0\hbox{\sffamily\hss#1}%
@@ -733,6 +733,8 @@
   \fi
 \else
   \usepackage{url}
+  \usepackage{xr}
+  \externaldocument{microtype\ifcodedoc\else-code\fi}
   \newcommand\hyperref[2][]{#2}
   \let\hyperpage\@firstofone
   \let\dochyperpage\@firstofone
@@ -743,7 +745,7 @@
   \let\nolinkurl\url
   \let\mailto\texttt
   \def\mailtoRS{\mailto{w.m.l@gmx.net}}
-  \let\href\texttt
+  \let\href\@gobble
   \newcommand\textattachfile[3][]{#3 \textit{[File \file{#2} not attached,
         because \file{microtype.dtx} hasn't been compiled with \pdftex.]}}
 \fi
@@ -883,12 +885,14 @@
 % \vskip2\baselineskip
 % \Large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}
 % \noindent
+% \ifpdf
 %  \ifcodedoc
 %    \href{file:microtype.pdf}{User documentation}
 %  \else
 %    \href{file:microtype-code.pdf}{Implementation}
 %  \fi
 %  \normalfont\normalsize (external document)
+% \fi
 %}
 %
 %
