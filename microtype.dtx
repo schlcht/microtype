@@ -283,7 +283,7 @@
 \fi
 \def\defspecial@toc#1#2#3{\long\def#1{%
   \ifpdf\phantomsection\specialoutline\pdfbookmark[1]{#2}{#3}\normaloutline\fi
-  \section*{#2}\@mkboth{\textls*[70]{\MakeUppercase{#2}}}{}%
+  \section*{#2}\@mkboth{\textls*[70]{\MakeUppercase{\contentsname}}}{}%
   \@starttoc{#3}}}
 \defspecial@toc\tableofcontents\contentsname{toc}
 \defspecial@toc\listoftables\listtablename{lot}
@@ -3381,6 +3381,7 @@
 %
 %\def\AppendixSettings{
 %  \ifcodedoc
+%    \addtocontents{toc}{\protect\pagebreak} ^^A layout
 %    \addtolength\textwidth{50pt}
 %    \addtolength{\oddsidemargin}{-50pt}
 %    \setlength{\columnwidth}{\textwidth}
