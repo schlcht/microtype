@@ -3684,13 +3684,15 @@
 \expandafter\let\csname ver@letterspace.sty\endcsname\@empty
 %    \end{macrocode}
 %\begin{macro}{\MT@old@cmd}
-% The old command names had one more hunch.
+% The old command names had one more hunch (|\..MicroType..|).
+% Before finally letting them sink into oblivion, raise an error.
 %\changes{v1.8}{2005/04/28}{renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}}
+%\changes{v2.8d}{2020/04/10}{old command names will raise an error}
 %    \begin{macrocode}
 \def\MT@old@cmd#1#2{%
-  \newcommand*#1{\MT@warning{%
+  \newcommand*#1{\MT@error{%
     \string#1 is deprecated. Please use\MessageBreak
-    \string#2 instead}%
+    \string#2 instead}{As I said}%
     \let #1#2#2}}
 %    \end{macrocode}
 %\end{macro}
@@ -12112,13 +12114,13 @@ end
 %    {\let\Microtype@Hook\MinionPro@MT@Hook}
 %    {\g@addto@macro\Microtype@Hook{\MinionPro@MT@Hook}}}
 %\end{verbatim}
-% \orig@cs{MicroType@Hook} with a capital |T| (which only existed in version 1.7) is
-% provided for compatibility reasons. At some point in the future, it will no
-% longer be available, hence it should not be used.
+% \orig@cs{MicroType@Hook} with a capital |T| (which only existed in version 1.7)
+% is now officially deprecated.
 %    \begin{macrocode}
-\MT@ifdefined@c@T\MicroType@Hook{\MT@warning{%
+\MT@ifdefined@c@T\MicroType@Hook{\MT@error{%
   Command \string\MicroType@Hook\space is deprecated.\MessageBreak
-      Use \string\Microtype@Hook\space instead}\MicroType@Hook}
+  Use \string\Microtype@Hook\space instead}
+  {You might want to inform the font package authors.}\MicroType@Hook}
 \MT@ifdefined@c@T\Microtype@Hook\Microtype@Hook
 %    \end{macrocode}
 %\end{macro}
