@@ -102,7 +102,6 @@
  \def\ttdefault{blg}
  {\ttfamily\selectfont
   \DeclareFontShape{T1}{blg}{eb}{n}{<-> ssub * blg/b/n}{}}
-\usepackage{textcomp}
 \usepackage{iftex}
 %<*!docsty>
 \ifxetex\else
@@ -110,7 +109,7 @@
 \fi
 %</!docsty>
 \GetFileInfo{\jobname.dtx}
-\usepackage[expansion=false,kerning=true]{microtype}[\filedate]
+\usepackage{microtype}[\filedate]
  \DeclareMicrotypeSet*[protrusion]
       { doc }
       { encoding = {*, TS1, OMS},
@@ -135,41 +134,23 @@
  \DisableLigatures[?,!]{encoding = *, family = rm* }
 \fi
  % Fraktur sample in section \ref{sec:lettersp}
- \IfFileExists{t1mwr.fd}
-   {\def\textfrak##1{{\fontfamily{mwr}\selectfont ##1}}
-    \ifpdf
-      \SetTracking[no ligatures={f,s,c}]{encoding=T1,family=mwr}{120}
-    \fi}
-   {\IfFileExists{yfonts.sty}
+\IfFileExists{t1mwr.fd}
+  {\def\textfrak##1{{\fontfamily{mwr}\selectfont ##1}}
+   \SetTracking[no ligatures={f,s,c}]{encoding=T1,family=mwr}{120}}
+  {\IfFileExists{yfonts.sty}
      {\usepackage{yfonts}
-      \ifpdf
-        \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{120}
-      \fi}
+      \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{120}}
      {\def\textfrak{\rule{.5em}{1.5ex}\@gobble}}}
-\ifpdftex\else
-  \microtypesetup{kerning=false}
+\ifpdftex
+  \microtypesetup{kerning=true}
 \fi
-\tolerance=700
+\ifluatex % microtype.dtx finally compiles with 0.35!
+  \usepackage{luatex85}
+\fi
 \ifpdf
-  \ifluatex % microtype.dtx finally compiles with 0.35!
-    \def\pdftexversion{200} % in TeX Live 2015, they let this to \luatexversion
-    \let\pdfxform                    \saveboxresource
-    \let\pdflastxform                \lastsavedboxresourceindex
-    \protected\edef\pdfminorversion  {\pdfvariable minorversion}
-    \protected\def\pdfobj            {\pdfextension obj }
-    \protected\def\pdfcatalog        {\pdfextension catalog }
-    \protected\def\pdfannot          {\pdfextension annot }
-    \protected\def\pdfoutline        {\pdfextension outline }
-    \protected\def\pdfmapline        {\pdfextension mapline }
-    \protected\def\pdfglyphtounicode {\pdfextension glyphtounicode }
-    \protected\def\pdflastobj        {\numexpr\pdffeedback lastobj\relax}
-  \fi
-  \ifnum\pdftexversion<140 \else % pdftex 1.40, including textmatrix patch,
-    \microtypesetup{expansion=alltext,step=1} % hence we can activate expansion ...
-    \tolerance=300         % ... and make TeX almost as intolerant as it normally is
-    \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
-    \pdfminorversion=5 % for the OCGs (default since TeX Live 2010)
-  \fi
+  \microtypesetup{expansion=alltext} % with activated expansion ...
+  \tolerance=300 %     ... we can make TeX almost as intolerant as it normally is
+  \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
   % bonus material
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
   \InputIfFileExists{microtype-lssample.dtx}\relax\relax
@@ -190,6 +171,7 @@
  \definecolor{theframe}  {gray}{0.75}
  \definecolor{theshade}  {gray}{0.94}
 \usepackage{graphicx}
+\usepackage{etoolbox}
 % general layout
 \frenchspacing
 \DeclareRobustCommand\textoractual[2]{\ifpdf
@@ -223,20 +205,11 @@
 \addtolength\textheight{\topskip}
 \setlength\topmargin{5pt}
 % sections
-%\def\@seccntformat#1{\setbox0\hbox to0pt{\hss\colorbox{theshade}{\space\color{sectioning}\csname the#1\endcsname\strut\space}\hskip\marginparsep}\ht0=0pt \dp0=0pt \box0}
 \def\@seccntformat#1{\llap{\csname the#1\endcsname\hskip\marginparsep}}
-\def\section{\@startsection {section}{1}{\z@}%
-  {-3.5ex \@plus -1ex \@minus -.2ex}%
-  {2.3ex \@plus.2ex}%
-  {\normalfont\Large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
-\def\subsection{\@startsection{subsection}{2}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
-\def\subsubsection{\@startsection{subsubsection}{3}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
+\def\MTsectionfont{\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}
+\patchcmd\section      {\bfseries}{\MTsectionfont}\relax\relax
+\patchcmd\subsection   {\bfseries}{\MTsectionfont}\relax\relax
+\patchcmd\subsubsection{\bfseries}{\MTsectionfont}\relax\relax
 \def\paragraph{\@startsection{paragraph}{4}%
   {0pt}{8pt plus 2pt minus 1pt}{-1em}%
   {\normalfont\normalsize\itshape}}
@@ -291,8 +264,7 @@
 \def\@cite#1#2{#1\if@tempswa, #2\fi}
 \def\thebibliography#1{%
   \section{\refname}%
-  \list{}{\leftmargin 0pt}%
-  \sloppy
+  \list{}{\leftmargin 0pt}% \sloppy
   \clubpenalty 4000
   \@clubpenalty \clubpenalty
   \widowpenalty 4000}
@@ -303,7 +275,7 @@
   \parindent 0pt
   \everypar{\parindent 0pt}%
   \leavevmode\llap{\@thefnmark\hskip\marginparsep}#1}
-\renewcommand\footnoterule{%
+\def\footnoterule{%
   \kern-3\p@
   \hrule\@width \columnwidth
   \kern2.6\p@}
@@ -568,14 +540,8 @@
     \smash{\rlap{\raisebox{-3.3ex}{\colorbox{thered}{\Large\color{white}!}}}}%
     \footnotesize\textcolor{thered}{#1}}}
 \let\todo\@gobble
-\newcommand\microtypesample[1]{\begin{quote}#1\end{quote}}
-\let\emptypdfpageresources\relax
 % fancy PDF document
 \ifpdf
-  \ifx\eTeXversion\@undefined \else % errors when not using etex (conflict with multicol)
-    \ifnum\pdftexversion < 140      % no longer required with pdftex 1.40
-      \usepackage{pdfcolmk}
-  \fi\fi
   \usepackage{xr-hyper}
   \usepackage[bookmarks,bookmarksopen,pdfdisplaydoctitle,
               colorlinks,linkcolor=theblue,citecolor=theblue,urlcolor=thered,
@@ -641,10 +607,8 @@
   \def\codeline#1{{\itshape\link@sanitize#1-\@nil{#1}}}
   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
   \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
-  \def\ctanurl#1{Available from \acronym{CTAN} at
-                 \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
-  \def\ctanpkgurl#1{Available from \acronym{CTAN} at
-                    \href{https://www.ctan.org/pkg/#1}{\nolinkurl{pkg/#1}}}
+  \def\ctanurl#1{Available from \acronym{CTAN} at \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
+  \def\ctanpkgurl#1{Available from \acronym{CTAN} at \href{https://www.ctan.org/pkg/#1}{\nolinkurl{pkg/#1}}}
   \DeclareRobustCommand\mailto[1]{\href{mailto:#1}{\nolinkurl{#1}}}
   \def\mailtoRS{\href % some PDF viewers don't like spaces:
     {mailto:Robert\%20Schlicht\%3cw.m.l@gmx.net\%3e?subject=[microtype\%20\fileversion]}
@@ -695,7 +659,7 @@
         /A << /S/SetOCGState /State[/Toggle \csname mt@#1@true\endcsname
                                             \csname mt@#1@false\endcsname] >>}
       #1 \hfill\pdfendlink & \mt@layer{#1true}{\rlap{on}}\mt@layer{#1false}{off}}
-    \renewcommand\microtypesample[1]{%
+    \long\def\microtypesample#1{%
       \begingroup
       \leftskip 15pt \rightskip 15pt
       \parskip   4pt \parindent  0pt
@@ -732,8 +696,7 @@
     \def\emptypdfpageresources{\pdfpageresources{}}
   \fi
 \else
-  \usepackage{url}
-  \usepackage{xr}
+  \usepackage{url,xr}
   \externaldocument{microtype\ifcodedoc\else-code\fi}
   \newcommand\hyperref[2][]{#2}
   \let\hyperpage\@firstofone
@@ -748,6 +711,8 @@
   \let\href\@gobble
   \newcommand\textattachfile[3][]{#3 \textit{[File \file{#2} not attached,
         because \file{microtype.dtx} hasn't been compiled with \pdftex.]}}
+  \long\def\microtypesample#1{\begin{quote}#1\end{quote}}
+  \let\emptypdfpageresources\relax
 \fi
 \ifx\l@ukenglish\@undefined
   \hyphenation{let-ter-spac-ing let-ter-spaced let-ter-space}
