@@ -2622,11 +2622,11 @@
 %\changes{v2.7b}{2018/09/18}{update hint about non-7-bit characters
 %                            (notified by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2018/08/14
-%  \item Even though all configuration files are still provided in legacy (7-bit)
-%        format, using multi-byte (Unicode) characters in the settings should run
+%  \item Even though most configuration files are still provided in legacy (7-bit)
+%        format, using multi-byte (Unicode) characters in the settings will run
 %        smoothly with an up-to-date \LaTeX\ system.
-%        For older systems or documents in legacy encodings, in contrast, this requires
-%        loading the \pkg{inputenc} package first.
+%        For older systems or documents in legacy encodings, in contrast,
+%        the \pkg{inputenc} package must be loaded first.
 %        Furthermore, when using multiple input encodings in a document, 8-bit characters in
 %        the settings will only work reliably if you specify the |inputenc| key.
 %\changes{v2.3a}{2008/02/25}{add hint about \pkg{babel} having to be loaded first}
@@ -2809,8 +2809,7 @@
 % interword spacing adjustment and additional character kerning.
 %  \contributor Georg Duffner <g.duffner\at gmail.com> has patiently tested
 % \microtype\ under \xetex\ and \luatex\ with his beautiful OpenType font
-% <EB>~Garamond\footnote{\ctanpkgurl{ebgaramond}, including configuration
-%   files for \microtype.}.
+% <EB>~Garamond.
 % My thanks also go to
 %  \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>
 % for contributing settings for the <QX> encoding, as well as to
@@ -3106,7 +3105,7 @@
 %  \item Allow automatic expansion and letterspacing with \luatex\ in <DVI> mode
 %        (aka. \texttt{dvilualatex})
 %        \refsection{\ref{sub:options-microtype}, \ref{sub:options-expansion}, table~\ref{tab:available-features}}
-%  \item Compatibility with \LaTeX\ 2017/01/01 (fix warnings)
+%^^A \item Compatibility with \LaTeX\ 2017/01/01 (fix warnings)
 %
 %\VersionDate{2.6a}{2016/05/14}
 %
@@ -3125,7 +3124,7 @@
 %  \item Support for protrusion with \xetex\ $\geq$ 0.9997
 %  \item Support for tracking/letterspacing with \luatex\ $\geq$ 0.62
 %  \item Allow context-sensitive setup with \luatex
-%  \item Info if protrusion settings are generic
+%  \item Info instead of warning if protrusion settings are generic
 %  \item Protrusion settings for Latin Modern Roman (OpenType)
 %  \item Protrusion settings for Charis SIL (OpenType)
 %  \item Protrusion settings for Palatino Linotype (OpenType)
@@ -17463,7 +17462,8 @@ lualatex microtype-utf.dtx
 #        - Adobe Source Sans Pro (Type 1)
 #        - Latin Modern Roman (OpenType)
 #        - Charis SIL (OpenType)
-#        - TeX Gyre Pagella (OpenType) ]
+#        - TeX Gyre Pagella (OpenType)
+#        - Lato (OpenType) ]
 #  (8) To create the code index and history run
 makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
 makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
