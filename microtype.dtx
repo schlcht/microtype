@@ -2902,9 +2902,10 @@
 %  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
 % `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
 % `\contributor dsedivec          <@\at @>', ^^A https://tex.stackexchange.com/users/1680/dsedivec
-% `\contributor DORpapst          <@\at @>'  ^^A https://tex.stackexchange.com/users/104965/dorpapst
+% `\contributor DORpapst          <@\at @>', ^^A https://tex.stackexchange.com/users/104965/dorpapst
+% `\contributor chsk              <@\at @>'  ^^A https://tex.stackexchange.com/users/158639/chsk
 % and
-% `\contributor chsk              <@\at @>'. ^^A https://tex.stackexchange.com/users/158639/chsk
+% `\contributor tnull             <@\at @>'. ^^A https://tex.stackexchange.com/users/91987/tnull
 %
 %
 %\iffalse
@@ -4309,7 +4310,7 @@
 %    \begin{macrocode}
 %<luatex-def>\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
 %<letterspace>\MT@pdf@or@lua\relax{
-%<letterspace>\ifx\newluafunction\undefined \input ltluatex \fi
+%<letterspace>\ifx\newluafunction\@undefined \input ltluatex \fi
 %<luatex-def|letterspace>\MT@lua{require("microtype")}
 %<letterspace>}
 %    \end{macrocode}
@@ -5574,6 +5575,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@orig@py@macron{#1}%
         \MT@MT@pickupfont}%
     }%
+  }%
+%    \end{macrocode}
+%\changes{v2.8d}{2021/04/16}{compatibility fix for \pkg{unicode-math} with \pkg{luainputenc}
+%                            (reported by \contributor tnull <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/592946/microtype-unknown-slot-number-of-character-for-palatino-in-classicthesis-w-l
+% The \pkg{luainputenc} package makes all characters active, which can lead into
+% problems when the \pkg{unicode-math} package is loaded, as the latter doesn't
+% always define characters in <LICR>-conforming ways. By disabling the following command,
+% we prevent errors; warnings about unknown slots, however, may still occur --
+% but that's one of the unavoidable downsides of using \pkg{luainputenc}.
+%    \begin{macrocode}
+  \MT@with@package@T{unicode-math}{%
+    \MT@let@nc{__um_sub_or_super:n}\relax
   }%
 %</package>
 }
@@ -17440,7 +17454,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10819}
+% \CheckSum{10822}
 %
 % \Finale
 %
