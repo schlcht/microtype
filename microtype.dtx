@@ -496,12 +496,6 @@
     \fcolorbox{theframe}{white}{\mdseries\small\strut\color{sectioning}%
       \,\expandafter\@gobble\@tempa\,}}}
 % ... and whistles
-{\catcode`\"\active
- \gdef\verbatim#1
-   {\catcode`\"\active \def"##1"{\colorbox{theshade}{%
-      \textrm{Text lost! Please install the \pkg{listings} package.}}}%
-    \@beginparpenalty\predisplaypenalty\@verbatim\MacroFont
-    \frenchspacing\@vobeyspaces\expandafter\@xverbatim\@gobble}}
 \usepackage{listings}
 \lstset{
   gobble=1,columns=flexible,keepspaces,upquote,escapechar=",
@@ -527,14 +521,6 @@
 }
 \let\verbatim\relax
 \lstnewenvironment{verbatim}[1][]{\lstset{#1}}{}
-\ifpdf
-  \font\dummyspace=dummy-space
-  \pdfglyphtounicode{space}{0020}
-  \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
-    \setbox0\hbox{ }\@tempdima\wd0
-    \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
-    \unhbox0 \kern\@tempdima}
-\fi
 \def\todo#1{\changes{zTo Do}{0000/00/00}{#1}%
   \marginpar{\rightskip2\marginparsep plus1em\hangindent1.5em\hangafter-2
     \smash{\rlap{\raisebox{-3.3ex}{\colorbox{thered}{\Large\color{white}!}}}}%
@@ -694,6 +680,12 @@
       \endgroup
       \edef\x{\pdfpageresources{/Properties <<\mt@resources>>}}\x}
     \def\emptypdfpageresources{\pdfpageresources{}}
+    \font\dummyspace=dummy-space
+    \pdfglyphtounicode{space}{0020}
+    \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
+      \setbox0\hbox{ }\@tempdima\wd0
+      \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
+      \unhbox0 \kern\@tempdima}
   \fi
 \else
   \usepackage{url,xr}
