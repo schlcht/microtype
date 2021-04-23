@@ -239,9 +239,9 @@
 % toc
 \let\l@section@\l@section
 \def\l@section{\vskip -1.25ex\l@section@}
-\def\l@subsection{\vskip.35ex \penalty\@secpenalty \@dottedtocline{2}{1.5em}{2.7em}}
+\def\l@subsection{\vskip.35ex \penalty\@secpenalty \@dottedtocline{2}{1.5em}{2.2em}}
 \def\l@subsubsection#1#2{%
-  \leftskip 4.2em
+  \leftskip 3.7em
   \rightskip 2em plus 2em
   \parindent 0pt
   {\let\numberline\@gobble{\small #1~[#2]}}}
@@ -2426,11 +2426,11 @@
 %\medskip
 %\Describe{Macro}{\lslig}{ligature}
 % Since the commands \cs{textls} and \cs{lsstyle} will also evaluate the
-% `\texttt{no ligatures}' key for the respective font, you need not worry
+% `\texttt{no ligatures}' key for the respective font, you usually need not worry
 % about protecting or breaking ligatures with most fonts. However, in certain
 % situations, there may be a conflict of ligatures beginning with the same
-% letter, where some of them should be inhibited, while others should not. When
-% letterspacing text typeset in Fraktur fonts, for example, the ligatures `ch',
+% letter, where some of them should be inhibited, while others should not. For
+% exmaple, when letterspacing text typeset in Fraktur fonts, the ligatures `ch',
 % `ck', `tz' and `sz'~(`\textfrak{sz}') should never be broken up; you also usually
 % see the `st'~(`\textfrak{st}') ligature in letterspaced text. Furthermore, at
 % least the \pkg{yfonts} package realises the short~s~(`\textfrak{s:}') as the
@@ -17225,10 +17225,8 @@ end
 %^^A since they have to be typeset with \luatex.
 %
 %\begingroup
-%\@tempswafalse
-%\InputIfFileExists{microtype-code.tmp}
-%  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}}
-%  {\@tempswatrue}
+%\def\setcounter#1#2{\expandafter\ifnum\csname c@#1\endcsname=#2 \else\@tempswatrue\fi}
+%\InputIfFileExists{microtype-code.tmp}\@tempswafalse\@tempswatrue
 %\if@tempswa
 %\newwrite          \codetmp
 %\immediate\openout \codetmp=microtype-code.tmp

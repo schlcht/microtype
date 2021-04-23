@@ -109,6 +109,35 @@ local nodeprocessor = function (head)
 end
 luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missing glyphs")
 \end{luacode}
+% communicate counters and bookmarks in microtype-utf.tmp
+% (via aux file to get page numbers right)
+\let\UTF@bookmarks\@gobble
+\def\addto@UTF@bookmarks#1{\edef\UTF@bookmarks{\UTF@bookmarks,#1}}
+\def\MT@rempt#1.#2\@nil{#1}
+\def\addtoUTFbookmarks#1{%
+  \protected@write\@auxout{}{%
+    \string\addto@UTF@bookmarks{% page,section,level,heading,label
+      \string\number\numexpr\thepage-\startpage,%
+      \expandafter\MT@rempt\@currentHref\@nil,%
+      \the\c@section@level,\@currentlabelname,#1}}}
+\AddToHook{enddocument/afteraux}{
+  \begingroup
+    \def\setcounter#1#2{\expandafter\ifnum\csname c@#1\endcsname=#2 \else\@tempswatrue\fi}
+    \def\UTF@setbookmarks#1{\MT@ifstreq{#1}{\UTF@bookmarks}\relax\@tempswatrue}
+    \InputIfFileExists{microtype-utf.tmp}\@tempswafalse\@tempswatrue
+    \if@tempswa % only write file if anything has changed
+      \newwrite\utftmp
+      \immediate\openout \utftmp=microtype-utf.tmp
+      \immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
+      \immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
+      \immediate\write   \utftmp{\string\UTF@setbookmarks{\UTF@bookmarks}}
+      \immediate\closeout\utftmp
+    \fi
+  \endgroup}
+\AddToHook{begindocument}{
+  \InputIfFileExists{microtype-code.tmp}\relax\relax
+  \edef\startpage{\thepage}
+  \stepcounter{page}}
 \DisableCrossrefs
 \RecordChanges
 \begin{document}
@@ -128,16 +157,6 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\changes{v2.5a}{2013/05/15}{include OpenType configuration files}
 %\changes{v2.6}{2015/12/07}{missing characters printed with Charis <SIL>}
 %\ImplementationSettings
-%\InputIfFileExists{microtype-code.tmp}\relax\relax
-%\edef\startpage{\thepage}
-%\stepcounter{page}
-%\let\UTF@bookmarks\@gobble
-%\def\MT@rempt#1.#2\@nil{#1}
-%\def\addtoUTFbookmarks#1{^^A page,section,level,heading,label
-%  \edef\UTF@bookmarks{\UTF@bookmarks,^^J^^A
-%      \number\numexpr\thepage-\startpage,^^A
-%      \expandafter\MT@rempt\@currentHref\@nil,^^A
-%      \the\c@section@level,\@currentlabelname,#1}}
 %
 %\section{OpenType configuration files}
 %\addtoUTFbookmarks{sec:OpenType}
@@ -1398,20 +1417,5 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %</FontAwesome>
 
 %    \end{macrocode}
-%\begingroup
-%\@tempswafalse
-%\InputIfFileExists{microtype-utf.tmp}
-%  {\def\setcounter##1##2{\expandafter\ifnum\csname c@##1\endcsname=##2 \else\@tempswatrue\fi}
-%   \def\UTF@setbookmarks##1{\MT@ifstreq{##1}{\UTF@bookmarks}\relax{\@tempswatrue}}}
-%  {\@tempswatrue}
-%\if@tempswa
-%\newwrite\utftmp
-%\immediate\openout \utftmp=microtype-utf.tmp
-%\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
-%\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
-%\immediate\write   \utftmp{\string\UTF@setbookmarks{\UTF@bookmarks}}
-%\immediate\closeout\utftmp
-%\fi
-%\endgroup
 %
 \endinput
