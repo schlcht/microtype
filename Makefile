@@ -78,6 +78,17 @@ CTAN_ZIP = $(NAME).zip
 TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
+DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
+DO_MAKEINDEX_DOC  = \
+   makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
+   echo "Creating user index"
+DO_MAKEINDEX_CODE = \
+   makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
+   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1 && \
+   echo "Creating code index"
+
 all:     $(GENERATED)
 doc:     make-doc-sty $(COMPILED) make-normal-sty
 userdoc: make-doc-sty $(DOC)      make-normal-sty
@@ -135,17 +146,6 @@ done
    $(DO_PDFLATEX_DOC) ; \
 done
 endef
-
-DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
-DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT)
-DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
-DO_MAKEINDEX_DOC  = \
-   makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
-   echo "Creating user index"
-DO_MAKEINDEX_CODE = \
-   makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
-   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1 && \
-   echo "Creating code index"
 
 $(DOC): $(DTX) $(NAME).ind
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
@@ -279,8 +279,19 @@ clean: mostlyclean
 # testing the package
 TESTDIR = ./testsuite
 WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
-COMPAT = $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
-TLPATH = ~/Library/texlive/$(COMPAT)/bin/x86_64-darwin
+COMPAT   := $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
+ARCH     := x86_64-darwinlegacy
+ifeq ($(shell expr $(COMPAT) \< 2021 ),1)
+  ARCH := x86_64-darwin
+endif
+ifeq ($(shell expr $(COMPAT) \< 2014 ),1)
+  ARCH := universal-darwin
+endif
+TLPATH := ~/Library/texlive/$(COMPAT)/bin/$(ARCH)
+ifdef DEV
+  override DEV=-dev
+endif
+
 test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.log
 	@$(RM) $(TESTDIR)/*.aux
@@ -314,9 +325,6 @@ testoutput: $(wildcard $(TESTDIR)/output-*.tex)
 	@cd $(TESTDIR) && \
 		$(foreach file,$^,$(call run-output-file,$(notdir $(basename $(file)))))
 
-ifdef DEV
-override DEV=-dev
-endif
 # parts of the filename after `_' signify an engine other than pdflatex
 run-test-file = \
 	echo " - $(subst $1-,,$2)" | sed 's/\(.*\)_\(.*\)/\1 (\2)/' ; \
