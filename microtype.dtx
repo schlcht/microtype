@@ -216,12 +216,13 @@
 % title
 \def\@maketitle{%
   \newpage\null\vskip 2em
-  \begin{center}\let\footnote\thanks\sffamily
-    {\huge \@title\par}\vskip 1.5em
-    {\large \parbox{.33\textwidth}{\centering\@author}%
-            \parbox{.33\textwidth}{\centering\@date}}%
-  \vskip2.5em\rule{\textwidth}{.4pt}%
-  \end{center}\par\vskip1.5em}
+  \begin{center}\sffamily
+    {\huge \@title\par\vskip 1.5em}%
+    {\large\hspace{4.5em}\parbox{.33\textwidth}{\@author}%
+                         \parbox{.33\textwidth}{\@date}\par\vskip 1em
+           \textls*[-20]{\url{\githuburl}}}%
+    \vskip 2.5em\rule{\textwidth}{.4pt}%
+  \end{center}\par\vskip 1.5em}
 \def\abstractname{}
 % headers
 \headheight=15pt
@@ -383,7 +384,7 @@
         \llap{\mdseries\color{thegrey}\footnotesize
               \csname MTversiondate##2\endcsname\hskip\marginparsep}%
          Version ##2\else ##2\fi}][6\baselineskip]
-         \label{sub:changes:##2}%
+      \label{sub:changes:##2}%
       \GlossaryParms \rightskip 15pt plus 5pt
       \let\item\@idxitem
       \ignorespaces \makeatletter \scan@allowedfalse}%
@@ -846,9 +847,9 @@
 % \GetFileInfo{\jobname.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
 %        \textls[40]{The \microtype\ package}%
-%        {\ifcodedoc\\\Large--- \textls[60]{IMPLEMENTATION} ---\fi}%
-%        \\[.3\baselineskip]\large
-%        Subliminal refinements towards typographical perfection}
+%        \\[6pt]\large
+%        Subliminal refinements towards typographical perfection
+%        \ifcodedoc\\[9pt]{\Large--- \textls[60]{IMPLEMENTATION} ---}\fi}%
 % \author{R Schlicht\\\mailtoRS}
 % \date{\fileversion\\\filedate}
 %
@@ -2818,7 +2819,7 @@
 % \file{microtype.dtx}.
 %
 %
-%\section{Contributions}
+%\section{Contributions and feedback}
 %
 % I would be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
@@ -3102,7 +3103,7 @@
 %\end{thebibliography}
 %
 %
-%\section{Short history}
+%\section{Changes}
 %\changes{v1.5}{2004/12/11}{add `Short history'}
 %
 % The comprehensive list of changes can be found in the Implementation part,
