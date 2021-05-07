@@ -392,6 +392,8 @@
 % change history
 % (lots of the following stolen from Tom Bombadil's answer:
 %  https://tex.stackexchange.com/a/61251/7674)
+%<*!docsty>
+\ifcodedoc
 \usepackage{tikz,pgfcalendar}
 \usetikzlibrary{calc}
 \newcounter{MThistitem}
@@ -444,6 +446,8 @@
       \MThistshow
       \MThisttimeline
     \end{tikzpicture}}}}
+\fi
+%</!docsty>
 % macro code
 \MacroTopsep=0pt
 \MacrocodeTopsep=3pt
