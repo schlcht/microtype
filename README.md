@@ -55,6 +55,9 @@ To install the package, use one of the following methods
   and move all generated files into a directory where LaTeX will find them,
   e.g., `TEXMF/tex/latex/microtype/`.
 
+- The use the lastest development version, clone the github repository at
+  `https://github.com/schlcht/microtype` and run `make`.
+
 
 License
 -------
