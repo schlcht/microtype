@@ -1,3 +1,4 @@
+* implement patch and nopatch options
 * account for fontspec's NFSSfamily
 * different md* (etc.) for different fonts
 * mt-EBGaramond.cfg OpenType
