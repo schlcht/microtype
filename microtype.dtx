@@ -2526,6 +2526,8 @@
 %                (Supported classes\slash packages: standard classes, \pkg{beamer})
 % \item[|toc|]   Adds protrusion to the left margin of sectioning titles
 %                (Supported classes\slash packages: standard classes, \pkg{memoir}, <KOMA> classes)
+% \item[|eqnum|] Protrusion for equation numbers on either side (class options |leqno| or |reqno|).
+%                (Supported classes\slash packages: standard classes, \pkg{amsmath})
 %\endlist\endgroup
 %^^A\end{description}
 %
@@ -2978,6 +2980,7 @@
 %  \contributor Aman Mehra        <reportaman\at gmail.com>, ^^A also https://tex.stackexchange.com/users/192717/reportaman
 %  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>, ^^A also https://tex.stackexchange.com/users/176404/d909
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
+%  \contributor Holger Gerhardt   <holger.gerhardt\at uni-bonn.de>,
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
 %  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
 % `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
@@ -3488,13 +3491,13 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@cclv,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
-%  \@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,
-%  \@ifpackageloaded,\@ifstar,\@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,
-%  \@minus,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,
-%  \@percentchar,\@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,
-%  \@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
-%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
+%  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
+%  \@firstoftwo,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,
+%  \@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,\@let@token,
+%  \@m,\@M,\@makeother,\@minus,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,
+%  \@onlypreamble,\@percentchar,\@pkgextension,\@plus,\@ptionlist,\@removeelement,
+%  \@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,
+%  \@tempdima,\@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
 %  \@xobeysp,\check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,
 %  \hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,
 %  \on@line,\p@,\set@display@protect,\strip@prefix,\strip@pt,\tw@,\z@,\z@skip,
@@ -3530,6 +3533,7 @@
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
 %\DoNotIndex{\apptocmd,\patchcmd}                                            ^^A etoolbox
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem}                     ^^A beamer
+%\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
 %\DoNotIndex{\setuptoc,\unsettoc}                                            ^^A koma (tocbasic)
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
@@ -5497,6 +5501,8 @@ microtype.do_font = do_font
 % Patching stuff to get protrusion right:
 %\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
 %\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
+%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
+%                            (reported by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %\begin{itemize}
 % \item \cmd\item, which is a kind of catch-all, as it's internally
 %    used for most basic environments (\eg, |itemize|, |enumerate|,
@@ -5541,6 +5547,23 @@ microtype.do_font = do_font
       {\unsettoc{toc}{noprotrusion}%
        \unsettoc{lof}{noprotrusion}%
        \unsettoc{lot}{noprotrusion}}}
+%    \end{macrocode}
+% \item equation numbers (with or without \pkg{amsmath})
+%    \begin{macrocode}
+  \@ifpackageloaded{amsmath}
+    {\MT@define@patch{eqnum}
+      {\let\MT@temp\tagform@
+       \MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
+       \MT@let@nc{MT@patch@saved@\string\tagform@}\MT@temp
+       \def\eqref##1{\textup{\csname MT@patch@saved@\string\tagform@\endcsname{\ref{##1}}}}}
+      \relax}
+    {\MT@define@patch{eqnum}
+      {\let\MT@temp\@eqnnum
+       \MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}%
+       \MT@let@nc{MT@patch@saved@\string\@eqnnum}\MT@temp}%
+      \relax}%
 }
 %    \end{macrocode}
 %\end{itemize}
@@ -5798,6 +5821,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 ^^X  \MT@apply@patch{item}%
 ^^X  \MT@apply@patch{toc}%
+^^X  \MT@apply@patch{eqnum}%
 %</package>
 }
 %</package|letterspace>
@@ -6948,8 +6972,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@prot{#1}%
   \ifdim\MT@leftmarginkern=\z@ \else
     \leavevmode
-    \MT@vinfo{||| adding left margin kern for `#1':
-                  \the\MT@leftmarginkern\MessageBreak\on@line}%
+    \MT@vinfo{||| adding left margin kern for `#1':\MessageBreak
+                  \the\MT@leftmarginkern \on@line}%
     \kern\MT@leftmarginkern
   \fi
   #1%
@@ -6970,8 +6994,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   #1%
   \MT@get@prot{#1}%
   \ifdim\MT@rightmarginkern=\z@ \else
-    \MT@vinfo{||| adding right margin kern for `#1':
-                  \the\MT@rightmarginkern\MessageBreak\on@line}%
+    \MT@vinfo{||| adding right margin kern for `#1':\MessageBreak
+                  \the\MT@rightmarginkern \on@line}%
     \kern\MT@rightmarginkern
   \fi
 }
@@ -6999,8 +7023,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   \endgroup
   \ifhbox\MT@tempbox
-    \MT@leftmarginkern=\leftmarginkern\MT@tempbox
-    \MT@rightmarginkern=\rightmarginkern\MT@tempbox
+    \MT@leftmarginkern=\leftmarginkern\MT@tempbox\relax
+    \MT@rightmarginkern=\rightmarginkern\MT@tempbox\relax
   \fi
 }
 %    \end{macrocode}
@@ -17845,7 +17869,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11136}
+% \CheckSum{11178}
 %
 % \Finale
 %
