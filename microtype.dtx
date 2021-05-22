@@ -1251,6 +1251,11 @@
 % for further information.
 %
 %\medskip
+%\Describe{Option}{patch}{!all,none,:list of patches}
+%\DescribeOption{nopatch}
+% These options are described in section~\ref{sec:pedantic}.
+%
+%\medskip
 %\Describe{Option}{config}{:file name}[microtype]
 % Various settings for this package will be loaded from a main configuration
 % file, by default \file{microtype.cfg} (see section~\ref{sub:config-file}).
@@ -2490,19 +2495,20 @@
 %\Describe{Macro}{\leftprotrusion}{general text}
 % This command will add left protrusion for the following text.
 % You may also just say \cs{leftprotrusion} (without an argument), and
-% \microtype\ will gather the next glyph (possibly a ligature) and add
-% protrusion on its left hand side.
+% \microtype\ will gather the next glyph (possibly a ligature) before
+% adding protrusion on its left hand side.
 % For instance, you could add this command to a tabular cell definition
 % (using the \pkg{array} package):
 %\begin{verbatim}
 %\begin{tabular}{>{\leftprotrusion}p{8cm}r}
 %\end{verbatim}
-% to get protrusion to the beginning of the |p| cell.
+% in order to get protrusion at the beginning of the |p| cell.
 %
 %\medskip
 %\Describe{Macro}{\rightprotrusion}{general text}
 % will typeset \meta{general text} and then add protrusion on the right side.
-% (Unfortunately, \TeX\ cannot look backwards at what it has already typeset.)
+% (Unfortunately, \TeX\ cannot look backwards at what it has already typeset,
+% so this command requires that the text be given in the argument.)
 %
 %\medskip\noindent
 %\DescribeMacro{\noprotrusion}
@@ -2512,34 +2518,36 @@
 %\medskip\noindent
 % The \microtype\ package will automatically apply a number of patches in order
 % to get protrusion right:
-%^^A\begin{description}\leftmargin=4em
 %\begingroup
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
-%     \let\makelabel\descriptionlabel}
+%     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
+%\def\MTsupp#1{\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
+%   (Supported classes\slash packages: #1)\parfillskip=0pt \finalhyphendemerits=0}
 %^^A  \MT@patch@undo@item
-% \item [|item|] Affects the first line of an \cmd\item\ in various environments, so that,
-%                \eg, the two\break A's here -- the one in the current line and the one in the
-%                line above -- are neatly aligned; without the patch, the first A would be
-%                slightly shifted to the right.
-%                This patch also affects environments such as |quote| or |flushleft|, which are
-%                implemented in \LaTeX\ as lists with an implicit empty item.
-%                (Supported classes\slash packages: standard classes, \pkg{beamer})
-% \item[|toc|]   Adds protrusion to the left margin of sectioning titles
-%                (Supported classes\slash packages: standard classes, \pkg{memoir}, <KOMA> classes)
-% \item[|eqnum|] Protrusion for equation numbers on either side (class options |leqno| or |reqno|).
-%                (Supported classes\slash packages: standard classes, \pkg{amsmath})
+% \item[item]  Affects the first line of \cmd\item\kern.6pts in various environments, so that,
+%              \eg, the two\break A's here -- the one in the current line and the one in the
+%              line above -- are neatly aligned; without the patch, the first A would be
+%              slightly shifted to the right.
+%              This patch also affects environments such as |quote| or |flushleft|, which are
+%              implemented in \LaTeX\ as lists with an implicit empty item.
+%              \MTsupp{standard classes, \pkg{beamer}}
+% \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
+%              and similar Lists of \meta{Things}.
+%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
+% \item[eqnum] Protrusion for equation numbers on either side (class options |leqno| or |reqno|).
+%              \MTsupp{standard classes, \pkg{amsmath}}
 %\endlist\endgroup
-%^^A\end{description}
 %
+%\medskip
 %\Describe{Option}{patch}{!all,none,:list of patches}
 %\DescribeOption{nopatch}
 % By default, all of the above patches will be applied. Should this not be desired,
-% or in case you are running into problems, you may prevent that from happening,
+% or in case you are running into problems, you may prevent or undo the patches,
 % either in the package options:
 %\begin{verbatim}
 %\usepackage[nopatch=toc]{microtype}
 %\end{verbatim}
-% or, maybe temporarily, within the document:
+% or, possibly temporarily, within the document:
 %\begin{verbatim}
 %\microtypesetup{nopatch=item}
 %\end{verbatim}
@@ -2548,9 +2556,9 @@
 %\leavevmode\llap{\itshape\color{thegrey}Help wanted!\hskip\marginparsep}^^A
 % These pedantic protrusion patches are work-in-progress. I suspect many use cases
 % where they either do not work as advertised, or worse, where they may even lead to errors.
-% Also, there are myriads of classes and packages out there with their own modifications
-% to internal commands that might render the patches useless. Finally, there will
-% certainly be many more situations where protrusion patches would be required.
+% Also, I am aware that there are myriads of classes and packages out there that
+% modify internal commands in their own way, possibly rendering the patches useless.
+% Finally, there will certainly be many more situations where protrusion would be appropriate.
 % I would be happy to include more patches, or enhance the existing ones,
 % so I welcome any suggestions and problem reports you may have.
 %
