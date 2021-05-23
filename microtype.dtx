@@ -1329,6 +1329,8 @@
 % |compatibility| or |nocompatibility|, and \key{tracking}, \key{kerning} and
 % \key{spacing} with the admissible values |true| or |false|.
 % Passing the name of a font set is not allowed.
+% Additionally, it accepts the options \key{patch} and \key{nopatch}
+% (see section~\ref{sec:pedantic}).
 % Using this command, you could for instance temporarily disable font expansion
 % by saying:
 %\begin{verbatim}
@@ -2522,8 +2524,9 @@
 %\begingroup
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
 %     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
-%\def\MTsupp#1{\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
-%   (Supported classes\slash packages: #1)\parfillskip=0pt \finalhyphendemerits=0}
+%\def\MTsupp#1{^^A\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
+%   (Supported classes\slash packages: #1)^^A\parfillskip=0pt \finalhyphendemerits=0
+%}
 %^^A  \MT@patch@undo@item
 % \item[item]  Affects the first line of \cmd\item\kern.6pts in various environments, so that,
 %              \eg, the two\break A's here -- the one in the current line and the one in the
@@ -5446,13 +5449,15 @@ microtype.do_font = do_font
 %\begin{macro}{\ifMT@patch@ok}
 %\begin{macro}{\MT@patch@info}
 %\begin{macro}{\MT@patch@warn}
+%\begin{macro}{\MT@patch@undef}
 % We have to patch some macros to get protrusion right.
 %    \begin{macrocode}
 \newif\ifMT@patch@ok
-\def\MT@patch@info#1{\MT@info@nl{Applying patch `#1'}}
-\def\MT@patch@warn#1{\MT@warning@nl{Unable to apply patch `#1'}}
-\def\MT@patch@undef#1{\MT@warning@nl{Patch `#1' undefined}}
+\def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
+\def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
+\def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -5465,8 +5470,8 @@ microtype.do_font = do_font
 \def\MT@define@patch#1#2#3{%
   \g@addto@macro\MT@patches@def{,#1}%
   \MT@def@n{MT@patch@@#1}{#2}%
-  \ifx\relax#3\MT@let@nc{MT@patch@undo@#1}\@empty
-  \else\MT@def@n{MT@patch@undo@#1}{#3}\fi
+  \ifx\relax#3\MT@let@nc{MT@patch@undo@@#1}\@empty
+  \else\MT@def@n{MT@patch@undo@@#1}{#3}\fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5478,13 +5483,13 @@ microtype.do_font = do_font
 %    \begin{macrocode}
 \def\MT@append@patch#1#2{%
   \MT@let@nc{MT@patch@saved@\string#1}#1%
-  \MT@exp@cs\g@addto@macro{MT@patch@undo@\MT@patch@name}%
+  \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
     {\MT@revert@patch{#1}}%
   \apptocmd#1{#2}\relax\MT@patch@okfalse
 }
 \def\MT@patch@patch#1#2#3{%
   \MT@let@nc{MT@patch@saved@\string#1}#1%
-  \MT@exp@cs\g@addto@macro{MT@patch@undo@\MT@patch@name}%
+  \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
     {\MT@revert@patch#1}%
   \patchcmd#1{#2}{#3}\relax\MT@patch@okfalse
 }
@@ -5499,16 +5504,38 @@ microtype.do_font = do_font
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@patches@applied}
 %\begin{macro}{\MT@apply@patch}
 % Apply a previously defined patch.
 %    \begin{macrocode}
+\let\MT@patches@applied\@gobble
 \def\MT@apply@patch#1{%
   \MT@patch@oktrue
   \MT@ifdefined@n@TF{MT@patch@@#1}
-    {\def\MT@patch@name{#1}%
-     \@nameuse{MT@patch@@#1}%
-     \csname MT@patch@\ifMT@patch@ok info\else warn\fi\endcsname{#1}}%
+    {\MT@in@clist{#1}\MT@patches@applied
+     \ifMT@inlist@
+       \MT@warning{Patch `#1' has already been applied,\MessageBreak
+                   cannot reapply it}%
+     \else
+       \def\MT@patch@name{#1}%
+       \g@addto@macro\MT@patches@applied{,#1}%
+       \@nameuse{MT@patch@@#1}%
+       \@nameuse{MT@patch@\ifMT@patch@ok info\else warn\fi}{#1}%
+     \fi}
     {\MT@patch@undef{#1}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@undo@patch}
+%    \begin{macrocode}
+\def\MT@undo@patch#1{%
+  \MT@in@clist{#1}\MT@patches@applied
+  \ifMT@inlist@
+    \@nameuse{MT@patch@undo@@#1}%
+  \else
+    \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
+  \fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -12397,29 +12424,30 @@ end
 %\begin{macro}{\MT@patches@list}
 %\begin{macro}{\MT@nopatches@list}
 % The \opt{patch} and \opt{nopatch} options.
+% Remember chosen option for later (\cmd\relax\ means `all',
+% \cmd\@empty\ means `none').
 %    \begin{macrocode}
 \let\MT@patches@list\relax
-\let\MT@nopatches@list\@gobble
+\let\MT@nopatches@list\@empty
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %    \begin{macrocode}
 \define@key{MT}{patch}[all]{%
   \def\@tempa{#1}%
-  \let\MT@patches@list\@gobble
   \MT@ifstreq\@tempa{all}
-    {\let\MT@patches@list\relax}
+    \relax
     {\MT@ifstreq\@tempa{none}
       {\let\MT@patches@list\@empty}
-      {\g@addto@macro\MT@patches@list{,#1}}}%
+      {\def\MT@patches@list{#1}}}%
 }
 \define@key{MT}{nopatch}[all]{%
   \def\@tempa{#1}%
   \MT@ifstreq\@tempa{all}
-    {\let\MT@patches@list\@empty}
+    {\let\MT@patches@list\relax}
     {\MT@ifstreq\@tempa{none}
       \relax
-      {\g@addto@macro\MT@nopatches@list{,#1}}}%
+      {\def\MT@nopatches@list{#1}}}%
 }
 %    \end{macrocode}
 % We can only apply the patches AtBeginDocument.
@@ -12428,7 +12456,10 @@ end
   \ifx\MT@patches@list\relax
     \let\MT@patches@list\MT@patches@def
   \fi
-  \ifx\MT@nopatches@list\@gobble\else
+  \ifx\MT@nopatches@list\@empty\else
+    \ifx\MT@nopatches@list\relax
+      \let\MT@nopatches@list\MT@patches@def
+    \fi
     \MT@map@clist@c\MT@nopatches@list{%
       \MT@rem@from@clist{#1}\MT@patches@list}%
   \fi
@@ -12785,6 +12816,32 @@ end
 \define@key{MTX}{enable}[]{%
   \MT@info{Reactivate `\MT@MT' package}%
   \let\MT@setupfont\MT@saved@setupfont
+}
+%    \end{macrocode}
+% Apply or revert patches.
+%    \begin{macrocode}
+\define@key{MTX}{patch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    \relax
+    {\MT@ifstreq\@tempa{none}
+      {\let\tempa\@empty}
+      \relax}%
+  \ifx\@tempa\@empty\else
+^^X    \MT@map@clist@c\@tempa{\MT@apply@patch{##1}}%
+^^Q    \MT@warning@nl{Patches require the etex extensions. Ignoring them}%
+  \fi
+}
+\define@key{MTX}{nopatch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    \relax
+    {\MT@ifstreq\@tempa{none}
+      {\let\tempa\@empty}
+      \relax}%
+  \ifx\@tempa\@empty\else
+^^X    \MT@map@clist@c\@tempa{\MT@undo@patch{##1}}%
+  \fi
 }
 %</package>
 %    \end{macrocode}
@@ -17923,7 +17980,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11243}
+% \CheckSum{11307}
 %
 % \Finale
 %
