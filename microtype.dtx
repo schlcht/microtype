@@ -1253,7 +1253,8 @@
 %\medskip
 %\Describe{Option}{patch}{!all,none,:list of patches}
 %\DescribeOption{nopatch}
-% These options are described in section~\ref{sec:pedantic}.
+% These options provide control over various patches.
+% They are described in section~\ref{sec:pedantic}.
 %
 %\medskip
 %\Describe{Option}{config}{:file name}[microtype]
@@ -5445,25 +5446,30 @@ microtype.do_font = do_font
 %\begin{macro}{\ifMT@patch@ok}
 %\begin{macro}{\MT@patch@info}
 %\begin{macro}{\MT@patch@warn}
-% We patch macros to get protrusion.
+% We have to patch some macros to get protrusion right.
 %    \begin{macrocode}
 \newif\ifMT@patch@ok
 \def\MT@patch@info#1{\MT@info@nl{Applying patch `#1'}}
-\def\MT@patch@warn#1{\MT@warning@nl{Unable to apply Patch `#1'}}
+\def\MT@patch@warn#1{\MT@warning@nl{Unable to apply patch `#1'}}
 \def\MT@patch@undef#1{\MT@warning@nl{Patch `#1' undefined}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@patches@def}
 %\begin{macro}{\MT@define@patch}
-% Define a patch (and how to undo it).
+% Define a patch (and how to undo it) and it add to the list of patches.
+% The third argument may contain more revert commands.
 %    \begin{macrocode}
+\let\MT@patches@def\@gobble
 \def\MT@define@patch#1#2#3{%
-  \MT@def@n{MT@patch@#1}{#2}%
+  \g@addto@macro\MT@patches@def{,#1}%
+  \MT@def@n{MT@patch@@#1}{#2}%
   \ifx\relax#3\MT@let@nc{MT@patch@undo@#1}\@empty
   \else\MT@def@n{MT@patch@undo@#1}{#3}\fi
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@append@patch}
 %\begin{macro}{\MT@patch@patch}
@@ -5498,9 +5504,9 @@ microtype.do_font = do_font
 %    \begin{macrocode}
 \def\MT@apply@patch#1{%
   \MT@patch@oktrue
-  \MT@ifdefined@n@TF{MT@patch@#1}
+  \MT@ifdefined@n@TF{MT@patch@@#1}
     {\def\MT@patch@name{#1}%
-     \@nameuse{MT@patch@#1}%
+     \@nameuse{MT@patch@@#1}%
      \csname MT@patch@\ifMT@patch@ok info\else warn\fi\endcsname{#1}}%
     {\MT@patch@undef{#1}}%
 }
@@ -5509,10 +5515,8 @@ microtype.do_font = do_font
 % Patching stuff to get protrusion right:
 %\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
 %\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
-%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
-%                            (reported by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %\begin{itemize}
-% \item \cmd\item, which is a kind of catch-all, as it's internally
+% \item \cmd\item, which is kind of a catch-all, as it's internally
 %    used for most basic environments (\eg, |itemize|, |enumerate|,
 %    but also |quote|, |flushleft| etc.),
 %    \begin{macrocode}
@@ -5537,26 +5541,29 @@ microtype.do_font = do_font
         {\MT@exp@cs\MT@append@patch{##1numberline}\leftprotrusion}}
       \relax}
 %    \end{macrocode}
-% \item \dots, and all others;
-%    \begin{macrocode}
-    {\MT@define@patch{toc}
-      {\MT@append@patch\numberline\leftprotrusion}
-      \relax}
-%    \end{macrocode}
 % \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on.
 %    \begin{macrocode}
-  \MT@with@package@T{tocbasic}
-    {\MT@define@patch{toc}
-      {\MT@append@patch\numberline\leftprotrusion
-       \setuptoc{toc}{noprotrusion}%
-       \setuptoc{lof}{noprotrusion}%
-       \setuptoc{lot}{noprotrusion}}
-      {\unsettoc{toc}{noprotrusion}%
-       \unsettoc{lof}{noprotrusion}%
-       \unsettoc{lot}{noprotrusion}}}
+    {\@ifpackageloaded{tocbasic}
+      {\MT@define@patch{toc}
+        {\MT@append@patch\numberline\leftprotrusion
+         \setuptoc{toc}{noprotrusion}%
+         \setuptoc{lof}{noprotrusion}%
+         \setuptoc{lot}{noprotrusion}}
+        {\unsettoc{toc}{noprotrusion}%
+         \unsettoc{lof}{noprotrusion}%
+         \unsettoc{lot}{noprotrusion}}}
 %    \end{macrocode}
-% \item equation numbers (with or without \pkg{amsmath})
+% \item \dots, and for the rest;
+%    \begin{macrocode}
+      {\MT@define@patch{toc}
+        {\MT@append@patch\numberline\leftprotrusion}
+        \relax}}
+%    \end{macrocode}
+% \item equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
+%       on \cmd\tagform@, so we have to make it use the original definition.
+%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
+%                            (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %    \begin{macrocode}
   \@ifpackageloaded{amsmath}
     {\MT@define@patch{eqnum}
@@ -5824,12 +5831,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{unicode-math}{%
     \MT@let@nc{__um_sub_or_super:n}\relax
   }%
-%    \end{macrocode}
-% Patching stuff to get protrusion right:
-%    \begin{macrocode}
-^^X  \MT@apply@patch{item}%
-^^X  \MT@apply@patch{toc}%
-^^X  \MT@apply@patch{eqnum}%
 %</package>
 }
 %</package|letterspace>
@@ -12392,6 +12393,51 @@ end
   }%
 }
 %    \end{macrocode}
+%\changes{v2.8d}{2021/05/22}{new options: \opt{patch} and \opt{nopatch}}
+%\begin{macro}{\MT@patches@list}
+%\begin{macro}{\MT@nopatches@list}
+% The \opt{patch} and \opt{nopatch} options.
+%    \begin{macrocode}
+\let\MT@patches@list\relax
+\let\MT@nopatches@list\@gobble
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%    \begin{macrocode}
+\define@key{MT}{patch}[all]{%
+  \def\@tempa{#1}%
+  \let\MT@patches@list\@gobble
+  \MT@ifstreq\@tempa{all}
+    {\let\MT@patches@list\relax}
+    {\MT@ifstreq\@tempa{none}
+      {\let\MT@patches@list\@empty}
+      {\g@addto@macro\MT@patches@list{,#1}}}%
+}
+\define@key{MT}{nopatch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    {\let\MT@patches@list\@empty}
+    {\MT@ifstreq\@tempa{none}
+      \relax
+      {\g@addto@macro\MT@nopatches@list{,#1}}}%
+}
+%    \end{macrocode}
+% We can only apply the patches AtBeginDocument.
+%    \begin{macrocode}
+\MT@addto@setup{%
+  \ifx\MT@patches@list\relax
+    \let\MT@patches@list\MT@patches@def
+  \fi
+  \ifx\MT@nopatches@list\@gobble\else
+    \MT@map@clist@c\MT@nopatches@list{%
+      \MT@rem@from@clist{#1}\MT@patches@list}%
+  \fi
+  \ifx\MT@patches@list\@empty\else
+^^X    \MT@map@clist@c\MT@patches@list{\MT@apply@patch{#1}}%
+^^Q    \MT@warning@nl{Patches require the etex extensions. Ignoring them}%
+  \fi
+}
+%    \end{macrocode}
 %
 %\subsubsection{Loading the definition file}
 %
@@ -17877,7 +17923,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11178}
+% \CheckSum{11243}
 %
 % \Finale
 %
