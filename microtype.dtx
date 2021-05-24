@@ -2520,14 +2520,15 @@
 %
 %\medskip\noindent
 % The \microtype\ package will automatically apply a number of patches in order
-% to get protrusion right:
+% to get protrusion right (with dedicated patches for the classes and packages
+% mentioned in parentheses; they may still work with other classes or packages):
 %\begingroup
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
 %     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
-%\def\MTsupp#1{^^A\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
-%   (Supported classes\slash packages: #1)^^A\parfillskip=0pt \finalhyphendemerits=0
+%\def\MTsupp#1{\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
+%   {\smaller(#1)}\parfillskip=0pt \finalhyphendemerits=0
 %}
-%^^A  \MT@patch@undo@item
+%^^A \microtypesetup{nopatch=item}
 % \item[item]  Affects the first line of \cmd\item\kern.6pts in various environments, so that,
 %              \eg, the two\break A's here -- the one in the current line and the one in the
 %              line above -- are neatly aligned; without the patch, the first A would be
@@ -2538,7 +2539,7 @@
 % \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
 %              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
-% \item[eqnum] Protrusion for equation numbers on either side (class options |leqno| or |reqno|).
+% \item[eqnum] Protrusion for equation numbers on either side.
 %              \MTsupp{standard classes, \pkg{amsmath}}
 %\endlist\endgroup
 %
@@ -5532,6 +5533,7 @@ microtype.do_font = do_font
 \def\MT@undo@patch#1{%
   \MT@in@clist{#1}\MT@patches@applied
   \ifMT@inlist@
+    \MT@rem@from@clist{#1}\MT@patches@applied
     \@nameuse{MT@patch@undo@@#1}%
   \else
     \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
@@ -17980,7 +17982,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11307}
+% \CheckSum{11309}
 %
 % \Finale
 %
