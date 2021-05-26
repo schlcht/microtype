@@ -5447,168 +5447,6 @@ microtype.do_font = do_font
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
-%\begin{macro}{\ifMT@patch@ok}
-%\begin{macro}{\MT@patch@info}
-%\begin{macro}{\MT@patch@warn}
-%\begin{macro}{\MT@patch@undef}
-% We have to patch some macros to get protrusion right.
-%    \begin{macrocode}
-\newif\ifMT@patch@ok
-\def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
-\def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
-\def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@patches@def}
-%\begin{macro}{\MT@define@patch}
-% Define a patch (and how to undo it) and it add to the list of patches.
-% The third argument may contain more revert commands.
-%    \begin{macrocode}
-\let\MT@patches@def\@gobble
-\def\MT@define@patch#1#2#3{%
-  \g@addto@macro\MT@patches@def{,#1}%
-  \MT@def@n{MT@patch@@#1}{#2}%
-  \ifx\relax#3\MT@let@nc{MT@patch@undo@@#1}\@empty
-  \else\MT@def@n{MT@patch@undo@@#1}{#3}\fi
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@append@patch}
-%\begin{macro}{\MT@patch@patch}
-% Wrappers around \pkg{etoolbox} commands.
-% We also remember the original command to allow unpatching.
-%    \begin{macrocode}
-\def\MT@append@patch#1#2{%
-  \MT@remember@patch{#1}%
-  \apptocmd#1{#2}\relax\MT@patch@okfalse
-}
-\def\MT@patch@patch#1#2#3{%
-  \MT@remember@patch{#1}%
-  \patchcmd#1{#2}{#3}\relax\MT@patch@okfalse
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@remember@patch}
-% Remember the previous definition and add to undo command.
-%    \begin{macrocode}
-\def\MT@remember@patch#1{%
-  \MT@ifdefined@n@TF{MT@patch@saved@\string#1}\relax
-    {\MT@let@nc{MT@patch@saved@\string#1}#1%
-     \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
-       {\MT@let@cn#1{MT@patch@saved@\string#1}}}%
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@patches@applied}
-%\begin{macro}{\MT@apply@patch}
-% Apply a previously defined patch.
-%    \begin{macrocode}
-\let\MT@patches@applied\@gobble
-\def\MT@apply@patch#1{%
-  \MT@patch@oktrue
-  \MT@ifdefined@n@TF{MT@patch@@#1}
-    {\MT@in@clist{#1}\MT@patches@applied
-     \ifMT@inlist@
-       \MT@warning{Patch `#1' has already been applied,\MessageBreak
-                   cannot reapply it}%
-     \else
-       \def\MT@patch@name{#1}%
-       \g@addto@macro\MT@patches@applied{,#1}%
-       \@nameuse{MT@patch@@#1}%
-       \@nameuse{MT@patch@\ifMT@patch@ok info\else warn\fi}{#1}%
-     \fi}
-    {\MT@patch@undef{#1}}%
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@undo@patch}
-% Undo a patch (if indeed previously applied).
-%    \begin{macrocode}
-\def\MT@undo@patch#1{%
-  \MT@in@clist{#1}\MT@patches@applied
-  \ifMT@inlist@
-    \MT@rem@from@clist{#1}\MT@patches@applied
-    \@nameuse{MT@patch@undo@@#1}%
-  \else
-    \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
-  \fi
-}
-%    \end{macrocode}
-%\end{macro}
-% These are the currently defined patches:
-%\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
-%\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
-%\begin{itemize}
-% \item [|item|] \cmd\item, which is kind of a catch-all, as it's internally
-%    used for most basic environments (\eg, |itemize|, |enumerate|,
-%    but also |quote|, |flushleft| etc.),
-%    \begin{macrocode}
-\MT@addto@setup{%
-  \@ifclassloaded{beamer}
-%    \end{macrocode}
-% \item (but \pkg{beamer} patches it, too);
-%    \begin{macrocode}
-    {\MT@define@patch{item}
-      {\MT@append@patch\beamer@@callorigitem\leftprotrusion
-       \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
-      \relax}
-    {\MT@define@patch{item}
-      {\MT@append@patch\@item\leftprotrusion}
-      \relax}%
-%    \end{macrocode}
-% \item [|toc|] <TOC> and friends; for the \pkg{memoir} class,~\dots
-%    \begin{macrocode}
-  \@ifclassloaded{memoir}
-    {\MT@define@patch{toc}
-      {\MT@append@patch\numberline\leftprotrusion
-       \MT@append@patch\booknumberline\leftprotrusion
-       \MT@append@patch\partnumberline\leftprotrusion
-       \MT@append@patch\chapternumberline\leftprotrusion}%
-      \relax}
-%    \end{macrocode}
-% \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
-%       we additionally have to switch protrusion back on.
-%    \begin{macrocode}
-    {\@ifpackageloaded{tocbasic}
-      {\MT@define@patch{toc}
-        {\MT@append@patch\numberline\leftprotrusion
-         \setuptoc{toc}{noprotrusion}%
-         \setuptoc{lof}{noprotrusion}%
-         \setuptoc{lot}{noprotrusion}}
-        {\unsettoc{toc}{noprotrusion}%
-         \unsettoc{lof}{noprotrusion}%
-         \unsettoc{lot}{noprotrusion}}}
-%    \end{macrocode}
-% \item \dots, and for the rest:
-%    \begin{macrocode}
-      {\MT@define@patch{toc}
-        {\MT@append@patch\numberline\leftprotrusion}
-        \relax}}%
-%    \end{macrocode}
-% \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
-%       on \cmd\tagform@, so we have to make it use the original definition.
-%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
-%                            (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
-%    \begin{macrocode}
-  \@ifpackageloaded{amsmath}
-    {\MT@define@patch{eqnum}
-      {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
-       \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
-       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
-      \relax}
-    {\MT@define@patch{eqnum}
-      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
-       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
-      \relax}%
-}
-%    \end{macrocode}
-%\end{itemize}
 %\begin{macro}{\MT@setupfont@hook}
 % This hook will be executed every time a font is set up (inside a group).
 %
@@ -5860,6 +5698,175 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }%
 %</package>
 }
+%<*package>
+%    \end{macrocode}
+%
+%\subsubsection{Patches}
+%
+%\begin{macro}{\ifMT@patch@ok}
+%\begin{macro}{\MT@patch@info}
+%\begin{macro}{\MT@patch@warn}
+%\begin{macro}{\MT@patch@undef}
+% We have to patch some macros to get protrusion right.
+%    \begin{macrocode}
+\newif\ifMT@patch@ok
+\def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
+\def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
+\def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@patches@def}
+%\begin{macro}{\MT@define@patch}
+% Define a patch (and how to undo it) and it add to the list of patches.
+% The third argument may contain more revert commands.
+%    \begin{macrocode}
+\let\MT@patches@def\@gobble
+\def\MT@define@patch#1#2#3{%
+  \g@addto@macro\MT@patches@def{,#1}%
+  \MT@def@n{MT@patch@@#1}{#2}%
+  \ifx\relax#3\MT@let@nc{MT@patch@undo@@#1}\@empty
+  \else\MT@def@n{MT@patch@undo@@#1}{#3}\fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@append@patch}
+%\begin{macro}{\MT@patch@patch}
+% Wrappers around \pkg{etoolbox} commands.
+% We also remember the original command to allow unpatching.
+%    \begin{macrocode}
+\def\MT@append@patch#1#2{%
+  \MT@remember@patch{#1}%
+  \apptocmd#1{#2}\relax\MT@patch@okfalse
+}
+\def\MT@patch@patch#1#2#3{%
+  \MT@remember@patch{#1}%
+  \patchcmd#1{#2}{#3}\relax\MT@patch@okfalse
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@remember@patch}
+% Remember the previous definition and add to undo command.
+%    \begin{macrocode}
+\def\MT@remember@patch#1{%
+  \MT@ifdefined@n@TF{MT@patch@saved@\string#1}\relax
+    {\MT@let@nc{MT@patch@saved@\string#1}#1%
+     \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
+       {\MT@let@cn#1{MT@patch@saved@\string#1}}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@patches@applied}
+%\begin{macro}{\MT@apply@patch}
+% Apply a previously defined patch.
+%    \begin{macrocode}
+\let\MT@patches@applied\@gobble
+\def\MT@apply@patch#1{%
+  \MT@patch@oktrue
+  \MT@ifdefined@n@TF{MT@patch@@#1}
+    {\MT@in@clist{#1}\MT@patches@applied
+     \ifMT@inlist@
+       \MT@warning{Patch `#1' has already been applied,\MessageBreak
+                   cannot reapply it}%
+     \else
+       \def\MT@patch@name{#1}%
+       \g@addto@macro\MT@patches@applied{,#1}%
+       \@nameuse{MT@patch@@#1}%
+       \@nameuse{MT@patch@\ifMT@patch@ok info\else warn\fi}{#1}%
+     \fi}
+    {\MT@patch@undef{#1}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@undo@patch}
+% Undo a patch (if indeed previously applied).
+%    \begin{macrocode}
+\def\MT@undo@patch#1{%
+  \MT@in@clist{#1}\MT@patches@applied
+  \ifMT@inlist@
+    \MT@rem@from@clist{#1}\MT@patches@applied
+    \@nameuse{MT@patch@undo@@#1}%
+  \else
+    \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+% These are the currently defined patches:
+%\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
+%\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
+%\begin{itemize}
+% \item [|item|] \cmd\item, which is kind of a catch-all, as it's internally
+%    used for most basic environments (\eg, |itemize|, |enumerate|,
+%    but also |quote|, |flushleft| etc.),
+%    \begin{macrocode}
+\MT@addto@setup{%
+%    \end{macrocode}
+% \item (but \pkg{beamer} patches it, too);
+%    \begin{macrocode}
+  \@ifclassloaded{beamer}
+    {\MT@define@patch{item}
+      {\MT@append@patch\beamer@@callorigitem\leftprotrusion
+       \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
+      \relax}
+    {\MT@define@patch{item}
+      {\MT@append@patch\@item\leftprotrusion}
+      \relax}%
+%    \end{macrocode}
+% \item [|toc|] <TOC> and friends; for the \pkg{memoir} class,~\dots
+%    \begin{macrocode}
+  \@ifclassloaded{memoir}
+    {\MT@define@patch{toc}
+      {\MT@append@patch\numberline\leftprotrusion
+       \MT@append@patch\booknumberline\leftprotrusion
+       \MT@append@patch\partnumberline\leftprotrusion
+       \MT@append@patch\chapternumberline\leftprotrusion}%
+      \relax}
+%    \end{macrocode}
+% \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
+%       we additionally have to switch protrusion back on.
+%    \begin{macrocode}
+    {\@ifpackageloaded{tocbasic}
+      {\MT@define@patch{toc}
+        {\MT@append@patch\numberline\leftprotrusion
+         \setuptoc{toc}{noprotrusion}%
+         \setuptoc{lof}{noprotrusion}%
+         \setuptoc{lot}{noprotrusion}}
+        {\unsettoc{toc}{noprotrusion}%
+         \unsettoc{lof}{noprotrusion}%
+         \unsettoc{lot}{noprotrusion}}}
+%    \end{macrocode}
+% \item \dots, and for the rest:
+%    \begin{macrocode}
+      {\MT@define@patch{toc}
+        {\MT@append@patch\numberline\leftprotrusion}
+        \relax}}%
+%    \end{macrocode}
+% \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
+%       on \cmd\tagform@, so we have to make it use the original definition.
+%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
+%                            (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
+%    \begin{macrocode}
+  \@ifpackageloaded{amsmath}
+    {\MT@define@patch{eqnum}
+      {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
+       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
+      \relax}
+    {\MT@define@patch{eqnum}
+      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
+      \relax}%
+}
+%    \end{macrocode}
+%\end{itemize}
+%    \begin{macrocode}
+%</package>
 %</package|letterspace>
 %    \end{macrocode}
 %\changes{v1.6}{2005/01/19}{load a font if none is selected}
