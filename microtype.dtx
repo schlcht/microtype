@@ -5483,25 +5483,24 @@ microtype.do_font = do_font
 % We also remember the original command to allow unpatching.
 %    \begin{macrocode}
 \def\MT@append@patch#1#2{%
-  \MT@let@nc{MT@patch@saved@\string#1}#1%
-  \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
-    {\MT@revert@patch{#1}}%
+  \MT@remember@patch{#1}%
   \apptocmd#1{#2}\relax\MT@patch@okfalse
 }
 \def\MT@patch@patch#1#2#3{%
-  \MT@let@nc{MT@patch@saved@\string#1}#1%
-  \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
-    {\MT@revert@patch#1}%
+  \MT@remember@patch{#1}%
   \patchcmd#1{#2}{#3}\relax\MT@patch@okfalse
 }
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
-%\begin{macro}{\MT@revert@patch}
-% Restore the previous definition.
+%\begin{macro}{\MT@remember@patch}
+% Remember the previous definition and add to undo command.
 %    \begin{macrocode}
-\def\MT@revert@patch#1{%
-  \MT@let@cn#1{MT@patch@saved@\string#1}%
+\def\MT@remember@patch#1{%
+  \MT@ifdefined@n@TF{MT@patch@saved@\string#1}\relax
+    {\MT@let@nc{MT@patch@saved@\string#1}#1%
+     \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
+       {\MT@let@cn#1{MT@patch@saved@\string#1}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5529,6 +5528,7 @@ microtype.do_font = do_font
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@undo@patch}
+% Undo a patch (if indeed previously applied).
 %    \begin{macrocode}
 \def\MT@undo@patch#1{%
   \MT@in@clist{#1}\MT@patches@applied
@@ -5541,33 +5541,35 @@ microtype.do_font = do_font
 }
 %    \end{macrocode}
 %\end{macro}
-% Patching stuff to get protrusion right:
+% These are the currently defined patches:
 %\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
 %\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
 %\begin{itemize}
-% \item \cmd\item, which is kind of a catch-all, as it's internally
+% \item [|item|] \cmd\item, which is kind of a catch-all, as it's internally
 %    used for most basic environments (\eg, |itemize|, |enumerate|,
 %    but also |quote|, |flushleft| etc.),
 %    \begin{macrocode}
 \MT@addto@setup{%
-  \MT@define@patch{item}
-    {\MT@append@patch\@item\leftprotrusion}
-    \relax
-%    \end{macrocode}
-% \item \pkg{beamer} patches \cmd\item\ itself;
-%    \begin{macrocode}
   \@ifclassloaded{beamer}
+%    \end{macrocode}
+% \item (but \pkg{beamer} patches it, too);
+%    \begin{macrocode}
     {\MT@define@patch{item}
       {\MT@append@patch\beamer@@callorigitem\leftprotrusion
-       \MT@append@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
+       \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
+      \relax}
+    {\MT@define@patch{item}
+      {\MT@append@patch\@item\leftprotrusion}
       \relax}%
 %    \end{macrocode}
-% \item <TOC> and friends; for the \pkg{memoir} class,~\dots
+% \item [|toc|] <TOC> and friends; for the \pkg{memoir} class,~\dots
 %    \begin{macrocode}
   \@ifclassloaded{memoir}
     {\MT@define@patch{toc}
-      {\MT@map@clist@n{,book,part,chapter}
-        {\MT@exp@cs\MT@append@patch{##1numberline}\leftprotrusion}}
+      {\MT@append@patch\numberline\leftprotrusion
+       \MT@append@patch\booknumberline\leftprotrusion
+       \MT@append@patch\partnumberline\leftprotrusion
+       \MT@append@patch\chapternumberline\leftprotrusion}%
       \relax}
 %    \end{macrocode}
 % \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
@@ -5583,30 +5585,26 @@ microtype.do_font = do_font
          \unsettoc{lof}{noprotrusion}%
          \unsettoc{lot}{noprotrusion}}}
 %    \end{macrocode}
-% \item \dots, and for the rest;
+% \item \dots, and for the rest:
 %    \begin{macrocode}
       {\MT@define@patch{toc}
         {\MT@append@patch\numberline\leftprotrusion}
-        \relax}}
+        \relax}}%
 %    \end{macrocode}
-% \item equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
+% \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
 %                            (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %    \begin{macrocode}
   \@ifpackageloaded{amsmath}
     {\MT@define@patch{eqnum}
-      {\let\MT@temp\tagform@
-       \MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
+      {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
-       \MT@let@nc{MT@patch@saved@\string\tagform@}\MT@temp
-       \def\eqref##1{\textup{\csname MT@patch@saved@\string\tagform@\endcsname{\ref{##1}}}}}
+       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
       \relax}
     {\MT@define@patch{eqnum}
-      {\let\MT@temp\@eqnnum
-       \MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
-       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}%
-       \MT@let@nc{MT@patch@saved@\string\@eqnnum}\MT@temp}%
+      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
       \relax}%
 }
 %    \end{macrocode}
@@ -17982,7 +17980,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11309}
+% \CheckSum{11299}
 %
 % \Finale
 %
