@@ -2499,6 +2499,8 @@
 % Multiple Master font, you may set expansion limits to up to 4\%.
 %
 %\changes{v2.0}{2006/12/13}{qualify hint about web documents with regard to older \pdftex\ versions}
+%\changes{v2.8d}{2021/05/25}{remove hint about web documents}
+%\iffalse ^^A pdftex 1.40 was released in 2007 ...
 %\paragraph{Don't use font expansion for web documents (with older \pdftex\ versions).}
 % With \pdftex\ versions older than 1.40, each expanded instance of the font
 % will be embedded in the <PDF> file, hence the file size may increase by quite
@@ -2507,6 +2509,7 @@
 % creating files to be distributed electronically. With \pdftex\ 1.40 and \luatex, which
 % use a different technique of expansion, the increase of file size can be
 % neglected.
+%\fi
 %
 %\changes{v2.2}{2007/07/06}{add hint about extra <TOC> leader dot
 %                           (first discovered by \contributor Morten H\o gholm <morten.hoegholm\at latex-project.org>)}
