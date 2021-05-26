@@ -2538,7 +2538,7 @@
 %              \MTsupp{standard classes, \pkg{beamer}}
 % \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
-%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
+%              \MTsupp{standard classes, \pkg{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (only visible with a layout
 %              that has the footnote text set in block paragraphs, like in this document).
 %              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
@@ -5801,15 +5801,20 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
-% These are the currently defined patches:
-%\begin{itemize}
-% \item [|item|] \cmd\item, which is kind of a catch-all, as it's internally
-%    used for most basic environments (\eg, |itemize|, |enumerate|,
-%    but also |quote|, |flushleft| etc.),
+% Unfortunately, \pkg{etoolbox} is a bit bitchy with hashes in arguments
+% (but who would blame it), so I currently see no other solution than to
+% temporarily reset the catcode of the \# character.
 %    \begin{macrocode}
+{\catcode`\#=12
 \MT@addto@setup{%
 %    \end{macrocode}
-% \item (but \pkg{beamer} patches it, too);
+% Now for the actual patches:
+%\begin{description}
+% \item [|item|] \cmd\@item, which is a kind of catch-all, as it's internally
+%    used for most basic environments (\eg, |itemize|, |enumerate|,
+%    but also |quote|, |flushleft| etc.),
+% \begin{itemize}
+% \item \pkg{beamer} also patches it
 %\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
 %    \begin{macrocode}
   \@ifclassloaded{beamer}
@@ -5817,11 +5822,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
       {}}
+%    \end{macrocode}
+% \item standard \LaTeX\ classes
+%    \begin{macrocode}
     {\MT@define@patch{item}
       {\MT@append@patch\@item\leftprotrusion}
       {}}%
 %    \end{macrocode}
-% \item [|toc|] <TOC> and friends; for the \pkg{memoir} class,~\dots
+% \end{itemize}
+% \item [|toc|] <TOC> and friends
+% \begin{itemize}
+%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
 %\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
 %    \begin{macrocode}
   \@ifclassloaded{memoir}
@@ -5829,28 +5840,47 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\MT@append@patch\numberline\leftprotrusion
        \MT@append@patch\booknumberline\leftprotrusion
        \MT@append@patch\partnumberline\leftprotrusion
-       \MT@append@patch\chapternumberline\leftprotrusion}
+       \MT@append@patch\chapternumberline\leftprotrusion
+       \MT@append@patch\cftbookafterpnum\noprotrusion
+       \MT@append@patch\cftpartafterpnum\noprotrusion
+       \MT@append@patch\cftchapterafterpnum\noprotrusion
+       \MT@append@patch\cftsectionafterpnum\noprotrusion
+       \MT@append@patch\cftsubsectionafterpnum\noprotrusion
+       \MT@append@patch\cftsubsubsectionafterpnum\noprotrusion
+       \MT@append@patch\cftparagraphafterpnum\noprotrusion
+       \MT@append@patch\cftsubparagraphafterpnum\noprotrusion
+       \MT@append@patch\cftfigureafterpnum\noprotrusion
+       \MT@append@patch\cfttableafterpnum\noprotrusion}
       {}}
 %    \end{macrocode}
 % \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
-%       we additionally have to switch protrusion back on.
+%       we additionally have to switch protrusion back on; this will
+%       re-introduce the risk of getting an extra leader dot, but I
+%       currently don't see how to easily add \cmd\noprotrusion.
+%       Therefore, I'll skip this patch for now, saving the joy of wading
+%       through |scr| files for later, all the while waiting for somebody
+%       who would understand <KOMA> better than me.
+%\todo{fix KOMA patch (add \cmd\noprotrusion)}
 %    \begin{macrocode}
-    {\@ifpackageloaded{tocbasic}
-      {\MT@define@patch{toc}
-        {\MT@append@patch\numberline\leftprotrusion
-         \setuptoc{toc}{noprotrusion}%
-         \setuptoc{lof}{noprotrusion}%
-         \setuptoc{lot}{noprotrusion}}
-        {\unsettoc{toc}{noprotrusion}%
-         \unsettoc{lof}{noprotrusion}%
-         \unsettoc{lot}{noprotrusion}}}
+%    {\@ifpackageloaded{tocbasic}
+%      {\MT@define@patch{toc}
+%        {\MT@append@patch\numberline\leftprotrusion
+%         \setuptoc{toc}{noprotrusion}%
+%         \setuptoc{lof}{noprotrusion}%
+%         \setuptoc{lot}{noprotrusion}}
+%        {\unsettoc{toc}{noprotrusion}%
+%         \unsettoc{lof}{noprotrusion}%
+%         \unsettoc{lot}{noprotrusion}}}
 %    \end{macrocode}
 % \item \dots, and for the rest:
 %    \begin{macrocode}
       {\MT@define@patch{toc}
         {\MT@append@patch\numberline\leftprotrusion}
-        {}}}%
+        {}}%
 %    \end{macrocode}
+% \item (a patch for \pkg{titletoc} would also be worthwhile~\dots)
+%\todo{patch for \pkg{titletoc}}
+% \end{itemize}
 % \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
@@ -5866,22 +5896,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
        \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
       {}}%
-}
 %    \end{macrocode}
 % \item [|footnote|] footnote text (only visible with block paragraphs).
-%    Unfortunately, \pkg{etoolbox} is a bit bitchy with hashes in arguments
-%    (but who would blame it), so I currently see no other solution than to
-%    temporarily reset the catcode of the \# character.
 %\changes{v2.8d}{2021/05/25}{protrusion patch for footnote text}
 %    \begin{macrocode}
-{\catcode`\#=12
-\MT@addto@setup{%
   \@ifclassloaded{memoir}
     {\MT@define@patch{footnote}
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
       {}}
-    {\@ifpackageloaded{tocbasic}
+    {\@ifpackageloaded{scrbase}
       {\MT@define@patch{footnote}
         {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
         {}}
@@ -5890,7 +5914,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         {}}}%
 }}
 %    \end{macrocode}
-%\end{itemize}
+%\end{description}
 %    \begin{macrocode}
 %</package>
 %</package|letterspace>
@@ -18013,7 +18037,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11315}
+% \CheckSum{11344}
 %
 % \Finale
 %
