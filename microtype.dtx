@@ -2539,6 +2539,9 @@
 % \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
 %              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
+% \item[footnote] Protrusion for the first line of footnote text (only visible with a layout
+%              that has the footnote text set in block paragraphs, like in this document).
+%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
 % \item[eqnum] Protrusion for equation numbers on either side.
 %              \MTsupp{standard classes, \pkg{amsmath}}
 %\endlist\endgroup
@@ -5701,7 +5704,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*package>
 %    \end{macrocode}
 %
-%\subsubsection{Patches}
+%\subsubsection{Protrusion patches}
 %
 %\begin{macro}{\ifMT@patch@ok}
 %\begin{macro}{\MT@patch@info}
@@ -5720,15 +5723,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@patches@def}
 %\begin{macro}{\MT@define@patch}
-% Define a patch (and how to undo it) and it add to the list of patches.
-% The third argument may contain more revert commands.
+% Define a patch and it add to the list of patches.
+% The third argument may contain more revert commands, but will
+% mostly be empty.
 %    \begin{macrocode}
 \let\MT@patches@def\@gobble
 \def\MT@define@patch#1#2#3{%
   \g@addto@macro\MT@patches@def{,#1}%
   \MT@def@n{MT@patch@@#1}{#2}%
-  \ifx\relax#3\MT@let@nc{MT@patch@undo@@#1}\@empty
-  \else\MT@def@n{MT@patch@undo@@#1}{#3}\fi
+  \MT@def@n{MT@patch@undo@@#1}{#3}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -5750,7 +5753,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@remember@patch}
-% Remember the previous definition and add to undo command.
+% Remember the original definition and add to undo command.
 %    \begin{macrocode}
 \def\MT@remember@patch#1{%
   \MT@ifdefined@n@TF{MT@patch@saved@\string#1}\relax
@@ -5798,8 +5801,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 % These are the currently defined patches:
-%\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
-%\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
 %\begin{itemize}
 % \item [|item|] \cmd\item, which is kind of a catch-all, as it's internally
 %    used for most basic environments (\eg, |itemize|, |enumerate|,
@@ -5808,25 +5809,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@addto@setup{%
 %    \end{macrocode}
 % \item (but \pkg{beamer} patches it, too);
+%\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
 %    \begin{macrocode}
   \@ifclassloaded{beamer}
     {\MT@define@patch{item}
       {\MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
-      \relax}
+      {}}
     {\MT@define@patch{item}
       {\MT@append@patch\@item\leftprotrusion}
-      \relax}%
+      {}}%
 %    \end{macrocode}
 % \item [|toc|] <TOC> and friends; for the \pkg{memoir} class,~\dots
+%\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
 %    \begin{macrocode}
   \@ifclassloaded{memoir}
     {\MT@define@patch{toc}
       {\MT@append@patch\numberline\leftprotrusion
        \MT@append@patch\booknumberline\leftprotrusion
        \MT@append@patch\partnumberline\leftprotrusion
-       \MT@append@patch\chapternumberline\leftprotrusion}%
-      \relax}
+       \MT@append@patch\chapternumberline\leftprotrusion}
+      {}}
 %    \end{macrocode}
 % \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on.
@@ -5845,7 +5848,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
       {\MT@define@patch{toc}
         {\MT@append@patch\numberline\leftprotrusion}
-        \relax}}%
+        {}}}%
 %    \end{macrocode}
 % \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
 %       on \cmd\tagform@, so we have to make it use the original definition.
@@ -5857,12 +5860,34 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
        \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
-      \relax}
+      {}}
     {\MT@define@patch{eqnum}
       {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
        \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
-      \relax}%
+      {}}%
 }
+%    \end{macrocode}
+% \item [|footnote|] footnote text (only visible with block paragraphs).
+%    Unfortunately, \pkg{etoolbox} is a bit bitchy with hashes in arguments
+%    (but who would blame it), so I currently see no other solution than to
+%    temporarily reset the catcode of the \# character.
+%\changes{v2.8d}{2021/05/25}{protrusion patch for footnote text}
+%    \begin{macrocode}
+{\catcode`\#=12
+\MT@addto@setup{%
+  \@ifclassloaded{memoir}
+    {\MT@define@patch{footnote}
+      {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+      {}}
+    {\@ifpackageloaded{tocbasic}
+      {\MT@define@patch{footnote}
+        {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
+        {}}
+      {\MT@define@patch{footnote}
+        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
+        {}}}%
+}}
 %    \end{macrocode}
 %\end{itemize}
 %    \begin{macrocode}
@@ -17987,7 +18012,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11299}
+% \CheckSum{11315}
 %
 % \Finale
 %
