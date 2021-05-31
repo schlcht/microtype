@@ -2206,6 +2206,7 @@
 % settings are necessary, which should be specified in the font's configuration
 % file (see next section).
 %
+%\medskip\noindent
 % Additionally, this command provides the possibility to have the desired
 % protrusion calculated automatically based on the difference of character widths.
 % If you precede the base character with either `|(l)|', `|(r)|' or `|(lr)|',
@@ -2706,7 +2707,7 @@
 % Multiple Master font, you may set expansion limits to up to 4\%.
 %
 %\changes{v2.0}{2006/12/13}{qualify hint about web documents with regard to older \pdftex\ versions}
-%\changes{v2.8d}{2021/05/25}{remove hint about web documents}
+%\changes{v2.8d}{2021/05/25}{remove hint about web documents (it's been 14 years~\dots)}
 %\iffalse ^^A pdftex 1.40 was released in 2007 ...
 %\paragraph{Don't use font expansion for web documents (with older \pdftex\ versions).}
 % With \pdftex\ versions older than 1.40, each expanded instance of the font
@@ -3269,7 +3270,7 @@
 %
 %\begin{History}
 %
-%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%\Version{\expandafter\@gobble\fileversion}{\filedate}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
 %        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
 %
