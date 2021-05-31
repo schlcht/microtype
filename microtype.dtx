@@ -81,6 +81,17 @@
 \documentclass[10pt,a4paper]{ltxdoc}
 \makeatletter
 %</driver>
+% Compiling microtype.dtx with the command line option
+% --jobname=microtype-code
+% will produce the document microtype-code.pdf,
+% containing only the Implementation.
+\expandafter\newif\csname ifcodedoc\endcsname
+\edef\@tempa{\jobname}
+\edef\@tempb{\detokenize{microtype-code}}
+\ifx\@tempa\@tempb
+  \codedoctrue
+\fi
+%<docsty>\codedoctrue
 % Let's abolish CM! We use Charter and Letter Gothic
 % (for the pre-built documentation on CTAN):
 \usepackage[LGR,T1]{fontenc}
@@ -91,7 +102,6 @@
  \def\ttdefault{blg}
  {\ttfamily\selectfont
   \DeclareFontShape{T1}{blg}{eb}{n}{<-> ssub * blg/b/n}{}}
-\usepackage{textcomp}
 \usepackage{iftex}
 %<*!docsty>
 \ifxetex\else
@@ -99,7 +109,7 @@
 \fi
 %</!docsty>
 \GetFileInfo{\jobname.dtx}
-\usepackage[expansion=false,kerning=true]{microtype}[\filedate]
+\usepackage{microtype}[\filedate]
  \DeclareMicrotypeSet*[protrusion]
       { doc }
       { encoding = {*, TS1, OMS},
@@ -124,41 +134,23 @@
  \DisableLigatures[?,!]{encoding = *, family = rm* }
 \fi
  % Fraktur sample in section \ref{sec:lettersp}
- \IfFileExists{t1mwr.fd}
-   {\def\textfrak##1{{\fontfamily{mwr}\selectfont ##1}}
-    \ifpdf
-      \SetTracking[no ligatures={f,s,c}]{encoding=T1,family=mwr}{120}
-    \fi}
-   {\IfFileExists{yfonts.sty}
+\IfFileExists{t1mwr.fd}
+  {\def\textfrak##1{{\fontfamily{mwr}\selectfont ##1}}
+   \SetTracking[no ligatures={f,s,c}]{encoding=T1,family=mwr}{120}}
+  {\IfFileExists{yfonts.sty}
      {\usepackage{yfonts}
-      \ifpdf
-        \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{120}
-      \fi}
+      \SetTracking[no ligatures={f,s,c}]{encoding=LY,family=yfrak}{120}}
      {\def\textfrak{\rule{.5em}{1.5ex}\@gobble}}}
-\ifpdftex\else
-  \microtypesetup{kerning=false}
+\ifpdftex
+  \microtypesetup{kerning=true}
 \fi
-\tolerance=700
+\ifluatex % microtype.dtx finally compiles with 0.35!
+  \usepackage{luatex85}
+\fi
 \ifpdf
-  \ifluatex % microtype.dtx finally compiles with 0.35!
-    \def\pdftexversion{200} % in TeX Live 2015, they let this to \luatexversion
-    \let\pdfxform                    \saveboxresource
-    \let\pdflastxform                \lastsavedboxresourceindex
-    \protected\edef\pdfminorversion  {\pdfvariable minorversion}
-    \protected\def\pdfobj            {\pdfextension obj }
-    \protected\def\pdfcatalog        {\pdfextension catalog }
-    \protected\def\pdfannot          {\pdfextension annot }
-    \protected\def\pdfoutline        {\pdfextension outline }
-    \protected\def\pdfmapline        {\pdfextension mapline }
-    \protected\def\pdfglyphtounicode {\pdfextension glyphtounicode }
-    \protected\def\pdflastobj        {\numexpr\pdffeedback lastobj\relax}
-  \fi
-  \ifnum\pdftexversion<140 \else % pdftex 1.40, including textmatrix patch,
-    \microtypesetup{expansion=alltext,step=1} % hence we can activate expansion ...
-    \tolerance=300         % ... and make TeX almost as intolerant as it normally is
-    \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
-    \pdfminorversion=5 % for the OCGs (default since TeX Live 2010)
-  \fi
+  \microtypesetup{expansion=alltext} % with activated expansion ...
+  \tolerance=300 %     ... we can make TeX almost as intolerant as it normally is
+  \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
   % bonus material
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
   \InputIfFileExists{microtype-lssample.dtx}\relax\relax
@@ -179,6 +171,7 @@
  \definecolor{theframe}  {gray}{0.75}
  \definecolor{theshade}  {gray}{0.94}
 \usepackage{graphicx}
+\usepackage{etoolbox}
 % general layout
 \frenchspacing
 \DeclareRobustCommand\textoractual[2]{\ifpdf
@@ -212,32 +205,23 @@
 \addtolength\textheight{\topskip}
 \setlength\topmargin{5pt}
 % sections
-%\def\@seccntformat#1{\setbox0\hbox to0pt{\hss\colorbox{theshade}{\space\color{sectioning}\csname the#1\endcsname\strut\space}\hskip\marginparsep}\ht0=0pt \dp0=0pt \box0}
 \def\@seccntformat#1{\llap{\csname the#1\endcsname\hskip\marginparsep}}
-\def\section{\@startsection {section}{1}{\z@}%
-  {-3.5ex \@plus -1ex \@minus -.2ex}%
-  {2.3ex \@plus.2ex}%
-  {\normalfont\Large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
-\def\subsection{\@startsection{subsection}{2}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\large\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
-\def\subsubsection{\@startsection{subsubsection}{3}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}}
+\def\MTsectionfont{\ifcmr\fontseries{bx}\else\fontseries{eb}\fi\sffamily\color{sectioning}}
+\patchcmd\section      {\bfseries}{\MTsectionfont}\relax\relax
+\patchcmd\subsection   {\bfseries}{\MTsectionfont}\relax\relax
+\patchcmd\subsubsection{\bfseries}{\MTsectionfont}\relax\relax
 \def\paragraph{\@startsection{paragraph}{4}%
   {0pt}{8pt plus 2pt minus 1pt}{-1em}%
   {\normalfont\normalsize\itshape}}
 % title
 \def\@maketitle{%
   \newpage\null\vskip 2em
-  \begin{center}\let\footnote\thanks\sffamily
-    {\huge \@title\par}\vskip 1.5em
-    {\large \parbox{.33\textwidth}{\centering\@author}%
-            \parbox{.33\textwidth}{\centering\@date}}%
-  \vskip2.5em\rule{\textwidth}{.4pt}%
-  \end{center}\par\vskip1.5em}
+  \begin{center}\sffamily
+    {\huge \@title\par\vskip 1.5em}%
+    {\large\hspace{4.5em}\parbox{.33\textwidth}{\@author}%
+                         \parbox{.33\textwidth}{\@date}\par\vskip 1em}%
+    \vskip 2.5em\rule{\textwidth}{.4pt}%
+  \end{center}\par\vskip 1.5em}
 \def\abstractname{}
 % headers
 \headheight=15pt
@@ -255,9 +239,9 @@
 % toc
 \let\l@section@\l@section
 \def\l@section{\vskip -1.25ex\l@section@}
-\def\l@subsection{\vskip.35ex \penalty\@secpenalty \@dottedtocline{2}{1.5em}{2.7em}}
+\def\l@subsection{\vskip.35ex \penalty\@secpenalty \@dottedtocline{2}{1.5em}{2.2em}}
 \def\l@subsubsection#1#2{%
-  \leftskip 4.2em
+  \leftskip 3.7em
   \rightskip 2em plus 2em
   \parindent 0pt
   {\let\numberline\@gobble{\small #1~[#2]}}}
@@ -272,7 +256,7 @@
 \fi
 \def\defspecial@toc#1#2#3{\long\def#1{%
   \ifpdf\phantomsection\specialoutline\pdfbookmark[1]{#2}{#3}\normaloutline\fi
-  \section*{#2}\@mkboth{\textls*[70]{\MakeUppercase{#2}}}{}%
+  \section*{#2}\@mkboth{\textls*[70]{\MakeUppercase{\contentsname}}}{}%
   \@starttoc{#3}}}
 \defspecial@toc\tableofcontents\contentsname{toc}
 \defspecial@toc\listoftables\listtablename{lot}
@@ -280,8 +264,7 @@
 \def\@cite#1#2{#1\if@tempswa, #2\fi}
 \def\thebibliography#1{%
   \section{\refname}%
-  \list{}{\leftmargin 0pt}%
-  \sloppy
+  \list{}{\leftmargin 0pt}% \sloppy
   \clubpenalty 4000
   \@clubpenalty \clubpenalty
   \widowpenalty 4000}
@@ -293,7 +276,7 @@
   \parindent 0pt
   \everypar{\parindent 0pt}%
   \leavevmode\llap{\sffamily\@thefnmark\hskip\marginparsep}#1}
-\renewcommand\footnoterule{%
+\def\footnoterule{%
   \kern-3\p@
   \hrule\@width \columnwidth
   \kern2.6\p@}
@@ -358,19 +341,27 @@
   \vskip-\mt@unvdimen}
 % index and change log
 \IndexPrologue{\section{Index}%
-  Numbers in upright shape refer to the page where the corresponding entry is described
-  (bold face) resp. occurs. Numbers in italics refer to the code line
-  where the corresponding entry is defined (underlined) resp. used.}
-\GlossaryPrologue{\section{Change history}\label{sec:changes}\vspace*{-\multicolsep}}
+  \ifcodedoc
+  Numbers in upright shape refer to the page where the corresponding entry
+  is described (bold face) resp. occurs.
+  Numbers in italics refer to the code line where the corresponding entry
+  is defined (underlined) resp. used.
+  Numbers prefixed with `U' refer to the User manual.
+  \fi
+}
+\GlossaryPrologue{\section{Change history}\label{sec:changes}%
+  \ifcodedoc \PrintHistory \par\medskip\noindent 
+    Numbers prefixed with `U' refer to the User manual.\fi
+  \vspace*{-\multicolsep}}
  %\setcounter{finalcolumnbadness}{100}
  %\raggedcolumns
 \setcounter{IndexColumns}{2}
 \def\IndexMin{12\baselineskip}
 \g@addto@macro\IndexParms{%
-  \footnotesize
+  \ifcodedoc\footnotesize\else\small\fi
   \def\indexspace#1{%
     \end{multicols}
-    \vspace*{-2\baselineskip}%
+    \vspace{-20pt}%
     \begin{multicols}{2}
       \ifpdf{\let\bfseries\empty\let\hfil\empty\phantomsection\pdfbookmark[2]{#1}{#1}}\fi
       \setbox0\hbox{\sffamily\hss#1}%
@@ -393,11 +384,71 @@
         \llap{\mdseries\color{thegrey}\footnotesize
               \csname MTversiondate##2\endcsname\hskip\marginparsep}%
          Version ##2\else ##2\fi}][6\baselineskip]
+      \label{sub:changes:##2}%
       \GlossaryParms \rightskip 15pt plus 5pt
       \let\item\@idxitem
       \ignorespaces \makeatletter \scan@allowedfalse}%
   \def\subitem{\par\hangindent 15pt}%
   \def\subsubitem{\subitem\hspace*{7.5pt}}}
+% change history
+% (lots of the following stolen from Tom Bombadil's answer:
+%  https://tex.stackexchange.com/a/61251/7674)
+%<*!docsty>
+\ifcodedoc
+\usepackage{tikz,pgfcalendar}
+\usetikzlibrary{calc}
+\newcounter{MThistitem}
+\def\MThistlastnode{n-0}
+\pgfmathsetmacro{\MThistfirstyear}{2004} % v1.0 2004/09/11
+\pgfmathsetmacro{\MThistlastyear}{\year}
+\pgfmathsetmacro{\MThistyears}{\MThistlastyear-\MThistfirstyear}
+\pgfmathsetmacro{\MThistvsep}{1.75}
+\pgfmathsetmacro{\MThisthshift}{3}
+\pgfmathsetmacro{\MThistnodewidth}{3mm}
+\def\MThistprepare{%
+  \pgfmathsetmacro{\MThistnodesep}{(\textwidth+\MThisthshift cm-1.5*\MThistnodewidth)/\theMThistitem}
+  \setcounter{MThistitem}{0}
+  \node[inner sep=0pt] (n-0) at (-\MThisthshift,\MThistvsep) {}; }
+\let\MThistshow\@empty
+\def\MThist@versiondate#1#2{% count items and reverse order
+  \gpreto\MThistshow{\MT@doversion{#1}{#2}}
+  \stepcounter{MThistitem}}
+\def\MT@doversion#1#2{%
+  \stepcounter{MThistitem}
+  \node[right=\MThistnodesep,text width=\MThistnodewidth,inner sep=1pt,outer sep=0pt,fill=theshade,align=center]
+       (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{#1\strut}};
+  \draw (n-\theMThistitem.north west) -- (n-\theMThistitem.north east);
+  \draw (n-\theMThistitem.south west) -- (n-\theMThistitem.south east);
+  \MThist@splitdate#2\relax
+  \pgfcalendardatetojulian{\MTYear-\MTMonth-\MTDay}{\@tempcnta}
+  \pgfcalendardatetojulian{\MTYear-1-1}{\@tempcntb}
+  \advance\@tempcnta-\@tempcntb
+  \pgfmathsetmacro{\MTDate}{\MTYear-\MThistfirstyear+\@tempcnta/365}
+  \expandafter\edef\csname MThistnodetime\theMThistitem\endcsname{\MTDate}
+  \edef\MThistlastnode{n-\theMThistitem}}
+\def\MThist@splitdate#1/#2/#3\relax{\def\MTYear{#1}\def\MTMonth{#2}\def\MTDay{#3}}
+\def\MThisttimeline{%
+  \draw[very thick,-latex] (0,0) -- ($(\MThistlastnode.east)-(0,\MThistvsep)+(1,0)$) ;
+  \path (n-\theMThistitem.east); \pgfgetlastxy{\MT@tempdim}{\@tempdima};
+  \pgfmathsetmacro{\MThistxposition}{\MT@tempdim/28.452755}
+  \foreach \x in {1,...,\theMThistitem}{
+    \pgfmathsetmacro{\MThisttimeposition}{\MThistxposition/(\MThistlastyear-\MThistfirstyear)*\csname MThistnodetime\x \endcsname}
+    \draw[rounded corners=2pt] (\MThisttimeposition,0) -- (\MThisttimeposition,0.5) -- ($(n-\x.south)-(0,0.5)$) -- (n-\x.south); }
+  \foreach \x in {0,...,\MThistyears}{
+    \pgfmathsetmacro{\MThistlabelposition}{\MThistxposition/(\MThistlastyear-\MThistfirstyear)*\x}
+    \node[below] (label-\x) at (\MThistlabelposition,-0.2) {\number\numexpr\MThistfirstyear+\x};
+    \draw (label-\x.north) -- ++ (0,0.2); }}
+\def\PrintHistory{%
+  \InputIfFileExists{microtype-hist.tmp}{\let\VersionDate\MThist@versiondate\@firstofone}\@gobble
+   {\hypersetup{linkcolor=thered}
+    \hspace{-\MThisthshift cm}
+    \rlap{\begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont]
+      \MThistprepare
+      \MThistshow
+      \MThisttimeline
+    \end{tikzpicture}}}}
+\fi
+%</!docsty>
 % macro code
 \MacroTopsep=0pt
 \MacrocodeTopsep=3pt
@@ -424,7 +475,7 @@
   \begingroup\MakePrivateLetters\Describe@Package}
 \def\Describe@Package#1{\endgroup
   \marginpar{\raggedleft\PrintDescribeOption{#1.sty}}%
-  \CatIndex{#1}{package}\@esphack\ignorespaces}
+  \CatMainIndex{#1}{package}\@esphack\ignorespaces}
 \def\DescribeValues#1#2{%
   \let\@tempa\@empty \let\Option@default\@empty
   \@for\@tempb:=#2\do{%
@@ -453,18 +504,24 @@
 \def\MaybeDefault#1{\textrm{*}\,#1}
 \def\OptionSep{{\rmfamily, }} \def\MacroSep{\,} \def\EnvironmentSep{\,}
 \def\PrintValues[#1]{{\MacroFont\expandafter\@gobble\@tempa\hfill #1}\\*[.25\baselineskip]}
-\def\CatIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar hyperpage}}
-\def\CatIndeX#1#2#3{\index{#2\actualchar#1\ (#3)\encapchar hyperpage}}
+\def\CatIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar \ifcodedoc\else doc\fi hyperpage}}
+\def\CatIndeX#1#2#3{\index{#2\actualchar#1\ (#3)\encapchar \ifcodedoc\else doc\fi hyperpage}}
+\def\CatMainIndex#1#2{\index{#1\actualchar{\protect\ttfamily #1} (#2)\encapchar docmain}}
 \def\SpecialOptionIndex#1{\@bsphack
   \index{\quotechar/#1% sort options as `Symbols'
-    \actualchar{\protect\ttfamily#1}\encapchar usage}%
-  \CatIndex{#1}{option}\@esphack}
+    \actualchar{\protect\ttfamily#1}\encapchar docmain}%
+  \CatMainIndex{#1}{option}\@esphack}
 \def\SpecialUsageIndex#1{\@bsphack
   \index{\quotechar1% sort commands as `Numbers'
     \actualchar\string\verb
-      \quotechar*\verbatimchar\string#1\verbatimchar\encapchar usage}%
-  {\let\special@index\index\SpecialIndex@{#1}{\encapchar usage}}\@esphack}
-\def\SpecialEnvIndex#1{\CatIndex{#1}{environment}}
+      \quotechar*\verbatimchar\string#1\verbatimchar\encapchar docmain}%
+  {\let\special@index\index\SpecialIndex@{#1}{\encapchar docmain}}\@esphack}
+\def\SpecialEnvIndex#1{\CatMainIndex{#1}{environment}}
+\def\cmd#1{\orig@cs{\expandafter\cmd@to@cs\string#1}}
+\DeclareRobustCommand\orig@cs[1]{\texttt{\char`\\#1}}
+\DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}%
+  {\let\special@index\index
+   \expandafter\SpecialIndex@\expandafter{\csname#1\endcsname}{\encapchar \ifcodedoc\else doc\fi hyperpage}}}
 %</driver|docsty>
 % microtype's index style (microtype-gind.ist):
 %<docist>actual '='
@@ -501,12 +558,6 @@
     \fcolorbox{theframe}{white}{\mdseries\small\strut\color{sectioning}%
       \,\expandafter\@gobble\@tempa\,}}}
 % ... and whistles
-{\catcode`\"\active
- \gdef\verbatim#1
-   {\catcode`\"\active \def"##1"{\colorbox{theshade}{%
-      \textrm{Text lost! Please install the \pkg{listings} package.}}}%
-    \@beginparpenalty\predisplaypenalty\@verbatim\MacroFont
-    \frenchspacing\@vobeyspaces\expandafter\@xverbatim\@gobble}}
 \usepackage{listings}
 \lstset{
   gobble=1,columns=flexible,keepspaces,upquote,escapechar=",
@@ -532,38 +583,26 @@
 }
 \let\verbatim\relax
 \lstnewenvironment{verbatim}[1][]{\lstset{#1}}{}
-\ifpdf
-  \font\dummyspace=dummy-space
-  \pdfglyphtounicode{space}{0020}
-  \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
-    \setbox0\hbox{ }\@tempdima\wd0
-    \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
-    \unhbox0 \kern\@tempdima}
-\fi
 \def\todo#1{\changes{zTo Do}{0000/00/00}{#1}%
   \marginpar{\rightskip2\marginparsep plus1em\hangindent1.5em\hangafter-2
     \smash{\rlap{\raisebox{-3.3ex}{\colorbox{thered}{\Large\color{white}!}}}}%
     \footnotesize\textcolor{thered}{#1}}}
 \let\todo\@gobble
-\newcommand\microtypesample[1]{\begin{quote}#1\end{quote}}
-\let\emptypdfpageresources\relax
 % fancy PDF document
 \ifpdf
-  \ifx\eTeXversion\@undefined \else % errors when not using etex (conflict with multicol)
-    \ifnum\pdftexversion < 140      % no longer required with pdftex 1.40
-      \usepackage{pdfcolmk}
-  \fi\fi
+  \usepackage{xr-hyper}
   \usepackage[bookmarks,bookmarksopen,pdfdisplaydoctitle,
               colorlinks,linkcolor=theblue,citecolor=theblue,urlcolor=thered,
               hyperindex=false,hyperfootnotes=false]
              {hyperref}
+  \externaldocument{microtype\ifcodedoc\else-code\fi}
   \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
-  \usepackage{hyperxmp} % (hyperxmp loads totpages)
+  \usepackage{hyperxmp}                  % (hyperxmp loads totpages)
   \usepackage{attachfile}
   \usepackage{pdfpages}
   \hypersetup{
     keeppdfinfo,
-    pdftitle={The microtype package},
+    pdftitle={The microtype package\ifcodedoc\space-- Implementation\fi},
     pdfauthor={R Schlicht <w.m.l@gmx.net>},
     pdfsubject={Subliminal refinements towards typographical perfection},
     pdfkeywords={TeX, LaTeX, pdfTeX, LuaTeX, XeTeX, typography, micro-typography,
@@ -574,37 +613,50 @@
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\textLF
       This work has the LPPL maintenance status `author-maintained'.},
-    pdflicenseurl={http://www.latex-project.org/lppl/}
+    pdflicenseurl={http://www.latex-project.org/lppl/},
+    pdflang={en-GB}
   }
-  \pdfcatalog{/Lang(en-GB)}
-  \ifnum\pdftexversion < 130 \else
-    \usepackage{hypdestopt}\fi
-  \def\usage#1{\textbf{\hyperpage{#1}}}% for indexing of \DescribeMacro ...
-  \def\changes@#1#2#3{% ... the changes ...
+  % we no longer use {hypdestopt}, as it would break the external references
+  \def\changes@#1#2#3{% recording the changes ...
     \protected@edef\@tempa{\noexpand\glossary{#1\levelchar
       \ifx\saved@macroname\@empty \space\actualchar\generalname
       \else\expandafter\@gobble\saved@macroname\actualchar
         \string\verb\quotechar*\verbatimchar\saved@macroname\verbatimchar\fi
-      :\levelchar #3\encapchar hyperpage}}%
+      :\levelchar #3\encapchar \ifcodedoc\else doc\fi hyperpage}}%
     \@tempa\endgroup\@esphack}
-  \def\theCodelineNo{% ... and everything else
+  \def\MTrmn#1{\ifrmnum{#1}{\rmntonum{#1}}{#1}}
+  % remove double entries (\dochyperpage followed by \docmain)
+  \def\dochyperpage#1{\def\MT@curr@index{#1}\@ifnextchar,\dochyperpage@{\doc@hyperpage{#1}}}
+  \def\dochyperpage@,{\@ifnextchar\docmain\dochyperpage@@\dochyperpage@x}
+  \def\dochyperpage@@\docmain#1{\MT@ifstreq{#1}{\MT@curr@index}\relax\dochyperpage@x\docmain{#1}}
+  \def\dochyperpage@x{\expandafter\doc@hyperpage\expandafter{\MT@curr@index}, }
+  % indexing user doc ...
+  \ifcodedoc
+    \def\doc@hyperpage#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{U\MTrmn{#1}}}
+    \def\docmain#1{\href[page={\MTrmn{#1}}]{microtype.pdf}{\textbf{U\MTrmn{#1}}}}
+    \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
+    \def\SpecialIndex#1{\@bsphack\special@index{%
+       \expandafter\@gobble\string#1\actualchar
+       \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
+       \encapchar codeline}\@esphack}
+  \else
+    % write references to the User manual intermediarily in roman numerals
+    % in order to separate them from those in the Implementation part
+    \def\@wrindex#1{\protected@write\@indexfile{\let\@roman\relax}{\string\indexentry{#1}{\@roman\thepage}}\endgroup\@esphack}
+    \def\HyInd@pagelink#1{\begingroup\toks@={}\edef\x{\MTrmn{#1} }\expandafter\HyInd@removespaces\x\@nil\endgroup}
+    \def\docmain#1{\textbf{\hyperpage{#1}}}
+    \let\doc@hyperpage\hyperpage
+  \fi
+  \def\theCodelineNo{% ... and implementation
     \reset@font\sffamily\color{thegrey}\scriptsize
     \@tempcnta\arabic{CodelineNo}\advance\@tempcnta by\@ne
     \hypertarget{L:\number\@tempcnta}
       {\textoractual{\arabic{CodelineNo}\ }{}}}% don't copy line numbers
-  \def\main#1{\underline{\itshape\hyperlink{L:#1}{#1}}}
   \def\codeline#1{{\itshape\link@sanitize#1-\@nil{#1}}}
   \def\link@sanitize#1-#2\@nil{\link@@sanitize#1,\@nil}
   \def\link@@sanitize#1,#2\@nil{\hyperlink{L:#1}}
-  \def\SpecialIndex#1{\@bsphack\special@index{\expandafter\@gobble
-      \string#1\actualchar
-      \string\verb\quotechar*\verbatimchar\string#1\verbatimchar
-      \encapchar codeline}%
-    \@esphack}
-  \def\ctanurl#1{Available from \acronym{CTAN} at
-                 \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
-  \def\ctanpkgurl#1{Available from \acronym{CTAN} at
-                    \href{https://www.ctan.org/pkg/#1}{\nolinkurl{pkg/#1}}}
+  \def\ctanurl#1{Available from \acronym{CTAN} at \href{http://mirror.ctan.org/#1}{\nolinkurl{/#1}}}
+  \def\ctanpkgurl#1{Available from \acronym{CTAN} at \href{https://www.ctan.org/pkg/#1}{\nolinkurl{pkg/#1}}}
   \DeclareRobustCommand\mailto[1]{\href{mailto:#1}{\nolinkurl{#1}}}
   \def\mailtoRS{\href % some PDF viewers don't like spaces:
     {mailto:Robert\%20Schlicht\%3cw.m.l@gmx.net\%3e?subject=[microtype\%20\fileversion]}
@@ -655,7 +707,7 @@
         /A << /S/SetOCGState /State[/Toggle \csname mt@#1@true\endcsname
                                             \csname mt@#1@false\endcsname] >>}
       #1 \hfill\pdfendlink & \mt@layer{#1true}{\rlap{on}}\mt@layer{#1false}{off}}
-    \renewcommand\microtypesample[1]{%
+    \long\def\microtypesample#1{%
       \begingroup
       \leftskip 15pt \rightskip 15pt
       \parskip   4pt \parindent  0pt
@@ -690,20 +742,31 @@
       \endgroup
       \edef\x{\pdfpageresources{/Properties <<\mt@resources>>}}\x}
     \def\emptypdfpageresources{\pdfpageresources{}}
+    \font\dummyspace=dummy-space
+    \pdfglyphtounicode{space}{0020}
+    \def\lst@outputspace{% copy spaces (from a font that really has a space at x20)
+      \setbox0\hbox{ }\@tempdima\wd0
+      \setbox0\hbox{\dummyspace\char"20}\advance\@tempdima-\wd0
+      \unhbox0 \kern\@tempdima}
   \fi
 \else
-  \usepackage{url}
+  \usepackage{url,xr}
+  \externaldocument{microtype\ifcodedoc\else-code\fi}
   \newcommand\hyperref[2][]{#2}
   \let\hyperpage\@firstofone
+  \let\dochyperpage\@firstofone
+  \let\docmain\main
   \let\texorpdfstring\@firstoftwo
   \def\ctanurl{Available from \acronym{CTAN} at \url}
   \let\ctanpkgurl\ctanurl
   \let\nolinkurl\url
   \let\mailto\texttt
   \def\mailtoRS{\mailto{w.m.l@gmx.net}}
-  \let\href\texttt
+  \let\href\@gobble
   \newcommand\textattachfile[3][]{#3 \textit{[File \file{#2} not attached,
         because \file{microtype.dtx} hasn't been compiled with \pdftex.]}}
+  \long\def\microtypesample#1{\begin{quote}#1\end{quote}}
+  \let\emptypdfpageresources\relax
 \fi
 \ifx\l@ukenglish\@undefined
   \hyphenation{let-ter-spac-ing let-ter-spaced let-ter-space}
@@ -752,15 +815,22 @@
 %\DeclareRobustCommand\@contributor[2]{\href{mailto:#2}{\textit{#1}}}
 %\DeclareRobustCommand\@contributor[2]{\textit{#1}%
 %    \expandafter\index\expandafter{\@getlastname#1 \@nil\actualchar %\href{mailto:#2}{#1}
-%          #1 (contributor)\encapchar hyperpage}}
+%          #1 (contributor)\encapchar \ifcodedoc\else doc\fi hyperpage}}
 %\def\@getlastname#1 #2\@nil{\ifx\@nil#2\@nil#1\else\@getlastname#2\@nil\fi}
 %<*driver>
 \CodelineIndex
 \EnableCrossrefs
 \RecordChanges
-%\OnlyDescription
+\ifcodedoc
+  \let\printlogo\undefined
+  \InputIfFileExists{microtype-hist.tmp}
+    {\def\VersionDate##1##2{\global\expandafter\def\csname MTversiondate##1\endcsname{##2}}}
+    \relax
+\else
+  \OnlyDescription
+\fi
 \begin{document}
-  \DocInput{\jobname.dtx}
+  \DocInput{microtype.dtx}
 \end{document}
 %</driver>
 %</driver|docsty>
@@ -768,6 +838,7 @@
 %
 % ^^A -------------------------------------------------------------------------
 %\GeneralChanges*
+%\ifcodedoc\else
 %\changes{v1.0}{2004/09/11}{Initial version}
 %\changes{v2.0}{2006/12/29}{new package \letterspace: a stripped-down version,
 %                           containing the letterspacing commands only}
@@ -775,11 +846,14 @@
 %\changes{v1.9b}{2006/01/13}{activate expansion in the distributed <PDF>}
 %\changes{v2.2}{2007/04/01}{logo transparency and amusement}
 % ^^A Adobe Reader 8.0 had serious bugs with transparency. Fixed in 8.1.
+%\fi
 %
-% \GetFileInfo{microtype.dtx}
+% \GetFileInfo{\jobname.dtx}
 % \title{\ifx\printlogo\undefined\else\printlogo\fi
-%        \textls[40]{The \microtype\ package}\\[.3\baselineskip]\large
-%        Subliminal refinements towards typographical perfection}
+%        \textls[40]{The \microtype\ package}%
+%        \\[6pt]\large
+%        Subliminal refinements towards typographical perfection
+%        \ifcodedoc\\[9pt]{\Large--- \textls[60]{IMPLEMENTATION} ---}\fi}%
 % \author{R Schlicht\\\mailtoRS}
 % \date{\fileversion\\\filedate}
 %
@@ -809,7 +883,7 @@
 %
 % The alternative package \letterspace, which also works with plain \TeX,
 % provides the user commands for letterspacing only, omitting support for all
-% other extensions (see section~\ref{sec:lettersp}).
+% other extensions (see section~\ref{sec:lettersp}\ifcodedoc\space of the User manual\fi).
 %
 %\bigskip\noindent
 % This package is copyright \textcopyright\ 2004\kern.09em--2021 R Schlicht.
@@ -823,11 +897,25 @@
 %
 %\newpage
 %\emptypdfpageresources ^^A layers of the logo
+%
 %{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\DeclareFontSeriesDefault[sf]{bf}{sb}\fi
 % \tableofcontents
 % \listoftables
+% \vskip2\baselineskip
+% \Large\MTsectionfont
+% \noindent
+% \ifpdf
+%  \ifcodedoc
+%    \href{file:microtype.pdf}{User documentation}
+%  \else
+%    \href{file:microtype-code.pdf}{Implementation}
+%  \fi
+%  \normalfont\normalsize (external document)
+% \fi
 %}
 %
+%
+%\ifcodedoc\else
 %
 %\newpage
 %\section{Micro-typography with \TeX}\label{sec:micro-type}
@@ -913,7 +1001,7 @@
 % influence the interword space. Also, the settings shipped with \microtype\
 % are but a first approximation, and I~would highly welcome corrections and
 % improvements. I suggest reading the reasoning behind the settings in
-% section~\ref{sub:conf-spacing}.
+% the Implementation part, section~\ref{sub:conf-spacing}.
 %
 % The possibility, finally, to \emph{disable all or selected ligatures} is
 % particularly useful for typewriter fonts.
@@ -1200,7 +1288,7 @@
 % When applying font expansion, it is possible to restrict the expansion of some
 % characters that are more sensitive to deformation than others (\eg, the `O',
 % in contrast to the `I'). This is called \emph{selected expansion}, and its
-% usage allows increasing the stretch and shrink limits (to, say, 30 instead
+% use allows increasing the stretch and shrink limits (to, say, 30 instead
 % of 20); however, the gain is limited since at the same time the average
 % stretch variance will be decreased. Therefore, this option is by default
 % set to |false|, so that all characters will be expanded by the same amount.
@@ -1757,7 +1845,7 @@
 %       This method of employing contexts to temporarily apply different
 %       expansion parameters only works with \pdftex\ version 1.40.4 or later,^^A
 %         \footnote{For older versions, a dirty trick is laid out in
-%                   section~\ref{sub:font-setup} on page~\pageref{exp-hack}.}
+%                   the Implementation part, section~\ref{sub:font-setup}, page~\pageref{exp-hack}.}
 %       or with \luatex.
 %       Also note that both \pdftex\ and \luatex\ prohibit the use of fonts with different expansion
 %       limits or steps (even of different fonts) within one paragraph, hence
@@ -2296,7 +2384,7 @@
 % to extend settings defined in a file that would otherwise not be loaded
 % automatically, or would be loaded too late.\footnote{
 %    Font package authors might also want to have a look at the hook
-%    \cs{Microtype@Hook}, described in the implementation part,
+%    \cs{Microtype@Hook}, described in the Implementation part,
 %     section~\ref{sub:hook}.}
 % This command will load the file `|mt-|\meta{font name}|.cfg|'.
 %
@@ -2433,11 +2521,11 @@
 %\medskip
 %\Describe{Macro}{\lslig}{ligature}
 % Since the commands \cs{textls} and \cs{lsstyle} will also evaluate the
-% `\texttt{no ligatures}' key for the respective font, you need not worry
+% `\texttt{no ligatures}' key for the respective font, you usually need not worry
 % about protecting or breaking ligatures with most fonts. However, in certain
 % situations, there may be a conflict of ligatures beginning with the same
-% letter, where some of them should be inhibited, while others should not. When
-% letterspacing text typeset in Fraktur fonts, for example, the ligatures `ch',
+% letter, where some of them should be inhibited, while others should not. For
+% exmaple, when letterspacing text typeset in Fraktur fonts, the ligatures `ch',
 % `ck', `tz' and `sz'~(`\textfrak{sz}') should never be broken up; you also usually
 % see the `st'~(`\textfrak{st}') ligature in letterspaced text. Furthermore, at
 % least the \pkg{yfonts} package realises the short~s~(`\textfrak{s:}') as the
@@ -2714,11 +2802,11 @@
 %\changes{v2.7b}{2018/09/18}{update hint about non-7-bit characters
 %                            (notified by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2018/08/14
-%  \item Even though all configuration files are still provided in legacy (7-bit)
-%        format, using multi-byte (Unicode) characters in the settings should run
+%  \item Even though most configuration files are still provided in legacy (7-bit)
+%        format, using multi-byte (Unicode) characters in the settings will run
 %        smoothly with an up-to-date \LaTeX\ system.
-%        For older systems or documents in legacy encodings, in contrast, this requires
-%        loading the \pkg{inputenc} package first.
+%        For older systems or documents in legacy encodings, in contrast,
+%        the \pkg{inputenc} package must be loaded first.
 %        Furthermore, when using multiple input encodings in a document, 8-bit characters in
 %        the settings will only work reliably if you specify the |inputenc| key.
 %\changes{v2.3a}{2008/02/25}{add hint about \pkg{babel} having to be loaded first}
@@ -2854,14 +2942,14 @@
 % \href{http://mirror.ctan.org/macros/latex/contrib/microtype/}
 %      {\acronym{CTAN}}.
 % For the source code of the logo on the title page and of the letterspacing
-% sample from section~\ref{sub:tracking}, see the appendices~\ref{sec:title-logo}
-% and \ref{sec:letterspace-ill}.
+% sample from section~\ref{sub:tracking}, see the Implementation part,
+% appendices~\ref{sec:title-logo} and \ref{sec:letterspace-ill}.
 %\changes{v2.5a}{2013/05/23}{add notes on typesetting the documentation}
 % If you want to re-typeset the documentation, read the comments at the end of
 % \file{microtype.dtx}.
 %
 %
-%\section{Contributions}\label{sec:contrib}
+%\section{Contributions and feedback}\label{sec:contrib}
 %
 % I would be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
@@ -2901,8 +2989,7 @@
 % interword spacing adjustment and additional character kerning.
 %  \contributor Georg Duffner <g.duffner\at gmail.com> has patiently tested
 % \microtype\ under \xetex\ and \luatex\ with his beautiful OpenType font
-% <EB>~Garamond\footnote{\ctanpkgurl{ebgaramond}, including configuration
-%   files for \microtype.}.
+% <EB>~Garamond.
 % My thanks also go to
 %  \contributor Maciej Eder <maciej_eder\at poczta.onet.pl>
 % for contributing settings for the <QX> encoding, as well as to
@@ -3150,14 +3237,11 @@
 %\end{thebibliography}
 %
 %
-%\section{Short history}
+%\section{Changes}
 %\changes{v1.5}{2004/12/11}{add `Short history'}
 %
-% The comprehensive list of changes can be
-% \expandafter\ifx\csname r@sec:changes\endcsname\relax
-%     obtained by running `\texttt{makeindex \mbox{-s gglo.ist}
-%                                  \mbox{-o microtype.gls} microtype.glo}'\else
-%     found in appendix~\ref{sec:changes}\fi.
+% The comprehensive list of changes can be found in the Implementation part,
+% appendix~\ref{sec:changes}.
 % The following is a list of all changes relevant in the user land; bug and
 % compatibility fixes are swept under the rug. Numbers in brackets indicate
 % the relevant section in this manual.
@@ -3177,7 +3261,11 @@
 %  \vskip\topsep
 %  \nopagebreak}
 %\newcommand\VersionDate[2]{^^A needed in the Change history
-%  \global\expandafter\def\csname MTversiondate#1\endcsname{#2}}
+%  \global\expandafter\def\csname MTversiondate#1\endcsname{#2}^^A
+%  \immediate\write\histtmp{\string\VersionDate{#1}{#2}}}
+%
+%\newwrite          \histtmp
+%\immediate\openout \histtmp=microtype-hist.tmp
 %
 %\begin{History}
 %
@@ -3210,7 +3298,7 @@
 %  \item Allow automatic expansion and letterspacing with \luatex\ in <DVI> mode
 %        (aka. \texttt{dvilualatex})
 %        \refsection{\ref{sub:options-microtype}, \ref{sub:options-expansion}, table~\ref{tab:available-features}}
-%  \item Compatibility with \LaTeX\ 2017/01/01 (fix warnings)
+%^^A \item Compatibility with \LaTeX\ 2017/01/01 (fix warnings)
 %
 %\VersionDate{2.6a}{2016/05/14}
 %
@@ -3229,7 +3317,7 @@
 %  \item Support for protrusion with \xetex\ $\geq$ 0.9997
 %  \item Support for tracking/letterspacing with \luatex\ $\geq$ 0.62
 %  \item Allow context-sensitive setup with \luatex
-%  \item Info if protrusion settings are generic
+%  \item Info instead of warning if protrusion settings are generic
 %  \item Protrusion settings for Latin Modern Roman (OpenType)
 %  \item Protrusion settings for Charis SIL (OpenType)
 %  \item Protrusion settings for Palatino Linotype (OpenType)
@@ -3359,7 +3447,7 @@
 %  \item New option `\opt{unit}' to measure protrusion factors relative to a
 %        dimension instead of the character width
 %        \refsection{\ref{sub:protrusion}}
-%  \item Renamed commands from \cs{..MicroType..} to \cs{..Microtype..}
+%  \item Renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}
 %  \item Protrusion settings for <AMS> math fonts
 %  \item Protrusion settings for Times in <LY1> encoding completed
 %  \item The `|allmath|' font set also includes <U> encoding
@@ -3376,7 +3464,7 @@
 %  \item New command \cs{LoadMicrotypeFile} to load a configuration file manually
 %        \refsection{\ref{sub:config-file}}
 %  \item New command \cs{Microtype@Hook} for font package authors
-%        \refsection{\ref{sub:hook}}
+%        \refsection{Implementation, \ref{sub:hook}}
 %  \item New option `\opt{verbose}|=errors|' to turn all warnings into errors
 %^^A  \item Disable expansion inside \cmd\showhyphens
 %  \item Warning when running in draft mode
@@ -3443,14 +3531,24 @@
 %  \item First <CTAN> release
 %\end{History}
 %
+%\immediate\closeout\histtmp
+%
+%\fi ^^A ifcodedoc
+%
 %
 %\def\AppendixSettings{
-%  \addtolength\textwidth{50pt}
-%  \addtolength{\oddsidemargin}{-50pt}
-%  \setlength{\columnwidth}{\textwidth}
-%  \setlength{\hsize}{\textwidth}
-%  \setlength{\linewidth}{\textwidth}
-%  \footnotesize
+%  \ifcodedoc
+%    \addtocontents{toc}{\protect\pagebreak} ^^A layout
+%    \addtolength\textwidth{50pt}
+%    \addtolength{\oddsidemargin}{-50pt}
+%    \setlength{\columnwidth}{\textwidth}
+%    \setlength{\hsize}{\textwidth}
+%    \setlength{\linewidth}{\textwidth}
+%    \newpage
+%    \footnotesize
+%  \else
+%    \small
+%  \fi
 %}
 %
 %\def\LPPLSettings{
@@ -3472,12 +3570,9 @@
 %\StopEventually{
 %  \GeneralChanges{Documentation}
 %  \ifx\Finale\relax
-%    \newpage
-%    \appendix
 %    \AppendixSettings
 %  \fi
 %  \PrintIndex
-%  \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %}
 %
 % \GeneralChanges*
@@ -3753,13 +3848,15 @@
 \expandafter\let\csname ver@letterspace.sty\endcsname\@empty
 %    \end{macrocode}
 %\begin{macro}{\MT@old@cmd}
-% The old command names had one more hunch.
-%\changes{v1.8}{2005/04/28}{renamed commands from \cs{..MicroType..} to \cs{..Microtype..}}
+% The old command names had one more hunch (|\..MicroType..|).
+% Before finally letting them sink into oblivion, raise an error.
+%\changes{v1.8}{2005/04/28}{renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}}
+%\changes{v2.8d}{2020/04/10}{old command names will raise an error}
 %    \begin{macrocode}
 \def\MT@old@cmd#1#2{%
-  \newcommand*#1{\MT@warning{%
+  \newcommand*#1{\MT@error{%
     \string#1 is deprecated. Please use\MessageBreak
-    \string#2 instead}%
+    \string#2 instead}{As I said}%
     \let #1#2#2}}
 %    \end{macrocode}
 %\end{macro}
@@ -4592,15 +4689,15 @@ end
 %    \end{macrocode}
 %\end{macro}
 % You do not wonder why |\MT@exp@one@c| doesn't exist, do you?
-%\changes{v1.6}{2005/01/19}{use \etex's \cs{ifcsname} and \cs{ifdefined} if defined}
+%\changes{v1.6}{2005/01/19}{use \etex's \orig@cs{ifcsname} and \orig@cs{ifdefined} if defined}
 %\begin{macro}{\MT@ifdefined@c@T}
 %\changes{v1.9a}{2005/11/08}{new macros: true case only}
 %\begin{macro}{\MT@ifdefined@c@TF}
 %\begin{macro}{\MT@ifdefined@n@T}
 %\begin{macro}{\MT@ifdefined@n@TF}
 % Wrapper for testing whether command resp. \cmd\csname\ sequence is defined.
-% If we are running \etex, we will use its primitives \cs{ifdefined} and
-% \cs{ifcsname}, which decreases memory use substantially.
+% If we are running \etex, we will use its primitives \orig@cs{ifdefined} and
+% \orig@cs{ifcsname}, which decreases memory use substantially.
 %    \begin{macrocode}
 \def\MT@ifdefined@c@T#1{%
 ^^X  \ifdefined#1\expandafter\@firstofone\else\expandafter\@gobble\fi
@@ -4880,7 +4977,7 @@ microtype.if_str_eq = if_str_eq
   \fi
 }
 %    \end{macrocode}
-%\todo{think \cs{@nil} should be defined as itself}
+%\todo{think \cmd\@nil\ should be defined as itself}
 %    \begin{macrocode}
 \def\MT@map@clist@c#1{\MT@exp@one@n\MT@map@clist@n#1}
 \def\MT@map@clist@#1,{%
@@ -5149,7 +5246,7 @@ microtype.do_font = do_font
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@scale}
-%\changes{v1.7}{2005/02/12}{new macro: use \etex's \cs{numexpr} if available}
+%\changes{v1.7}{2005/02/12}{new macro: use \etex's \cmd\numexpr\ if available}
 %\changes{v1.8}{2005/03/30}{fix: remove spaces in \nonetex\ variant
 %               (reported by \contributor Mark Rossi <mark.rossi\at de.bosch.com>)}
 %                               ^^A MID: <d6uhag$qoi$1@ns2.fe.internet.bosch.com>
@@ -6650,8 +6747,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.5}{2004/12/10}{don't use \cmd\lpcode\ and \cmd\rpcode\ for the
 %                           calculation}
 % Unlike \file{protcode.tex} and \pkg{pdfcprot}, we do not calculate with
-% \cs{lpcode} resp. \cs{rpcode}, since this would disallow protrusion factors
-% larger than the character width (since \cs{[lr]pcode}'s limit is 1000). Now,
+% \cmd\lpcode\ resp. \cmd\rpcode, since this would disallow protrusion factors
+% larger than the character width (since \verb!\[lr]pcode!'s limit is 1000). Now,
 % the maximum protrusion is \EM{1} of the font.
 %
 % The unit is in \cs{MT@count}, the desired factor in \cmd\@tempb, and the
@@ -6664,7 +6761,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % For really huge fonts (100\,pt or so), an arithmetic overflow could occur
 % with vanilla \TeX. Using \etex, this can't happen, since the intermediate
 % value is 64\,bit, which could only be reached with a character width larger
-% than \cs{maxdimen}.
+% than \cmd\maxdimen.
 %    \begin{macrocode}
   \MT@scale\@tempcntb \@tempb \MT@dimen@six
   \ifnum\@tempcntb=\z@ \else
@@ -8412,8 +8509,8 @@ microtype.add_ls = add_ls
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@if@outer@next}
-% We avoid using \cs{ifx} tests, in case \cs{MT@tr@outer@next} is \cmd\let\ to
-% \cs{fi} etc.
+% We avoid using \orig@cs{ifx} tests, in case \cs{MT@tr@outer@next} is \cmd\let\ to
+% \orig@cs{fi} etc.
 %\changes{v2.5}{2012/02/20}{fix: conflict with \pkg{amsmath}
 %                           (reported by \contributor Scott Pakin <scott\at pakin.org>)}
 %                            ^^A private mail, 2012/02/09
@@ -9153,7 +9250,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@if@list@exists}
-%\changes{v1.7}{2005/02/06}{don't define \cs{MT@\#1@c@name} \cmd\global ly,
+%\changes{v1.7}{2005/02/06}{don't define \cs{MT@pr@c@name} etc. \cmd\global ly,
 %                           here and elsewhere}
 %\begin{macro}{\MT@context}
 %    \begin{macrocode}
@@ -9258,7 +9355,7 @@ end
 %
 %\begin{macro}{\MT@char}
 %\begin{macro}{\MT@char@}
-% The character is in \cs{@tempa}, we want its slot number in \cs{MT@char}.
+% The character is in \cmd\@tempa, we want its slot number in \cs{MT@char}.
 %    \begin{macrocode}
 \def\MT@get@slot{%
   \escapechar`\\
@@ -9290,8 +9387,8 @@ end
 %
 %        If |\|\meta{encoding}|\|\meta{command} (that's \emph{one} command) is
 %        defined, we try to extract the slot number.
-%\changes{v1.7}{2005/02/27}{test whether \cs{}\meta{encoding}\cs{}\meta{...} is defined}
-%\changes{v1.8}{2005/04/04}{test whether \cs{}\meta{encoding}\cs{}\meta{...} is defined
+%\changes{v1.7}{2005/02/27}{test whether \texttt{\string\bslash}\meta{encoding}\texttt{\string\bslash}\meta{...} is defined}
+%\changes{v1.8}{2005/04/04}{test whether \texttt{\string\bslash}\meta{encoding}\texttt{\string\bslash}\meta{...} is defined
 %                           made more robust}
 %
 %        We must be cautious not to stumble over accented characters consisting
@@ -9675,7 +9772,7 @@ end
 % Instead of simply expanding |\|\meta{command}, we construct the command
 % |\|\meta{encoding}|\|\meta{command} and see whether its meaning is
 % \cmd\char|"|\meta{hex number}, which is the case for everything that has
-% been defined with \cs{DeclareTextSymbol} in the encoding definition files.
+% been defined with \cmd\DeclareTextSymbol in the encoding definition files.
 %\changes{v2.0}{2006/09/15}{made even more robust}
 %    \begin{macrocode}
 \def\MT@is@symbol{%
@@ -9691,7 +9788,7 @@ end
     \meaning\expandafter\MT@char\MT@charstring\relax\relax\relax
   \ifnum\MT@char@ < \z@
 %    \end{macrocode}
-%\changes{v2.7c}{2019/08/13}{take care of \cs{remove@tlig}}
+%\changes{v2.7c}{2019/08/13}{take care of \cmd\remove@tlig}
 % In <TU> encoding, some commands (currently, \cmd\textquotesingle, \cmd\textasciigrave\
 % and \cmd\textquotedbl) are defined by means of the auxiliary macro
 % \cmd\remove@tlig, which we take care of here.
@@ -9700,7 +9797,7 @@ end
     \ifnum\MT@char@ < \z@
 %    \end{macrocode}
 %\changes{v2.2}{2007/03/07}{expand once more (for \pkg{frenchpro})}
-% Finally, if it hasn't been defined by \cs{DeclareTextSymbol}, it could be a letter
+% Finally, if it hasn't been defined by \cmd\DeclareTextSymbol, it could be a letter
 % (\eg, \cmd\i, when using \pkg{frenchpro}). ^^A as noted by Bernard Gaulle
 %                                              ^^A private mail, 2005/01/28
 %    \begin{macrocode}
@@ -9836,7 +9933,7 @@ end
 % Again, we construct a control sequence, this time of the form:
 % |\\|\meta{encoding}\allowbreak|\|\meta{accent}|-|\meta{character}, \eg,
 % |\\T1\"-a|, which we then expand once to see if it is a letter (if it has
-% been defined by \cs{DeclareTextComposite}). This should be robust, finally,
+% been defined by \cmd\DeclareTextComposite). This should be robust, finally,
 % especially, since we also \cmd\detokenize\ the input instead of only
 % \cmd\string ifying it. Thus, we will die gracefully even on wrong Unicode
 % input without |utf8|.
@@ -9846,9 +9943,9 @@ end
                     \MT@detokenize@n{#1}-\MT@detokenize@n{#2}\endcsname}%
 %    \end{macrocode}
 % In 2017, \LaTeX\ introduced a new way of declaring accented
-% Unicode commands (\cs{DeclareUnicodeComposite}), which we take care of here
-% (\cs{UnicodeEncodingName} has been introduced at the same time):
-%\changes{v2.7}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cs{DeclareUnicodeComposite})
+% Unicode commands (\cmd\DeclareUnicodeComposite), which we take care of here
+% (\cmd\UnicodeEncodingName\ has been introduced at the same time):
+%\changes{v2.7}{2017/04/29}{compatibility with \LaTeX\ 2017/01/01 (\cmd\DeclareUnicodeComposite)
 %                            (reported by \contributor Ulrike Fischer <news3\at nililand.de> and
 %                             `\contributor jcr <@\at @>')}
 %                             ^^A (1) private mail, 2017/04/25
@@ -9874,7 +9971,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@is@uni@comp}
-% Helper for \cs{DeclareUnicodeComposite}.
+% Helper for \cmd\DeclareUnicodeComposite.
 %    \begin{macrocode}
 \def\MT@is@uni@comp#1\iffontchar#2\else#3\fi\relax{%
   \ifx\\#1\\\edef\MT@char{\iffontchar#2\fi}\fi
@@ -9905,7 +10002,7 @@ end
 % Some warning messages, for performance reasons separated here.
 %\begin{macro}{\MT@curr@list@name}
 %\changes{v1.8}{2005/06/08}{new macro: current list type and name}
-%\changes{v1.9f}{2006/08/03}{fix: \cs{MessageBreak} must not be expanded}
+%\changes{v1.9f}{2006/08/03}{fix: \cmd\MessageBreak\ must not be expanded}
 %\begin{macro}{\MT@set@listname}
 % The type and name of the current list, defined at various places.
 %    \begin{macrocode}
@@ -10646,7 +10743,7 @@ end
     \MT@ifempty\@tempa{\def\@tempa{#1}}\relax
 %    \end{macrocode}
 % Test whether the command is actually defined.
-%\changes{v2.7a}{2017/11/17}{test whether \cs{\dots default} is defined}
+%\changes{v2.7a}{2017/11/17}{test whether \cmd{\...default} is defined}
 %    \begin{macrocode}
     \MT@ifdefined@n@TF{\@tempa default}%
       {\edef\MT@val{\expandafter\noexpand\csname \@tempa default\endcsname}}%
@@ -10780,7 +10877,7 @@ end
 %    \begin{macrocode}
 \def\MT@get@size{%
 %    \end{macrocode}
-% A single star would mean \cs{sizedefault}, which doesn't exist, so we define
+% A single star would mean \cmd\sizedefault, which doesn't exist, so we define
 % it to be \cmd\normalsize.
 %    \begin{macrocode}
   \if*\MT@val\relax
@@ -12773,7 +12870,7 @@ end
 %
 %\subsubsection{Hook for other packages}\label{sub:hook}
 %
-% {\let\special@index\index\SpecialIndex@{\Microtype@Hook}{\encapchar usage}}
+% {\let\special@index\index\SpecialIndex@{\Microtype@Hook}{\encapchar hyperpage}}
 %\begin{macro}{\Microtype@Hook}
 %\changes{v1.7}{2005/03/22}{new command for font package authors}
 % This hook may be used by font package authors, \eg, to declare alias fonts. If
@@ -12800,13 +12897,13 @@ end
 %    {\let\Microtype@Hook\MinionPro@MT@Hook}
 %    {\g@addto@macro\Microtype@Hook{\MinionPro@MT@Hook}}}
 %\end{verbatim}
-% \cs{MicroType@Hook} with a capital |T| (which only existed in version 1.7) is
-% provided for compatibility reasons. At some point in the future, it will no
-% longer be available, hence it should not be used.
+% \orig@cs{MicroType@Hook} with a capital |T| (which only existed in version 1.7)
+% is now officially deprecated.
 %    \begin{macrocode}
-\MT@ifdefined@c@T\MicroType@Hook{\MT@warning{%
+\MT@ifdefined@c@T\MicroType@Hook{\MT@error{%
   Command \string\MicroType@Hook\space is deprecated.\MessageBreak
-      Use \string\Microtype@Hook\space instead}\MicroType@Hook}
+  Use \string\Microtype@Hook\space instead}
+  {You might want to inform the font package authors.}\MicroType@Hook}
 \MT@ifdefined@c@T\Microtype@Hook\Microtype@Hook
 %    \end{macrocode}
 %\end{macro}
@@ -13724,7 +13821,7 @@ end
   \fi
 }
 %    \end{macrocode}
-% Now we close the \cs{fi} from \cs{ifMT@draft}.
+% Now we close the \orig@cs{fi} from \cs{ifMT@draft}.
 %    \begin{macrocode}
 \MT@addto@setup{\fi
 %    \end{macrocode}
@@ -17987,24 +18084,28 @@ end
 %\ifpdf
 %\GeneralChanges{Documentation}
 %^^A The OpenType configuration files are outsourced to an external file,
-%^^A since they are typeset with \luatex.
+%^^A since they have to be typeset with \luatex.
 %
-%\newwrite          \utftmp
-%\immediate\openout \utftmp=microtype-utf.tmp
-%\immediate\write   \utftmp{\string\setcounter{section}{\the\c@section}}
-%\immediate\write   \utftmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
-%\immediate\write   \utftmp{\string\setcounter{page}{\the\c@page}}
-%\immediate\write   \utftmp{\string\setcounter{footnote}{\the\c@footnote}}
-%\immediate\closeout\utftmp
+%\begingroup
+%\def\setcounter#1#2{\expandafter\ifnum\csname c@#1\endcsname=#2 \else\@tempswatrue\fi}
+%\InputIfFileExists{microtype-code.tmp}\@tempswafalse\@tempswatrue
+%\if@tempswa
+%\newwrite          \codetmp
+%\immediate\openout \codetmp=microtype-code.tmp
+%\immediate\write   \codetmp{\string\setcounter{section}{\the\c@section}}
+%\immediate\write   \codetmp{\string\setcounter{CodelineNo}{\the\c@CodelineNo}}
+%\immediate\write   \codetmp{\string\setcounter{page}{\the\c@page}}
+%\immediate\write   \codetmp{\string\setcounter{footnote}{\the\c@footnote}}
+%\immediate\closeout\codetmp
+%\fi
+%\endgroup
 %
-%\InputIfFileExists{microtype.tmp}\relax{\def\utfsectioni{1}\def\utfsectionii{1}}
+%\InputIfFileExists{microtype-utf.tmp}
+%  {\def\UTF@setbookmarks##1{\def\UTFBookmarks{##1}}}
+%  {\let\UTFBookmarks\@empty}
 %
 %\IfFileExists{microtype-utf.pdf}
-%   {\includepdf[pages=-,
-%                addtotoc={1,section,1,OpenType configuration files,sec:OpenType,
-%                          \utfsectioni,subsection,2,Character inheritance,sub:OT-inheritance,
-%                          \utfsectionii,subsection,2,Character protrusion,sub:OT-protrusion}]
-%               {microtype-utf.pdf}}
+%   {\edef\x{\noexpand\includepdf[pages=-,addtotoc={\UTFBookmarks}]{microtype-utf.pdf}}\x}
 %   {\section{OpenType configuration settings}
 %       To view the OpenType configuration settings, first typeset
 %       \file{microtype-utf.dtx} with \luatex.}
@@ -18168,29 +18269,30 @@ normal, and shrunk by 5\%:
 %
 % \Finale
 %
+% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
+%
 \endinput
 %
 % -----------------------------------------------------------------------------
 
  *** Typesetting the documentation ***
 
-  The documentation of this package (microtype.pdf) can be found on CTAN,
-  if it isn't already installed in your TeX system, so there should be no
-  need to re-typeset it.
+  The documentation of this package (microtype.pdf and microtype-code.pdf)
+  can be found on CTAN, if it isn't already installed in your TeX system,
+  so there should be no need to re-typeset it.
   If you still want to do this, there are some requirements to consider
   and some steps to follow:
 
-#  (1) In microtype.ins, uncomment the lines:
+#  (1) In microtype.ins, uncomment the lines
 %\generate{\makefile{microtype-gind.ist}{docist}}
 #      and
 %\generate{\makefile{microtype-doc.sty}{docsty}}
-#  (2) Install the package by running:
+#  (2) Install the package by running
 pdflatex microtype.ins
 #  (3) Extract microtype-lssample.dtx and microtype-logo.dtx from
 #      microtype.pdf (ie., from the file you are about to recreate ...).
 #      This can be done, eg., with Adobe Reader or with the pdftk tool.
-#  (4) Run
-pdflatex microtype.dtx
+#  (4) To typeset the user documentation (microtype.pdf) run
 pdflatex microtype.dtx
 #      [ The following fonts are required:
 #        - Bitstream Charter
@@ -18200,11 +18302,11 @@ pdflatex microtype.dtx
 #        - Adobe Zapf Chancery (alternatively URW Zapf Chancery)
 #        - Adobe Kepler MM (for microtype-logo.dtx, input by microtype.dtx)
 #        - Adobe Caslon (for microtype-lssample.dtx, input by microtype.dtx) ]
-#  (5) Run
+#  (5) To create the index run
 makeindex -s microtype-gind.ist microtype
-#  (6) Run
-makeindex -s gglo.ist -o microtype.gls microtype.glo microtype-utf.glo
-#  (7) Run
+#  (6) To typeset the implementation documentation (microtype-code.pdf) run
+pdflatex --jobname=microtype-code microtype.dtx
+#  (7) To typeset the OpenType configuration (to be included in microtype-code.pdf) run
 lualatex microtype-utf.dtx
 #      [ The following fonts are required:
 #        - Bitstream Charter (Type 1)
@@ -18212,15 +18314,15 @@ lualatex microtype-utf.dtx
 #        - Adobe Source Sans Pro (Type 1)
 #        - Latin Modern Roman (OpenType)
 #        - Charis SIL (OpenType)
-#        - TeX Gyre Pagella (OpenType) ]
-#  (8) Run
-pdflatex microtype.dtx
-#  (9) Run
-makeindex -s microtype-gind.ist microtype
-# (10) Run
-makeindex -s gglo.ist -o microtype.gls microtype.glo microtype-utf.glo
-# (11) Run
-pdflatex microtype.dtx
+#        - TeX Gyre Pagella (OpenType)
+#        - Lato (OpenType) ]
+#  (8) To create the code index and history run
+makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
+makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
+#
+# All three output files (microtype.pdf, microtype-code.pdf, microtype-utf.pdf)
+# are interdependent, so you need to repeat steps 4 to 8 until all Rerun
+# warnings have been resolved.
 #
 # That's it, although I still may have forgotten some things ...
 %

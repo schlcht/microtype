@@ -12,9 +12,9 @@ help:
 	@echo ' '
 	@echo '            help - (this message)'
 	@echo '          unpack - extract all files'
-	@echo '             doc - compile documentation'
-	@echo '            docc - compile base documentation only'
-	@echo '          utfdoc - compile Unicode documentation'
+	@echo '             doc - compile user and code documentation'
+	@echo '         userdoc - compile user documentation'
+	@echo '         codedoc - compile code documentation'
 	@echo '            ctan - generate archive for CTAN'
 	@echo '             all - unpack & doc'
 	@echo '           world - all & ctan'
@@ -32,17 +32,20 @@ help:
 	@echo ' test... COMPAT=<TeX Live> - test with other TeX Live release'
 	@echo ' test... DEV=1 - test with development version'
 
-NAME = microtype
-DOC  = $(NAME).pdf
-INS  = $(NAME).ins
-DTX  = $(NAME).dtx
-README = README.md
-UTFDOC = $(NAME)-utf.pdf
-UTFDTX = $(NAME)-utf.dtx
-ALLDTX = $(DTX) $(UTFDTX)
+NAME    = microtype
+NAMEC   = $(NAME)-code
+NAMEU   = $(NAME)-utf
+DOC     = $(NAME).pdf
+CODEDOC = $(NAMEC).pdf
+UTFDOC  = $(NAMEU).pdf
+INS     = $(NAME).ins
+DTX     = $(NAME).dtx
+UTFDTX  = $(NAMEU).dtx
+ALLDTX  = $(DTX) $(UTFDTX)
+README  = README.md
 
 # Files grouped by generation mode
-COMPILED = $(DOC)
+COMPILED = $(DOC) $(CODEDOC)
 UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   microtype-pdftex.def microtype-luatex.def microtype-xetex.def \
 	   mt-bch.cfg mt-blg.cfg mt-cmr.cfg mt-euf.cfg mt-eur.cfg mt-eus.cfg \
@@ -75,20 +78,25 @@ CTAN_ZIP = $(NAME).zip
 TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
-DO_PDFLATEX  = pdflatex --interaction=nonstopmode $< $(REDIRECT)
-DO_LUALATEX  = lualatex --interaction=nonstopmode $< $(REDIRECT)
-DO_MAKEINDEX = touch $(subst .dtx,.glo,$(ALLDTX)) && \
-	       makeindex -s microtype-gind.ist $(subst .dtx,,$<) $(REDIRECT)  2>&1 && \
-	       makeindex -s gglo.ist -t $(subst .dtx,.glg,$<) -o $(subst .dtx,.gls,$<) \
-	                 $(subst .dtx,.glo,$(ALLDTX)) $(REDIRECT)  2>&1
+DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
+DO_MAKEINDEX_DOC  = \
+   makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
+   echo "Creating user index"
+DO_MAKEINDEX_CODE = \
+   makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
+   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1 && \
+   echo "Creating code index"
 
-all: $(GENERATED)
-doc:    make-doc-sty $(COMPILED) make-normal-sty
-utfdoc: make-doc-sty $(UTFDOC)   make-normal-sty
-unpack: docstrip.cfg $(UNPACKED) 
-ctan:   $(CTAN_ZIP)
-tds:    $(TDS_ZIP)
-world:  all ctan
+all:     $(GENERATED)
+doc:     make-doc-sty $(COMPILED) make-normal-sty
+userdoc: make-doc-sty $(DOC)      make-normal-sty
+codedoc: make-doc-sty $(CODEDOC)  make-normal-sty
+unpack:  docstrip.cfg $(UNPACKED)
+ctan:    $(CTAN_ZIP)
+tds:     $(TDS_ZIP)
+world:   all ctan
 
 .PHONY: help install sty-install manifest mostlyclean clean \
 	test testerrors testunknown testoutput
@@ -113,49 +121,87 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-doc-sty
 	@touch make-normal-sty
 
-$(DOC): $(DTX) $(UTFDOC) 
-	@echo "Compiling documentation (including Unicode part)"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX)
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
-		echo "Re-compiling documentation" ; \
-		$(DO_MAKEINDEX) ; \
-		$(DO_PDFLATEX) ; \
-	done
-	@touch $(NAME)-utf.tmp
-	@touch $(UTFDOC)
-	@touch $(DOC)
+define rerun-check
+@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
+   echo "Re-compiling Unicode documentation" ; \
+   $(DO_LUALATEX) ; \
+done
+@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
+   shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx > $(NAMEC)-stamp2 ; \
+   if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
+   else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
+   echo "Re-compiling code documentation" ; \
+   $(DO_PDFLATEX_CODE) ; \
+   shasum $(NAME).idx > $(NAME)-stamp2 ; \
+   if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
+   else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
+   echo "Re-compiling user documentation" ; \
+   $(DO_PDFLATEX_DOC) ; \
+done
+@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
+   shasum $(NAME).idx > $(NAME)-stamp2 ; \
+   if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
+   else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
+   echo "Re-compiling user documentation" ; \
+   $(DO_PDFLATEX_DOC) ; \
+done
+endef
 
-$(UTFDOC): $(UTFDTX) $(NAME)-utf.tmp 
+$(DOC): $(DTX) $(NAME).ind
+	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
+		echo "Re-compiling user documentation" ; \
+		$(DO_PDFLATEX_DOC) ; \
+	fi
+
+$(CODEDOC): $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
+	@echo "Compiling code documentation (including Unicode part)"
+	@$(DO_PDFLATEX_CODE)
+	$(rerun-check)
+
+$(UTFDOC): $(UTFDTX) $(NAMEC).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
+	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; then \
+		echo "Re-compiling Unicode documentation" ; \
+		$(DO_LUALATEX) ; \
+	fi
 
-# microtype-utf.tmp is used to communicate counters
-# from microtype.dtx to microtype-utf.dtx
-$(NAME)-utf.tmp: $(DTX) 
-	@echo "Compiling documentation (without Unicode part)"
-	-@$(DO_PDFLATEX)
-	@if ! grep -i '* Checksum passed *' $(NAME).log > /dev/null ; then \
-		if grep 'has no checksum\|Checksum not passed' $(NAME).log ; then \
+$(NAME).idx: $(DTX)
+	@echo "Compiling user documentation (idx)"
+	@$(DO_PDFLATEX_DOC)
+
+$(NAME).ind: $(NAME)-stamp
+	@$(DO_MAKEINDEX_DOC)
+
+$(NAME)-stamp: $(NAME).idx
+	@shasum $^ > $@2
+	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
+
+$(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
+	@$(DO_MAKEINDEX_CODE)
+
+$(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
+	@shasum $^ > $@2
+	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
+
+$(NAMEC).glo $(NAMEC).idx: $(DTX)
+	@$(DO_PDFLATEX_CODE)
+
+# microtype-code.tmp is used to communicate counters
+# from microtype.dtx (code) to microtype-utf.dtx
+$(NAMEC).tmp:
+	@echo "Compiling code documentation (for Unicode part)"
+	@$(DO_PDFLATEX_CODE)
+	@if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
+		if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
 			false ; \
 		fi ; \
 	fi
-	@echo "Re-compiling documentation"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX)
-
-docc:	$(DTX)
-	@echo "Compiling documentation"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX) -draft
-	@echo "Re-compiling documentation"
-	@$(DO_MAKEINDEX)
-	@$(DO_PDFLATEX)
-	@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
-		echo "Re-compiling documentation" ; \
-		$(DO_MAKEINDEX) ; \
-		$(DO_PDFLATEX) ; \
-	done
+	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; then \
+		echo "Re-compiling code documentation (for Unicode part)" ; \
+		$(DO_MAKEINDEX_CODE) ; \
+		$(DO_PDFLATEX_CODE) ; \
+	fi
 
 $(UNPACKED): $(INS) $(DTX) docstrip.cfg 
 	@echo "Extracting package"
@@ -225,7 +271,7 @@ manifest: $(SOURCE)
 
 mostlyclean:
 	@$(RM) -- *.log *.aux *.toc *.idx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
-		docstrip.cfg $(UTFDOC) microtype-doc.sty microtype-gind.ist make-*-sty 
+		docstrip.cfg $(UTFDOC) microtype-doc.sty microtype-gind.ist make-*-sty *-stamp
 
 clean: mostlyclean
 	@$(RM) -- $(GENERATED) $(ZIPS)

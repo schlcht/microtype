@@ -36,6 +36,7 @@ justification.png
 
 make-normal-sty
 make-doc-sty
+*-stamp
 
 # distribution
 *.pdf
