@@ -103,7 +103,7 @@
  \DeclareMicrotypeSet*[protrusion]
       { doc }
       { encoding = {*, TS1, OMS},
-        family   = {rm*, tt*},
+        family   = {rm*, sf*, tt*},
         size     = {footnotesize, small, normalsize} }
  \SetProtrusion
       { encoding = OMS,
@@ -516,11 +516,11 @@
     \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
     \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
     \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
-    \textls,\lsstyle,\lslig,\Microtype@Hook},
+    \textls,\lsstyle,\lslig,\leftprotrusion,\rightprotrusion,\Microtype@Hook},
   keywordstyle=[0]\color{thegreen},
   keywords=[1]{protrusion,expansion,activate,DVIoutput,draft,final,verbose,
     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
-    spacing,letterspace,babel,context,
+    spacing,letterspace,babel,context,patch,nopatch,
    %defersetup,copyfonts,enable,disable,% undocumented
     no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
   keywordstyle=[1]\color{thered},
@@ -1251,6 +1251,12 @@
 % for further information.
 %
 %\medskip
+%\Describe{Option}{patch}{!all,none,:list of patches}
+%\DescribeOption{nopatch}
+% These options provide control over various patches.
+% They are described in section~\ref{sec:pedantic}.
+%
+%\medskip
 %\Describe{Option}{config}{:file name}[microtype]
 % Various settings for this package will be loaded from a main configuration
 % file, by default \file{microtype.cfg} (see section~\ref{sub:config-file}).
@@ -1323,6 +1329,8 @@
 % |compatibility| or |nocompatibility|, and \key{tracking}, \key{kerning} and
 % \key{spacing} with the admissible values |true| or |false|.
 % Passing the name of a font set is not allowed.
+% Additionally, it accepts the options \key{patch} and \key{nopatch}
+% (see section~\ref{sec:pedantic}).
 % Using this command, you could for instance temporarily disable font expansion
 % by saying:
 %\begin{verbatim}
@@ -2502,6 +2510,92 @@
 %   ^^A Otherwise, it won't work at all
 %
 %
+%\section{Being pedantic about protrusion}\label{sec:pedantic}
+%
+% Protrusion works well in running paragraphs, but may also be desirable
+% in situations where \TeX, in contrast to humans, would not see a margin,
+% \eg, in |itemize| or |tabular| environments.
+% The \microtype\ package offers two commands that may be inserted at the
+% beginning or end of a line to make the first respectively last glyph
+% protrude as if it were located at a margin:
+%
+%\medskip
+%\Describe{Macro}{\leftprotrusion}{general text}
+% This command will add left protrusion for the following text.
+% You may also just say \cs{leftprotrusion} (without an argument), and
+% \microtype\ will gather the next glyph (possibly a ligature) before
+% adding protrusion on its left hand side.
+% For instance, you could add this command to a tabular cell definition
+% (using the \pkg{array} package):
+%\begin{verbatim}
+%\begin{tabular}{>{\leftprotrusion}p{8cm}r}
+%\end{verbatim}
+% in order to get protrusion at the beginning of the |p| cell.
+%
+%\medskip
+%\Describe{Macro}{\rightprotrusion}{general text}
+% will typeset \meta{general text} and then add protrusion on the right side.
+% (Unfortunately, \TeX\ cannot look backwards at what it has already typeset,
+% so this command requires that the text be given in the argument.)
+%
+%\medskip\noindent
+%\DescribeMacro{\noprotrusion}
+% is provided by \LaTeX\ itself. When added to the beginning or end of a line,
+% this command will prevent protrusion at the respective margin.
+%
+%\medskip\noindent
+% The \microtype\ package will automatically apply a number of patches in order
+% to get protrusion right (with dedicated patches for the classes and packages
+% mentioned in parentheses; they may still work with other classes or packages):
+%\begingroup
+%\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
+%     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
+%\def\MTsupp#1{\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
+%   {\smaller(#1)}\parfillskip=0pt \finalhyphendemerits=0
+%}
+%^^A \microtypesetup{nopatch=item}
+% \item[item]  Affects the first line of \cmd\item\kern.6pts in various environments, so that,
+%              \eg, the two\break A's here -- the one in the current line and the one in the
+%              line above -- are neatly aligned; without the patch, the first A would be
+%              slightly shifted to the right.
+%              This patch also affects environments such as |quote| or |flushleft|, which are
+%              implemented in \LaTeX\ as lists with an implicit empty item.
+%              \MTsupp{standard classes, \pkg{beamer}}
+% \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
+%              and similar Lists of \meta{Things}.
+%              \MTsupp{standard classes, \pkg{memoir}}
+% \item[footnote] Protrusion for the first line of footnote text (only visible with a layout
+%              that has the footnote text set in block paragraphs, like in this document).
+%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
+% \item[eqnum] Protrusion for equation numbers on either side.
+%              \MTsupp{standard classes, \pkg{amsmath}}
+%\endlist\endgroup
+%
+%\medskip
+%\Describe{Option}{patch}{!all,none,:list of patches}
+%\DescribeOption{nopatch}
+% By default, all of the above patches will be applied. Should this not be desired,
+% or in case you are running into problems, you may prevent or undo the patches,
+% either in the package options:
+%\begin{verbatim}
+%\usepackage[nopatch=toc]{microtype}
+%\end{verbatim}
+% or, possibly temporarily, within the document:
+%\begin{verbatim}
+%\microtypesetup{nopatch=item}
+%\end{verbatim}
+%
+%\medskip\noindent
+%\leavevmode\llap{\itshape\color{thegrey}Help wanted!\hskip\marginparsep}^^A
+% These pedantic protrusion patches are work-in-progress. I suspect many use cases
+% where they either do not work as advertised, or worse, where they may even lead to errors.
+% Also, I am aware that there are myriads of classes and packages out there that
+% modify internal commands in their own way, possibly rendering the patches useless.
+% Finally, there will certainly be many more situations where protrusion would be appropriate.
+% I would be happy to include more patches, or enhance the existing ones,
+% so I welcome any suggestions and problem reports you may have.
+%
+%
 %\section{Hints and caveats}\label{sec:caveats}
 %
 %\paragraph{Use settings that match your font.}
@@ -2539,6 +2633,9 @@
 %\changes{v2.2}{2007/07/06}{add hint about extra <TOC> leader dot
 %                           (first discovered by \contributor Morten H\o gholm <morten.hoegholm\at latex-project.org>)}
 %                                                                                       ^^A private mail, 2006/08/26
+%\changes{v2.8d}{2021/05/15}{remove hint about extra <TOC> leader dot
+%                            (fixed in \LaTeX)}
+%\iffalse
 %\paragraph{You might want to disable protrusion in the Table of Contents.}
 % In unfortunate situations, enabled protrusion might internally alter the line
 % length in the <TOC> and similar lists in such a way that an excess leader dot
@@ -2548,6 +2645,7 @@
 %\tableofcontents
 %\microtypesetup{protrusion=true}
 %\end{verbatim}
+%\fi
 %
 %\changes{v1.9}{2005/07/10}{add hint about \texttt{verbatim} environment}
 %\todo{option to patch \texttt{verbatim}?} ^^A for Karl
@@ -2763,7 +2861,7 @@
 % \file{microtype.dtx}.
 %
 %
-%\section{Contributions}
+%\section{Contributions}\label{sec:contrib}
 %
 % I would be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
@@ -2926,6 +3024,7 @@
 %  \contributor Aman Mehra        <reportaman\at gmail.com>, ^^A also https://tex.stackexchange.com/users/192717/reportaman
 %  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>, ^^A also https://tex.stackexchange.com/users/176404/d909
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
+%  \contributor Holger Gerhardt   <holger.gerhardt\at uni-bonn.de>,
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
 %  \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com>,
 % `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
@@ -3083,6 +3182,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
+%        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
 %
 % \item Possibility of automatical protrusion based on difference of character widths
 %       \refsection{\ref{sub:inheritance}}
@@ -3412,15 +3513,16 @@
 %  \chardef,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
 %  \endinput,\escapechar,\everypar,\expandafter,\fi,\futurelet,\gdef,\global,
 %  \hbadness,\hbox,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
-%  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifx,\immediate,\input,\inputlineno,\jobname,
-%  \kern,\lastkern,\lastskip,\let,\lowercase,\maxdimen,\meaning,\multiply,
-%  \newlinechar,\noexpand,\number,\or,\parfillskip,\pretolerance,\relax,\setbox,
-%  \showboxdepth,\string,\the,\tolerance,\unkern,\unskip,\uppercase,\vbox,\wd,
-%  \write,\xdef}
+%  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifx,\ignorespaces,\immediate,\input,
+%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\let,\lowercase,
+%  \maxdimen,\meaning,\multiply,\newbox,\newlinechar,\noexpand,\noindent,\number,
+%  \or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
+%  \string,\the,\tolerance,\unkern,\unskip,\unvbox,\uppercase,\vbox,\vbadness,
+%  \vsplit,\wd,\write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\nullfont,\sfcode,\spacefactor,\spaceskip,
 %^^A  \xspaceskip}                                                           ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
-%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\numexpr}
+%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
 %\DoNotIndex{\pdfannot,\pdfescapestring,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}
@@ -3436,22 +3538,23 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@car,\@cclv,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@empty,\@expandtwoargs,\@firstofone,\@firstoftwo,
-%  \@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,
-%  \@ifpackageloaded,\@ifstar,\@ifundefined,\@let@token,\@m,\@makeother,
-%  \@minus,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,
-%  \@percentchar,\@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,
-%  \@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
-%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
+%  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
+%  \@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,
+%  \@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
+%  \@let@token,\@m,\@M,\@makeother,\@minus,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,
+%  \@onlypreamble,\@percentchar,\@pkgextension,\@plus,\@ptionlist,\@removeelement,
+%  \@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,
+%  \@tempdima,\@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
 %  \@xobeysp,\check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,
 %  \hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,
 %  \on@line,\p@,\set@display@protect,\strip@prefix,\strip@pt,\tw@,\z@,\z@skip,
 %  \zap@space,\active,\documentclass,\fmtversion,\leavevmode,\makeatletter,
 %  \mbox,\newcommand,\newcount,\newdimen,\newif,\newskip,\newtoks,\nobreak,
-%  \nonfrenchspacing,\normalsize,\renewcommand,\space,\AddToHook,\AtBeginDocument,
-%  \AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareRobustCommand,\IfFileExists,
-%  \InputIfFileExists,\MessageBreak,\PackageError,\PackageInfo,\PackageWarning,
-%  \RequirePackage,\@@enc@update,\cf@encoding,\f@encoding}
+%  \nonfrenchspacing,\normalbaselineskip,\normalsize,\numberline,\renewcommand,
+%  \space,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,
+%  \PackageError,\PackageInfo,\PackageWarning,\RequirePackage,
+%  \@@enc@update,\cf@encoding,\f@encoding}
 %^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
 %^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\glb@settings,\normalfont,
 %^^A  \pickup@font,\remove@tlig,\selectfont,\set@fontsize,\showhyphens}      ^^A latex
@@ -3475,6 +3578,11 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
+%\DoNotIndex{\apptocmd,\patchcmd}                                            ^^A etoolbox
+%\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem}                     ^^A beamer
+%\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
+%\DoNotIndex{\booknumberline,\chapternumberline,\partnumberline,\foottextfont}^^A memoir
+%\DoNotIndex{\setuptoc,\unsettoc,\scr@saved@footnotetext}                    ^^A koma (tocbasic)
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
 %  \MT@show@pdfannot,\iftracingmicrotypeinpdfall,\tracingmicrotypeinpdfalltrue,
@@ -4127,10 +4235,13 @@
 % We need the \pkg{keyval} package, including the `new' \cmd\KV@@sp@def\
 % implementation.
 %\changes{v2.1}{2007/01/15}{fix: \letterspace\ package forgot to load \pkg{keyval}}
+% For the \opt{patch} option, we use \pkg{etoolbox}, which requires \etex.
+%\changes{v2.8d}{2021/05/17}{require package \pkg{etoolbox}}
 %    \begin{macrocode}
 %<*package|letterspace>
 \RequirePackage{keyval}[1997/11/10]
 %<*package>
+^^X\RequirePackage{etoolbox}
 %    \end{macrocode}
 %\begin{macro}{\MT@toks}
 % We need a token register.
@@ -5622,6 +5733,221 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }%
 %</package>
 }
+%<*package>
+%    \end{macrocode}
+%
+%\subsubsection{Protrusion patches}
+%
+%\begin{macro}{\ifMT@patch@ok}
+%\begin{macro}{\MT@patch@info}
+%\begin{macro}{\MT@patch@warn}
+%\begin{macro}{\MT@patch@undef}
+% We have to patch some macros to get protrusion right.
+%    \begin{macrocode}
+\newif\ifMT@patch@ok
+\def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
+\def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
+\def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@patches@def}
+%\begin{macro}{\MT@define@patch}
+% Define a patch and it add to the list of patches.
+% The third argument may contain more revert commands, but will
+% mostly be empty.
+%    \begin{macrocode}
+\let\MT@patches@def\@gobble
+\def\MT@define@patch#1#2#3{%
+  \g@addto@macro\MT@patches@def{,#1}%
+  \MT@def@n{MT@patch@@#1}{#2}%
+  \MT@def@n{MT@patch@undo@@#1}{#3}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@append@patch}
+%\begin{macro}{\MT@patch@patch}
+% Wrappers around \pkg{etoolbox} commands.
+% We also remember the original command to allow unpatching.
+%    \begin{macrocode}
+\def\MT@append@patch#1#2{%
+  \MT@remember@patch{#1}%
+  \apptocmd#1{#2}\relax\MT@patch@okfalse
+}
+\def\MT@patch@patch#1#2#3{%
+  \MT@remember@patch{#1}%
+  \patchcmd#1{#2}{#3}\relax\MT@patch@okfalse
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@remember@patch}
+% Remember the original definition and add to undo command.
+%    \begin{macrocode}
+\def\MT@remember@patch#1{%
+  \MT@ifdefined@n@TF{MT@patch@saved@\string#1}\relax
+    {\MT@let@nc{MT@patch@saved@\string#1}#1%
+     \MT@exp@cs\g@addto@macro{MT@patch@undo@@\MT@patch@name}%
+       {\MT@let@cn#1{MT@patch@saved@\string#1}}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@patches@applied}
+%\begin{macro}{\MT@apply@patch}
+% Apply a previously defined patch.
+%    \begin{macrocode}
+\let\MT@patches@applied\@gobble
+\def\MT@apply@patch#1{%
+  \MT@patch@oktrue
+  \MT@ifdefined@n@TF{MT@patch@@#1}
+    {\MT@in@clist{#1}\MT@patches@applied
+     \ifMT@inlist@
+       \MT@warning{Patch `#1' has already been applied,\MessageBreak
+                   cannot reapply it}%
+     \else
+       \def\MT@patch@name{#1}%
+       \g@addto@macro\MT@patches@applied{,#1}%
+       \@nameuse{MT@patch@@#1}%
+       \@nameuse{MT@patch@\ifMT@patch@ok info\else warn\fi}{#1}%
+     \fi}
+    {\MT@patch@undef{#1}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@undo@patch}
+% Undo a patch (if indeed previously applied).
+%    \begin{macrocode}
+\def\MT@undo@patch#1{%
+  \MT@in@clist{#1}\MT@patches@applied
+  \ifMT@inlist@
+    \MT@rem@from@clist{#1}\MT@patches@applied
+    \@nameuse{MT@patch@undo@@#1}%
+  \else
+    \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+% Unfortunately, \pkg{etoolbox} is a bit bitchy with hashes in arguments
+% (but who would blame it), so I currently see no other solution than to
+% temporarily reset the catcode of the \# character.
+%    \begin{macrocode}
+{\catcode`\#=12
+\MT@addto@setup{%
+%    \end{macrocode}
+% Now for the actual patches:
+%\begin{description}
+% \item [|item|] \cmd\@item, which is a kind of catch-all, as it's internally
+%    used for most basic environments (\eg, |itemize|, |enumerate|,
+%    but also |quote|, |flushleft| etc.),
+% \begin{itemize}
+% \item \pkg{beamer} also patches it
+%\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
+%    \begin{macrocode}
+  \@ifclassloaded{beamer}
+    {\MT@define@patch{item}
+      {\MT@append@patch\beamer@@callorigitem\leftprotrusion
+       \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
+      {}}
+%    \end{macrocode}
+% \item standard \LaTeX\ classes
+%    \begin{macrocode}
+    {\MT@define@patch{item}
+      {\MT@append@patch\@item\leftprotrusion}
+      {}}%
+%    \end{macrocode}
+% \end{itemize}
+% \item [|toc|] <TOC> and friends
+% \begin{itemize}
+%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
+%\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
+%    \begin{macrocode}
+  \@ifclassloaded{memoir}
+    {\MT@define@patch{toc}
+      {\MT@append@patch\numberline\leftprotrusion
+       \MT@append@patch\booknumberline\leftprotrusion
+       \MT@append@patch\partnumberline\leftprotrusion
+       \MT@append@patch\chapternumberline\leftprotrusion
+       \MT@append@patch\cftbookafterpnum\noprotrusion
+       \MT@append@patch\cftpartafterpnum\noprotrusion
+       \MT@append@patch\cftchapterafterpnum\noprotrusion
+       \MT@append@patch\cftsectionafterpnum\noprotrusion
+       \MT@append@patch\cftsubsectionafterpnum\noprotrusion
+       \MT@append@patch\cftsubsubsectionafterpnum\noprotrusion
+       \MT@append@patch\cftparagraphafterpnum\noprotrusion
+       \MT@append@patch\cftsubparagraphafterpnum\noprotrusion
+       \MT@append@patch\cftfigureafterpnum\noprotrusion
+       \MT@append@patch\cfttableafterpnum\noprotrusion}
+      {}}
+%    \end{macrocode}
+% \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
+%       we additionally have to switch protrusion back on; this will
+%       re-introduce the risk of getting an extra leader dot, but I
+%       currently don't see how to easily add \cmd\noprotrusion.
+%       Therefore, I'll skip this patch for now, saving the joy of wading
+%       through |scr| files for later, all the while waiting for somebody
+%       who would understand <KOMA> better than me.
+%\todo{fix KOMA patch (add \cmd\noprotrusion)}
+%    \begin{macrocode}
+%    {\@ifpackageloaded{tocbasic}
+%      {\MT@define@patch{toc}
+%        {\MT@append@patch\numberline\leftprotrusion
+%         \setuptoc{toc}{noprotrusion}%
+%         \setuptoc{lof}{noprotrusion}%
+%         \setuptoc{lot}{noprotrusion}}
+%        {\unsettoc{toc}{noprotrusion}%
+%         \unsettoc{lof}{noprotrusion}%
+%         \unsettoc{lot}{noprotrusion}}}
+%    \end{macrocode}
+% \item \dots, and for the rest:
+%    \begin{macrocode}
+      {\MT@define@patch{toc}
+        {\MT@append@patch\numberline\leftprotrusion}
+        {}}%
+%    \end{macrocode}
+% \item (a patch for \pkg{titletoc} would also be worthwhile~\dots)
+%\todo{patch for \pkg{titletoc}}
+% \end{itemize}
+% \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
+%       on \cmd\tagform@, so we have to make it use the original definition.
+%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
+%                            (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
+%    \begin{macrocode}
+  \@ifpackageloaded{amsmath}
+    {\MT@define@patch{eqnum}
+      {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
+       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
+      {}}
+    {\MT@define@patch{eqnum}
+      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
+      {}}%
+%    \end{macrocode}
+% \item [|footnote|] footnote text (only visible with block paragraphs).
+%\changes{v2.8d}{2021/05/25}{protrusion patch for footnote text}
+%    \begin{macrocode}
+  \@ifclassloaded{memoir}
+    {\MT@define@patch{footnote}
+      {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+      {}}
+    {\@ifpackageloaded{scrbase}
+      {\MT@define@patch{footnote}
+        {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
+        {}}
+      {\MT@define@patch{footnote}
+        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
+        {}}}%
+}}
+%    \end{macrocode}
+%\end{description}
+%    \begin{macrocode}
+%</package>
 %</package|letterspace>
 %    \end{macrocode}
 %\changes{v1.6}{2005/01/19}{load a font if none is selected}
@@ -6668,13 +6994,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<debug>\MT@dinfo@nl{1}{loading input encoding: \@nameuse{\@tempa}}%
   \inputencoding{\@nameuse{\@tempa}}%
 }
-%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@pr@heirs}
 % Set the inheriting characters.
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
 \def\MT@set@pr@heirs#1{%
   \lpcode\MT@font #1=\lpcode\MT@font\MT@char\relax
   \rpcode\MT@font #1=\rpcode\MT@font\MT@char\relax
@@ -6780,10 +7104,194 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@warn@preset@towidth#1{%
   \MT@warning@nl{%
     Cannot preset characters relative to their widths\MessageBreak
-    for \@nameuse{MT@abbr@#1} list `\@nameuse{MT@#1@c@name}'. Presetting them%
-    \MessageBreak relative to 1em instead}%
+    for \@nameuse{MT@abbr@#1} list `\@nameuse{MT@#1@c@name}'.
+    Presetting them\MessageBreak relative to 1em instead}%
 }
-%</pdftex-def|xetex-def|luatex-def>
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\noprotrusion}
+%\changes{v2.8d}{2021/05/15}{provide command for older \LaTeX\ versions}
+% This command may be used to inhibit protrusion on either side. It's part
+% of \LaTeX\ since 2018-12-01.
+% We provide it for older releases.
+%    \begin{macrocode}
+\MT@ifdefined@c@TF\noprotrusion\relax{
+  \DeclareRobustCommand\noprotrusion{\leavevmode\kern-\p@\kern\p@}
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@tempbox}
+%\begin{macro}{\MT@leftmarginkern}
+%\begin{macro}{\MT@rightmarginkern}
+%    \begin{macrocode}
+\newbox\MT@tempbox
+\newdimen\MT@leftmarginkern
+\newdimen\MT@rightmarginkern
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\leftprotrusion}
+%\changes{v2.8d}{2021/05/15}{new command}
+% This command may be used to add protrusion on the left hand side.
+% We try to reconstruct the next glyph (possibly a ligature).
+%    \begin{macrocode}
+\DeclareRobustCommand\leftprotrusion{%
+  \MT@toks{}%
+  \MT@prot@get@firstchar
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@l}
+%    \begin{macrocode}
+\def\MT@prot@l#1{%
+  \MT@get@prot{#1}%
+  \ifdim\MT@leftmarginkern=\z@ \else
+    \leavevmode
+    \MT@vinfo{||| adding left margin kern for `#1':\MessageBreak
+                  \the\MT@leftmarginkern \on@line}%
+    \kern\MT@leftmarginkern
+  \fi
+  #1%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\rightprotrusion}
+% Unfortunately, there's no way to retrieve anything that's already been typeset,
+% so the counterpart cannot be symmetric.
+%\changes{v2.8d}{2021/05/15}{new command}
+%    \begin{macrocode}
+\DeclareRobustCommand\rightprotrusion{\MT@prot@r}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@r}
+%    \begin{macrocode}
+\def\MT@prot@r#1{%
+  #1%
+  \MT@get@prot{#1}%
+  \ifdim\MT@rightmarginkern=\z@ \else
+    \MT@vinfo{||| adding right margin kern for `#1':\MessageBreak
+                  \the\MT@rightmarginkern \on@line}%
+    \kern\MT@rightmarginkern
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@get@prot}
+% Typeset the text inside a box and get the left and right margin kerns.
+% We add an extra \cmd\vbox\ in case we're in a |tabular|.
+%    \begin{macrocode}
+\def\MT@get@prot#1{%
+  \MT@leftmarginkern=\z@
+  \MT@rightmarginkern=\z@
+  \begingroup
+    \setbox\z@\vbox{%
+      \everypar{}%
+      \parfillskip=\z@skip
+      \hbadness\@M
+      \noindent#1}%
+    \vbadness=\@M
+    \splittopskip=\z@
+    \setbox\z@\vbox{%
+      \global\setbox\MT@tempbox=\vsplit\z@ to \normalbaselineskip
+      \unvbox\MT@tempbox
+      \global\setbox\MT@tempbox=\lastbox
+    }%
+  \endgroup
+  \ifhbox\MT@tempbox
+    \MT@leftmarginkern=\leftmarginkern\MT@tempbox\relax
+    \MT@rightmarginkern=\rightmarginkern\MT@tempbox\relax
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@ifx}
+% Test next token.
+%    \begin{macrocode}
+\def\MT@prot@ifx#1{%
+  \ifx\MT@prot@next#1\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@ifcat}
+% Test catcode of next token.
+%    \begin{macrocode}
+\def\MT@prot@ifcat#1{%
+  \ifcat#1\noexpand\MT@prot@next\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@get@firstchar}
+%\begin{macro}{\MT@prot@get@nextchar}
+% Scan token by token.
+%    \begin{macrocode}
+\def\MT@prot@get@firstchar{\futurelet\MT@prot@next\MT@prot@get@first@char}
+\def\MT@prot@get@nextchar{\futurelet\MT@prot@next\MT@prot@get@next@char}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@get@first@char}
+% If next char is |{|, treat what follows as an argument, else continue until
+% we find a beginning char.
+%    \begin{macrocode}
+\def\MT@prot@get@first@char{%
+  \def\MT@temp*##1{\MT@prot@get@firstchar}%
+  \MT@prot@ifcat\bgroup{%
+    \def\MT@temp*{\MT@prot@l}%
+  }{%
+    \MT@prot@ifx\ignorespaces\relax{%
+      \MT@prot@ifx\relax\relax{%
+        \MT@prot@ifx\@sptoken{%
+          \def\MT@temp* {\MT@prot@get@firstchar}%
+        }{%
+          \def\MT@temp*{\MT@prot@addtoken@first}%
+          \MT@prot@ifcat{a}\relax{%
+            \MT@prot@ifcat{!}\relax{%
+              \def\MT@temp*{}%
+            }%
+          }%
+        }%
+      }%
+    }%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@ifx}
+% Continue if letter or other.
+%    \begin{macrocode}
+\def\MT@prot@get@next@char{%
+  \def\MT@temp*{\MT@prot@addtoken@next}%
+  \MT@prot@ifcat{a}\relax{%
+    \MT@prot@ifcat{!}\relax{%
+      \def\MT@temp*{\MT@prot@l{\the\MT@toks}}%
+    }%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@addtoken@first}
+% Begin filling toks.
+%    \begin{macrocode}
+\def\MT@prot@addtoken@first#1{%
+  \edef\MT@temp{\MT@toks={\the\MT@toks#1}}\MT@temp
+  \MT@prot@get@nextchar
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@addtoken@next}
+% Add token to our toks and test whether we've seen enough (ligature completed).
+%    \begin{macrocode}
+\def\MT@prot@addtoken@next#1{%
+  \edef\MT@temp{\MT@toks={\the\MT@toks#1}}\MT@temp
+  \setbox\MT@tempbox\hbox{\the\MT@toks\relax
+    \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
+      \MT@prot@get@nextchar
+      {\MT@prot@l{\the\MT@toks}}%
+}
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -11333,7 +11841,7 @@ end
 %\end{macro}
 %\begin{macro}{\MT@set@inh@list}
 % No need to create an inheritance list for tracking.
-%\changes{v2.8d}{2021/03/27}{fix: grouping with \cmd\begingroup\dots\cmd\endgroup\ instead of \texttt{\{}\dots\texttt{\}}
+%\changes{v2.8d}{2021/03/27}{fix: grouping with \cmd\begingroup~\dots~\cmd\endgroup\ instead of \texttt{\{}\dots\texttt{\}}
 %                            (reported by \contributor chsk <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/590265/improper-halign-inside-s-with-lmodern-microtype-fontspec
 %    \begin{macrocode}
@@ -12096,6 +12604,55 @@ end
   }%
 }
 %    \end{macrocode}
+%\changes{v2.8d}{2021/05/22}{new options: \opt{patch} and \opt{nopatch}}
+%\begin{macro}{\MT@patches@list}
+%\begin{macro}{\MT@nopatches@list}
+% The \opt{patch} and \opt{nopatch} options.
+% Remember chosen option for later (\cmd\relax\ means `all',
+% \cmd\@empty\ means `none').
+%    \begin{macrocode}
+\let\MT@patches@list\relax
+\let\MT@nopatches@list\@empty
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%    \begin{macrocode}
+\define@key{MT}{patch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    \relax
+    {\MT@ifstreq\@tempa{none}
+      {\let\MT@patches@list\@empty}
+      {\def\MT@patches@list{#1}}}%
+}
+\define@key{MT}{nopatch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    {\let\MT@patches@list\relax}
+    {\MT@ifstreq\@tempa{none}
+      \relax
+      {\def\MT@nopatches@list{#1}}}%
+}
+%    \end{macrocode}
+% We can only apply the patches AtBeginDocument.
+%    \begin{macrocode}
+\MT@addto@setup{%
+  \ifx\MT@patches@list\relax
+    \let\MT@patches@list\MT@patches@def
+  \fi
+  \ifx\MT@nopatches@list\@empty\else
+    \ifx\MT@nopatches@list\relax
+      \let\MT@nopatches@list\MT@patches@def
+    \fi
+    \MT@map@clist@c\MT@nopatches@list{%
+      \MT@rem@from@clist{#1}\MT@patches@list}%
+  \fi
+  \ifx\MT@patches@list\@empty\else
+^^X    \MT@map@clist@c\MT@patches@list{\MT@apply@patch{#1}}%
+^^Q    \MT@warning@nl{Patches require the etex extensions. Ignoring them}%
+  \fi
+}
+%    \end{macrocode}
 %
 %\subsubsection{Loading the definition file}
 %
@@ -12443,6 +13000,32 @@ end
 \define@key{MTX}{enable}[]{%
   \MT@info{Reactivate `\MT@MT' package}%
   \let\MT@setupfont\MT@saved@setupfont
+}
+%    \end{macrocode}
+% Apply or revert patches.
+%    \begin{macrocode}
+\define@key{MTX}{patch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    \relax
+    {\MT@ifstreq\@tempa{none}
+      {\let\tempa\@empty}
+      \relax}%
+  \ifx\@tempa\@empty\else
+^^X    \MT@map@clist@c\@tempa{\MT@apply@patch{##1}}%
+^^Q    \MT@warning@nl{Patches require the etex extensions. Ignoring them}%
+  \fi
+}
+\define@key{MTX}{nopatch}[all]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{all}
+    \relax
+    {\MT@ifstreq\@tempa{none}
+      {\let\tempa\@empty}
+      \relax}%
+  \ifx\@tempa\@empty\else
+^^X    \MT@map@clist@c\@tempa{\MT@undo@patch{##1}}%
+  \fi
 }
 %</package>
 %    \end{macrocode}
@@ -17581,7 +18164,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{10980}
+% \CheckSum{11502}
 %
 % \Finale
 %
