@@ -1,10 +1,7 @@
-* fix xetex prefixes
-* account for fontspec's NFSSfamily
 * different md* (etc.) for different fonts
-* mt-EBGaramond.cfg OpenType
-* split docu -> splitdoc
+* mt-EBGaramond.cfg OpenType -> WIP
 * what about polyglossia?
-* check contexts in lua again
+* check contexts in lua again -> contexts
 * cm-unicode alias
 * guard against expanding context? -:
 \newcommand{\@ifexpanding}{\let\@ifexpanding@\@ifexpanding@\@secondoftwo}
