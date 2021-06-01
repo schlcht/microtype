@@ -203,9 +203,9 @@ $(NAMEC).tmp:
 		$(DO_PDFLATEX_CODE) ; \
 	fi
 
-$(UNPACKED): $(INS) $(DTX) docstrip.cfg 
+$(UNPACKED): $(INS) $(DTX) $(UTFDTX) docstrip.cfg
 	@echo "Extracting package"
-	@$(DO_PDFLATEX)
+	@pdflatex $^ $(REDIRECT)
 	@if test ! -f $@ ; then \
 		echo "!! $@ not created!" ; \
 		false ; \

@@ -2329,16 +2329,15 @@
 %      & Latin
 %      & n, (it, sl, sc)\fnref{fn:incmpl} \\
 % Latin Modern Roman\footnote{Alias: New Computer Modern}
-%      & Latin, Greek
+%      & Latin
 %      & n, it, (sl)\fnref{fn:it-sl}\\
 % Charis <SIL>
-%      & Latin, Cyrillic, Greek
+%      & Latin, Cyrillic
 %      & n, it, sc\\
-%\iffalse ^^A provided with the EB Garamond package
+% ^^A TODO:
 % <EB> Garamond
 %      & Latin, Cyrillic, Greek
 %      & n, it, sc, si\\
-%\fi
 % Palatino\footnote{Aliases: Palatino Linotype, Palatino <LT> Std, \TeX\ Gyre Pagella, Domitian}
 %      & Latin
 %      & n, it, sc\\
@@ -7121,6 +7120,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }%
 }
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@pr@prefixes}
@@ -7130,6 +7130,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % translate to glyph numbers because \cmd\fontcharwd\ doesn't have the nice
 % feature of understanding the `|U|' or `|/|' prefixes.
 %    \begin{macrocode}
+%<*pdftex-def|luatex-def|xetex-def>
 \def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
 \def\MT@set@pr@prefixes@#1#2#3#4{%
 %<*xetex-def>
@@ -7154,6 +7155,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
 %<debug>                                \number\rpcode\MT@font#2}%
 }
+%</pdftex-def|luatex-def|xetex-def>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -7161,6 +7163,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@preset@pr@}
 % Preset characters. Presetting them relative to their widths is not allowed.
 %    \begin{macrocode}
+%<*package>
 \def\MT@preset@pr{%
   \expandafter\expandafter\expandafter\MT@preset@pr@
     \csname MT@pr@c@\MT@pr@c@name @preset\endcsname\@nil
