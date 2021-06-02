@@ -2208,10 +2208,11 @@
 %
 %\medskip\noindent
 % Additionally, this command provides the possibility to have the desired
-% protrusion calculated automatically based on the difference of character widths.
-% If you precede the base character with either `|(l)|', `|(r)|' or `|(lr)|',
-% the inheriting characters will be additionally protruded by the result of
-% |charwidth(|\meta{inheriting character}|)|$-$|charwidth(|\meta{base character}|)|:
+% protrusion amount calculated automatically based on the difference of character widths.
+% If the base character is preceded with either `|(l)|', `|(r)|' or `|(lr)|',
+% the inheriting characters will not only inherit the protrusion of the base character,
+% but will be additionally protruded by the result of
+% |charwidth(|\meta{inheriting character}|)|$-$|charwidth|\allowbreak|(|\meta{base character}|)|:
 % for `|(l)|' and `|(r)|', this amount will be added to the given protrusion on
 % the respective side, for `|(lr)|' half of the amount will be added to both sides.
 % So that, \eg, with
@@ -2525,7 +2526,7 @@
 % about protecting or breaking ligatures with most fonts. However, in certain
 % situations, there may be a conflict of ligatures beginning with the same
 % letter, where some of them should be inhibited, while others should not. For
-% exmaple, when letterspacing text typeset in Fraktur fonts, the ligatures `ch',
+% example, when letterspacing text typeset in Fraktur fonts, the ligatures `ch',
 % `ck', `tz' and `sz'~(`\textfrak{sz}') should never be broken up; you also usually
 % see the `st'~(`\textfrak{st}') ligature in letterspaced text. Furthermore, at
 % least the \pkg{yfonts} package realises the short~s~(`\textfrak{s:}') as the
@@ -14214,7 +14215,7 @@ end
 \DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
 %    \end{macrocode}
 % The \pkg{fontawesome5} package.
-%\changes{v2.8d}{2021/03/15}{declares aliases for \pkg{fontawesome5}}
+%\changes{v2.8d}{2021/03/15}{declare aliases for \pkg{fontawesome5}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{fontawesomefree}  {FontAwesome} % fontawesome5
 \DeclareMicrotypeAlias{fontawesomepro}   {FontAwesome}
