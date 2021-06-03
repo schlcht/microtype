@@ -24,29 +24,31 @@
 % (2) the identification string is changed.
 % ------------------------------------------------------------------------
 %
-%<package|letterspace>\NeedsTeXFormat{LaTeX2e}
+%<package|letterspace|show>\NeedsTeXFormat{LaTeX2e}
 %<*driver>
 \ProvidesFile{\jobname.dtx}
 %</driver>
-%<package|letterspace>\ProvidesPackage
+%<package|letterspace|show>\ProvidesPackage
 %<config|pdftex-def|luatex-def|xetex-def>\ProvidesFile
 %<package>  {microtype}
 %<letterspace>  {letterspace}
+%<show>  {microtype-show}
 %<m-t>  {microtype.cfg}
 %<pdftex-def>  {microtype-pdftex.def}
 %<luatex-def>  {microtype-luatex.def}
 %<xetex-def>  {microtype-xetex.def}
-%<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
+%<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|show>
   [2021/99/99 v2.8d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
+%<show>  Visual debugging for the microtype package
 %<m-t>   microtype main configuration file
 %<pdftex-def|luatex-def|xetex-def>   Definitions specific to
 %<pdftex-def>   pdftex
 %<luatex-def>   luatex
 %<xetex-def>   xetex
    (RS)]
-%</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>
+%</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|show>
 %<luafile>microtype        = microtype or {}
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
@@ -2954,9 +2956,30 @@
 %
 % I would be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
-% To alleviate this process, this package also includes a test file that can be
-% used to check at least the protrusion settings (\file{test-microtype.tex}).
+% To alleviate this process, \microtype\ also includes the companion package
+%\DescribePackage{microtype-show}
+% \pkg{microtype-show}, which offers some tools to visually debug protrusion
+% settings:
+%
+%\medskip\noindent
+%\DescribeMacro{\ShowProtrusion}
+%\DescribeMacro{\ShowCharacterInheritance}
+% These commands will show all defined protrusion resp. inheritance settings
+% for the current font. They are mostly useful for consistency checks.
+%
+%\medskip\noindent
+%\DescribeMacro{\ShowProtrusionAll}
+%\DescribeMacro{\ShowProtrusionDefined}
+%\DescribeMacro{\ShowProtrusionMissing}
+% For the actual settings, these commands are recommended, which loop through
+% all characters of the current font and show, respectively, all glyphs,
+% only those with defined protrusion settings, or those without protrusion settings.
+% (Note that here, the protrusion amounts shown are in 1000ths of \EM{1}, not in
+% 1000ths of character widths).
 %^^A
+% The package also includes a test file that shows all of these commands in action
+% (\file{test-microtype.tex}).
+%
 % If you have created a configuration file for another font, or if you have any
 % suggestions for enhancements in the default configuration files, I~would
 % gratefully accept them: \mailtoRS.
@@ -3271,11 +3294,12 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item Possibility of automatical protrusion based on difference of character widths
+%        \refsection{\ref{sub:inheritance}}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
 %        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
-%
-% \item Possibility of automatical protrusion based on difference of character widths
-%       \refsection{\ref{sub:inheritance}}
+%  \item New package \pkg{microtype-show} for visual debugging
+%        \refsection{\ref{sec:contrib}}
 %
 %\VersionDate{2.8c}{2021/03/14}
 %
@@ -3608,66 +3632,71 @@
 %  \advance,\afterassignment,\aftergroup,\begingroup,\bgroup,\catcode,\char,
 %  \chardef,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
 %  \endinput,\escapechar,\everypar,\expandafter,\fi,\futurelet,\gdef,\global,
-%  \hbadness,\hbox,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
+%  \hbadness,\hbox,\hfill,\hrule,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
 %  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifx,\ignorespaces,\immediate,\input,
-%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\let,\lowercase,
-%  \maxdimen,\meaning,\multiply,\newbox,\newlinechar,\noexpand,\noindent,\number,
+%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,\let,\lowercase,
+%  \maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,\number,
 %  \or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
-%  \string,\the,\tolerance,\unkern,\unskip,\unvbox,\uppercase,\vbox,\vbadness,
-%  \vsplit,\wd,\write,\xdef}
-%^^A\DoNotIndex{\font,\fontdimen,\nullfont,\sfcode,\spacefactor,\spaceskip,
-%^^A  \xspaceskip}                                                           ^^A tex
+%  \string,\the,\tolerance,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
+%  \vrule,\vsplit,\wd,\write,\xdef}
+%^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
+%^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
 %  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
-%\DoNotIndex{\pdfannot,\pdfescapestring,\pdfmatch,\pdfoutput,\pdfstrcmp,
+%\DoNotIndex{\pdfannot,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}
 %^^A\DoNotIndex{\(ef,lp,rp,kn(ac,bc),(kn,sh,st)bs)code,\(left,right)marginkern,
 %^^A  \tagcode,\letterspacefont,\pdfcopyfont,\pdffontexpand,\pdfnoligatures,
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(ap,pre)pendkern,
 %^^A  \pdftracingfonts}                                                      ^^A pdftex
-%\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}                           ^^A xetex
+%\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
-%^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}
-%\DoNotIndex{\directlua,\glet,\luatexversion}                                ^^A luatex
+%^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}                ^^A xetex
+%\DoNotIndex{\directlua,\glet,\luatexversion}
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
-%^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}
+%^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
-%\DoNotIndex{\@backslashchar,\@car,\@cclv,\@cclvi,\@classoptionslist,\@currext,
+%\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
 %  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
 %  \@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,
 %  \@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
 %  \@let@token,\@m,\@M,\@makeother,\@minus,\@nameuse,\@ne,\@nil,\@nnil,\@onelevel@sanitize,
-%  \@onlypreamble,\@percentchar,\@pkgextension,\@plus,\@ptionlist,\@removeelement,
-%  \@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,
-%  \@tempdima,\@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
-%  \@xobeysp,\check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,
-%  \hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,
-%  \on@line,\p@,\set@display@protect,\strip@prefix,\strip@pt,\tw@,\z@,\z@skip,
-%  \zap@space,\active,\documentclass,\fmtversion,\leavevmode,\makeatletter,
-%  \mbox,\newcommand,\newcount,\newdimen,\newif,\newskip,\newtoks,\nobreak,
-%  \nonfrenchspacing,\normalbaselineskip,\normalsize,\numberline,\renewcommand,
-%  \space,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
-%  \DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,
-%  \PackageError,\PackageInfo,\PackageWarning,\RequirePackage,
-%  \@@enc@update,\cf@encoding,\f@encoding}
-%^^A\DoNotIndex{\add@accent,\curr@fontshape,\define@newfont,\do@subst@correction,
-%^^A  \every@math@size,\f@size,\font@name,\glb@currsize,\glb@settings,\normalfont,
-%^^A  \pickup@font,\remove@tlig,\selectfont,\set@fontsize,\showhyphens}      ^^A latex
+%  \@onlypreamble,\@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,
+%  \@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
+%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
+%  \check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
+%  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
+%  \strip@prefix,\strip@pt,\tw@,\z@,\z@skip,\zap@space,
+%  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
+%  \leavevmode,\llap,\makeatletter,\makebox,\mbox,\medskip,\newbox,\newcommand,\newcount,
+%  \newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
+%  \normalbaselineskip,\normalsize,\numberline,\par,\parbox,\quad,\raggedright,
+%  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\usefont,
+%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,\PackageError,
+%  \PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,\RequirePackage,
+%  \@@enc@update,\UnicodeEncodingName}
+%^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
+%^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
+%^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
+%^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
+%\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
 %\DoNotIndex{\pdfstringdefDisableCommands,\pdfstringdefWarn}                 ^^A hyperref
-%\DoNotIndex{\ifpdf}                                                         ^^A ifpdf
+%\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
-%\DoNotIndex{\UTFviii@defined}                                               ^^A inputenc/utf8
+%^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
+%^^A            \UTF@three@octets@noexpand,\UTF@two@octets@noexpand}
 %\DoNotIndex{\PrerenderUnicode,\unicode@charfilter}                          ^^A inputenc/utf8x
 %\DoNotIndex{\define@key,\KV@@sp@def,\setkeys}                               ^^A keyval
 %\DoNotIndex{\l@dunhbox@line}                                                ^^A ((r)e)ledmac,((r)e)ledpar
 %\DoNotIndex{\lst@ProcessLetter}                                             ^^A listings
-%\DoNotIndex{\newluafunction,\RequireLuaModule}                              ^^A luatexbase
+%\DoNotIndex{\newluafunction}                                                ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\SOUL@,\SOUL@doword,\soulregister}                              ^^A soul
@@ -3677,7 +3706,7 @@
 %\DoNotIndex{\apptocmd,\patchcmd}                                            ^^A etoolbox
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem}                     ^^A beamer
 %\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
-%\DoNotIndex{\booknumberline,\chapternumberline,\partnumberline,\foottextfont,
+%\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
 %  \cftsubsubsectionafterpnum,\cfttableafterpnum}                            ^^A memoir
@@ -3685,8 +3714,8 @@
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
 %  \MT@show@pdfannot,\iftracingmicrotypeinpdfall,\tracingmicrotypeinpdfalltrue,
-%  \tracingmicrotypeinpdfallfalse,\DeclareMicroTypeSet,\DeclareMicroTypeAlias,
-%  \UseMicroTypeSet,\LoadMicroTypeFile,\MicroType@Hook}                      ^^A microtype
+%  \tracingmicrotypeinpdfallfalse,\DeclareMicroTypeAlias,\DeclareMicroTypeSet,
+%  \LoadMicroTypeFile,\UseMicroTypeSet,\MicroType@Hook}                      ^^A microtype
 %
 % ^^A -------------------------------------------------------------------------
 %
@@ -3700,6 +3729,7 @@
 % \begin{description}
 %  \item[|driver|]  The documentation driver, only visible in the \file{dtx} file.
 %  \item[|package|] The code for the \microtype\ package (\file{microtype.sty}).
+%  \item[|show|] The code for the \pkg{microtype-show} package (\file{microtype-show.sty}).
 %  \item[|pdftex-def|] Definitions specific to \pdftex\ (\file{microtype-pdftex.def}).
 %  \item[|xetex-def|] Definitions specific to \xetex\ (\file{microtype-xetex.def}).
 %  \item[|luatex-def|] Definitions specific to \luatex\ (\file{microtype-luatex.def}).
@@ -4010,6 +4040,7 @@
 }
 %</debug>
 %</package>
+%</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\ifpdf\ifx\tracingmicrotypeinpdf\undefined\else
@@ -4017,7 +4048,307 @@
 % \tracingmicrotype0
 %\fi\fi
 %
+%\subsubsection{Visual debugging}
+%
+%\changes{v2.8d}{2021/06/02}{new package: \pkg{microtype-show} for visual debugging}
+% The \pkg{microtype-show} package offers some tools for preparing
+% protrusion settings. We make use of the \microtype\ infrastructure,
+% and redefine some of the internal commands (done later,
+% in sections \ref{ssub:setup-prot} and \ref{ssub:setup-config}).
+% First, some preparation:
+%    \begin{macrocode}
+%<*show>
+\RequirePackage{iftex}
+\ifetex\else
+  \PackageError{microtype-show}
+               {This package only works with e-TeX}{Use e-TeX}
+\fi
+\ifxetex
+  \PackageError{microtype-show}
+               {This package only works with pdfTeX or luaTeX}{Don't use XeTeX}
+\fi
+\PackageWarning{microtype-show}{DO NOT USE THIS PACKAGE FOR REAL DOCUMENTS\@gobble}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{microtype}}
+\ProcessOptions\relax
+\PassOptionsToPackage{verbose}{microtype}
+\RequirePackage{microtype,graphicx,xcolor}
+%    \end{macrocode}
+%\begin{macro}{\baselinecolor}
+%\begin{macro}{\lpcolor}
+%\begin{macro}{\rpcolor}
+%\begin{macro}{\glyphscalefactor}
+%\begin{macro}{\ifshowglyphindex}
+%\begin{macro}{\ifshowmissingglyphs}
+% The following commands are configurable:
+%    \begin{macrocode}
+\newcommand*\baselinecolor{\color{black!40}}
+\newcommand*\lpcolor{\color{red!50}}
+\newcommand*\rpcolor{\color{green!50}}
+\newcommand*\glyphscalefactor{2}
+\newif\ifshowglyphindex
+\newif\ifshowmissingglyphs
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+% Make sure to have a readable font.
+%    \begin{macrocode}
+\ifluatex
+  \def\MTS@printtext#1{{\usefont{TU}{lmr}{m}{n}#1}}
+\else
+  \def\MTS@printtext#1{{\usefont{T1}{cmr}{m}{n}#1}}
+\fi
+\def\MTS@show@index#1{\ifshowglyphindex{\tiny$_{#1}$}\fi\space}
+%    \end{macrocode}
+% Add the |show| commands to \microtype's setup.
+%    \begin{macrocode}
+\g@addto@macro\MT@setupfont{\MTS@Prot\MTS@Char}
+\let\MTS@Prot\relax
+\let\MTS@Char\relax
+\def\MTS@setup{%
+  \fboxsep=0pt
+  \fboxrule=.1pt
+  \raggedright
+  \let\MTS@glyphlist\@gobble
+  \def\MT@feat{pr}%
+}
+%    \end{macrocode}
+%\begin{macro}{\ShowProtrusion}
+%    \begin{macrocode}
+\def\ShowProtrusion{%
+  \begingroup
+    \MTS@setup
+    \let\MTS@Prot\MTS@Prot@do
+    \def\MT@cat{c}%
+    \selectfont
+}
+%    \end{macrocode}
+%\end{macro}
+%    \begin{macrocode}
+\def\MTS@Prot@do{%
+    \MT@ltx@pickupfont
+    \let\MT@pr@split@val\MTS@pr@split@val
+    \let\MT@load@list\MTS@load@list
+    \let\MT@set@pr@prefixes@\MTS@set@pr@prefixes@
+    \MTS@show@pr
+  \endgroup
+  \aftergroup\selectfont
+}
+%    \end{macrocode}
+%\begin{macro}{\ShowCharacterInheritance}
+%    \begin{macrocode}
+\def\ShowCharacterInheritance{%
+  \begingroup
+    \MTS@setup
+    \let\MTS@Char\MTS@Char@do
+    \def\MT@cat{inh}%
+    \selectfont
+}
+%    \end{macrocode}
+%\end{macro}
+%    \begin{macrocode}
+\def\MTS@Char@do{%
+    \MT@ltx@pickupfont
+    \MTS@show@inheritance
+  \endgroup
+  \aftergroup\selectfont
+}
+%    \end{macrocode}
+%\begin{macro}{\ShowProtrusionLineGlyph}
+%    \begin{macrocode}
+\def\ShowProtrusionLineGlyph#1{%
+  {\MTS@setup
+   \MTS@showprotrusionline{`#1}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\ShowProtrusionLineIndex}
+%    \begin{macrocode}
+\def\ShowProtrusionLineIndex#1{%
+  {\MTS@setup
+   \MTS@showprotrusionline{#1}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%    \begin{macrocode}
+\def\MTS@showprotrusionline#1{%
+  \edef\MT@lpcode{\number\lpcode\font#1}%
+  \edef\MT@rpcode{\number\rpcode\font#1}%
+  \char#1%
+  lorem ipsum dolor sit amet,
+    \MTS@crulefill\ \MTS@printtext{\ifnum\MT@lpcode=\z@ \baselinecolor\fi[\MT@lpcode]}
+                    \fbox{\char#1}\ifshowglyphindex{\tiny$_{\number#1}$}\fi\ %
+                    \MTS@printtext{\ifnum\MT@rpcode=\z@ \baselinecolor\fi[\MT@rpcode]}
+    \MTS@crulefill\ %
+  you know the rest%
+  \char#1\par
+  \ShowDummyLine
+}
+%    \end{macrocode}
+%\begin{macro}{\ShowDummyLine}
+%    \begin{macrocode}
+\def\ShowDummyLine{%
+ {\fontencoding{\encodingdefault}%
+  \fontseries{\seriesdefault}%
+  \fontshape{\shapedefault}%
+  \selectfont\noindent
+  Here is the beginning of a line, \dotfill and here is its end}\par
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\ShowProtrusionAll}
+%    \begin{macrocode}
+\def\ShowProtrusionAll{%
+  {\MTS@setup
+   \MTS@lede{}%
+   \MT@do@font{\MTS@showprotrusionline{\@tempcnta}}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\ShowProtrusionDefined}
+%    \begin{macrocode}
+\def\ShowProtrusionDefined{%
+  {\MTS@setup
+   \MTS@lede{defined}%
+   \let\MTS@first\@gobble
+   \let\MTS@second\@firstofone
+   \MT@do@font{%
+     \MTS@firstorsecond
+     \MTS@temp{\MTS@showprotrusionline{\@tempcnta}}}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\ShowProtrusionMissing}
+%    \begin{macrocode}
+\def\ShowProtrusionMissing{%
+  {\MTS@setup
+   \MTS@lede{missing}%
+   \let\MTS@first\@firstofone
+   \let\MTS@second\@gobble
+   \MT@do@font{%
+     \MTS@firstorsecond
+     \MTS@temp{\MTS@showprotrusionline{\@tempcnta}}}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%    \begin{macrocode}
+\def\MTS@lede#1{%
+  \selectfont
+  \edef\MTS@font{\expandafter\string\font@name}%
+  \MTS@printtext{All glyphs \MT@ifempty{#1}{in}{#1 in protrusion list for}
+                 font \texttt{\MTS@font}:}\par
+  \ShowDummyLine
+}
+\def\MTS@crulefill{\leaders\hrule height \dimexpr1ex/2+.4pt depth -\dimexpr1ex/2\hfill}
+\def\MTS@firstorsecond{%
+  \let\MTS@temp\MTS@first
+  \ifnum\lpcode\font\@tempcnta=\z@ \else
+    \let\MTS@temp\MTS@second
+  \fi
+  \ifnum\rpcode\font\@tempcnta=\z@ \else
+    \let\MTS@temp\MTS@second
+  \fi
+}
+\newdimen\MTS@charwd
+\newdimen\MTS@lp@
+\newdimen\MTS@rp@
+\def\MTS@show@pr@char#1{%
+  \xdef\MTS@glyphlist{\MTS@glyphlist,#1}%
+  \scalebox{\glyphscalefactor}{\strut\escapechar`\\
+    \MTS@charwd=\fontcharwd\MT@font#1\relax
+    {\baselinecolor\vrule width \dimexpr\MTS@charwd+.3em\relax height 1sp depth 0pt}%
+    \hskip-\dimexpr\MTS@charwd+.15em\relax
+    {\lpcolor\vrule width \ifdim\MTS@lp@<\z@ -\fi\MTS@lp@ height 1em depth .2em}%
+    \hskip\MTS@charwd
+    \ifdim\MTS@lp@>\z@\hskip-\MTS@lp@\fi
+    \ifdim\MTS@rp@>\z@\hskip-\MTS@rp@\fi
+    {\rpcolor\vrule width \ifdim\MTS@rp@<\z@ -\fi\MTS@rp@ height 1em depth .2em}%
+    \hskip-\dimexpr\MTS@charwd+\fboxrule
+    \ifdim\MTS@rp@<\z@\hskip\MTS@rp@\fi
+    \fbox{\char #1}}%
+    \MTS@show@index{\,#1}%
+}
+\def\MTS@show@missing{%
+  \MTS@lp@=\z@ \MTS@rp@=\z@
+  \MTS@printtext{Glyphs not included in configuration (with defined heirs):}%
+  \MT@do@font{%
+    \edef\MT@temp{\the\@tempcnta}%
+    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@temp @}{%
+      \MT@exp@one@n\MT@in@clist\MT@temp\MTS@glyphlist
+      \ifMT@inlist@\else \newline
+      \llap{\MTS@show@pr@char{\MT@temp} \MTS@printtext{=} }%
+       \MT@exp@cs\MT@map@tlist@c
+         {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
+         \MTS@show@ci@x
+      \fi
+    }%
+  }%
+  \MTS@show@prefixes
+  \MTS@show@missing@
+}
+\def\MTS@show@missing@{%
+  \par \MTS@printtext{Other glyphs not in configuration:}\newline
+  \MT@do@font{%
+    \edef\MT@temp{\the\@tempcnta}%
+    \MT@exp@one@n\MT@in@clist\MT@temp\MTS@glyphlist
+    \ifMT@inlist@\else
+      \MTS@show@ci\MT@temp
+    \fi
+  }%
+}
+\def\MTS@show@prefixes{%
+  \MT@ifdefined@n@T{MT@inh@\MT@listname @prefixes}{%
+    \par \MTS@printtext{(with prefixes:)}%
+    \@tempcnta=\z@
+    \MT@exp@cs\MT@map@tlist@c
+      {MT@inh@\MT@pr@inh@name @prefixes}%
+      \MTS@show@ci@prefixes
+  }%
+}
+\def\MTS@show@ci#1{\scalebox{\glyphscalefactor}{\strut\fbox{\char#1}}%
+  \MTS@show@index{#1}}
+\def\MTS@show@ci@x#1{\xdef\MTS@glyphlist{\MTS@glyphlist,#1}\MTS@show@ci{#1}}
+\def\MTS@show@inheritance{%
+    \MT@get@inh@list
+    \MTS@printtext{Character inheritance for font `\texttt{\MT@@font}':}\\
+    \MT@ifdefined@c@TF\MT@listname{%
+      \MTS@printtext{First matching list is for `\texttt{\@tempa}':\\
+                \texttt{\MT@listname}:}\par\leavevmode
+      \MT@do@font{%
+        \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\the\@tempcnta @}{%
+          \newline
+          \xdef\MTS@glyphlist{\MTS@glyphlist,\the\@tempcnta}%
+          \llap{\MTS@show@ci{\the\@tempcnta}\MTS@printtext{= }}%
+          \MT@exp@cs\MT@map@tlist@c
+            {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
+            \MTS@show@ci@x
+        }%
+      }%
+      \MTS@show@prefixes
+      \ifshowmissingglyphs\MTS@show@missing@\fi
+    }{%
+      \MTS@printtext{NOT DEFINED}%
+    }%
+    \par
+}
+\def\MTS@show@ci@prefixes#1{\MTS@show@ci@prefix#1}
+\def\MTS@show@ci@prefix#1#2#3#4{%
+  \ifnum#1=\@tempcnta \else
+    \newline
+    \llap{\MTS@show@ci@x{#1} \MTS@printtext{=} }%
+  \fi
+  \MTS@show@ci@x{#2}%
+  \@tempcnta=#1\relax
+}
+%</show>
+%    \end{macrocode}
+%
 %\subsubsection{Requirements}
+%
+% Back to the user packages.
 %
 %\begin{macro}{\MT@plain}
 % The \letterspace\ package works with:
@@ -4029,6 +4360,7 @@
 %\end{enum}
 % For plain usage, we have to copy some commands from \file{latex.ltx}.
 %    \begin{macrocode}
+%<*package|letterspace>
 %<*plain>
 \def\MT@plain{2}
 \ifx\documentclass\@undefined
@@ -6557,7 +6889,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %
-%\subsubsection{Protrusion}
+%\subsubsection{Protrusion}\label{ssub:setup-prot}
 %
 %\begin{macro}{\ifMT@nofamily}
 % Info for settings that are not family-specific.
@@ -6569,14 +6901,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                          ^^A (beta:07)
 %    \begin{macrocode}
 \newif\ifMT@nofamily
-%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@protrusion}
 % Set up for protrusion?
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
 \def\MT@protrusion{\MT@maybe@do{pr}}
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@pr@codes}
@@ -6586,8 +6917,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           characters}
 %\changes{v1.6}{2004/12/18}{introduce \texttt{factor} option}
 %    \begin{macrocode}
-\def\MT@set@pr@codes{%
-  \MT@nofamilyfalse
+%<*pdftex-def|xetex-def|luatex-def|show>
+%<show>\def\MTS@show@pr
+%<pdftex-def|xetex-def|luatex-def>\def\MT@set@pr@codes
+  {%
+%<pdftex-def|xetex-def|luatex-def> \MT@nofamilyfalse
 %    \end{macrocode}
 % Check whether and if, which list should be applied to the current font.
 % If family-specific settings don't exist, we write it to the log
@@ -6596,7 +6930,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           ^^A private mail, 2013/01/24
 % (for each encoding).
 %    \begin{macrocode}
+%<show>  \MTS@printtext{Protrusion settings for font `\texttt{\MT@@font}':}\\
   \MT@if@list@exists{%
+%<*pdftex-def|xetex-def|luatex-def>
     \ifMT@nofamily
       \MT@ifdefined@n@TF{\MT@encoding-\MT@family-settings}\relax{%
         \MT@info@nl{Loading generic protrusion settings for font family\MessageBreak
@@ -6606,6 +6942,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@glet@nc{\MT@encoding-\MT@family-settings}\@empty
       }%
     \fi
+%</pdftex-def|xetex-def|luatex-def>
+%<show>    \MTS@printtext{First matching list is for `\texttt{\@tempa}':\\\texttt{\MT@pr@c@name}}%
     \MT@get@opt
     \MT@reset@pr@codes
 %    \end{macrocode}
@@ -6626,11 +6964,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \MT@let@cn\@tempc{MT@pr@c@\MT@pr@c@name}%
     \expandafter\MT@set@codes\@tempc,\relax,%
+%<show>    \vrule width 4cm height .5pt \\
+%<show>    \MTS@printtext{End of list `\texttt{\MT@pr@c@name}'}\\[.5em]
+%<show>    \ifshowmissingglyphs\MTS@show@missing\fi
 %    \end{macrocode}
 % Set unconditional heirs.
 %    \begin{macrocode}
-    \MT@set@pr@prefixheirs
-  }\MT@reset@pr@codes
+%<pdftex-def|xetex-def|luatex-def>    \MT@set@pr@prefixheirs
+  }%
+%<show>  {\MTS@printtext{NOT DEFINED}%
+  \MT@reset@pr@codes
+%<show>  }\par
 }
 %    \end{macrocode}
 %\end{macro}
@@ -6643,6 +6987,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A https://tex.stackexchange.com/questions/25036/microtype-package-v-2-5-beta-06-and-footnote-protrusion
 %                            ^^A (beta:08)
 %    \begin{macrocode}
+%<*pdftex-def|xetex-def|luatex-def>
 \def\MT@set@all@pr#1#2{%
 %<debug>\MT@dinfo@nl{3}{-- lp/rp: setting all to #1/#2}%
   \let\MT@temp\@empty
@@ -6715,31 +7060,52 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@pr@split@val}
 %    \begin{macrocode}
-\def\MT@pr@split@val#1,#2\relax{%
-  \def\@tempb{#1}%
-  \MT@ifempty\@tempb\relax{%
-    \MT@scale@to@em
-    \lpcode\MT@font\MT@char=\MT@the@pr@code
+\def\MT@pr@split@val#1,#2\relax
+%</pdftex-def|xetex-def|luatex-def>
+%<show>\def\MTS@pr@split@val#1,#2\relax
+  {\def\@tempb{#1}%
+  \MT@ifempty\@tempb
+%<pdftex-def|xetex-def|luatex-def>    \relax
+%<show>  {\MTS@lp@=\z@ \let\MTS@lpcode\@empty}%
+  {\MT@scale@to@em
+%<pdftex-def|xetex-def|luatex-def>    \lpcode\MT@font\MT@char=\MT@the@pr@code
+%<show>    \MTS@lp@=\dimexpr\@tempcntb em/1000\relax\relax
+%<show>    \edef\MTS@lpcode{[\@tempb] \the\@tempcntb/\the\MTS@lp@}%
 %<debug>\MT@dinfo@nl{4}{;;; lp (\MT@char): \number\lpcode\MT@font\MT@char: [#1]}%
   }%
   \def\@tempb{#2}%
-  \MT@ifempty\@tempb\relax{%
-    \MT@scale@to@em
-    \rpcode\MT@font\MT@char=\MT@the@pr@code
+  \MT@ifempty\@tempb
+%<pdftex-def|xetex-def|luatex-def>    \relax
+%<show>  {\MTS@rp@=\z@ \let\MTS@rpcode\@empty}%
+  {\MT@scale@to@em
+%<pdftex-def|xetex-def|luatex-def>    \rpcode\MT@font\MT@char=\MT@the@pr@code
+%<show>    \MTS@rp@=\dimexpr\@tempcntb em/1000\relax\relax
+%<show>    \edef\MTS@rpcode{[\@tempb] \the\@tempcntb/\the\MTS@rp@}%
 %<debug>\MT@dinfo@nl{4}{;;; rp (\MT@char): \number\rpcode\MT@font\MT@char: [#2]}%
   }%
 %    \end{macrocode}
 % Now we can set the values for the inheriting characters. Their slot numbers
 % are saved in the macro |\MT@inh@|\meta{list name}|@|\meta{slot number}|@|.
 %    \begin{macrocode}
+%<*show>
+  \llap{\MTS@show@pr@char\MT@char\quad}%
+  \parbox[b][][b]{3.5cm}{\MTS@printtext{%
+      \footnotesize\makebox[.4cm][l]{L:} \MT@ifempty{\MTS@lpcode}{---}{\MTS@lpcode}\\
+                   \makebox[.4cm][l]{R:} \MT@ifempty{\MTS@rpcode}{---}{\MTS@rpcode}}}%
+  \parbox[t][][t]{\dimexpr\textwidth-3.5cm}{%
+%</show>
   \MT@ifdefined@c@T\MT@pr@inh@name{%
     \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @}{%
       \MT@exp@cs\MT@map@tlist@c
         {MT@inh@\MT@pr@inh@name @\MT@char @}%
-        \MT@set@pr@heirs
+%<pdftex-def|xetex-def|luatex-def>        \MT@set@pr@heirs
+%<show>      \MTS@show@pr@char
+      \MT@set@pr@prefixheirs
     }%
   }%
+%<show>  }\newline
 }
+%<*pdftex-def|xetex-def|luatex-def>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@scale@to@em}
@@ -6833,6 +7199,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %</pdftex-def>
 %</pdftex-def|xetex-def|luatex-def>
+%</pdftex-def|xetex-def|luatex-def|show>
 %    \end{macrocode}
 %\begin{macro}{\MT@get@font@dimen}
 % For the |space| unit.
@@ -7131,32 +7498,39 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % translate to glyph numbers because \cmd\fontcharwd\ doesn't have the nice
 % feature of understanding the `|U|' or `|/|' prefixes.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|xetex-def>
-\def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
-\def\MT@set@pr@prefixes@#1#2#3#4{%
+%<*pdftex-def|luatex-def|xetex-def|show>
+%<pdftex-def|luatex-def|xetex-def>\def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
+%<pdftex-def|luatex-def|xetex-def>\def\MT@set@pr@prefixes@#1#2#3#4%
+%<show>\def\MTS@set@pr@prefixes@#1#2#3#4%
+  {%
+%<show>  \ifnum#1=\MT@char
 %<*xetex-def>
   \edef\@tempa{\expandafter\ifx\@car#1\@nil U\@gobble#1\else\number\XeTeXglyphindex"#1" \fi}%
   \edef\@tempb{\expandafter\ifx\@car#2\@nil U\@gobble#2\else\number\XeTeXglyphindex"#2" \fi}%
 %</xetex-def>
   \ifnum#3>\z@
     \@tempcnta=\numexpr
-%<luatex-def|pdftex-def>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
+%<luatex-def|pdftex-def|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
 %<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
       *#3/\MT@dimen@six\relax
-    \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
+%<pdftex-def|luatex-def|xetex-def>    \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
+%<show>    \MTS@lp@=\dimexpr\numexpr\lpcode\MT@font#1+\@tempcnta\relax em/1000\relax
   \fi
   \ifnum#4>\z@
     \@tempcnta=\numexpr
-%<luatex-def|pdftex-def>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
+%<luatex-def|pdftex-def|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
 %<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
       *#4/\MT@dimen@six\relax
-    \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
+%<pdftex-def|luatex-def|xetex-def>    \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
+%<show>    \MTS@rp@=\dimexpr\numexpr\rpcode\MT@font#1+\@tempcnta\relax em/1000\relax
   \fi
 %<debug>\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
 %<debug>                                \number\rpcode\MT@font#2}%
+%<show>    \MTS@show@pr@char{#2}%
+%<show>  \fi
 }
-%</pdftex-def|luatex-def|xetex-def>
+%</pdftex-def|luatex-def|xetex-def|show>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -8951,30 +9325,38 @@ end
 %</luafile>
 %    \end{macrocode}
 %
-%\subsubsection{Loading the configuration}
+%\subsubsection{Loading the configuration}\label{ssub:setup-config}
 %
 %\begin{macro}{\MT@load@list}
 % Recurse through the lists to be loaded.
 %\changes{v1.3}{2004/10/27}{check whether list exists}
 %\todo{load more than one list}
 %    \begin{macrocode}
-%<*package>
-\def\MT@load@list#1{%
-  \edef\@tempa{#1}%
+%<*package|show>
+%<package>\def\MT@load@list#1%
+%<show>\def\MTS@load@list#1%
+  {\edef\@tempa{#1}%
   \MT@let@cn\@tempb{MT@\MT@feat @c@\@tempa @load}%
   \MT@ifstreq\@tempa\@tempb{%
     \MT@error{\@nameuse{MT@abbr@\MT@feat} list `\@tempa' cannot load itself}{}%
   }{%
-    \ifx\@tempb\relax \else
+    \ifx\@tempb\relax
+%<show>    :\par\medskip\leavevmode
+    \else
       \MT@ifdefined@n@TF{MT@\MT@feat @c@\@tempb}{%
+%<show>        \MTS@printtext{, loading \texttt{\@tempb}}%
         \MT@vinfo{... : First loading \@nameuse{MT@abbr@\MT@feat} list `\@tempb'}%
         \begingroup
           \MT@load@list\@tempb
         \endgroup
-        \edef\MT@curr@list@name{\@nameuse{MT@abbr@\MT@feat} list
-          \noexpand\MessageBreak`\@tempb'}%
+        \edef\MT@curr@list@name{%
+%<package>                  \@nameuse{MT@abbr@\MT@feat} list \noexpand\MessageBreak
+                  `\@tempb'}%
         \MT@let@cn\@tempc{MT@\MT@feat @c@\@tempb}%
         \expandafter\MT@set@codes\@tempc,\relax,%
+%<show>        \vrule width 4cm height .5pt \\
+%<show>        \MTS@printtext{End of list \texttt{\MT@curr@list@name}}%
+%<show>        \par\medskip\leavevmode
       }{%
         \MT@error{\@nameuse{MT@abbr@\MT@feat} list `\@tempb' undefined.\MessageBreak
                     Cannot load it from list `\@tempa'}{}%
@@ -8982,6 +9364,7 @@ end
     \fi
   }%
 }
+%</package|show>
 %    \end{macrocode}
 %\end{macro}
 %\changes{v1.1}{2004/09/13}{configuration file names in lowercase
@@ -8995,6 +9378,7 @@ end
 %\begin{macro}{\MT@file@list}
 % We must also record whether we've already loaded the file.
 %    \begin{macrocode}
+%<*package>
 \let\MT@file@list\@empty
 \def\MT@find@file#1{%
 %    \end{macrocode}
@@ -13114,7 +13498,7 @@ end
   \MT@ifstreq\@tempa{all}
     \relax
     {\MT@ifstreq\@tempa{none}
-      {\let\tempa\@empty}
+      {\let\@tempa\@empty}
       \relax}%
   \ifx\@tempa\@empty\else
 ^^X    \MT@map@clist@c\@tempa{\MT@apply@patch{##1}}%
@@ -13126,7 +13510,7 @@ end
   \MT@ifstreq\@tempa{all}
     \relax
     {\MT@ifstreq\@tempa{none}
-      {\let\tempa\@empty}
+      {\let\@tempa\@empty}
       \relax}%
   \ifx\@tempa\@empty\else
 ^^X    \MT@map@clist@c\@tempa{\MT@undo@patch{##1}}%
@@ -18131,109 +18515,56 @@ end
 %    \begin{macrocode}
 %<*test>
 \documentclass{article}
+%% options are passed through to microtype
+\usepackage[stretch=50]{microtype-show}
 
-%% Here you can specify the font you want to test, using
-%% the commands \fontfamily, \fontseries and \fontshape.
-%% Make sure to end all lines with a comment character!
-\newcommand*\TestFont{%
-  \fontfamily{ppl}%
-%%  \fontseries{b}%
-%%  \fontshape{it}% sc, sl
-}
+%% options for microtype-show
+\def\glyphscalefactor{2}
+\showglyphindextrue
+\showmissingglyphstrue
 
-\usepackage{ifthen}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage[verbose,expansion=alltext,stretch=50]{microtype}
+%% load any required font packages
+ \usepackage[T1]{fontenc}
 
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\newcommand*\crulefill{\cleaders\hbox{$\mkern-2mu\smash-\mkern-2mu$}\hfill}
-\newcommand*\testprotrusion[2][]{%
-  \ifthenelse{\equal{#1}{r}}{}{#2}%
-  lorem ipsum dolor sit amet,
-    \ifthenelse{\equal{#1}{r}}{\crulefill}{\leftarrowfill} #2
-    \ifthenelse{\equal{#1}{l}}{\crulefill}{\rightarrowfill}
-  you know the rest%
-  \ifthenelse{\equal{#1}{l}}{}{#2}%
-  \linebreak
-  {\fontencoding{\encodingdefault}%
-  \fontseries{\seriesdefault}%
-  \fontshape{\shapedefault}%
-  \selectfont
-  Here is the beginning of a line, \dotfill and here is its end}\linebreak
-}
-\newcommand*\showTestFont{\expandafter\stripprefix\meaning\TestFont}
-\def\stripprefix#1>{}
-\newcount\charcount
 \begin{document}
 
 \microtypesetup{expansion=false}
 
-{\centering The font in this document is called by:\\
- \texttt{\showTestFont}\par}\bigskip
+%% load your font here
 
-\TestFont\selectfont
- This line intentionally left empty\linebreak
-%% A -- Z
-\charcount=65
-\loop
-  \testprotrusion{\char\charcount}
-  \advance\charcount 1
-  \ifnum\charcount < 91 \repeat
-%% a -- z
-\charcount=97
-\loop
-  \testprotrusion{\char\charcount}
-  \advance\charcount 1
-  \ifnum\charcount < 123 \repeat
-%% 0 -- 9
-\charcount=48
-\loop
-  \testprotrusion{\char\charcount}
-  \advance\charcount 1
-  \ifnum\charcount < 58 \repeat
-%%
- \testprotrusion[r]{,}
- \testprotrusion[r]{.}
- \testprotrusion[r]{;}
- \testprotrusion[r]{:}
- \testprotrusion[r]{?}
- \testprotrusion[r]{!}
- \testprotrusion[l]{\textexclamdown}
- \testprotrusion[l]{\textquestiondown}
- \testprotrusion[r]{)}
- \testprotrusion[l]{(}
- \testprotrusion{/}
- \testprotrusion{\char`\\}
- \testprotrusion{-}
- \testprotrusion{\textendash}
- \testprotrusion{\textemdash}
- \testprotrusion{\textquoteleft}
- \testprotrusion{\textquoteright}
- \testprotrusion{\textquotedblleft}
- \testprotrusion{\textquotedblright}
- \testprotrusion{\quotesinglbase}
- \testprotrusion{\quotedblbase}
- \testprotrusion{\guilsinglleft}
- \testprotrusion{\guilsinglright}
- \testprotrusion{\guillemotleft}
- \testprotrusion{\guillemotright}
+\ShowCharacterInheritance
 
 \newpage
-The following displays the current font stretched by 5\%,
-normal, and shrunk by 5\%:
+\ShowProtrusion
+
+\newpage
+%% show single glyphs
+%%\ShowDummyLine
+%%\ShowProtrusionLineGlyph{A}
+%%\ShowProtrusionLineGlyph{-}
+
+%% loop through all glyphs of the font
+%% protrusion values are shown in 1000th of 1em
+\ShowProtrusionDefined
+
+%%\ShowProtrusionMissing
+
+%%\ShowProtrusionAll
+
+%% -------------------------------------------------------------------
+\newpage
+This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 
 \bigskip
 \newlength{\MTln}
 \newcommand*\teststring
-  {ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789}
+  {ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}
 \settowidth{\MTln}{\teststring}
 \microtypesetup{expansion=true}
 
-\parbox{1.05\MTln}{\teststring\linebreak\\
+\noindent\parbox{1.05\MTln}{\teststring\linebreak\\
                    \teststring}\par\bigskip
-\parbox{0.95\MTln}{\teststring}
+\noindent\parbox{0.95\MTln}{\teststring}
 
 \end{document}
 %</test>
@@ -18273,7 +18604,7 @@ normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11502}
+% \CheckSum{11976}
 %
 % \Finale
 %

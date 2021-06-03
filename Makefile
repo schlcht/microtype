@@ -53,7 +53,7 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   mt-ugm.cfg mt-mvs.cfg mt-zpeu.cfg \
 	   mt-CharisSIL.cfg mt-LatinModernRoman.cfg mt-Palatino.cfg \
 	   mt-FontAwesome.cfg mt-Lato.cfg \
-	   test-microtype.tex
+	   microtype-show.sty test-microtype.tex
 SOURCE    = $(ALLDTX) $(INS) $(README)
 GENERATED = $(UNPACKED) $(COMPILED)
 
@@ -259,7 +259,7 @@ sty-install: $(RUNFILES)
 
 manifest: $(SOURCE) 
 	@echo "=== Source files ==="
-	@LANG=C && sed -n '/%<\*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
+	@LANG=C && sed -n '/%<\*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|show>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
 	@LANG=C && sed -n '/ *version *= *.*$$/{N;s/^.*= *"\(.*\)",.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
 	@sed -n '/%<\*driver>$$/{N;/{\\jobname\.dtx}/ s/^.*\[\(.*\)\]$$/-- \1 ($(UTFDTX))/p;}' $(UTFDTX)
 	@sed -n 's/^ *(\(v[^ ]*\) *-- *\([^ ]*\))$$/-- \2 \1 ($(README))/p' $(README)
