@@ -2952,28 +2952,29 @@
 % \file{microtype.dtx}.
 %
 %
-%\section{Contributions and feedback}\label{sec:contrib}
+%\section{Creating configuration files and contributing}\label{sec:contrib}
 %
 % I would be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
 % To alleviate this process, \microtype\ also includes the companion package
 %\DescribePackage{microtype-show}
 % \pkg{microtype-show}, which offers some tools to visually debug protrusion
-% settings:
+% settings. It should not be used in production contexts.
 %
 %\medskip\noindent
-%\DescribeMacro{\ShowProtrusion}
 %\DescribeMacro{\ShowCharacterInheritance}
-% These commands will show all defined protrusion resp. inheritance settings
-% for the current font. They are mostly useful for consistency checks.
+%\DescribeMacro{\ShowProtrusion}
+% These commands show all defined inheritance resp. protrusion settings
+% (relative to character width, to \EM{1}, and as the effective kerning amount)
+% for the current font. They are most useful for consistency checks.
 %
 %\medskip\noindent
 %\DescribeMacro{\ShowProtrusionAll}
 %\DescribeMacro{\ShowProtrusionDefined}
 %\DescribeMacro{\ShowProtrusionMissing}
-% For the actual settings, these commands are recommended, which loop through
-% all characters of the current font and show, respectively, all glyphs,
-% only those with defined protrusion settings, or those without protrusion settings.
+% These commands are meant as aids in preparing the actual protrusion settings.
+% They loop through the current font and show, respectively: all glyphs;
+% only those with defined protrusion settings; or those without protrusion settings.
 % (Note that here, the protrusion amounts shown are in 1000ths of \EM{1}, not in
 % 1000ths of character widths).
 %^^A
@@ -4074,16 +4075,16 @@
 \RequirePackage{microtype,graphicx,xcolor}
 %    \end{macrocode}
 %\begin{macro}{\baselinecolor}
-%\begin{macro}{\lpcolor}
-%\begin{macro}{\rpcolor}
+%\begin{macro}{\poscolor}
+%\begin{macro}{\negcolor}
 %\begin{macro}{\glyphscalefactor}
 %\begin{macro}{\ifshowglyphindex}
 %\begin{macro}{\ifshowmissingglyphs}
 % The following commands are configurable:
 %    \begin{macrocode}
 \newcommand*\baselinecolor{\color{black!40}}
-\newcommand*\lpcolor{\color{red!50}}
-\newcommand*\rpcolor{\color{green!50}}
+\newcommand*\poscolor{\color{green!50}}
+\newcommand*\negcolor{\color{red!50}}
 \newcommand*\glyphscalefactor{2}
 \newif\ifshowglyphindex
 \newif\ifshowmissingglyphs
@@ -4094,6 +4095,9 @@
 %\end{macro}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MTS@printtext}
+%\begin{macro}{\MTS@show@index}
+%\begin{macro}{\MTS@crulefill}
 % Make sure to have a readable font.
 %    \begin{macrocode}
 \ifluatex
@@ -4102,12 +4106,25 @@
   \def\MTS@printtext#1{{\usefont{T1}{cmr}{m}{n}#1}}
 \fi
 \def\MTS@show@index#1{\ifshowglyphindex{\tiny$_{#1}$}\fi\space}
+\def\MTS@crulefill{\leaders\hrule height \dimexpr1ex/2+.4pt depth -\dimexpr1ex/2\hfill}
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MTS@Prot}
+%\begin{macro}{\MTS@Char}
 % Add the |show| commands to \microtype's setup.
 %    \begin{macrocode}
 \g@addto@macro\MT@setupfont{\MTS@Prot\MTS@Char}
 \let\MTS@Prot\relax
 \let\MTS@Char\relax
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MTS@setup}
+%\begin{macro}{\MTS@glyphlist}
+% Common setup. \cs{MTS@glyphlist} stores all glyphs we've seen.
+%    \begin{macrocode}
 \def\MTS@setup{%
   \fboxsep=0pt
   \fboxrule=.1pt
@@ -4116,7 +4133,10 @@
   \def\MT@feat{pr}%
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\ShowProtrusion}
+% Activate the sleeper command, and trigger the setup.
 %    \begin{macrocode}
 \def\ShowProtrusion{%
   \begingroup
@@ -4127,6 +4147,10 @@
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MTS@Prot@do}
+% But in all other cases of a font being picked up, there should
+% be no special treatment. After we're done, select the previous
+% font again.
 %    \begin{macrocode}
 \def\MTS@Prot@do{%
     \MT@ltx@pickupfont
@@ -4138,6 +4162,7 @@
   \aftergroup\selectfont
 }
 %    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\ShowCharacterInheritance}
 %    \begin{macrocode}
 \def\ShowCharacterInheritance{%
@@ -4149,6 +4174,7 @@
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MTS@Char@do}
 %    \begin{macrocode}
 \def\MTS@Char@do{%
     \MT@ltx@pickupfont
@@ -4157,7 +4183,9 @@
   \aftergroup\selectfont
 }
 %    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\ShowProtrusionLineGlyph}
+% By glyph.
 %    \begin{macrocode}
 \def\ShowProtrusionLineGlyph#1{%
   {\MTS@setup
@@ -4166,6 +4194,7 @@
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\ShowProtrusionLineIndex}
+% By glyph number.
 %    \begin{macrocode}
 \def\ShowProtrusionLineIndex#1{%
   {\MTS@setup
@@ -4173,27 +4202,33 @@
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MTS@showprotrusionline}
+%\begin{macro}{\MTS@lpcode}
+%\begin{macro}{\MTS@rpcode}
 %    \begin{macrocode}
 \def\MTS@showprotrusionline#1{%
-  \edef\MT@lpcode{\number\lpcode\font#1}%
-  \edef\MT@rpcode{\number\rpcode\font#1}%
+  \edef\MTS@lpcode{\number\lpcode\font#1}%
+  \edef\MTS@rpcode{\number\rpcode\font#1}%
   \char#1%
   lorem ipsum dolor sit amet,
-    \MTS@crulefill\ \MTS@printtext{\ifnum\MT@lpcode=\z@ \baselinecolor\fi[\MT@lpcode]}
+    \MTS@crulefill\ \MTS@printtext{\ifnum\MTS@lpcode=\z@ \baselinecolor\fi[\MTS@lpcode]}
                     \fbox{\char#1}\ifshowglyphindex{\tiny$_{\number#1}$}\fi\ %
-                    \MTS@printtext{\ifnum\MT@rpcode=\z@ \baselinecolor\fi[\MT@rpcode]}
+                    \MTS@printtext{\ifnum\MTS@rpcode=\z@ \baselinecolor\fi[\MTS@rpcode]}
     \MTS@crulefill\ %
   you know the rest%
   \char#1\par
   \ShowDummyLine
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\ShowDummyLine}
+% The first and last glyphs in this line should have a straight (non-protruded) shape.
+% We also reset to default shape and series.
 %    \begin{macrocode}
 \def\ShowDummyLine{%
- {\fontencoding{\encodingdefault}%
-  \fontseries{\seriesdefault}%
-  \fontshape{\shapedefault}%
+ {\fontencoding{\encodingdefault}\fontseries{\seriesdefault}\fontshape{\shapedefault}%
   \selectfont\noindent
   Here is the beginning of a line, \dotfill and here is its end}\par
 }
@@ -4234,6 +4269,7 @@
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MTS@lede}
 %    \begin{macrocode}
 \def\MTS@lede#1{%
   \selectfont
@@ -4242,7 +4278,10 @@
                  font \texttt{\MTS@font}:}\par
   \ShowDummyLine
 }
-\def\MTS@crulefill{\leaders\hrule height \dimexpr1ex/2+.4pt depth -\dimexpr1ex/2\hfill}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MTS@firstorsecond}
+%    \begin{macrocode}
 \def\MTS@firstorsecond{%
   \let\MTS@temp\MTS@first
   \ifnum\lpcode\font\@tempcnta=\z@ \else
@@ -4252,6 +4291,14 @@
     \let\MTS@temp\MTS@second
   \fi
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MTS@charwd}
+%\begin{macro}{\MTS@lp@}
+%\begin{macro}{\MTS@rp@}
+%\begin{macro}{\MTS@show@pr@char}
+% Display the glyph with protrusion.
+%    \begin{macrocode}
 \newdimen\MTS@charwd
 \newdimen\MTS@lp@
 \newdimen\MTS@rp@
@@ -4259,18 +4306,47 @@
   \xdef\MTS@glyphlist{\MTS@glyphlist,#1}%
   \scalebox{\glyphscalefactor}{\strut\escapechar`\\
     \MTS@charwd=\fontcharwd\MT@font#1\relax
+%    \end{macrocode}
+% The baseline rule.
+%    \begin{macrocode}
     {\baselinecolor\vrule width \dimexpr\MTS@charwd+.3em\relax height 1sp depth 0pt}%
     \hskip-\dimexpr\MTS@charwd+.15em\relax
-    {\lpcolor\vrule width \ifdim\MTS@lp@<\z@ -\fi\MTS@lp@ height 1em depth .2em}%
-    \hskip\MTS@charwd
-    \ifdim\MTS@lp@>\z@\hskip-\MTS@lp@\fi
-    \ifdim\MTS@rp@>\z@\hskip-\MTS@rp@\fi
-    {\rpcolor\vrule width \ifdim\MTS@rp@<\z@ -\fi\MTS@rp@ height 1em depth .2em}%
-    \hskip-\dimexpr\MTS@charwd+\fboxrule
-    \ifdim\MTS@rp@<\z@\hskip\MTS@rp@\fi
+%    \end{macrocode}
+% Left protrusion.
+%    \begin{macrocode}
+    {\ifdim\MTS@lp@<\z@\negcolor\else\poscolor\fi
+     \vrule width \ifdim\MTS@lp@<\z@ -\fi\MTS@lp@ height 1em depth .2em}%
+    \hskip\dimexpr\MTS@charwd\ifdim\MTS@lp@>\z@-\MTS@lp@\fi
+                             \ifdim\MTS@rp@>\z@-\MTS@rp@\fi\relax
+%    \end{macrocode}
+% Right protrusion.
+%    \begin{macrocode}
+    {\ifdim\MTS@rp@<\z@\negcolor\else\poscolor\fi
+     \vrule width \ifdim\MTS@rp@<\z@ -\fi\MTS@rp@ height 1em depth .2em}%
+    \hskip-\dimexpr\MTS@charwd+\fboxrule\ifdim\MTS@rp@<\z@-\MTS@rp@\fi\relax
+%    \end{macrocode}
+% Finally the glyph, so that it's on top.
+%    \begin{macrocode}
     \fbox{\char #1}}%
     \MTS@show@index{\,#1}%
 }
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MTS@show@char}
+%\begin{macro}{\MTS@show@char@x}
+% Just show the glyph; the second command also remembers it.
+%    \begin{macrocode}
+\def\MTS@show@char#1{\scalebox{\glyphscalefactor}{%
+  \strut\fbox{\char#1}}\MTS@show@index{#1}}
+\def\MTS@show@char@x#1{\xdef\MTS@glyphlist{\MTS@glyphlist,#1}\MTS@show@char{#1}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MTS@show@missing}
+%    \begin{macrocode}
 \def\MTS@show@missing{%
   \MTS@lp@=\z@ \MTS@rp@=\z@
   \MTS@printtext{Glyphs not included in configuration (with defined heirs):}%
@@ -4282,35 +4358,59 @@
       \llap{\MTS@show@pr@char{\MT@temp} \MTS@printtext{=} }%
        \MT@exp@cs\MT@map@tlist@c
          {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
-         \MTS@show@ci@x
+         \MTS@show@char@x
       \fi
     }%
   }%
   \MTS@show@prefixes
   \MTS@show@missing@
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MTS@show@missing@}
+%    \begin{macrocode}
 \def\MTS@show@missing@{%
   \par \MTS@printtext{Other glyphs not in configuration:}\newline
   \MT@do@font{%
     \edef\MT@temp{\the\@tempcnta}%
     \MT@exp@one@n\MT@in@clist\MT@temp\MTS@glyphlist
     \ifMT@inlist@\else
-      \MTS@show@ci\MT@temp
+      \MTS@show@char\MT@temp
     \fi
   }%
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MTS@show@prefixes}
+%    \begin{macrocode}
 \def\MTS@show@prefixes{%
   \MT@ifdefined@n@T{MT@inh@\MT@listname @prefixes}{%
     \par \MTS@printtext{(with prefixes:)}%
     \@tempcnta=\z@
     \MT@exp@cs\MT@map@tlist@c
       {MT@inh@\MT@pr@inh@name @prefixes}%
-      \MTS@show@ci@prefixes
+      \MTS@show@prefixes@
   }%
 }
-\def\MTS@show@ci#1{\scalebox{\glyphscalefactor}{\strut\fbox{\char#1}}%
-  \MTS@show@index{#1}}
-\def\MTS@show@ci@x#1{\xdef\MTS@glyphlist{\MTS@glyphlist,#1}\MTS@show@ci{#1}}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MTS@show@prefixes@}
+%\begin{macro}{\MTS@show@prefix}
+%    \begin{macrocode}
+\def\MTS@show@prefixes@#1{\MTS@show@prefix#1}
+\def\MTS@show@prefix#1#2#3#4{%
+  \ifnum#1=\@tempcnta \else
+    \newline
+    \llap{\MTS@show@char@x{#1} \MTS@printtext{=} }%
+  \fi
+  \MTS@show@char@x{#2}%
+  \@tempcnta=#1\relax
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MTS@show@inheritance}
+%    \begin{macrocode}
 \def\MTS@show@inheritance{%
     \MT@get@inh@list
     \MTS@printtext{Character inheritance for font `\texttt{\MT@@font}':}\\
@@ -4321,10 +4421,10 @@
         \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\the\@tempcnta @}{%
           \newline
           \xdef\MTS@glyphlist{\MTS@glyphlist,\the\@tempcnta}%
-          \llap{\MTS@show@ci{\the\@tempcnta}\MTS@printtext{= }}%
+          \llap{\MTS@show@char{\the\@tempcnta}\MTS@printtext{= }}%
           \MT@exp@cs\MT@map@tlist@c
             {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
-            \MTS@show@ci@x
+            \MTS@show@char@x
         }%
       }%
       \MTS@show@prefixes
@@ -4334,17 +4434,9 @@
     }%
     \par
 }
-\def\MTS@show@ci@prefixes#1{\MTS@show@ci@prefix#1}
-\def\MTS@show@ci@prefix#1#2#3#4{%
-  \ifnum#1=\@tempcnta \else
-    \newline
-    \llap{\MTS@show@ci@x{#1} \MTS@printtext{=} }%
-  \fi
-  \MTS@show@ci@x{#2}%
-  \@tempcnta=#1\relax
-}
 %</show>
 %    \end{macrocode}
+%\end{macro}
 %
 %\subsubsection{Requirements}
 %
@@ -18524,7 +18616,9 @@ end
 \showmissingglyphstrue
 
 %% load any required font packages
+\ifpdftex
  \usepackage[T1]{fontenc}
+\fi
 
 \begin{document}
 
@@ -18604,7 +18698,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11976}
+% \CheckSum{11990}
 %
 % \Finale
 %
