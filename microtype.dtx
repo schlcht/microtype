@@ -1220,6 +1220,12 @@
 % more modest protrusion).
 %
 %\medskip
+%\Describe{Option}{patch}{!all,none,:list of patches}
+%\DescribeOption{nopatch}
+% These options provide control over various patches meant to \dots.
+% They are described in section~\ref{sec:pedantic}.
+%
+%\medskip
 %\Describe{Option}{unit}{!character,:dimension}
 % This option is described in section~\ref{sub:protrusion}, apropos the command
 % \cs{SetProtrusion}. Use with care.
@@ -1297,6 +1303,7 @@
 % See section~\ref{sub:expansion} for a more detailed discussion.
 %
 %
+%\pagebreak ^^A layout
 %\subsection[Tracking]
 %           {Tracking \requires{\pdftex~1.40,\luatex~0.62}}
 %           \label{sub:options-tracking}
@@ -1339,12 +1346,6 @@
 % Loading the package with the \opt{babel} option will adjust the typesetting
 % according to the respective selected language. Read section~\ref{sec:context}
 % for further information.
-%
-%\medskip
-%\Describe{Option}{patch}{!all,none,:list of patches}
-%\DescribeOption{nopatch}
-% These options provide control over various patches.
-% They are described in section~\ref{sec:pedantic}.
 %
 %\medskip
 %\Describe{Option}{config}{:file name}[microtype]
@@ -1618,7 +1619,6 @@
 %\usepackage[protrusion=allmath,tracking=smallcaps]{microtype}
 %\end{verbatim}
 %
-%\ifcmr\else\pagebreak\fi ^^A layout
 %\medskip
 %\Describe{Macro}{\UseMicrotypeSet}{?features,set name}
 % This command activates a font set previously declared by \cs{DeclareMicrotypeSet}.
@@ -1965,7 +1965,7 @@
 % As an
 %\else
 %\changes{v2.3}{2007/11/03}{add letterspacing illustration}
-%\medskip\noindent
+%\noindent
 % Since a picture is worth a thousand words, probably even more if, in our
 % case, it depicts a couple of letterspaced words, let's bring one to sum up
 % these somewhat confusing options. Suppose you had the following settings
@@ -2472,6 +2472,7 @@
 % The current language will then be automatically detected and the contexts set
 % accordingly.
 %
+%\pagebreak ^^A layout
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeBabelHook}
 %                {list of \pkg{babel} languages,context list}
@@ -2952,7 +2953,7 @@
 % \file{microtype.dtx}.
 %
 %
-%\section{Creating configuration files and contributing}\label{sec:contrib}
+%\section{Creating configurations and contributing}\label{sec:contrib}
 %
 % I would be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
@@ -2972,8 +2973,8 @@
 %\DescribeMacro{\ShowProtrusionAll}
 %\DescribeMacro{\ShowProtrusionDefined}
 %\DescribeMacro{\ShowProtrusionMissing}
-% These commands are meant as aids in preparing the actual protrusion settings.
-% They loop through the current font and show, respectively: all glyphs;
+% When preparing the actual protrusion settings, these commands may be helpful.
+% Looping through the current font, they show, respectively: all glyphs;
 % only those with defined protrusion settings; or those without protrusion settings.
 % (Note that here, the protrusion amounts shown are in 1000ths of \EM{1}, not in
 % 1000ths of character widths).
