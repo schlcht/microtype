@@ -1222,7 +1222,8 @@
 %\medskip
 %\Describe{Option}{patch}{!all,none,:list of patches}
 %\DescribeOption{nopatch}
-% These options provide control over various patches meant to \dots.
+% These options provide control over various patches meant to fix protrusion
+% at margins other than the text block margins.
 % They are described in section~\ref{sec:pedantic}.
 %
 %\medskip
@@ -2605,7 +2606,8 @@
 %\section{Being pedantic about protrusion}\label{sec:pedantic}
 %
 % Protrusion works well in running paragraphs, but may also be desirable
-% in situations where \TeX, in contrast to humans, would not see a margin,
+% in situations where \TeX, in contrast to human eyes, would not see a margin,^^A
+%   \footnote{Possibly because \TeX\ tends to look through its gastro-intestinal tract.}
 % \eg, in |itemize| or |tabular| environments.
 % The \microtype\ package offers two commands that may be inserted at the
 % beginning or end of a line to make the first respectively last glyph
@@ -2656,19 +2658,18 @@
 % \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
 %              \MTsupp{standard classes, \pkg{memoir}}
-% \item[footnote] Protrusion for the first line of footnote text (only visible with a layout
-%              that has the footnote text set in block paragraphs, like in this document).
+% \item[footnote] Protrusion for the first line of footnote text (only visible when
+%              the footnote text is set in block paragraphs, like in this document).
 %              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
 % \item[eqnum] Protrusion for equation numbers on either side.
 %              \MTsupp{standard classes, \pkg{amsmath}}
 %\endlist\endgroup
 %
-%\medskip
-%\Describe{Option}{patch}{!all,none,:list of patches}
-%\DescribeOption{nopatch}
+%\medskip\noindent
 % By default, all of the above patches will be applied. Should this not be desired,
-% or in case you are running into problems, you may prevent or undo the patches,
-% either in the package options:
+% or in case you are running into problems, you may prevent or undo the patches through
+% the \textcolor{thered}{\opt{patch}} and \textcolor{thered}{\opt{nopatch}} options,
+% either when loading the package:
 %\begin{verbatim}
 %\usepackage[nopatch=toc]{microtype}
 %\end{verbatim}
@@ -2973,15 +2974,17 @@
 %\DescribeMacro{\ShowProtrusionAll}
 %\DescribeMacro{\ShowProtrusionDefined}
 %\DescribeMacro{\ShowProtrusionMissing}
-% When preparing the actual protrusion settings, these commands may be helpful.
-% Looping through the current font, they show, respectively: all glyphs;
-% only those with defined protrusion settings; or those without protrusion settings.
-% (Note that here, the protrusion amounts shown are in 1000ths of \EM{1}, not in
+% When preparing the actual protrusion settings, these commands may prove helpful.
+% Conveniently placing the glyphs at the margins, they show, respectively:
+% all glyphs in the current font; only those with defined protrusion settings;
+% or those without any protrusion settings.
+% (Note that here, the protrusion amounts are given in 1000ths of \EM{1}, not in
 % 1000ths of character widths).
 %^^A
 % The package also includes a test file that shows all of these commands in action
 % (\file{test-microtype.tex}).
 %
+%\medskip\noindent
 % If you have created a configuration file for another font, or if you have any
 % suggestions for enhancements in the default configuration files, I~would
 % gratefully accept them: \mailtoRS.
