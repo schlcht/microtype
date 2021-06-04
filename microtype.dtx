@@ -2213,7 +2213,7 @@
 % Additionally, this command provides the possibility to have the desired
 % protrusion amount calculated automatically based on the difference of character widths.
 % If the base character is preceded with either `|(l)|', `|(r)|' or `|(lr)|',
-% the inheriting characters will not only inherit the protrusion of the base character,
+% the characters in the list will not only inherit the protrusion of the base character,
 % but will be additionally protruded by the result of
 % |charwidth(|\meta{inheriting character}|)|$-$|charwidth|\allowbreak|(|\meta{base character}|)|:
 % for `|(l)|' and `|(r)|', this amount will be added to the given protrusion on
@@ -2230,10 +2230,11 @@
 % This feature is especially useful for Greek typography, where capital letters
 % at the beginning of a line should be placed as if they had no accent (the `H' in
 % the example above).
-% Base characters may have both unprefixed and prefixed inheritance lists.
-% Likewise, inheriting characters may appear in both unprefixed and prefixed lists,
-% and also in `|(l)|' and `|(r)|'-prefixed lists at the same time, whereas lists
-% prefixed with `|(l)|' or `|(r)|' are mutually exclusive with a `|(lr)|'-prefixed list.
+% Base characters may have both unprefixed and prefixed inheritance lists;
+% characters in the latter will be implicitly added to the unprefixed lists.
+% Inheriting characters may appear in both `|(l)|' and `|(r)|'-prefixed lists at the
+% same time, whereas lists prefixed with `|(l)|' or `|(r)|' are mutually exclusive
+% with a `|(lr)|'-prefixed list.
 % For all other features except protrusion, these prefixed lists will be ignored.
 %
 %
