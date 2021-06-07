@@ -3684,8 +3684,8 @@
 %  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
-%  \leavevmode,\llap,\makeatletter,\makebox,\mbox,\medskip,\newbox,\newcommand,\newcount,
-%  \newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
+%  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
+%  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
 %  \normalbaselineskip,\normalsize,\numberline,\par,\parbox,\quad,\raggedright,
 %  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\usefont,
 %  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
@@ -4119,7 +4119,10 @@
 \else
   \def\MTS@printtext#1{{\usefont{T1}{cmr}{m}{n}#1}}
 \fi
-\def\MTS@show@index#1{\ifShowGlyphIndex{\tiny$_{#1}$}\fi\space}
+\def\MTS@show@index#1{\ifShowGlyphIndex{\tiny$_{#1}%
+ %  \ifluatex^{\mathrm{%
+ %    \MT@lua{tex.print(luaotfload.aux.name_of_slot(tonumber([[#1]])))}}}\fi
+  $}\fi\space}
 \def\MTS@crulefill{\leaders\hrule height \dimexpr1ex/2+.4pt depth -\dimexpr1ex/2\hfill}
 %    \end{macrocode}
 %\end{macro}
@@ -4225,12 +4228,11 @@
   \edef\MTS@lpcode{\number\lpcode\font#1}%
   \edef\MTS@rpcode{\number\rpcode\font#1}%
   \char#1%
-  lorem ipsum dolor sit amet,
-    \MTS@crulefill\ \MTS@printtext{\ifnum\MTS@lpcode=\z@ \Showbaselinecolor\fi[\MTS@lpcode]}
-                    \fbox{\char#1}\ifShowGlyphIndex{\tiny$_{\number#1}$}\fi\ %
-                    \MTS@printtext{\ifnum\MTS@rpcode=\z@ \Showbaselinecolor\fi[\MTS@rpcode]}
-    \MTS@crulefill\ %
-  you know the rest%
+    lorem ipsum dolor sit amet, \MTS@crulefill\ %
+    \MTS@printtext{\ifnum\MTS@lpcode=\z@\Showbaselinecolor\fi[\MTS@lpcode]}
+    \fbox{\char#1}\MTS@show@index{\number#1}
+    \MTS@printtext{\ifnum\MTS@rpcode=\z@\Showbaselinecolor\fi[\MTS@rpcode]}
+    \MTS@crulefill\ you know the rest%
   \char#1\par
   \ShowDummyLine
 }
@@ -4312,13 +4314,13 @@
 %\begin{macro}{\MTS@charwd}
 %\begin{macro}{\MTS@lp@}
 %\begin{macro}{\MTS@rp@}
-%\begin{macro}{\MTS@show@pr@char}
+%\begin{macro}{\MTS@show@char@pr}
 % Display the glyph with protrusion.
 %    \begin{macrocode}
 \newdimen\MTS@charwd
 \newdimen\MTS@lp@
 \newdimen\MTS@rp@
-\def\MTS@show@pr@char#1{%
+\def\MTS@show@char@pr#1{%
   \xdef\MTS@glyphlist{\MTS@glyphlist,#1}%
   \scalebox{\GlyphScaleFactor}{\strut\escapechar`\\
     \MTS@charwd=\fontcharwd\MT@font#1\relax
@@ -4343,8 +4345,8 @@
 %    \end{macrocode}
 % Finally the glyph, so that it's on top.
 %    \begin{macrocode}
-    \fbox{\char #1}}%
-    \MTS@show@index{\,#1}%
+    \fbox{\char#1}}\,%
+    \MTS@show@index{#1}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -4371,7 +4373,7 @@
     \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@temp @}{%
       \MT@exp@one@n\MT@in@clist\MT@temp\MTS@glyphlist
       \ifMT@inlist@\else \newline
-      \llap{\MTS@show@pr@char{\MT@temp} \MTS@printtext{=} }%
+      \llap{\MTS@show@char@pr{\MT@temp} \MTS@printtext{=} }%
        \MT@exp@cs\MT@map@tlist@c
          {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
          \MTS@show@char@x
@@ -4417,7 +4419,7 @@
     \MT@ifdefined@n@T{MT@inh@\MT@listname @prefixes}{%
       \par \MTS@printtext{(with prefixes:)}%
       \@tempcntb=\z@
-      \let\MTS@show@pr@char\MTS@show@char@x
+      \let\MTS@show@char@pr\MTS@show@char@x
       \MT@set@pr@prefixheirs}%
     \ifShowMissingGlyphs\MTS@show@missing@\fi
   }{%
@@ -7170,23 +7172,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<show>    \edef\MTS@rpcode{[\@tempb] \the\@tempcntb/\the\MTS@rp@}%
 %<debug>\MT@dinfo@nl{4}{;;; rp (\MT@char): \number\rpcode\MT@font\MT@char: [#2]}%
   }%
+%<show>  \llap{\MTS@show@char@pr\MT@char\quad}%
+%<show>  \parbox[b][][b]{3.5cm}{\MTS@printtext{%
+%<show>      \footnotesize\makebox[.4cm][l]{L:} \MT@ifempty{\MTS@lpcode}{---}{\MTS@lpcode}\\
+%<show>                   \makebox[.4cm][l]{R:} \MT@ifempty{\MTS@rpcode}{---}{\MTS@rpcode}}}%
+%<show>  \parbox[t][][t]{\dimexpr\textwidth-3.5cm}{%
 %    \end{macrocode}
 % Now we can set the values for the inheriting characters. Their slot numbers
 % are saved in the macro |\MT@inh@|\meta{list name}|@|\meta{slot number}|@|.
 %    \begin{macrocode}
-%<*show>
-  \llap{\MTS@show@pr@char\MT@char\quad}%
-  \parbox[b][][b]{3.5cm}{\MTS@printtext{%
-      \footnotesize\makebox[.4cm][l]{L:} \MT@ifempty{\MTS@lpcode}{---}{\MTS@lpcode}\\
-                   \makebox[.4cm][l]{R:} \MT@ifempty{\MTS@rpcode}{---}{\MTS@rpcode}}}%
-  \parbox[t][][t]{\dimexpr\textwidth-3.5cm}{%
-%</show>
   \MT@ifdefined@c@T\MT@pr@inh@name{%
     \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @}{%
       \MT@exp@cs\MT@map@tlist@c
         {MT@inh@\MT@pr@inh@name @\MT@char @}%
 %<pdftex-def|xetex-def|luatex-def>        \MT@set@pr@heirs
-%<show>      \MTS@show@pr@char
+%<show>      \MTS@show@char@pr
     }%
   }%
 %<show>  }\newline
@@ -7589,13 +7589,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<pdftex-def|luatex-def|xetex-def>\def\MT@set@pr@prefixes@#1#2#3#4%
 %<show>\def\MTS@set@pr@prefixes@#1#2#3#4%
   {%
-%<*show>
-  \ifnum#1=\@tempcntb \else
-    \par\leavevmode
-    \llap{\MTS@show@pr@char{#1} \MTS@printtext{=} }%
-  \fi
-  \MTS@lp@=\z@ \MTS@rp@=\z@
-%</show>
+%<show>  \ifnum#1=\@tempcntb \else
+%<show>    \par\leavevmode
+%<show>    \llap{\MTS@show@char@pr{#1} \MTS@printtext{=} }%
+%<show>  \fi
+%<show>  \MTS@lp@=\z@ \MTS@rp@=\z@
 %<*xetex-def>
   \edef\@tempa{\expandafter\ifx\@car#1\@nil U\@gobble#1\else\number\XeTeXglyphindex"#1" \fi}%
   \edef\@tempb{\expandafter\ifx\@car#2\@nil U\@gobble#2\else\number\XeTeXglyphindex"#2" \fi}%
@@ -7619,7 +7617,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<debug>\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
 %<debug>                                \number\rpcode\MT@font#2}%
-%<show>  \MTS@show@pr@char{#2}%
+%<show>  \MTS@show@char@pr{#2}%
 %<show>  \@tempcntb=#1\relax
 }
 %</pdftex-def|luatex-def|xetex-def|show>
@@ -18698,7 +18696,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11991}
+% \CheckSum{11992}
 %
 % \Finale
 %
