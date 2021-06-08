@@ -7590,11 +7590,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<pdftex-def|luatex-def|xetex-def>\def\MT@set@pr@prefixes@#1#2#3#4%
 %<show>\def\MTS@set@pr@prefixes@#1#2#3#4%
   {%
+%<show>  \MTS@lp@=\z@ \MTS@rp@=\z@
 %<show>  \ifnum#1=\@tempcntb \else
 %<show>    \par\leavevmode
 %<show>    \llap{\MTS@show@char@pr{#1} \MTS@printtext{=} }%
 %<show>  \fi
-%<show>  \MTS@lp@=\z@ \MTS@rp@=\z@
 %<*xetex-def>
   \edef\@tempa{\expandafter\ifx\@car#1\@nil U\@gobble#1\else\number\XeTeXglyphindex"#1" \fi}%
   \edef\@tempb{\expandafter\ifx\@car#2\@nil U\@gobble#2\else\number\XeTeXglyphindex"#2" \fi}%
