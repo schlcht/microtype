@@ -1224,11 +1224,11 @@
 %\DescribeOption{nopatch}
 % These options provide control over various patches meant to fix protrusion
 % at margins other than the text block margins.
-% They are described in section~\ref{sec:pedantic}.
+% They are described in detail in section~\ref{sec:pedantic}.
 %
 %\medskip
 %\Describe{Option}{unit}{!character,:dimension}
-% This option is described in section~\ref{sub:protrusion}, apropos the command
+% This option is described in section~\ref{sub:protrusion}, apropos of the command
 % \cs{SetProtrusion}. Use with care.
 %
 %
@@ -2545,7 +2545,7 @@
 % (namely, `\textls{\def\!#1{\textcolor{thegreen}{\lslig{#1}}}^^A
 %                   \def\?#1{\textcolor{thered}{#1}}^^A
 %  \textfrak{Au\!{s:}\?{si}\!{ch}t\!{s:}lo\?{si}gkeit}}',
-%  with ligatures shown in green, inhibited ligatures in red).
+%  with ligatures here shown in green, inhibited ligatures in red).
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
 %\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
@@ -2623,7 +2623,7 @@
 % For instance, you could add this command to a tabular cell definition
 % (using the \pkg{array} package):
 %\begin{verbatim}
-%\begin{tabular}{>{\leftprotrusion}p{8cm}r}
+%\begin{tabular}{l>{\leftprotrusion}p{9cm}r}
 %\end{verbatim}
 % in order to get protrusion at the beginning of the |p| cell.
 %
@@ -2635,13 +2635,14 @@
 %
 %\medskip\noindent
 %\DescribeMacro{\noprotrusion}
-% is provided by \LaTeX\ itself. When added to the beginning or end of a line,
-% this command will prevent protrusion at the respective margin.
+% is just mentioned apropos, as it's provided by \LaTeX\ itself.
+% When added to the beginning or end of a line, this command will
+% prevent protrusion at the respective margin.
 %
 %\medskip\noindent
-% The \microtype\ package will automatically apply a number of patches in order
-% to get protrusion right (with dedicated patches for the classes and packages
-% mentioned in parentheses; they may still work with other classes or packages):
+% The \microtype\ package defines a number of patches in order to get protrusion
+% right (with dedicated patches for the classes and packages indicated in
+% parentheses; they may still work with other classes or packages):
 %\begingroup
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
 %     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
@@ -13402,8 +13403,8 @@ end
 % Inside the preamble, \cs{microtypesetup} accepts the same options as the
 % package (unless \opt{defersetup}|=false|).
 % In the document body, it accepts the options:
-% |protrusion|, |expansion|, |activate|, |tracking|, |spacing| and |kerning|.
-% Specifying font sets is not allowed.
+% |protrusion|, |expansion|, |activate|, |tracking|, |spacing| and |kerning|
+% (but specifying font sets is not allowed), and |patch| and |nopatch|.
 %    \begin{macrocode}
 \def\microtypesetup{\setkeys{MT}}
 \MT@addto@setup{\def\microtypesetup#1{\setkeys{MTX}{#1}\selectfont}}
@@ -18601,7 +18602,7 @@ end
 %
 %\section{Auxiliary file for micro fine tuning}
 %
-% This file can be used to test protrusion and expansion settings.
+% This file may be used to test protrusion and expansion settings.
 %    \begin{macrocode}
 %<*test>
 \documentclass{article}
@@ -18616,10 +18617,11 @@ end
 %% load any required font packages
 \ifpdftex
  \usepackage[T1]{fontenc}
+\else
+ \usepackage{fontspec}
 \fi
 
 \begin{document}
-
 \microtypesetup{expansion=false}
 
 %% load your font here
@@ -18631,33 +18633,29 @@ end
 
 \newpage
 %% show single glyphs
-%%\ShowDummyLine
-%%\ShowProtrusionLineGlyph{A}
-%%\ShowProtrusionLineGlyph{-}
+ %\ShowDummyLine
+ %\ShowProtrusionLineGlyph{A}
+ %\ShowProtrusionLineGlyph{-}
 
 %% loop through all glyphs of the font
 %% protrusion values are shown in 1000th of 1em
-\ShowProtrusionDefined
+ \ShowProtrusionDefined
 
-%%\ShowProtrusionMissing
+ %\ShowProtrusionMissing
 
-%%\ShowProtrusionAll
+ %\ShowProtrusionAll
 
-%% -------------------------------------------------------------------
-\newpage
+\newpage %% -------------------------------------------------------------------
 This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 
-\bigskip
 \newlength{\MTln}
 \newcommand*\teststring
   {ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}
 \settowidth{\MTln}{\teststring}
 \microtypesetup{expansion=true}
 
-\noindent\parbox{1.05\MTln}{\teststring\linebreak\\
-                   \teststring}\par\bigskip
-\noindent\parbox{0.95\MTln}{\teststring}
-
+\bigskip\noindent\parbox{1.05\MTln}{\teststring\linebreak\\\teststring}\par
+\bigskip\noindent\parbox{0.95\MTln}{\teststring}
 \end{document}
 %</test>
 %    \end{macrocode}
@@ -18696,7 +18694,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11992}
+% \CheckSum{11994}
 %
 % \Finale
 %
