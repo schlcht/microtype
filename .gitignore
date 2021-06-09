@@ -5,6 +5,7 @@ microtype.sty
 microtype-luatex.def
 microtype-pdftex.def
 microtype-xetex.def
+microtype-show.sty
 letterspace.sty
 microtype.lua
 test-microtype.tex
