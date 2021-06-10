@@ -22,7 +22,7 @@ This work has the LPPL maintenance status `author-maintained'.
 
 This work consists of the files microtype.dtx and microtype.ins and the
 derived files microtype.sty, microtype-pdftex.def, microtype-luatex.def,
-microtype-xetex.def, microtype.lua and letterspace.sty.
+microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
 
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -74,6 +74,11 @@ microtype-xetex.def, microtype.lua and letterspace.sty.
   let me know.^^M
   When modifying this file, also change the identification line below.
 \endpreamble
+\declarepreamble\showpreamble
+  This companion package offers various commands that might be helpful
+  for creating protrusion settings. See the documentation in microtype's
+  User manual, section 11, and the examples in test-microtype.tex.
+\endpreamble
 \declarepreamble\testpreamble
   This file might be useful to test protrusion settings for a font.
   You may do with it whatever you want.
@@ -113,7 +118,6 @@ microtype-xetex.def, microtype.lua and letterspace.sty.
 
 \generate{
     \makefile{microtype.sty}{package\DEBUG}
-    \makefile{microtype-show.sty}{show\DEBUG}
   \usepreamble\defpreamble
     \makefile{microtype-pdftex.def}{pdftex-def\DEBUG}
     \makefile{microtype-luatex.def}{luatex-def\DEBUG}
@@ -145,6 +149,8 @@ microtype-xetex.def, microtype.lua and letterspace.sty.
     \makecfg{t}{pmn}
   \usepreamble\lorenpreamble
     \makeutfcfg{Palatino}
+  \usepreamble\showpreamble
+    \makefile{microtype-show.sty}{show\DEBUG}
   \usepreamble\testpreamble
     \makefile{test-microtype.tex}{test}
 }
