@@ -847,6 +847,8 @@
 %\GeneralChanges{Documentation}
 %\changes{v1.9b}{2006/01/13}{activate expansion in the distributed <PDF>}
 %\changes{v2.2}{2007/04/01}{logo transparency and amusement}
+%\changes{v2.8d}{2021/06/01}{split in User manual (\file{microtype.pdf})
+%                            and Implementation doc (\file{microtype-code.pdf})}
 % ^^A Adobe Reader 8.0 had serious bugs with transparency. Fixed in 8.1.
 %\fi
 %
@@ -7704,7 +7706,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\leftprotrusion}
 %\changes{v2.8d}{2021/05/15}{new command}
 % This command may be used to add protrusion on the left hand side.
-% We try to reconstruct the next glyph (possibly a ligature).
+% We try to reconstruct the next glyph (possibly a ligature).\footnote{
+%   \luatex\ offers the command \cmd\protrusionboundary, which could
+%   potentially be very helpful here, but it doesn't seem to do what it
+%   promises (not even the example from the manual works as advertised).}
+%   ^^A see https://mailman.ntg.nl/pipermail/dev-luatex/2021-May/006486.html
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
