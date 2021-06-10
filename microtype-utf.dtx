@@ -17,14 +17,16 @@
 %
 % This work consists of the files microtype.dtx and microtype.ins and the
 % derived files microtype.sty, microtype-pdftex.def, microtype-luatex.def,
-% microtype-xetex.def, microtype.lua and letterspace.sty.
+% microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
 %
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
 % (2) the identification string is changed.
 % ------------------------------------------------------------------------
 %
+%<*!EBGaramond>
 \ProvidesFile
+%</!EBGaramond>
 %<*driver>
     {\jobname.dtx}[2021/03/14 v2.8c]
 %</driver>
@@ -44,12 +46,14 @@
 \usepackage{microtype-doc}
 \luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
  \def\setmacrofont#1{\par\def\macro@font{#1}\footnotesize}
- \newfontface\LMR{Latin Modern Roman}
- \newfontface\CharisSIL{Charis SIL}
- \newfontface\Palatino{TeX Gyre Pagella}
+ \newfontface\LMR{Latin Modern Roman}[WordSpace=2]
+ \newfontface\CharisSIL{Charis SIL}[WordSpace=2]
+ \newfontface\Palatino{TeX Gyre Pagella}[WordSpace=2]
+ \newfontface\EBGaramond{EBGaramond-Regular}[WordSpace=2]
+ \newfontface\Lato{Lato}[WordSpace=2]
 % \newfontface\Palatino[RawFeature={fallback=charisfallback}]{TeX Gyre Pagella}
 % \directlua{luaotfload.add_fallback("charisfallback",{"CharisSIL:color=F70A12;mode=harf;"})}
- \newfontface\Lato{Lato}
+ \def\normalwordspace{\fontdimen2\font=.5\fontdimen2\font}
 \usepackage{luacode}
 \tracinglostchars2
 % we replace any missing characters (in Palatino) with CharisSIL
@@ -164,10 +168,11 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 % These are the configuration files for the following OpenType fonts:\footnote{This is file \file{\jobname.dtx}.}
 %
 %\begin{itemize}
-%   \item {\LMR       Latin Modern Roman}
-%   \item {\CharisSIL Charis <SIL>}
-%   \item {\Palatino  Palatino}\footnote{These settings have been contributed by
+%   \item {\LMR\normalwordspace Latin Modern Roman}
+%   \item {\CharisSIL\normalwordspace Charis <SIL>}
+%   \item {\Palatino Palatino}\footnote{These settings have been contributed by
 %                              \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
+%   \item {\EBGaramond\normalwordspace <EB> Garamond}
 %\end{itemize}
 %
 %\noindent
@@ -238,7 +243,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      c = {ç,ć,ĉ,ċ,č},
      d = {đ,ḍ,ḏ},
      e = {è,é,ê,ë,ē,ĕ,ė,ę,ě,ȅ,ẹ,ẻ,ẽ,ế,ề,ể,ễ,ệ},
-     f = {ﬀ}, % Unicode 64256, glyph name in Latin Modern: /f_f ; in New Computer Modern: /ff
+     f = {ﬀ}, % Unicode 64256, glyph name in Latin Modern Roman: /f_f
      g = {ĝ,ğ,ġ,ģ,ǧ,ǵ},
      h = {ĥ,ħ,ḥ,ḧ,ḫ},
      i = {ì,í,î,ï,ĩ,ī,ĭ,į,ı,ȉ,ỉ,ị},
@@ -387,13 +392,228 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      ү = {ұ},
      Г = {Γ}, % Greek
      П = {Π}, % Greek
+   % missing: tipa, math, symbols, ...
    }
 
-   % missing: tipa, math, symbols, ...
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
 %</CharisSIL>
+%    \end{macrocode}
+%\subsubsection{EB Garamond}
+%\addtoUTFbookmarks{subsub:OT-inh-EBGaramond}
+%    \begin{macrocode}
+%<*EBGaramond>
+\DeclareCharacterInheritance
+   { encoding = {TU,EU1,EU2},
+     family   = EBGaramond }
+%    \end{macrocode}
+%{\setmacrofont\EBGaramond
+%    \begin{macrocode}
+   {
+     A = {À,Á,Â,Ã,Ä,Å,Ā,Ă,Ą,Ǎ,Ǟ,Ǡ,Ǻ,Ȁ,Ȃ,Ȧ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ẵ,Ặ,Å,/Adieresis.deu,
+          А,Ӑ,Ӓ,                % Cyrillic
+          Α,Ά,Ἀ,Ἁ,Ἂ,Ἃ,Ἄ,Ἅ,Ἆ,Ἇ,ᾈ,ᾉ,ᾊ,ᾋ,ᾌ,ᾍ,ᾎ,ᾏ,Ᾰ,Ᾱ,Ὰ,Ά,ᾼ}, % Greek
+% (l)Α   {Ά,Ἀ,Ἁ,Ἂ,Ἃ,Ἄ,Ἅ,Ἆ,Ἇ,ᾈ,ᾉ,ᾊ,ᾋ,ᾌ,ᾍ,ᾎ,ᾏ,Ᾰ,Ᾱ,Ὰ,Ά,ᾼ}, % (accents not protruded)
+     B = {Ḃ,Ḅ,Ḇ,
+          В,                    % Cyrillic
+          Β},                   % Greek
+     C = {Ç,Ć,Ĉ,Ċ,Č,Ḉ,
+          Ϲ,С,Ҫ,                % Cyrillic
+          Ⅽ},                   % Roman numeral
+     D = {Ď,Đ,Ð,Ḋ,Ḍ,Ḏ,Ḑ,Ḓ,
+          Ɖ,Ɗ,                  % Cyrillic
+          Ⅾ},                   % Roman numeral
+     E = {È,É,Ê,Ë,Ē,Ĕ,Ė,Ę,Ě,Ḕ,Ḗ,Ȩ,Ḙ,Ḛ,Ḝ,Ẹ,Ẻ,Ẽ,Ế,Ề,Ể,Ễ,Ệ,Ȅ,Ȇ,
+          Ѐ,Ё,Ӗ,Е,              % Cyrillic
+          Ε},                   % Greek
+  (l)Ε = {Έ,Ἐ,Ἑ,Ἒ,Ἓ,Ἔ,Ἕ,Ὲ,Έ},   % Greek (accents protruded)
+     F = {Ḟ},
+     G = {Ĝ,Ğ,Ġ,Ģ,Ǥ,Ǧ,Ǵ,Ḡ},
+     H = {Ĥ,Ħ,Ȟ,Ḣ,Ḥ,Ḧ,Ḩ,Ḫ,ῌ,Ⱨ,
+          Н,Ң,Ӊ,Ӈ,  %  Ҥ        % Cyrillic
+          Η},                   % Greek
+  (l)Η = {Ή,Ἠ,Ἡ,Ἢ,Ἣ,Ἤ,Ἥ,Ἦ,Ἧ,Ὴ,Ή,ᾘ,ᾙ,ᾚ,ᾛ,ᾜ,ᾝ,ᾞ,ᾟ},
+     I = {Ì,Í,Î,Ï,Ĩ,Ī,Ĭ,Į,İ,Ǐ,Ȉ,Ȋ,Ḭ,Ḯ,Ỉ,Ị,
+          І,Ї,Ӏ,                % Cyrillic
+          Ι,                    % Greek
+          Ⅰ,Ⅱ,Ⅲ},               % Roman numeral
+  (l)Ι = {Ί,Ϊ,Ἰ,Ἱ,Ἲ,Ἳ,Ἴ,Ἵ,Ἶ,Ἷ,Ῐ,Ῑ,Ὶ,Ί}, % Greek
+     J = {Ĵ,
+          Ј},                   % Cyrillic
+     K = {Ķ,Ǩ,Ḱ,Ḳ,Ḵ,Ⱪ,
+          Κ,K},                 % Greek
+     L = {Ĺ,Ļ,Ľ,Ŀ,Ł,Ḷ,Ḹ,Ḻ,Ḽ,Ⱡ,Ɫ,
+          Ⅼ},                   % Roman numeral
+     M = {Ḿ,Ṁ,Ṃ,
+          М,Ӎ,                  % Cyrillic
+          Μ,                    % Greek
+          Ⅿ},                   % Roman numeral
+     N = {Ñ,Ń,Ņ,Ň,Ŋ,Ǹ,Ṅ,Ṇ,Ṉ,Ṋ,
+          Ν},                    % Greek
+     O = {Ò,Ó,Ô,Õ,Ö,Ø,Ō,Ŏ,Ő,Ǒ,Ǫ,Ǭ,Ǿ,Ȍ,Ȏ,Ȫ,Ȭ,Ȯ,Ȱ,Ṍ,Ṏ,Ṑ,Ṓ,Ọ,Ỏ,Ố,Ồ,Ổ,Ỗ,Ộ,Ớ,Ờ,Ở,Ỡ,Ợ,Ơ,/Odieresis.deu,
+          О,Ӧ,Ө,Ӫ,              % Cyrillic
+          Ο,Ό,Ὀ,Ὁ,Ὂ,Ὃ,Ὄ,Ὅ,Ὸ,Ό}, % Greek
+% (l)Ο = {Ό,Ὀ,Ὁ,Ὂ,Ὃ,Ὄ,Ὅ,Ὸ,Ό}, % (accents not protruded)
+     P = {Ṕ,Ṗ,Ᵽ,
+          Р,Ҏ,                  % Cyrillic
+          Ρ},                   % Greek
+  (l)Ρ = {Ῥ},                   % Greek
+     Q = {Ԛ},                   % Cyrillic
+     R = {Ŕ,Ŗ,Ř,Ȑ,Ȓ,Ṙ,Ṛ,Ṝ,Ṟ,Ɽ,},
+     S = {Ś,Ŝ,Ş,Š,Ș,Ṡ,Ṣ,Ṥ,Ṧ,Ṩ,
+          Ѕ},                   % Cyrillic
+     T = {Ţ,Ť,Ŧ,Ț,Ṫ,Ṭ,Ṯ,Ṱ,
+          Т,Ҭ,                  % Cyrillic
+          Τ},                   % Greek
+     U = {Ù,Ú,Û,Ü,Ũ,Ū,Ŭ,Ů,Ű,Ų,Ǔ,Ǖ,Ǘ,Ǚ,Ǜ,Ȕ,Ȗ,Ṳ,Ṵ,Ṷ,Ṹ,Ṻ,Ụ,Ủ,Ứ,Ừ,Ử,Ữ,Ự}, % /Udieresis.deu ?
+     V = {Ṽ,Ṿ,/U.LAT,
+          Ⅴ},                   % Roman numeral
+     W = {Ŵ,Ẁ,Ẃ,Ẅ,Ẇ,Ẉ,
+          Ԝ},                   % Cyrillic
+     X = {Ẋ,Ẍ,
+          Х,Ҳ,Ӽ,Ӿ,              % Cyrillic
+          Χ,                    % Greek
+          Ⅹ},                   % Roman numeral
+     Y = {Ý,Ŷ,Ÿ,Ȳ,Ẏ,Ỳ,Ỵ,Ỷ,Ỹ,
+          Ү,Ұ},  % Cyrillic
+     Z = {Ź,Ż,Ž,Ẑ,Ẓ,Ẕ,Ⱬ,
+          Ζ},                   % Greek
+     a = {à,á,â,ã,ä,å,ā,ă,ą,ǎ,ǟ,ǡ,ǻ,ȁ,ȃ,ȧ,ḁ,ạ,ả,ấ,ầ,ẩ,ẫ,ậ,ắ,ằ,ẳ,ẵ,ặ,ẚ,
+          а,ӑ,ӓ},               % Cyrillic
+     b = {ḃ,ḅ,ḇ},
+     c = {ç,ć,ĉ,ċ,č,ḉ,
+          с,ҫ,                  % Cyrillic
+          ⅽ},                   % Roman numeral
+     d = {ď,đ,ḋ,ḍ,ḏ,ḑ,ḓ,
+          ⅾ},                   % Roman numeral
+     e = {è,é,ê,ë,ē,ĕ,ė,ę,ě,ȩ,ḕ,ḗ,ḙ,ḛ,ḝ,ẹ,ẻ,ẽ,ế,ề,ể,ễ,ệ,ȅ,ȇ,
+          е,ѐ,ё,ӗ},             % Cyrillic
+     f = {ḟ,ﬀ,/f.long,/f.DEU,/f_f},
+     ﬂ = {ﬄ,/longs_l,/longs_longs_l,/f_l},
+     ﬁ = {ﬃ,/longs_i,/longs_longs_i,/f_i},
+     /f.short = {/f_f.short},
+     g = {ĝ,ğ,ġ,ģ,ḡ,ǥ,ǧ,ǵ},
+     h = {ĥ,ħ,ḣ,ḥ,ḧ,ḩ,ḫ,ẖ,ȟ,ⱨ,
+          ԧ,ԧ},                 % Cyrillic
+     i = {ì,í,î,ï,ĩ,ī,ĭ,į,ı,ǐ,ȉ,ȋ,ḭ,ỉ,ị,ḯ,/i.TRK,
+          і,ї,                  % Cyrillic
+          ⅰ,ⅱ,ⅲ},               % Roman numeral
+     j = {ĵ,ǰ,
+          ј},                   % Cyrillic
+     k = {ķ,ǩ,ḱ,ḳ,ḵ,ⱪ},
+     l = {ĺ,ļ,ľ,ŀ,ł,ḷ,ḹ,ḻ,ḽ,ⱡ,
+          ӏ,                    % palochka
+          ⅼ},                   % Roman numeral
+     m = {ḿ,ṁ,ṃ,
+          ⅿ},                   % Roman numeral
+     n = {ñ,ń,ņ,ň,ŋ,ṅ,ṇ,ṉ,ṋ,ǹ}, % ŉ
+     o = {ò,ó,ô,õ,ö,ø,ō,ŏ,ő,ǒ,ǫ,ǭ,ǿ,ȍ,ȏ,ȫ,ȭ,ȯ,ȱ,ṍ,ṏ,ṑ,ṓ,ọ,ỏ,ố,ồ,ổ,ỗ,ộ,ớ,ờ,ở,ỡ,ợ,
+          о,ӧ},                 % Cyrillic
+     p = {ṕ,ṗ,
+          р,ҏ},                 % Cyrillic
+     q = {ԛ},                   % Cyrillic
+     r = {ŕ,ŗ,ř,ȑ,ȓ,ṙ,ṛ,ṝ,ṟ},
+     s = {ś,ŝ,ş,š,ș,ṡ,ṣ,ṥ,ṧ,ṩ,
+          ѕ},                   % Cyrillic
+     t = {ţ,ť,ŧ,ț,ṫ,ṭ,ṯ,ṱ,ẗ},
+     u = {ù,ú,û,ü,ũ,ū,ŭ,ů,ű,ų,ǔ,ǖ,ǘ,ǚ,ǜ,ȕ,ȗ,ṳ,ṵ,ṷ,ṹ,ṻ,ụ,ủ,ứ,ừ,ử,ữ,ự,/u.LATmedi},
+     v = {ṽ,ṿ,
+          ⅴ},                   % Roman numeral
+     w = {ŵ,ẁ,ẃ,ẅ,ẇ,ẉ,ẘ,
+          ԝ},                   % Cyrillic
+     x = {ẋ,ẍ,
+          х,ҳ,                  % Cyrillic
+          ⅹ},                   % Roman numeral
+     y = {ý,ÿ,ŷ,ȳ,ẏ,ẙ,ỳ,ỵ,ỷ,ỹ,
+          у,ӯ,ӱ,ӳ,ў},           % Cyrillic
+     z = {ź,ż,ž,ⱬ,ẑ,ẓ,ẕ},
+     Æ = {Ǣ,Ǽ,
+          Ӕ},                   % Cyrillic
+     æ = {ǣ,ǽ,
+          ӕ},                   % Cyrillic
+     Ǳ = {Ǆ},
+     ǲ = {ǅ},
+     ǳ = {ǆ},
+   % Smallcaps
+     /a.sc = {/A.sc},
+     /ae.sc = {/AE.sc},
+     /d.sc = {/D.sc},
+     /f.sc = {/F.sc},
+     /g.sc = {/G.sc},
+     /j.sc = {/J.sc},
+     /l.sc = {/L.sc},
+     /o.sc = {/O.sc},
+     /oe.sc = {/OE.sc},
+     /q.sc = {/Q.sc},
+     /r.sc = {/R.sc},
+     /t.sc = {/T.sc},
+     /y.sc = {/Y.sc},
+   % Cyrillic
+     Г = {Ґ,Ғ,Ѓ,Ӷ},
+     Ж = {Җ,Ӝ,Ӂ,Ѫ},
+     З = {Ҙ,Ӟ},
+     И = {Й,Ҋ,Ӣ,Ӥ,Ѝ},
+     К = {Қ,Ҝ,Ҟ,Ҡ,Ќ,Ӄ},
+     Л = {Ӆ,Ԓ,Ԯ},
+     П = {Ԥ},
+     У = {Ӯ,Ӱ,Ӳ,Ў},
+     Ц = {Ҵ,Џ},
+     Ч = {Ҷ,Ҹ,Ӌ,Ӵ},
+     Ш = {Щ},
+     Ы = {Ӹ},
+     Ь = {Ҍ},
+     Э = {Ӭ},
+     Ѵ = {Ѷ},
+     Ҽ = {Ҿ},
+     Ә = {Ӛ},
+     г = {ѓ,ґ,ғ,ӷ},
+     ж = {җ,ӂ,ӝ,ѫ},
+     з = {ҙ,ӟ},
+     и = {й,ѝ,ҋ,ӣ,ӥ},
+     к = {ќ,қ,ҝ,ӄ}, % ҟ,ҡ
+     л = {ӆ,ԓ,ԯ},
+     м = {ӎ},
+     н = {ң,ӈ,ӊ,ԩ}, %  ҥ
+     п = {ԥ},
+     т = {ҭ},
+     ц = {ҵ},
+     ч = {ҷ,ҹ,ӌ,ӵ},
+     ш = {щ},
+     ы = {ӹ},
+     э = {ӭ},
+     ѳ = {ө,ӫ},
+     ѵ = {ѷ},
+     ү = {ұ},
+     ҽ = {ҿ},
+     ә = {ӛ},
+   % Greek
+     Υ = {Ϋ,ϒ,ϔ,Ῠ,Ῡ},
+  (l)Υ = {Ύ,ϓ,Ὑ,Ὓ,Ὕ,Ὗ,Ὺ,Ύ},
+  (l)Ω = {Ώ,Ὠ,Ὡ,Ὢ,Ὣ,Ὤ,Ὥ,Ὦ,Ὧ,ᾨ,ᾩ,ᾪ,ᾫ,ᾬ,ᾭ,ᾮ,ᾯ,Ὼ,Ώ},
+     Ω = {ῼ,Ω}, % math
+     Δ = {∆}, % math
+     Π = {∏}, % math
+     α = {ά,ἀ,ἁ,ἂ,ἃ,ἄ,ἅ,ἆ,ἇ,ὰ,ά,ᾀ,ᾁ,ᾂ,ᾃ,ᾄ,ᾅ,ᾆ,ᾇ,ᾰ,ᾱ,ᾲ,ᾳ,ᾴ,ᾶ,ᾷ},
+     ε = {έ,ἐ,ἑ,ἒ,ἓ,ἔ,ἕ,ὲ,έ},
+     η = {ή,ἠ,ἡ,ἢ,ἣ,ἤ,ἥ,ἦ,ἧ,ὴ,ή,ῂ,ῃ,ῄ,ῆ,ῇ,ᾐ,ᾑ,ᾒ,ᾓ,ᾔ,ᾕ,ᾖ,ᾗ},
+     ι = {ί,ϊ,ἰ,ἱ,ἲ,ἳ,ἴ,ἵ,ἶ,ἷ,ὶ,ί,ῐ,ῑ,ῒ,ΐ,ῖ,ῗ,ΐ},
+     ο = {ό,ϙ,ὀ,ὁ,ὂ,ὃ,ὄ,ὅ,ὸ,ό},
+     ρ = {ῤ,ῥ},
+     υ = {ΰ,ϋ,ύ,ὐ,ὑ,ὒ,ὓ,ὔ,ὕ,ὖ,ὗ,ὺ,ύ,ῠ,ῡ,ῢ,ΰ,ῦ,ῧ},
+     ω = {ώ,ὠ,ὡ,ὢ,ὣ,ὤ,ὥ,ὦ,ὧ,ὼ,ώ,ᾠ,ᾡ,ᾢ,ᾣ,ᾤ,ᾥ,ᾦ,ᾧ,ῲ,ῳ,ῴ,ῶ,ῷ},
+   % other
+     ⑴  = {⑵,⑶,⑷,⑸,⑹,⑺,⑻,⑼,⑽,⑾,⑿,⒀,⒁,⒂,⒃,⒄,⒅,⒆,⒇},
+     ⒜  = {⒝,⒞,⒟,⒠,⒡,⒢,⒣,⒤,⒥,⒦,⒧,⒨,⒩,⒪,⒫,⒬,⒭,⒮,⒯,⒰,⒱,⒲,⒳,⒴,⒵},
+     🇦  = {🇧,🇨,🇩,🇪,🇫,🇬,🇭,🇮,🇯,🇰,🇱,🇲,🇳,🇴,🇵,🇶,🇷,🇸,🇹,🇺,🇻,🇼,🇽,🇾,🇿},
+     ! = {‼},
+     ? = {⁇},
+   }
+
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+%</EBGaramond>
 %    \end{macrocode}
 %\subsubsection{Palatino}
 %\addtoUTFbookmarks{subsub:OT-inh-Palatino}
@@ -1419,3 +1639,5 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %
 \endinput
+%
+% % vim: ts=2:sw=2:et:

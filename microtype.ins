@@ -110,6 +110,9 @@ microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
 \def\makefile#1#2{\file{#1}{\from{microtype.dtx}{#2}}}
 \def\makecfg#1#2{\makefile{mt-#2.cfg}{config,cfg-#1,#2}}
 \def\makeutfcfg#1{\file{mt-#1.cfg}{\from{microtype-utf.dtx}{#1}}}
+\def\makemixedcfg#1#2{\file{mt-#1.cfg}
+  {\from{microtype.dtx}{config,cfg-t,#2}
+   \from{microtype-utf.dtx}{#1}}}
 
 \usedir{tex/latex/microtype}
 \let\MetaPrefix\DoubleperCent
@@ -130,7 +133,6 @@ microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
     \makecfg{t}{bch}
     \makecfg{t}{blg}
     \makecfg{t}{cmr}
-    \makefile{mt-EBGaramond.cfg}{config,cfg-t,ebg}
     \makecfg{t}{ppl}
     \makecfg{t}{ptm}
     \makecfg{t}{ugm}
@@ -145,6 +147,7 @@ microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
     \makeutfcfg{CharisSIL}
     \makeutfcfg{Lato}
     \makeutfcfg{FontAwesome}
+    \makemixedcfg{EBGaramond}{ebg}
   \usepreamble\haraldandkarlpreamble
     \makecfg{t}{pmn}
   \usepreamble\lorenpreamble
