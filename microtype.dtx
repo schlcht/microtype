@@ -15355,12 +15355,11 @@ end
 %\end{itemize}
 %    \begin{macrocode}
 %<ugm>   [ name     = ugm-default ]
-%<m-t|cmr|pmn>   { }
-%<bch|blg|ebg|ugm>   { encoding = OT1,
+%<m-t|cmr|pmn|ebg>   { }
+%<bch|blg|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch }
 %<blg>     family   = blg }
-%<ebg>     family   = {EBGaramond-LF,EBGaramond-OsF,EBGaramond-TLF,EBGaramond-TOsF} }
 %<ppl>     family   = {ppl,pplx,pplj} }
 %<ptm>     family   = {ptm,ptmx,ptmj} }
 %<ugm>     family   = ugm }
@@ -15395,7 +15394,7 @@ end
 %<bch|ebg|pmn>     Q = {50,70},
 %<ugm>     Q = {50,50},
 %<bch>     R = {  ,50},
-%<ugm>     R = {  ,70},
+%<ugm|ebg>     R = {  ,70},
 %<m-t|bch|cmr|ebg|pmn|ppl|ptm>     T = {50,50},
 %<blg>     T = {100,100},
 %<ugm>     T = {70,70},
@@ -15442,41 +15441,39 @@ end
 %    \begin{macrocode}
 %<cmr>     0 = {  ,50},
 %<m-t>     1 = {50,50},
-%<bch|blg|ebg|ptm|ugm>     1 = {150,150},
+%<bch|blg|ptm|ugm>     1 = {150,150},
 %<cmr>     1 = {100,200},
 %<pmn>     1 = {  ,50},
 %<ppl>     1 = {100,100},
-%<bch|cmr|ebg|ugm>     2 = {50,50},
+%<bch|cmr|ugm>     2 = {50,50},
 %<blg>     2 = {  ,100},
 %<bch|pmn>     3 = {50,  },
-%<cmr|ebg|ugm>     3 = {50,50},
+%<cmr|ugm>     3 = {50,50},
 %<blg>     3 = {100,  },
-%<m-t|ebg>     4 = {50,50},
+%<m-t>     4 = {50,50},
 %<bch>     4 = {100,50},
 %<blg>     4 = {100,  },
 %<cmr|ugm>     4 = {70,70},
 %<pmn>     4 = {50,  },
 %<ptm>     4 = {70,  },
 %<cmr>     5 = {  ,50},
-%<ebg>     5 = {50,50},
 %<bch>     6 = {50,  },
 %<cmr>     6 = {  ,50},
-%<ebg>     6 = {50,50},
 %<m-t>     7 = {50,50},
-%<bch|ebg|pmn|ugm>     7 = {50,80},
+%<bch|pmn|ugm>     7 = {50,80},
 %<blg>     7 = {100,100},
 %<cmr|ptm>     7 = {50,100},
 %<ppl>     7 = {  ,50},
 %<cmr>     8 = {  ,50},
-%<bch|ebg>     9 = {50,50},
+%<bch>     9 = {50,50},
 %<cmr>     9 = {  ,50},
-%<m-t|cmr|ebg|pmn|ppl|ptm|ugm>     . = { ,700},
-%<bch>     . = { ,600},
+%<m-t|cmr|pmn|ppl|ptm|ugm>     . = { ,700},
+%<bch|ebg>     . = { ,600},
 %<blg>     . = {400,500},
 %<!blg>    {,}= { ,500},
 %<blg>    {,}= {300,400},
-%<m-t|cmr|ebg|pmn|ppl|ptm|ugm>     : = { ,500},
-%<bch>     : = { ,400},
+%<m-t|cmr|pmn|ppl|ptm|ugm>     : = { ,500},
+%<bch|ebg>     : = { ,400},
 %<blg>     : = {300,400},
 %<m-t|bch|ebg|pmn|ptm>     ; = { ,300},
 %<blg>     ; = {200,300},
@@ -15503,9 +15500,8 @@ end
 %<bch|pmn>     * = {200,300},
 %<blg>     * = {150,200},
 %<cmr|ebg>     * = {300,300},
-%<m-t|cmr|ppl|ptm>     + = {250,250},
+%<m-t|cmr|ebg|ppl|ptm>     + = {250,250},
 %<bch>     + = {150,250},
-%<ebg>     + = {300,300},
 %<blg|pmn>     + = {150,200},
 %<ugm>     + = {250,300},
 %<blg|ugm>    {=}= {200,200},
@@ -15545,13 +15541,14 @@ end
 %<m-t|bch|pmn>     \textquoteleft    = {300,400},   \textquoteright    = {300,400},
 %<blg>     \textquoteleft     = {400,600},   \textquoteright    = {400,600},
 %<cmr>     \textquoteleft    = {500,700},   \textquoteright    = {500,600},
-%<ebg|ppl>     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
+%<ebg>     \textquoteleft    = {300,500},   \textquoteright    = {400,400},
+%<ppl>     \textquoteleft    = {500,700},   \textquoteright    = {500,700},
 %<ptm>     \textquoteleft    = {500,500},   \textquoteright    = {300,500},
 %<ugm>     \textquoteleft    = {300,600},   \textquoteright    = {300,600},
-%<m-t|bch|pmn>     \textquotedblleft = {300,300},   \textquotedblright = {300,300}
+%<m-t|ebg|bch|pmn>     \textquotedblleft = {300,300},   \textquotedblright = {300,300}
 %<blg>     \textquotedblright = {300,400}
 %<cmr>     \textquotedblleft = {500,300},   \textquotedblright = {200,600}
-%<ebg|ppl|ptm>     \textquotedblleft = {300,400},   \textquotedblright = {300,400}
+%<ppl|ptm>     \textquotedblleft = {300,400},   \textquotedblright = {300,400}
 %<ugm>     \textquotedblleft = {400,400},   \textquotedblright = {400,400}
    }
 
@@ -15559,43 +15556,79 @@ end
 % Greek uppercase letters are in <OT1> encoding only.
 %\changes{v1.9}{2005/07/10}{fix: remove uppercase Greek letters from <T1> encoded <CMR>}
 %    \begin{macrocode}
-%<*m-t|cmr|pmn>
+%<*m-t|cmr|ebg|pmn>
 \SetProtrusion
 %<m-t>   [ name     = OT1-default,
 %<cmr>   [ name     = cmr-OT1,
+%<ebg>   [ name     = EBGaramond-OT1,
 %<pmn>   [ name     = pmnj-OT1,
 %<m-t>     load     = default ]
 %<cmr>     load     = cmr-default ]
+%<ebg>     load     = EBGaramond-default ]
 %<pmn>     load     = pmnj-default ]
 %<m-t>   { encoding = OT1 }
 %<cmr>   { encoding = {OT1,OT4},
 %<pmn>   { encoding = OT1,
 %<cmr>     family   = cmr  }
 %<pmn>     family   = pmnj }
+%<ebg>   { }
    {
 %<m-t|cmr>     \AE = {50,   },
 %<pmn>     \OE = {50,  }
-%<*cmr>
-     "00 = {   ,150}, % \Gamma
+%<*cmr|ebg>
+%<cmr>     "00 = {   ,150}, % \Gamma
+%<ebg>     "00 = {   ,50},  % \Gamma
      "01 = {100,100}, % \Delta
      "02 = { 50, 50}, % \Theta
      "03 = {100,100}, % \Lambda
-     "06 = { 50, 50}, % \Sigma
+%<ebg>     "04 = { 50, 50}, % \Xi
+%<cmr>     "06 = { 50, 50}, % \Sigma
      "07 = {100,100}, % \Upsilon
      "08 = { 50, 50}, % \Phi
-     "09 = { 50, 50}  % \Psi
+     "09 = { 50, 50}, % \Psi
+%<ebg>     "0A = { 50, 50}, % \Omega
+%<ebg>     138 = {   , 50}, % \L
 %    \end{macrocode}
 % Remaining slots can be found in the source file.
 %\iffalse ^^A ... namely, here:
-%    "04 = {   ,   }, % \Xi
 %    "05 = {   ,   }, % \Pi
-%    "0A = {   ,   }, % \Omega
 %\fi
 %    \begin{macrocode}
-%</cmr>
+%</cmr|ebg>
    }
 
-%</m-t|cmr|pmn>
+%<*ebg>
+\SetProtrusion
+   [ name     = EBGaramond-OT1-LF,
+     load     = EBGaramond-OT1 ]
+   { encoding = OT1,
+     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     4 = {50,50},
+     7 = {50,50},
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-OT1-TOsF,
+     load     = EBGaramond-OT1 ]
+   { encoding = OT1,
+     family   = {EBGaramond-TOsF} }
+   {
+     1 = {150,150},
+     2 = {50,50},
+     3 = {50,50},
+     4 = {50,50},
+     5 = {50,50},
+     6 = {50,50},
+     7 = {50,80},
+     8 = {50,50},
+     9 = {50,50},
+   }
+
+%</ebg>
+%</m-t|cmr|ebg|pmn>
 %    \end{macrocode}
 % <T1> and <LY1> encodings contain some more characters. The default list
 % will be loaded first.
@@ -18700,7 +18733,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{11994}
+% \CheckSum{12002}
 %
 % \Finale
 %
