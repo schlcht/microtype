@@ -2622,7 +2622,7 @@
 % You may also just say \cs{leftprotrusion} (without an argument), and
 % \microtype\ will gather the next glyph (possibly a ligature) before
 % adding protrusion on its left hand side.
-% For instance, you could add this command to a tabular cell definition
+% For instance, you could add this command to tabular cell definitions
 % (using the \pkg{array} package):
 %\begin{verbatim}
 %\begin{tabular}{l>{\leftprotrusion}p{9cm}r}
@@ -2701,8 +2701,9 @@
 % shapes that necessitate more or less protrusion. In particular,
 % italic letter shapes may differ wildly in different fonts, hence I have
 % decided against providing default protrusion settings for them.
-% The file \file{test-microtype.tex} might be of some help when adjusting the
-% protrusion settings for a font.
+% The package \pkg{microtype-show} and the file \file{test-microtype.tex}
+% might be of some help when creating protrusion settings for a font
+% (see section~\ref{sec:contrib}).
 %
 %\paragraph{Don't use too large a value for expansion.}
 % Font expansion is a feature that is supposed to enhance the typographic
@@ -4091,17 +4092,17 @@
 \PassOptionsToPackage{verbose}{microtype}
 \RequirePackage{microtype,graphicx,xcolor}
 %    \end{macrocode}
-%\begin{macro}{\GlyphScaleFactor}
 %\begin{macro}{\ifShowGlyphIndex}
 %\begin{macro}{\ifShowMissingGlyphs}
+%\begin{macro}{\GlyphScaleFactor}
 %\begin{macro}{\Showbaselinecolor}
 %\begin{macro}{\Showposcolor}
 %\begin{macro}{\Shownegcolor}
 % The following commands are configurable:
 %    \begin{macrocode}
-\newcommand*\GlyphScaleFactor{2}
 \newif\ifShowGlyphIndex
 \newif\ifShowMissingGlyphs
+\newcommand*\GlyphScaleFactor{2}
 \newcommand*\Showbaselinecolor{\color{black!40}}
 \newcommand*\Showposcolor{\color{green!50}}
 \newcommand*\Shownegcolor{\color{red!50}}
@@ -4158,7 +4159,7 @@
 %\begin{macro}{\ShowProtrusion}
 % Activate the sleeper command, and trigger the setup.
 %    \begin{macrocode}
-\def\ShowProtrusion{%
+\newcommand*\ShowProtrusion{%
   \begingroup
     \MTS@setup
     \let\MTS@Prot\MTS@Prot@do
@@ -4185,7 +4186,7 @@
 %\end{macro}
 %\begin{macro}{\ShowCharacterInheritance}
 %    \begin{macrocode}
-\def\ShowCharacterInheritance{%
+\newcommand*\ShowCharacterInheritance{%
   \begingroup
     \MTS@setup
     \let\MTS@Char\MTS@Char@do
@@ -4208,7 +4209,7 @@
 %\begin{macro}{\ShowProtrusionLineGlyph}
 % By glyph.
 %    \begin{macrocode}
-\def\ShowProtrusionLineGlyph#1{%
+\newcommand*\ShowProtrusionLineGlyph#1{%
   {\MTS@setup
    \MTS@showprotrusionline{`#1}}%
 }
@@ -4217,7 +4218,7 @@
 %\begin{macro}{\ShowProtrusionLineIndex}
 % By glyph number.
 %    \begin{macrocode}
-\def\ShowProtrusionLineIndex#1{%
+\newcommand*\ShowProtrusionLineIndex#1{%
   {\MTS@setup
    \MTS@showprotrusionline{#1}}%
 }
@@ -4248,7 +4249,7 @@
 % We also reset to default shape and series, because that's what, say, italic shapes
 % should be matched with.
 %    \begin{macrocode}
-\def\ShowDummyLine{%
+\newcommand*\ShowDummyLine{%
  {\fontencoding{\encodingdefault}\fontseries{\seriesdefault}\fontshape{\shapedefault}%
   \selectfont\noindent
   here is the beginning of a line, \dotfill and here is its end}\par
@@ -4257,7 +4258,7 @@
 %\end{macro}
 %\begin{macro}{\ShowProtrusionAll}
 %    \begin{macrocode}
-\def\ShowProtrusionAll{%
+\newcommand*\ShowProtrusionAll{%
   {\MTS@setup
    \MTS@lede{}%
    \MT@do@font{\MTS@showprotrusionline{\@tempcnta}}}%
@@ -4266,7 +4267,7 @@
 %\end{macro}
 %\begin{macro}{\ShowProtrusionDefined}
 %    \begin{macrocode}
-\def\ShowProtrusionDefined{%
+\newcommand*\ShowProtrusionDefined{%
   {\MTS@setup
    \MTS@lede{defined}%
    \let\MTS@first\@gobble
@@ -4279,7 +4280,7 @@
 %\end{macro}
 %\begin{macro}{\ShowProtrusionMissing}
 %    \begin{macrocode}
-\def\ShowProtrusionMissing{%
+\newcommand*\ShowProtrusionMissing{%
   {\MTS@setup
    \MTS@lede{missing}%
    \let\MTS@first\@firstofone
