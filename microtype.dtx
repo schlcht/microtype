@@ -18649,7 +18649,7 @@ end
 %
 %\section{Auxiliary file for micro fine tuning}
 %
-% This file may be used to test protrusion and expansion settings.
+% This file may be used to test protrusion and (less so) expansion settings.
 %    \begin{macrocode}
 %<*test>
 \documentclass{article}
@@ -18657,9 +18657,9 @@ end
 \usepackage[stretch=50]{microtype-show}
 
 %% options for microtype-show
-\def\GlyphScaleFactor{2}
 \ShowGlyphIndextrue
 \ShowMissingGlyphstrue
+\def\GlyphScaleFactor{2}
 
 %% load any required font packages
 \ifpdftex
@@ -18682,9 +18682,9 @@ end
 %% show single glyphs
  %\ShowDummyLine
  %\ShowProtrusionLineGlyph{A}
- %\ShowProtrusionLineGlyph{-}
+ %\ShowProtrusionLineIndex{27}
 
-%% loop through all glyphs of the font
+%% loop through all glyphs of the font;
 %% protrusion values are shown in 1000th of 1em
  \ShowProtrusionDefined
 
