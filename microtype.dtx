@@ -4071,7 +4071,7 @@
 %\changes{v2.8d}{2021/06/02}{new package: \pkg{microtype-show} for visual debugging}
 % The \pkg{microtype-show} package offers some tools for preparing
 % protrusion settings. We make use of the \microtype\ infrastructure,
-% and redefine some of the internal commands (done later,
+% redefining some of its internal commands (done later,
 % in sections \ref{ssub:setup-prot} and \ref{ssub:setup-config}).
 % First, some preparation:
 %    \begin{macrocode}
@@ -6733,7 +6733,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<xetex-def>      \MT@size pt
     \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
              (new value: \the\fontdimen6\MT@font)}%
-    \MT@glet@nc{\MT@@font-fake6}\@empty
+%<pdftex-def>    \MT@glet@nc{\MT@@font-fake6}\@empty
   \fi
   \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
 }
@@ -8377,13 +8377,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % settings from \cs{SetTracking}, or the global \opt{letterspace} option, in
 % this order.
 %
-% Tracking won't work if the original font's \fontdim6 is zero, in which
+% Tracking won't work (with \pdftex) if the original font's \fontdim6 is zero, in which
+%\changes{v2.8d}{2021/06/11}{with \luatex, tracking works also for fonts with a zero \fontdim6}
 % case we issue a warning (once for every font).
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def|letterspace>
 \def\MT@set@tr@codes{%
 %<*pdftex-def|luatex-def>
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
+%<*pdftex-def>
   \MT@ifdefined@n@TF{\MT@@font-fake6}{%
     \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
       \MT@warning@nl{%
@@ -8393,6 +8395,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@glet@nc{\MT@@font-fake6}\relax
     \fi
   }{%
+%</pdftex-def>
   \MT@if@list@exists
     \MT@get@tr@opt
     \relax
@@ -8579,7 +8582,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
 %</pdftex-def|luatex-def>
   \fi
-%<pdftex-def|luatex-def>  }%
+%<pdftex-def>  }%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -15597,6 +15600,10 @@ end
 %</cmr|ebg>
    }
 
+%    \end{macrocode}
+% Settings for figure variants.
+%\changes{v2.8d}{2021/06/10}{settings for <EB> Garamond figure variants}
+%    \begin{macrocode}
 %<*ebg>
 \SetProtrusion
    [ name     = EBGaramond-OT1-LF,
