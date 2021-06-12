@@ -85,8 +85,10 @@ DO_MAKEINDEX_DOC  = \
    makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
    echo "Creating user index"
 DO_MAKEINDEX_CODE = \
-   makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind $(NAME).idx $(NAMEC).idx $(REDIRECT) 2>&1 && \
-   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1 && \
+   makeindex -r -s microtype-gind.ist -t $(NAMEC).ilg -o $(NAMEC).ind \
+             $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx $(REDIRECT) 2>&1 && \
+   makeindex -s gglo.ist -t $(NAMEC).glg -o $(NAMEC).gls \
+             $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(REDIRECT) 2>&1 && \
    echo "Creating code index"
 
 all:     $(GENERATED)
@@ -127,7 +129,7 @@ define rerun-check
    $(DO_LUALATEX) ; \
 done
 @while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
-   shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx > $(NAMEC)-stamp2 ; \
+   shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx > $(NAMEC)-stamp2 ; \
    if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
    else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
    echo "Re-compiling code documentation" ; \
@@ -180,7 +182,7 @@ $(NAME)-stamp: $(NAME).idx
 $(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
 	@$(DO_MAKEINDEX_CODE)
 
-$(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx
+$(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
@@ -270,7 +272,7 @@ manifest: $(SOURCE)
 	@if grep '\-\-'`date -v-1y +%Y` $(SOURCE); then echo "!!!! Copyright strings not up to date !!!!" ; fi
 
 mostlyclean:
-	@$(RM) -- *.log *.aux *.toc *.idx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
+	@$(RM) -- *.log *.aux *.toc *.idx *.cdx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
 		docstrip.cfg $(UTFDOC) microtype-doc.sty microtype-gind.ist make-*-sty *-stamp
 
 clean: mostlyclean

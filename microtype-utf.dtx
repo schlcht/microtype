@@ -142,6 +142,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
   \InputIfFileExists{microtype-code.tmp}\relax\relax
   \edef\startpage{\thepage}
   \stepcounter{page}}
+\CodelineIndex
 \DisableCrossrefs
 \RecordChanges
 \begin{document}
@@ -170,9 +171,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\begin{itemize}
 %   \item {\LMR\normalwordspace Latin Modern Roman}
 %   \item {\CharisSIL\normalwordspace Charis <SIL>}
-%   \item {\Palatino Palatino}\footnote{These settings have been contributed by
-%                              \contributor Loren B. Davis <davislo\at eecs.oregonstate.edu>.}
 %   \item {\EBGaramond\normalwordspace <EB> Garamond}
+%   \item {\Palatino Palatino}\footnote{These settings have been contributed by
+%                              \contributor Loren~B. Davis <davislo\at eecs.oregonstate.edu>.}
 %\end{itemize}
 %
 %\noindent
@@ -1381,6 +1382,12 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
    }
 %</CharisSIL>
+%    \end{macrocode}
+%\subsubsection{EB Garamond}
+%\addtoUTFbookmarks{subsub:OT-prot-EBGaramond}
+%    \begin{macrocode}
+%<*EBGaramond>
+%</EBGaramond>
 %    \end{macrocode}
 %\subsubsection{Palatino}
 %\addtoUTFbookmarks{subsub:OT-prot-Palatino}

@@ -815,10 +815,15 @@
    \def\contributor#1 <#2\at#3>{\@contributor{#1}{#2@#3}}}}
 \DeclareRobustCommand\@contributor[2]{\textit{#1}}
 %\DeclareRobustCommand\@contributor[2]{\href{mailto:#2}{\textit{#1}}}
-%\DeclareRobustCommand\@contributor[2]{\textit{#1}%
-%    \expandafter\index\expandafter{\@getlastname#1 \@nil\actualchar %\href{mailto:#2}{#1}
-%          #1 (contributor)\encapchar \ifcodedoc\else doc\fi hyperpage}}
-%\def\@getlastname#1 #2\@nil{\ifx\@nil#2\@nil#1\else\@getlastname#2\@nil\fi}
+\ifcodedoc \else
+ \newwrite\@contributorsfile
+ \immediate\openout\@contributorsfile=microtype.cdx
+\fi
+\DeclareRobustCommand\@contributor[2]{\textit{#1}%
+   {\ifcodedoc\else\let\@indexfile\@contributorsfile\fi
+    \expandafter\index\expandafter{\@getlastname#1 \@nil\actualchar %\href{mailto:#2}{#1}
+          #1 (contributor)\encapchar \ifcodedoc\else doc\fi hyperpage}}}
+\def\@getlastname#1 #2\@nil{\ifx\@nil#2\@nil#1\else\@getlastname#2\@nil\fi}
 %<*driver>
 \CodelineIndex
 \EnableCrossrefs
