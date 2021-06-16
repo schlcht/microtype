@@ -326,8 +326,7 @@
 \setlength\fboxsep{3pt}
 \setlength\arrayrulewidth{0.4pt}
 % tables
-\def\topfraction{1}
-\def\textfraction{0}
+\usepackage{tabularx}
 \setlength\tabcolsep{2pt}
 \newbox\mt@box
 \newdimen\mt@unvdimen
@@ -2238,10 +2237,10 @@
 % at the beginning of a line should be placed as if they had no accent (the `H' in
 % the example above).
 % Base characters may have both unprefixed and prefixed inheritance lists;
-% characters in the latter will be implicitly added to the unprefixed lists.
+% characters in the latter will be implicitly added to the unprefixed ones.
 % Inheriting characters may appear in both `|(l)|' and `|(r)|'-prefixed lists at the
-% same time, whereas lists prefixed with `|(l)|' or `|(r)|' are mutually exclusive
-% with a `|(lr)|'-prefixed list.
+% same time, whereas lists prefixed with `|(l)|' or `|(r)|' and `|(lr)|'-prefixed
+% lists are mutually exclusive.
 % For all other features except protrusion, these prefixed lists will be ignored.
 %
 %
@@ -2260,11 +2259,91 @@
 % described in the current section~\ref{sec:fine-tuning}. These files will be
 % loaded automatically if you are actually using the respective fonts.
 % This package ships with configuration files for a number of font families.
-% Table~\ref{tab:fonts} lists them all.
+% They are listed in tables~\ref{tab:type1-fonts} (Type 1 fonts) and
+% \ref{tab:ot-fonts} (OpenType fonts).
 %
 %\begin{table}[t]\small
 %\changes{v1.6a}{2005/02/02}{add table of fonts with tailored protrusion settings}
-%\caption{Fonts with tailored protrusion settings}\label{tab:fonts}
+%\caption[Type 1 fonts with  tailored protrusion settings]
+%        {Type 1 fonts with\\tailored protrusion settings}\label{tab:type1-fonts}
+%\setlength\fboxsep{4pt}
+%\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
+%\fcolorbox{theframe}{white}{^^A
+%\begin{minipage}{\textwidth}
+%\def\arraystretch{1.2}
+%\long\def\@makefntext#1{%
+%  \raggedright
+%  \leftskip 1.2em
+%  \parindent -1.2em
+%  \everypar{\parindent -1.2em}%
+%  \leavevmode\hbox to 1.2em{\sffamily\@thefnmark\hss}#1}
+%\let\footnoterule\relax
+%\def\thempfootnote{{\itshape\ifnum\c@mpfootnote=10 \global\advance\c@mpfootnote 1 \fi\@alph\c@mpfootnote}}
+%\def\fnref#1{\raisebox{0.3ex}{\sffamily\itshape\footnotesize\,\ifpdf\ref*{#1}\else\ref{#1}\fi}}
+%\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}Xll@{}}
+%       \footnotesize Font family (<NFSS> code)
+%      & \multicolumn{2}{l}{\footnotesize Features}\\
+%\cmidrule(r){2-3}
+%      & \footnotesize Encodings
+%      & \footnotesize Shapes\\
+%\cmidrule(r){1-1}\cmidrule(r){2-2}\cmidrule(r){3-3}
+% Generic
+%      & <OT1>, <T1>, <T2A>, <LY1>, <QX>, (<TS1>)\fnref{fn:t1-incmpl}
+%      & n, (it, sl, sc)\fnref{fn:t1-incmpl} \\
+% Computer Modern Roman (|cmr|)\footnote{Aliases: Latin Modern Roman (|lmr|),
+%                                        \pkg{ae} (|aer|), \pkg{zefonts} (|zer|),
+%                                        \pkg{eco} (|cmor|), \pkg{hfoldsty} (|hfor|), \pkg{mlmodern}~(|mlmr|)}
+%      & <OT1>, <OT4>, <T1>, <T2A>, <T5>, <LY1>, <TS1>
+%      & n, it, sl, sc \\
+% Bitstream Charter (|bch|)\footnote{Aliases: \pkg{mathdesign}/Charter (|mdbch|),
+%                                    MicroPress's \pkg{chmath} (|chr|), \pkg{XCharter}}
+%      & <OT1>, <T1>, <T5>, <LY1>, <TS1>
+%      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
+% <EB> Garamond\footnote{Alias: Adobe Garamond (|pad|, |padx|, |padj|)}
+%      & <OT1>, <T1>, <LY1>, <TS1>
+%      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
+% <URW> Garamond (|ugm|)\footnote{Aliases: \pkg{mathdesign}/<URW> Garamond (|mdugm|), \pkg{garamondx} (|zgmx|, |zgmj|)}
+%      & <OT1>, <T1>, <TS1>
+%      & n, it\\
+% Bitstream Letter Gothic (|blg|)\footnote{Alias: \pkg{ulgothic} (|ulg|)}
+%      & <OT1>, <T1>, <TS1>
+%      & n, it \\
+% Adobe Minion (|pmnx|, |pmnj|)
+%      & <OT1>, <T1>, <T2A>, <LY1>, <TS1>
+%      & n, it, (sl)\fnref{fn:t1-itsl}, sc, si\\
+% Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
+%                                           \pkg{qfonts}/QuasiPalatino, \TeX\ Gyre Pagella (|qpl|),
+%                                           \pkg{newpx}, <FPL> Neu (|fp9x|, |fp9j|), \pkg{domitian}}
+%      & <OT1>, <OT4>, <T1>, <LY1>, (<TS1>)\fnref{fn:t1-incmpl}
+%      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
+% Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
+%                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|),
+%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}}
+%      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:t1-incmpl}
+%      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
+% Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|), \pkg{mlmodern} (|mlmsy|, |mlmm|)}
+%      & <OML>/<OMS>
+%      & n/it \\
+% <AMS> symbols (|msa|, |msb|)
+%      & <U>
+%      & n\\
+% Euler (|eur|, |eus|, |euf|)\footnote{Alias: \pkg{eulervm} (|zeur|, |zeus|)}
+%      & <U>
+%      & n\\
+% Euro symbols (Adobe, <ITC>, \pkg{marvosym})
+%      & <U>/<OT1>
+%      & n, it\phantom{^^A
+%               \footnote{Incomplete\label{fn:t1-incmpl}}
+%               \footnote{Settings inherited from italic shape\label{fn:t1-itsl}}} \\
+%\bottomrule
+%\end{tabularx}^^A
+%\end{minipage}^^A
+%}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
+%\end{table}
+%
+%\begin{table}[t]\small
+%\changes{v2.8d}{2021/06/16}{split up table of fonts with tailored protrusion settings}
+%\caption{OpenType fonts with tailored protrusion settings}\label{tab:ot-fonts}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -2278,71 +2357,19 @@
 %  \leavevmode\hbox to 1.2em{\sffamily\@thefnmark\hss}#1}
 %\let\footnoterule\relax
 %\def\fnref#1{\raisebox{0.3ex}{\sffamily\itshape\footnotesize\,\ifpdf\ref*{#1}\else\ref{#1}\fi}}
-%\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}*3l@{}}
-%       \footnotesize Font family (<NFSS> code)
+%\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}Xll@{}}
+%       \footnotesize Font family
 %      & \multicolumn{2}{l}{\footnotesize Features}\\
-%\cmidrule{1-1}\cmidrule{2-3}
-%\itshape\footnotesize Type 1 fonts
-%      & \footnotesize Encodings
-%      & \footnotesize Shapes\\
-%\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
-% Generic
-%      & <OT1>, <T1>, <T2A>, <LY1>, <QX>, (<TS1>)\footnote{Incomplete\label{fn:incmpl}}
-%      & n, (it, sl, sc)\fnref{fn:incmpl} \\
-% Computer Modern Roman (|cmr|)\footnote{Aliases: Latin Modern Roman (|lmr|),
-%                                        \pkg{ae} (|aer|), \pkg{zefonts} (|zer|),
-%                                        \pkg{eco} (|cmor|), \pkg{hfoldsty} (|hfor|), \pkg{mlmodern}~(|mlmr|)}
-%      & <OT1>, <OT4>, <T1>, <T2A>, <T5>, <LY1>, <TS1>
-%      & n, it, sl, sc \\
-% Bitstream Charter (|bch|)\footnote{Aliases: \pkg{mathdesign}/Charter (|mdbch|),
-%                                    MicroPress's \pkg{chmath} (|chr|), \pkg{XCharter}}
-%      & <OT1>, <T1>, <T5>, <LY1>, <TS1>
-%      & n, it, (sl)\footnote{Settings inherited from italic shape\label{fn:it-sl}}, sc \\
-% <EB> Garamond\footnote{Alias: Adobe Garamond (|pad|, |padx|, |padj|)}
-%      & <OT1>, <T1>, <LY1>, <TS1>
-%      & n, it, (sl)\fnref{fn:it-sl}, sc \\
-% <URW> Garamond (|ugm|)\footnote{Aliases: \pkg{mathdesign}/<URW> Garamond (|mdugm|), \pkg{garamondx} (|zgmx|, |zgmj|)}
-%      & <OT1>, <T1>, <TS1>
-%      & n, it\\
-% Bitstream Letter Gothic (|blg|)\footnote{Alias: \pkg{ulgothic} (|ulg|)}
-%      & <OT1>, <T1>, <TS1>
-%      & n, it \\
-% Adobe Minion (|pmnx|, |pmnj|)
-%      & <OT1>, <T1>, <T2A>, <LY1>, <TS1>
-%      & n, it, (sl)\fnref{fn:it-sl}, sc, si\\
-% Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
-%                                           \pkg{qfonts}/QuasiPalatino, \TeX\ Gyre Pagella (|qpl|),
-%                                           \pkg{newpx}, <FPL> Neu (|fp9x|, |fp9j|), \pkg{domitian}}
-%      & <OT1>, <OT4>, <T1>, <LY1>, (<TS1>)\fnref{fn:incmpl}
-%      & n, it, (sl)\fnref{fn:it-sl}, sc \\
-% Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
-%                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|),
-%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}}
-%      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:incmpl}
-%      & n, it, (sl)\fnref{fn:it-sl}, sc \\
-% Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|), \pkg{mlmodern} (|mlmsy|, |mlmm|)}
-%      & <OML>/<OMS>
-%      & n/it \\
-% <AMS> symbols (|msa|, |msb|)
-%      & <U>
-%      & n\\
-% Euler (|eur|, |eus|, |euf|)\footnote{Alias: \pkg{eulervm} (|zeur|, |zeus|)}
-%      & <U>
-%      & n\\
-% Euro symbols (Adobe, <ITC>, \pkg{marvosym})
-%      & <U>/<OT1>
-%      & n, it \\
-%\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
-%\itshape\footnotesize OpenType fonts
-%      & \footnotesize Scripts
-%      & \footnotesize Shapes\\
-%\cmidrule{1-1}\cmidrule{2-2}\cmidrule{3-3}
+%\cmidrule(r){2-3}
+%      & \rlap{\footnotesize Scripts}\hphantom{<OT1>, <OT4>, <T1>, <T2A>, <T5>, <LY1>, <TS1>}
+%      & \rlap{\footnotesize Shapes}\hphantom{n, it, (sl)\fnref{fn:t1-itsl}, sc, si}\\
+%\cmidrule(r){1-1}\cmidrule(r){2-2}\cmidrule(r){3-3}
 % Generic
 %      & Latin
-%      & n, (it, sl, sc)\fnref{fn:incmpl} \\
+%      & n, (it, sl, sc)\fnref{fn:ot-incmpl} \\
 % Latin Modern Roman\footnote{Alias: New Computer Modern}
 %      & Latin
-%      & n, it, (sl)\fnref{fn:it-sl}\\
+%      & n, it, (sl)\fnref{fn:ot-itsl}\\
 % Charis <SIL>
 %      & Latin, Cyrillic
 %      & n, it, sc\\
@@ -2352,9 +2379,11 @@
 %      & n, it, sc, si\\
 % Palatino\footnote{Aliases: Palatino Linotype, Palatino <LT> Std, \TeX\ Gyre Pagella, Domitian}
 %      & Latin
-%      & n, it, sc\\
+%      & n, it, sc\phantom{^^A
+%               \footnote{Incomplete\label{fn:ot-incmpl}}
+%               \footnote{Settings inherited from italic shape\label{fn:ot-itsl}}} \\
 %\bottomrule
-%\end{tabular*}^^A
+%\end{tabularx}^^A
 %\end{minipage}^^A
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
@@ -2481,7 +2510,6 @@
 % The current language will then be automatically detected and the contexts set
 % accordingly.
 %
-%\pagebreak ^^A layout
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeBabelHook}
 %                {list of \pkg{babel} languages,context list}
@@ -2642,9 +2670,9 @@
 %
 %\medskip\noindent
 %\DescribeMacro{\noprotrusion}
-% is just mentioned apropos, as it's provided by \LaTeX\ itself.
-% When added to the beginning or end of a line, this command will
-% prevent protrusion at the respective margin.
+% is just mentioned apropos, as it's a \LaTeX\ kernel command.
+% When added to the beginning or end of a line, protrusion at the respective
+% margin will be prevented.
 %
 %\medskip\noindent
 % The \microtype\ package defines a number of patches in order to get protrusion
@@ -3322,8 +3350,9 @@
 %        \refsection{\ref{sub:inheritance}}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
 %        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
-%  \item New package \pkg{microtype-show} for visual debugging
+%  \item New package \pkg{microtype-show} for visual debugging of protrusion settings
 %        \refsection{\ref{sec:contrib}}
+%  \item Protrusion settings for <EB> Garamond (OpenType)
 %
 %\VersionDate{2.8c}{2021/03/14}
 %
