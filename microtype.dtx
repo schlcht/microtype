@@ -343,9 +343,9 @@
 % index and change log
 \IndexPrologue{\section{Index}%
   \ifcodedoc
-  Numbers in upright shape refer to the page where the corresponding entry
+  Numbers in upright shape refer to the \textit{page} where the corresponding entry
   is described (bold face) resp. occurs.
-  Numbers in italics refer to the code line where the corresponding entry
+  Numbers in italics refer to the \textit{code line} where the corresponding entry
   is defined (underlined) resp. used.
   Numbers prefixed with `U' refer to the User manual.
   \fi
@@ -585,8 +585,8 @@
 \let\verbatim\relax
 \lstnewenvironment{verbatim}[1][]{\lstset{#1}}{}
 \def\todo#1{\changes{zTo Do}{0000/00/00}{#1}%
-  \marginpar{\rightskip2\marginparsep plus1em\hangindent1.5em\hangafter-2
-    \smash{\rlap{\raisebox{-3.3ex}{\colorbox{thered}{\Large\color{white}!}}}}%
+  \marginpar{\rightskip2\marginparsep plus1em \hangindent1.5em \hangafter-2
+    \smash{\llap{\raisebox{-1.4ex}{\colorbox{thered}{\Large\color{white}!} }}}%
     \footnotesize\textcolor{thered}{#1}}}
 \let\todo\@gobble
 % fancy PDF document
@@ -821,7 +821,7 @@
 \DeclareRobustCommand\@contributor[2]{\textit{#1}%
    {\ifcodedoc\else\let\@indexfile\@contributorsfile\fi
     \expandafter\index\expandafter{\@getlastname#1 \@nil\actualchar %\href{mailto:#2}{#1}
-          #1 (contributor)\encapchar \ifcodedoc\else doc\fi hyperpage}}}
+        \textit{#1} (contributor)\encapchar \ifcodedoc\else doc\fi hyperpage}}}
 \def\@getlastname#1 #2\@nil{\ifx\@nil#2\@nil#1\else\@getlastname#2\@nil\fi}
 %<*driver>
 \CodelineIndex
@@ -853,7 +853,6 @@
 %\changes{v2.2}{2007/04/01}{logo transparency and amusement}
 %\changes{v2.8d}{2021/06/01}{\relax split up in User manual (\file{microtype.pdf})
 %                            and Implementation doc (\file{microtype-code.pdf})}
-% ^^A Adobe Reader 8.0 had serious bugs with transparency. Fixed in 8.1.
 %\fi
 %
 % \GetFileInfo{\jobname.dtx}
@@ -914,7 +913,7 @@
 % \noindent
 % \ifpdf
 %  \ifcodedoc
-%    \href{file:microtype.pdf}{User documentation}
+%    \href{file:microtype.pdf}{User manual}
 %  \else
 %    \href{file:microtype-code.pdf}{Implementation}
 %  \fi
@@ -3002,6 +3001,8 @@
 % settings. It should not be used in production contexts.
 %
 %\medskip\noindent
+%^^A don't index the commands from microtype-show as "Commands"
+%{\def\SpecialUsageIndex#1{\let\special@index\index\SpecialIndex@{#1}{\encapchar dochyperpage}}
 %\DescribeMacro{\ShowCharacterInheritance}
 % These commands show all defined inheritance resp. protrusion settings
 % (relative to character width, to \EM{1}, and as the effective kerning amount)
@@ -3014,7 +3015,7 @@
 %\DescribeMacro{\ShowGlyphIndextrue}
 % \cs{ifShowGlyphIndex} to true will additionally display the glyph (\pdftex)
 %\DescribeMacro{\GlyphScaleFactor}
-% or Unicode (\luatex) index. Furthermore, you may alter the glyphs'
+% or Unicode (\luatex) index number. Furthermore, you may alter the glyphs'
 % display size by redefining \cs{GlyphScaleFactor} (default:~|2|).
 %
 %\medskip\noindent
@@ -3039,6 +3040,7 @@
 %    Should you have lots of \pkg{pdfcprot} configuration files lying around,
 %    I can also provide you with a \TeX\ conversion script. Just ask me.}
 %\fi
+%}
 %
 %
 %\section{Acknowledgments}
@@ -3727,9 +3729,9 @@
 %  \normalbaselineskip,\normalsize,\numberline,\par,\parbox,\quad,\raggedright,
 %  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\usefont,
 %  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
-%  \DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,\PackageError,
-%  \PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,\RequirePackage,
-%  \@@enc@update,\UnicodeEncodingName}
+%  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,
+%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
+%  \RequirePackage,\@@enc@update,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -15614,8 +15616,7 @@ end
 %<m-t|cmr>     \AE = {50,   },
 %<pmn>     \OE = {50,  }
 %<*cmr|ebg>
-%<cmr>     "00 = {   ,150}, % \Gamma
-%<ebg>     "00 = {   ,50},  % \Gamma
+     "00 = {   ,150}, % \Gamma
      "01 = {100,100}, % \Delta
      "02 = { 50, 50}, % \Theta
      "03 = {100,100}, % \Lambda
@@ -18775,7 +18776,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12002}
+% \CheckSum{12001}
 %
 % \Finale
 %
@@ -18824,6 +18825,7 @@ lualatex microtype-utf.dtx
 #        - Adobe Source Sans Pro (Type 1)
 #        - Latin Modern Roman (OpenType)
 #        - Charis SIL (OpenType)
+#        - EB Garamond (OpenType)
 #        - TeX Gyre Pagella (OpenType)
 #        - Lato (OpenType) ]
 #  (8) To create the code index and history run

@@ -79,7 +79,12 @@ TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
 DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
-DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT) || \
+   if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
+      if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
+         false ; \
+      fi ; \
+   fi
 DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
 DO_MAKEINDEX_DOC  = \
    makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
@@ -173,32 +178,30 @@ $(NAME).idx: $(DTX)
 	@$(DO_PDFLATEX_DOC)
 
 $(NAME).ind: $(NAME)-stamp
+	@echo "Compiling user documentation (ind)"
 	@$(DO_MAKEINDEX_DOC)
 
 $(NAME)-stamp: $(NAME).idx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
+$(NAMEC).idx $(NAMEC).glo: $(DTX)
+	@echo "Compiling code documentation (idx,glo)"
+	@$(DO_PDFLATEX_CODE)
+
 $(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
+	@echo "Compiling code documentation (ind,gls)"
 	@$(DO_MAKEINDEX_CODE)
 
 $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
-$(NAMEC).glo $(NAMEC).idx: $(DTX)
-	@$(DO_PDFLATEX_CODE)
-
 # microtype-code.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
 $(NAMEC).tmp:
 	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
-	@if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
-		if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
-			false ; \
-		fi ; \
-	fi
 	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; then \
 		echo "Re-compiling code documentation (for Unicode part)" ; \
 		$(DO_MAKEINDEX_CODE) ; \
