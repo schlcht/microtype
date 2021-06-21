@@ -101,9 +101,11 @@
  \def\rmdefault{bch} % not scaled
  \def\sfdefault{SourceSansPro-TLF}
  \def\SourceSansPro@scale{1.02}
- \def\ttdefault{blg}
+\IfFileExists{t1blg.fd}
+ {\def\ttdefault{blg}}
+ {\def\ttdefault{ulg}}
  {\ttfamily\selectfont
-  \DeclareFontShape{T1}{blg}{eb}{n}{<-> ssub * blg/b/n}{}}
+  \DeclareFontShape{T1}{\ttdefault}{eb}{n}{<-> ssub * \ttdefault/b/n}{}}
 \usepackage{iftex}
 %<*!docsty>
 \ifxetex\else

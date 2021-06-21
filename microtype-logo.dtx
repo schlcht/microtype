@@ -345,6 +345,7 @@
 %    \end{macrocode}
 %\end{enumerate}
 %\end{macro}
+%\begin{macro}{\printlogo}
 %    \begin{macrocode}
 \newbox\logobox
 \def\printlogo{%
@@ -384,7 +385,7 @@
 %    \parindent 0pt
 %    \everypar{\parindent 0pt}%
 %    \leavevmode\hbox to 15pt{\@thefnmark\hss}##1}
-%  \footnotetext[1]{This graphic display on a
+%  \footnotetext[1]{This graphic displays on a
 %    \togglelayer{canvas}{canvas} the \togglelayer{characters}{characters},
 %    their \togglelayer{bounding-boxes}{bounding boxes}
 %    and \togglelayer{TeX-boxes}{\TeX\ boxes}.}
@@ -412,7 +413,10 @@
            >> }%
   \vspace{3\baselineskip}
 }
+\IfFileExists{pkpmmri8a10.afm}\relax{\def\printlogo{\MT@warning{File pkpmmri8a10.afm not found.
+  \MessageBreak Cannot create logo}}}
 %    \end{macrocode}
+%\end{macro}
 % Our font.
 %    \begin{macrocode}
 \pdfmapline{+pkpmmri8r10 KeplMM-It_385_575_10_ " TeXBase1Encoding ReEncodeFont " <8r.enc <pkpmmri8a10.pfb}
@@ -459,12 +463,10 @@
 %    \begin{macrocode}
 \DocInput{microtype-logo.dtx}
 \newpage
-  And here it is:
-\vfill
+And here it is:\vspace{6\baselineskip}
 \begin{center}
-  \printlogo \null
+  \printlogo
 \end{center}
-\vfill
 \expandafter\enddocument
 \fi
 %    \end{macrocode}
