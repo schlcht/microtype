@@ -16036,17 +16036,16 @@ end
 %<ppl>   [ name     = ppl-it   ]
 %<ptm>   [ name     = ptm-it   ]
 %<ugm>   [ name     = ugm-it   ]
-%<m-t|bch|blg|ebg|ugm>   { encoding = OT1,
+%<m-t|bch|blg|ugm>   { encoding = OT1,
 %<ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch,
 %<blg>     family   = blg,
-%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
 %<ugm>     family   = ugm,
-%<m-t|bch|ebg|ppl|ptm>     shape    = {it,sl}  }
+%<m-t|bch|ppl|ptm>     shape    = {it,sl}  }
 %<blg|ugm>     shape    = it  }
-%<cmr|pmn>   { }
+%<cmr|ebg|pmn>   { }
    {
 %<cmr>     A = {100,100},
 %<ptm>     A = {100,50},
@@ -16288,11 +16287,13 @@ end
 %<ugm>     \textquotedblleft = {600,200},   \textquotedblright = {600,200}
    }
 
-%<*cmr|pmn>
+%<*cmr|ebg|pmn>
 \SetProtrusion
 %<cmr>   [ name     = cmr-it-OT1,
+%<ebg>   [ name     = EBGaramond-it-OT1,
 %<pmn>   [ name     = pmnj-it-OT1,
 %<cmr>     load     = cmr-it   ]
+%<ebg>     load     = EBGaramond-it   ]
 %<pmn>     load     = pmnj-it  ]
 %<cmr>   { encoding = {OT1,OT4},
 %<pmn>   { encoding = OT1,
@@ -16300,27 +16301,89 @@ end
 %<pmn>     family   = pmnj,
 %<cmr>     shape    = it       }
 %<pmn>     shape    = {it,sl}  }
+%<ebg>   { }
    {
 %<cmr>     \AE = {100,   },
 %<pmn>     \AE = {  ,-50},
 %<cmr>     \OE = {100,   },
 %<pmn>     \OE = {50,   }
-%<*cmr>
-     "00 = {200,150}, % \Gamma
-     "01 = {150,100}, % \Delta
-     "02 = {150, 50}, % \Theta
-     "03 = {150, 50}, % \Lambda
-     "04 = {100,100}, % \Xi
-     "05 = {100,100}, % \Pi
-     "06 = {100, 50}, % \Sigma
-     "07 = {200,150}, % \Upsilon
-     "08 = {150, 50}, % \Phi
-     "09 = {150,100}, % \Psi
+%<*cmr|ebg>
+%<cmr>     "00 = {200,150}, % \Gamma
+%<ebg>     "00 = {   ,150}, % \Gamma
+%<cmr>     "01 = {150,100}, % \Delta
+%<ebg>     "01 = {100,100}, % \Delta
+%<cmr>     "02 = {150, 50}, % \Theta
+%<ebg>     "02 = { 50, 50}, % \Theta
+%<cmr>     "03 = {150, 50}, % \Lambda
+%<ebg>     "03 = {100,100}, % \Lambda
+%<cmr>     "04 = {100,100}, % \Xi
+%<ebg>     "04 = { 50, 50}, % \Xi
+%<cmr>     "05 = {100,100}, % \Pi
+%<cmr>     "06 = {100, 50}, % \Sigma
+%<cmr>     "07 = {200,150}, % \Upsilon
+%<ebg>     "07 = {100,100}, % \Upsilon
+%<cmr>     "08 = {150, 50}, % \Phi
+%<ebg>     "08 = { 50, 50}, % \Phi
+%<cmr>     "09 = {150,100}, % \Psi
+%<ebg>     "09 = { 50, 50}, % \Psi
      "0A = { 50, 50}  % \Omega
-%</cmr>
+%</cmr|ebg>
    }
 
-%</cmr|pmn>
+%</cmr|ebg|pmn>
+%<*ebg>
+\SetProtrusion
+   [ name     = EBGaramond-it-OT1-LF,
+     load     = EBGaramond-it-OT1 ]
+   { encoding = OT1,
+     family   = {EBGaramond-LF,EBGaramond-TLF},
+     shape    = {it,sl} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     3 = {80,50},
+     4 = {50,50},
+     5 = {50,50},
+     6 = {50,50},
+     7 = {50,50},
+     8 = {50,50},
+     9 = {50,  },
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-it-OT1-OsF,
+     load     = EBGaramond-it-OT1 ]
+   { encoding = OT1,
+     family   = {EBGaramond-OsF},
+     shape    = {it,sl} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     3 = {  ,80},
+     4 = {50,50},
+     7 = {50,50},
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-it-OT1-TOsF,
+     load     = EBGaramond-it-OT1 ]
+   { encoding = OT1,
+     family   = {EBGaramond-TOsF},
+     shape    = {it,sl} }
+   {
+     0 = {150,150},
+     1 = {150,150},
+     2 = {80,80},
+     3 = {50,80},
+     4 = {50,80},
+     5 = {50,80},
+     6 = {50,50},
+     7 = {50,100},
+     8 = {50,50},
+     9 = {50,80},
+   }
+
+%</ebg>
 \SetProtrusion
 %<m-t>   [ name     = T1-it-default,
 %<bch>   [ name     = bch-it-T1,
@@ -18776,7 +18839,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12001}
+% \CheckSum{12012}
 %
 % \Finale
 %
