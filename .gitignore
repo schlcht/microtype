@@ -15,6 +15,7 @@ microtype-gind.ist
 
 # auxiliary files
 *.aux
+*.cdx
 *.glo
 *.gls
 *.glg
