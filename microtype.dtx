@@ -4195,7 +4195,7 @@
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\ShowProtrusion}
-% Activate the sleeper command, and trigger the setup.
+% Activate the sleeper command, then trigger the setup.
 %    \begin{macrocode}
 \newcommand*\ShowProtrusion{%
   \begingroup
@@ -4299,7 +4299,7 @@
 \newcommand*\ShowProtrusionAll{%
   {\MTS@setup
    \MTS@lede{}%
-   \MT@do@font{\MTS@showprotrusionline{\@tempcnta}}}%
+   \MT@do@font{\iffontchar\font\@tempcnta\MTS@showprotrusionline{\@tempcnta}\fi}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -4312,7 +4312,11 @@
    \let\MTS@second\@firstofone
    \MT@do@font{%
      \MTS@firstorsecond
-     \MTS@temp{\MTS@showprotrusionline{\@tempcnta}}}}%
+     \MTS@temp{%
+       \iffontchar\font\@tempcnta\MTS@showprotrusionline{\@tempcnta}\else
+         \MT@warning@nl{Glyph \the\@tempcnta\space is missing in font
+                        \MessageBreak\font@name}%
+       \fi}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -4325,7 +4329,7 @@
    \let\MTS@second\@gobble
    \MT@do@font{%
      \MTS@firstorsecond
-     \MTS@temp{\MTS@showprotrusionline{\@tempcnta}}}}%
+     \iffontchar\font\@tempcnta\MTS@temp{\MTS@showprotrusionline{\@tempcnta}}\fi}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -18841,7 +18845,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12012}
+% \CheckSum{12031}
 %
 % \Finale
 %
