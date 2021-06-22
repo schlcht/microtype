@@ -16790,14 +16790,14 @@ end
 %<m-t>   [ name     = OT1-sc,
 %<bch>   [ name     = bch-sc,
 %<cmr>   [ name     = cmr-sc-OT1,
-%<ebg>   [ name     = EBGaramond-sc,
+%<ebg>   [ name     = EBGaramond-OT1-sc-Prop,
 %<pmn>   [ name     = pmnj-sc,
 %<ppl>   [ name     = ppl-sc,
 %<ptm>   [ name     = ptm-sc,
 %<m-t>     load     = default ]
 %<bch>     load     = bch-default ]
 %<cmr>     load     = cmr-OT1 ]
-%<ebg>     load     = EBGaramond-default ]
+%<ebg>     load     = EBGaramond-OT1-LF ]
 %<pmn>     load     = pmnj-default ]
 %<ppl>     load     = ppl-default ]
 %<ptm>     load     = ptm-default ]
@@ -16805,7 +16805,7 @@ end
 %<cmr|ppl|ptm>   { encoding = {OT1,OT4},
 %<bch>     family   = bch,
 %<cmr>     family   = cmr,
-%<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
+%<ebg>     family   = {EBGaramond-LF,EBGaramond-OsF},
 %<pmn>     family   = pmnj,
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
@@ -16821,7 +16821,7 @@ end
 %<bch>     j = {100,  },
 %<m-t|bch|cmr|ebg|pmn|ppl>     l = {  ,50},
 %<ptm>     l = {  ,80},
-%<m-t|bch|cmr|ebg|pmn|ppl>   013 = {  ,50}, % fl
+%<m-t|bch|cmr|pmn|ppl>   013 = {  ,50}, % fl
 %<ptm>   013 = {  ,80}, % fl
 %<bch|ebg|pmn>     o = {50,50},
 %<ebg|pmn>   \oe = {50,  },
@@ -16834,6 +16834,30 @@ end
 %<ptm>     y = {80,80}
    }
 
+%<*ebg>
+\SetProtrusion
+   [ name     = EBGaramond-OT1-sc-Tab,
+     load     = EBGaramond-OT1-TOsF ]
+   { encoding = OT1,
+     family   = {EBGaramond-TLF,EBGaramond-TOsF},
+     shape    = sc }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+%</ebg>
 \SetProtrusion
 %<m-t>   [ name     = T1-sc,
 %<bch>   [ name     = bch-sc-T1,
@@ -18845,7 +18869,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12031}
+% \CheckSum{12034}
 %
 % \Finale
 %
