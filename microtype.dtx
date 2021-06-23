@@ -14742,7 +14742,8 @@ end
 \DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
 %    \end{macrocode}
 % The Lato and Fontin fonts (and many, many  more\dots) only contain a
-% basic set of glyphs. We alias them here to prevent lots of warning
+% basic set of glyphs. We alias them here to the basic settings
+% (see \ref{subsub:OT-inh-basic}) to prevent lots of warning
 % messages from the inheritance settings; they will still receive
 % protrusion settings from the default (<T1>) configuration.
 %\changes{v2.8d}{2021/06/22}{declare aliases for the Fontin font}
@@ -14753,7 +14754,7 @@ end
 \DeclareMicrotypeAlias{Fontin-Regular}   {TU-basic}
 %    \end{macrocode}
 % The \pkg{fontawesome} and \pkg{fontawesome5} packages are aliased
-% to empty settings.
+% to empty settings (see \ref{subsub:OT-inh-empty} and \ref{subsub:OT-prot-empty}).
 %\changes{v2.8d}{2021/03/15}{declare aliases for \pkg{fontawesome5}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{FontAwesome}      {TU-empty} % fontawesome
