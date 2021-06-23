@@ -33,8 +33,8 @@
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
 %<Palatino>  {mt-Palatino.cfg}[2012/03/10 v1.0 microtype config. file: Palatino and similar fonts (LBD)]
-%<Lato>  {mt-Lato.cfg}[2021/02/22 v1.0 microtype config. file: Lato (RS)]
-%<FontAwesome>  {mt-FontAwesome.cfg}[2021/03/15 v1.1 microtype config. file: Font Awesome (RS)]
+%<TU-basic>  {mt-TU-basic.cfg}[2021/06/22 v1.1 microtype config. file: fonts with basic glyph set (RS)]
+%<TU-empty>  {mt-TU-empty.cfg}[2021/06/22 v1.1 microtype config. file: fonts with nonstandard glyph set (RS)]
 %<*driver>
 \documentclass[10pt,a4paper]{ltxdoc}
 \usepackage{fontspec}
@@ -50,7 +50,6 @@
  \newfontface\CharisSIL{Charis SIL}[WordSpace=2]
  \newfontface\Palatino{TeX Gyre Pagella}[WordSpace=2]
  \newfontface\EBGaramond{EBGaramond-Regular}[WordSpace=2]
- \newfontface\Lato{Lato}[WordSpace=2]
 % \newfontface\Palatino[RawFeature={fallback=charisfallback}]{TeX Gyre Pagella}
 % \directlua{luaotfload.add_fallback("charisfallback",{"CharisSIL:color=F70A12;mode=harf;"})}
  \def\normalwordspace{\fontdimen2\font=.5\fontdimen2\font}
@@ -687,20 +686,20 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %</Palatino>
 %    \end{macrocode}
-%\subsubsection{Lato}
-%\addtoUTFbookmarks{subsub:OT-inh-Lato}
-% Less characters in the Lato font \dots
+%\subsubsection{Basic glyph set}
+%\addtoUTFbookmarks{subsub:OT-inh-basic}
+% There are quite a few fonts out there that don't even fill the <T1> glyph set.
+% To prevent a plethora of warnings, they may be aliased to the surrogate font
+% |TU-basic|. Examples of such fonts are: Lato and Fontin.
 %\changes{v2.8b}{2021/02/21}{settings for the Lato font (\file{mt-Lato.cfg})
 %                            (reported by \contributor dsedivec <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/380812/microtype-warning-unknown-slot-number-of-character-with-lato-font
+%\changes{v2.8d}{2021/06/22}{generalise basic inheritance settings}
 %    \begin{macrocode}
-%<*Lato>
+%<*TU-basic>
 \DeclareCharacterInheritance
    { encoding = {TU,EU1,EU2},
-     family   = {Lato} }
-%    \end{macrocode}
-%{\setmacrofont\Lato
-%    \begin{macrocode}
+     family   = {TU-basic} }
    { A = {À,Á,Â,Ã,Ä,Å,Ą},
      a = {à,á,â,ã,ä,å,ą},
      C = {Ć,Ç},
@@ -725,22 +724,22 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      Z = {Ź,Ż,Ž},
      z = {ź,ż,ž}
    }
+%</TU-basic>
 %    \end{macrocode}
-%}
-%    \begin{macrocode}
-%</Lato>
-%    \end{macrocode}
-%\subsubsection{Font Awesome}
-%\addtoUTFbookmarks{subsub:OT-inh-FontAwesome}
-% \dots\ and even less in the self-professedly awesone Font Awesome font.
+%\subsubsection{Empty glyph set}
+%\addtoUTFbookmarks{subsub:OT-inh-empty}
+% Other fonts, \eg, the self-professedly awesone Font Awesome font,
+% have no meaningful glyph arsenal at all, and should therefore be
+% aliased so that empty settings are applied.
 %\changes{v2.8b}{2021/02/21}{dummy settings for the Font Awesome font (\file{mt-FontAwesome.cfg})}
+%\changes{v2.8d}{2021/06/22}{generalise empty settings}
 %    \begin{macrocode}
-%<*FontAwesome>
+%<*TU-empty>
 \DeclareCharacterInheritance
   { encoding = {TU,EU1,EU2},
-    family   = {FontAwesome,fontawesomefree,fontawesomebrands,fontawesomepro} }
+    family   = {TU-empty} }
   { }
-%</FontAwesome>
+%</TU-empty>
 %    \end{macrocode}
 %
 %\subsection{Character protrusion}
@@ -1627,21 +1626,22 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
    }
 %</Palatino>
 %    \end{macrocode}
-%\subsubsection{Lato}
-%\addtoUTFbookmarks{subsub:OT-prot-Lato}
+%\subsubsection{Basic glyph set}
+% The protrusion settings will still be loaded from \file{microtype.cfg}.
+%\addtoUTFbookmarks{subsub:OT-prot-basic}
 %    \begin{macrocode}
-%<Lato> %% No settings yet.
+%<TU-basic> %% No settings.
 %    \end{macrocode}
-%\subsubsection{Font Awesome}
-%\addtoUTFbookmarks{subsub:OT-prot-FontAwesome}
+%\subsubsection{Empty glyph set}
+%\addtoUTFbookmarks{subsub:OT-prot-empty}
 %    \begin{macrocode}
-%<*FontAwesome>
+%<*TU-empty>
 \SetProtrusion
    [ name = empty ]
    { encoding = {TU,EU1,EU2},
-     family   = {FontAwesome,fontawesomefree,fontawesomebrands,fontawesomepro} }
+     family   = {TU-empty} }
    { }
-%</FontAwesome>
+%</TU-empty>
 
 %    \end{macrocode}
 %

@@ -4800,7 +4800,7 @@
 % implementation.
 %\changes{v2.1}{2007/01/15}{fix: \letterspace\ package forgot to load \pkg{keyval}}
 % For the \opt{patch} option, we use \pkg{etoolbox}, which requires \etex.
-%\changes{v2.8d}{2021/05/17}{require package \pkg{etoolbox}}
+%\changes{v2.8d}{2021/05/17}{require package \pkg{etoolbox} (for \opt{patch} option)}
 %    \begin{macrocode}
 %<*package|letterspace>
 \RequirePackage{keyval}[1997/11/10]
@@ -14741,12 +14741,25 @@ end
 \DeclareMicrotypeAlias{zpeus}   {zpeu}     % Adobe Euro sans -> serif
 \DeclareMicrotypeAlias{eurosans}{zpeu}     % Adobe Euro sans -> serif
 %    \end{macrocode}
-% The \pkg{fontawesome5} package.
+% The Lato and Fontin fonts (and many, many  more\dots) only contain a
+% basic set of glyphs. We alias them here to prevent lots of warning
+% messages from the inheritance settings; they will still receive
+% protrusion settings from the default (<T1>) configuration.
+%\changes{v2.8d}{2021/06/22}{declare aliases for the Fontin font}
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{Lato}             {TU-basic}
+\DeclareMicrotypeAlias{Lato-Regular}     {TU-basic}
+\DeclareMicrotypeAlias{Fontin}           {TU-basic}
+\DeclareMicrotypeAlias{Fontin-Regular}   {TU-basic}
+%    \end{macrocode}
+% The \pkg{fontawesome} and \pkg{fontawesome5} packages are aliased
+% to empty settings.
 %\changes{v2.8d}{2021/03/15}{declare aliases for \pkg{fontawesome5}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{fontawesomefree}  {FontAwesome} % fontawesome5
-\DeclareMicrotypeAlias{fontawesomepro}   {FontAwesome}
-\DeclareMicrotypeAlias{fontawesomebrands}{FontAwesome}
+\DeclareMicrotypeAlias{FontAwesome}      {TU-empty} % fontawesome
+\DeclareMicrotypeAlias{fontawesomefree}  {TU-empty} % fontawesome5
+\DeclareMicrotypeAlias{fontawesomepro}   {TU-empty}
+\DeclareMicrotypeAlias{fontawesomebrands}{TU-empty}
 
 %    \end{macrocode}
 %
@@ -18870,7 +18883,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12035}
+% \CheckSum{12040}
 %
 % \Finale
 %
@@ -18920,8 +18933,7 @@ lualatex microtype-utf.dtx
 #        - Latin Modern Roman (OpenType)
 #        - Charis SIL (OpenType)
 #        - EB Garamond (OpenType)
-#        - TeX Gyre Pagella (OpenType)
-#        - Lato (OpenType) ]
+#        - TeX Gyre Pagella (OpenType) ]
 #  (8) To create the code index and history run
 makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
 makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo microtype-code.glo microtype-utf.glo
