@@ -15721,8 +15721,9 @@ end
 %<ptm>     load     = ptm-default ]
 %<ugm>     load     = ugm-default ]
 %<m-t>   { encoding = {T1,LY1,EU1,EU2,TU} }
-%<bch|cmr|ebg|pmn|ppl>   { encoding = {T1,LY1},
+%<bch|cmr|pmn|ppl>   { encoding = {T1,LY1},
 %<blg|ptm|ugm>   { encoding = {T1},
+%<ebg>   { encoding = {LY1},
 %<bch>     family   = bch }
 %<blg>     family   = blg }
 %<cmr>     family   = cmr }
@@ -15809,6 +15810,37 @@ end
    }
 
 %</cmr>
+%<*ebg>
+\SetProtrusion
+   [ name     = EBGaramond-T1-LF,
+     load     = EBGaramond-T1 ]
+   { encoding = T1,
+     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     4 = {50,50},
+     7 = {50,50},
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-T1-TOsF,
+     load     = EBGaramond-T1 ]
+   { encoding = T1,
+     family   = {EBGaramond-TOsF} }
+   {
+     1 = {150,150},
+     2 = {50,50},
+     3 = {50,50},
+     4 = {50,50},
+     5 = {50,50},
+     6 = {50,50},
+     7 = {50,80},
+     8 = {50,50},
+     9 = {50,50},
+   }
+
+%</ebg>
 %    \end{macrocode}
 % Settings for the <T2A> encoding (generic, Computer Modern Roman, and Minion).\footnote{Contributed by
 %                            \contributor Karl Karlsson <karl-karlsson\at yandex.ru>.}
@@ -16424,7 +16456,8 @@ end
 %<ppl>     load     = ppl-it   ]
 %<ptm>     load     = ptm-it   ]
 %<ugm>     load     = ugm-it   ]
-%<m-t|bch|cmr|ebg|pmn|ppl>   { encoding = {T1,LY1},
+%<m-t|bch|cmr|pmn|ppl>   { encoding = {T1,LY1},
+%<ebg>   { encoding = {LY1},
 %<blg|ptm|ugm>   { encoding = T1,
 %<bch>     family   = bch,
 %<blg>     family   = blg,
@@ -16489,6 +16522,59 @@ end
 %<pmn>     \textvisiblespace = {100,100}
   }
 
+%<*ebg>
+\SetProtrusion
+   [ name     = EBGaramond-it-T1-LF,
+     load     = EBGaramond-it-T1 ]
+   { encoding = T1,
+     family   = {EBGaramond-LF,EBGaramond-TLF},
+     shape    = {it,sl} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     3 = {80,50},
+     4 = {50,50},
+     5 = {50,50},
+     6 = {50,50},
+     7 = {50,50},
+     8 = {50,50},
+     9 = {50,  },
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-it-T1-OsF,
+     load     = EBGaramond-it-T1 ]
+   { encoding = T1,
+     family   = {EBGaramond-OsF},
+     shape    = {it,sl} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     3 = {  ,80},
+     4 = {50,50},
+     7 = {50,50},
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-it-T1-TOsF,
+     load     = EBGaramond-it-T1 ]
+   { encoding = T1,
+     family   = {EBGaramond-TOsF},
+     shape    = {it,sl} }
+   {
+     0 = {150,150},
+     1 = {150,150},
+     2 = {80,80},
+     3 = {50,80},
+     4 = {50,80},
+     5 = {50,80},
+     6 = {50,50},
+     7 = {50,100},
+     8 = {50,50},
+     9 = {50,80},
+   }
+
+%</ebg>
 %<*m-t|cmr|pmn>
 \SetProtrusion
 %<m-t>   [ name     = T2A-it-default,
@@ -16872,54 +16958,6 @@ end
      y = {50,50}
    }
 
-%    \end{macrocode}
-% Same for small caps italics, except that we load the italics settings.
-%\changes{v2.8d}{2021/06/23}{<EB> Garamond: settings for small caps italics}
-%    \begin{macrocode}
-\SetProtrusion
-   [ name     = EBGaramond-scit-OT1-Prop,
-     load     = EBGaramond-it-OT1-LF ]
-   { encoding = OT1,
-     family   = {EBGaramond-LF,EBGaramond-OsF},
-     shape    = scit }
-   {
-     a = {50,50},
-   \ae = {50,  },
-     d = {  ,50},
-     f = {  ,50},
-     g = {50,  },
-     j = {50,  },
-     l = {  ,50},
-     o = {50,50},
-   \oe = {50,  },
-     q = {50,70},
-     r = {  , 0},
-     t = {50,50},
-     y = {50,50}
-   }
-
-\SetProtrusion
-   [ name     = EBGaramond-scit-OT1-Tab,
-     load     = EBGaramond-it-OT1-TOsF ]
-   { encoding = OT1,
-     family   = {EBGaramond-TLF,EBGaramond-TOsF},
-     shape    = scit }
-   {
-     a = {50,50},
-   \ae = {50,  },
-     d = {  ,50},
-     f = {  ,50},
-     g = {50,  },
-     j = {50,  },
-     l = {  ,50},
-     o = {50,50},
-   \oe = {50,  },
-     q = {50,70},
-     r = {  , 0},
-     t = {50,50},
-     y = {50,50}
-   }
-
 %</ebg>
 \SetProtrusion
 %<m-t>   [ name     = T1-sc,
@@ -16936,7 +16974,8 @@ end
 %<pmn>     load     = pmnj-T1    ]
 %<ppl>     load     = ppl-T1     ]
 %<ptm>     load     = ptm-T1     ]
-   { encoding = {T1,LY1},
+%<!ebg>   { encoding = {T1,LY1},
+%<ebg>   { encoding = {LY1},
 %<bch>     family   = bch,
 %<cmr>     family   = cmr,
 %<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
@@ -16955,7 +16994,7 @@ end
 %<bch>     j = {100,  },
 %<m-t|bch|cmr|ebg|pmn|ppl>     l = {  ,50},
 %<ptm>     l = {  ,80},
-%<m-t|bch|cmr|ebg|pmn|ppl>   029 = {  ,50}, % fl
+%<m-t|bch|cmr|pmn|ppl>   029 = {  ,50}, % fl
 %<ptm>   029 = {  ,80}, % fl
 %<bch|ebg|pmn>     o = {50,50},
 %<bch|ebg|pmn>   \oe = {50,  },
@@ -17031,6 +17070,52 @@ end
    }
 
 %</cmr|bch>
+%<*ebg>
+\SetProtrusion
+   [ name     = EBGaramond-sc-T1-Prop,
+     load     = EBGaramond-T1-LF ]
+   { encoding = T1,
+     family   = {EBGaramond-LF,EBGaramond-OsF},
+     shape    = sc }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-sc-T1-Tab,
+     load     = EBGaramond-T1-TOsF ]
+   { encoding = T1,
+     family   = {EBGaramond-TLF,EBGaramond-TOsF},
+     shape    = sc }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+%</ebg>
 %<*pmn>
 \SetProtrusion
    [ name     = pmnx-sc,
@@ -17159,6 +17244,101 @@ end
    }
 
 %</pmn>
+%<*ebg>
+%    \end{macrocode}
+% For small caps italics, we copy the definitions from the small caps settings,
+%  except that we first load the italics settings.
+%\changes{v2.8d}{2021/06/23}{<EB> Garamond: settings for small caps italics}
+%    \begin{macrocode}
+\SetProtrusion
+   [ name     = EBGaramond-scit-OT1-Prop,
+     load     = EBGaramond-it-OT1-LF ]
+   { encoding = OT1,
+     family   = {EBGaramond-LF,EBGaramond-OsF},
+     shape    = scit }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-scit-OT1-Tab,
+     load     = EBGaramond-it-OT1-TOsF ]
+   { encoding = OT1,
+     family   = {EBGaramond-TLF,EBGaramond-TOsF},
+     shape    = scit }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-scit-T1-Prop,
+     load     = EBGaramond-it-T1-LF ]
+   { encoding = T1,
+     family   = {EBGaramond-LF,EBGaramond-OsF},
+     shape    = scit }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-scit-T1-Tab,
+     load     = EBGaramond-it-T1-TOsF ]
+   { encoding = T1,
+     family   = {EBGaramond-TLF,EBGaramond-TOsF},
+     shape    = scit }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+%</ebg>
 %    \end{macrocode}
 %
 %\subsubsection{Text companion}
@@ -18932,7 +19112,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12046}
+% \CheckSum{12063}
 %
 % \Finale
 %
