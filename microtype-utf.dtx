@@ -46,14 +46,14 @@
 \usepackage{microtype-doc}
 \luatexbase@directlua{luatexbase.remove_from_callback('process_input_buffer', 'luainputenc.fake_utf_read')}
  \def\setmacrofont#1{\par\def\macro@font{#1}\footnotesize}
- \defaultfontfeatures{RawFeature={notdef=false}}
- \newfontface\LMR{Latin Modern Roman}[WordSpace=2]
- \newfontface\CharisSIL{Charis SIL}[WordSpace=2]
- \newfontface\Palatino{TeX Gyre Pagella}[WordSpace=2]
- \newfontface\EBGaramond{EBGaramond-Regular}[WordSpace=2]
+ \defaultfontfeatures{RawFeature={notdef=false},WordSpace=2}
+ \def\normalwordspace{\fontdimen2\font=.5\fontdimen2\font}
+ \newfontface\LMR{Latin Modern Roman}
+ \newfontface\CharisSIL{Charis SIL}
+ \newfontface\Palatino{TeX Gyre Pagella}
+ \newfontface\EBGaramond{EBGaramond-Regular}
 % \newfontface\Palatino[RawFeature={fallback=charisfallback}]{TeX Gyre Pagella}
 % \directlua{luaotfload.add_fallback("charisfallback",{"CharisSIL:color=F70A12;mode=harf;"})}
- \def\normalwordspace{\fontdimen2\font=.5\fontdimen2\font}
 \usepackage{luacode}
 \tracinglostchars2
 % we replace any missing characters (in Palatino) with CharisSIL
@@ -100,7 +100,7 @@ local nodeprocessor = function (head)
       lastfont = currfont
       if not characters[char] then
         head = node.insert_before(head,n,node.copy(color_push))
---  node.remove(head,node.next(n)) -- remove .notdef char (new in luaotfload 2.98)
+    --  node.remove(head,node.next(n)) -- remove .notdef char (new in luaotfload 2.98)
         node.insert_after(head,n,node.copy(color_pop))
         n.font = fallbackfont
         if not fontcharacters[fallbackfont][char] then -- not even in Charis SIL
