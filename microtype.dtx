@@ -16346,7 +16346,7 @@ end
 %<ebg>     "08 = { 50, 50}, % \Phi
 %<cmr>     "09 = {150,100}, % \Psi
 %<ebg>     "09 = { 50, 50}, % \Psi
-     "0A = { 50, 50}  % \Omega
+     "0A = { 50, 50}, % \Omega
 %<ebg>     138 = {   , 50}, % \L
 %</cmr|ebg>
    }
@@ -16805,7 +16805,7 @@ end
 %<m-t>   [ name     = OT1-sc,
 %<bch>   [ name     = bch-sc,
 %<cmr>   [ name     = cmr-sc-OT1,
-%<ebg>   [ name     = EBGaramond-OT1-sc-Prop,
+%<ebg>   [ name     = EBGaramond-sc-OT1-Prop,
 %<pmn>   [ name     = pmnj-sc,
 %<ppl>   [ name     = ppl-sc,
 %<ptm>   [ name     = ptm-sc,
@@ -16851,11 +16851,59 @@ end
 
 %<*ebg>
 \SetProtrusion
-   [ name     = EBGaramond-OT1-sc-Tab,
+   [ name     = EBGaramond-sc-OT1-Tab,
      load     = EBGaramond-OT1-TOsF ]
    { encoding = OT1,
      family   = {EBGaramond-TLF,EBGaramond-TOsF},
      shape    = sc }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+%    \end{macrocode}
+% Same for small caps italics, except that we load the italics settings.
+%\changes{v2.8d}{2021/06/23}{<EB> Garamond: settings for small caps italics}
+%    \begin{macrocode}
+\SetProtrusion
+   [ name     = EBGaramond-scit-OT1-Prop,
+     load     = EBGaramond-it-OT1-LF ]
+   { encoding = OT1,
+     family   = {EBGaramond-LF,EBGaramond-OsF},
+     shape    = scit }
+   {
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50}
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-scit-OT1-Tab,
+     load     = EBGaramond-it-OT1-TOsF ]
+   { encoding = OT1,
+     family   = {EBGaramond-TLF,EBGaramond-TOsF},
+     shape    = scit }
    {
      a = {50,50},
    \ae = {50,  },
@@ -18884,7 +18932,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12040}
+% \CheckSum{12046}
 %
 % \Finale
 %
