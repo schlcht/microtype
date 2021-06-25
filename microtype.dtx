@@ -4412,18 +4412,20 @@
 %\begin{macro}{\MTS@show@missing}
 %    \begin{macrocode}
 \def\MTS@show@missing{%
-  \MTS@lp@=\z@ \MTS@rp@=\z@
-  \par \MTS@printtext{Glyphs not included in configuration (with defined heirs):}%
-  \MT@do@font{%
-    \edef\MT@temp{\the\@tempcnta}%
-    \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@temp @}{%
-      \MT@exp@one@n\MT@in@clist\MT@temp\MTS@glyphlist
-      \ifMT@inlist@\else \newline
-      \llap{\MTS@show@char@pr{\MT@temp} \MTS@printtext{=} }%
-       \MT@exp@cs\MT@map@tlist@c
-         {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
-         \MTS@show@char@x
-      \fi
+  \MT@ifdefined@c@T\MT@pr@inh@name{%
+    \MTS@lp@=\z@ \MTS@rp@=\z@
+    \par \MTS@printtext{Glyphs not included in configuration (with defined heirs):}%
+    \MT@do@font{%
+      \edef\MT@temp{\the\@tempcnta}%
+      \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@temp @}{%
+        \MT@exp@one@n\MT@in@clist\MT@temp\MTS@glyphlist
+        \ifMT@inlist@\else \newline
+        \llap{\MTS@show@char@pr{\MT@temp} \MTS@printtext{=} }%
+         \MT@exp@cs\MT@map@tlist@c
+           {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
+           \MTS@show@char@x
+        \fi
+      }%
     }%
   }%
   \MTS@show@missing@
@@ -4453,12 +4455,12 @@
     \MTS@printtext{First matching list is for `\texttt{\@tempa}':\\
               \texttt{\MT@listname}:}\par\leavevmode
     \MT@do@font{%
-      \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\the\@tempcnta @}{%
+      \MT@ifdefined@n@T{MT@inh@\MT@listname @\the\@tempcnta @}{%
         \newline
         \xdef\MTS@glyphlist{\MTS@glyphlist,\the\@tempcnta}%
         \llap{\MTS@show@char{\the\@tempcnta}\MTS@printtext{= }}%
         \MT@exp@cs\MT@map@tlist@c
-          {MT@inh@\MT@pr@inh@name @\the\@tempcnta @}%
+          {MT@inh@\MT@listname @\the\@tempcnta @}%
           \MTS@show@char@x
       }%
     }%
@@ -7097,14 +7099,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \expandafter\MT@set@codes\@tempc,\relax,%
 %<show>    \vrule width 4cm height .5pt \\
 %<show>    \MTS@printtext{End of list `\texttt{\MT@pr@c@name}'}\\[.5em]
-%<show>    \MT@ifdefined@n@T{MT@inh@\MT@listname @prefixes}{%
-%<show>      \par \MTS@printtext{(with prefixes:)}%
-%<show>      \@tempcntb=\z@
+%<show>    \MT@ifdefined@c@T\MT@pr@inh@name{%
+%<show>      \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @prefixes}{%
+%<show>        \par \MTS@printtext{(with prefixes:)}%
+%<show>        \@tempcntb=\z@
 %    \end{macrocode}
 % Set unconditional heirs.
 %    \begin{macrocode}
     \MT@set@pr@prefixheirs
-%<show>    }%
+%<show>    }}%
 %<show>    \ifShowMissingGlyphs\MTS@show@missing\fi
   }%
 %<show>  {\MTS@printtext{NOT DEFINED}%
@@ -19114,7 +19117,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12067}
+% \CheckSum{12071}
 %
 % \Finale
 %
