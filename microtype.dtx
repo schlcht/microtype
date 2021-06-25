@@ -7644,22 +7644,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \edef\@tempa{\expandafter\ifx\@car#1\@nil U\@gobble#1\else\number\XeTeXglyphindex"#1" \fi}%
   \edef\@tempb{\expandafter\ifx\@car#2\@nil U\@gobble#2\else\number\XeTeXglyphindex"#2" \fi}%
 %</xetex-def>
+  \@tempcnta=\z@
   \ifnum#3>\z@
     \@tempcnta=\numexpr
 %<luatex-def|pdftex-def|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
 %<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
       *#3/\MT@dimen@six\relax
-%<pdftex-def|luatex-def|xetex-def>    \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
-%<show>    \MTS@lp@=\dimexpr\numexpr\lpcode\MT@font#1+\@tempcnta\relax em/1000\relax
   \fi
+%<pdftex-def|luatex-def|xetex-def>  \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
+%<show>  \MTS@lp@=\dimexpr\numexpr\lpcode\MT@font#1+\@tempcnta\relax em/1000\relax
+  \@tempcnta=\z@
   \ifnum#4>\z@
     \@tempcnta=\numexpr
 %<luatex-def|pdftex-def|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
 %<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
       *#4/\MT@dimen@six\relax
-%<pdftex-def|luatex-def|xetex-def>    \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
-%<show>    \MTS@rp@=\dimexpr\numexpr\rpcode\MT@font#1+\@tempcnta\relax em/1000\relax
   \fi
+%<pdftex-def|luatex-def|xetex-def>  \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
+%<show>  \MTS@rp@=\dimexpr\numexpr\rpcode\MT@font#1+\@tempcnta\relax em/1000\relax
 %<debug>\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
 %<debug>                                \number\rpcode\MT@font#2}%
@@ -19112,7 +19114,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12063}
+% \CheckSum{12067}
 %
 % \Finale
 %
