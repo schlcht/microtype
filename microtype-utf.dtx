@@ -395,7 +395,6 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      П = {Π}, % Greek
    % missing: tipa, math, symbols, ...
    }
-
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
@@ -610,7 +609,6 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      ! = {‼},
      ? = {⁇},
    }
-
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
@@ -1355,10 +1353,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      family   = Charis SIL,
      shape    = {sc}  }
    {
-%    \end{macrocode}
-%{\setmacrofont\CharisSIL
-%    \begin{macrocode}
-    % ᴀ = {100,100}, % etc., doesn't work with \textsc
+%     ᴀ = {100,100}, % etc., doesn't work with \textsc
      /a.\MT@CHARIS@SC = {100,100},
      /c.\MT@CHARIS@SC = {50,  },
      /d.\MT@CHARIS@SC = {  ,50},
@@ -1377,9 +1372,6 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      /w.\MT@CHARIS@SC = {50,50},
      /x.\MT@CHARIS@SC = {50,50},
      /y.\MT@CHARIS@SC = {50,50}
-%    \end{macrocode}
-%}
-%    \begin{macrocode}
    }
 %</CharisSIL>
 %    \end{macrocode}

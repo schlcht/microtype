@@ -14837,11 +14837,11 @@ end
 % that are the same on \emph{both} sides, \ie, not \OE\ for O.
 %    \begin{macrocode}
 %</m-t>
-%<*m-t|zpeu|mvs>
+%<*m-t|ebg|zpeu|mvs>
 %%% -----------------------------------------------------------------------
 %%% CHARACTER INHERITANCE
 
-%</m-t|zpeu|mvs>
+%</m-t|ebg|zpeu|mvs>
 %<*m-t>
 %    \end{macrocode}
 %
@@ -15125,6 +15125,44 @@ end
    }
 
 %</m-t>
+%    \end{macrocode}
+%\subsubsection{<LGR>}
+%\changes{v2.8d}{2021/06/24}{add settings for <LGR>}
+% The Greek <LGR> encoding. <EB> Garamond contains some more glyphs.
+%    \begin{macrocode}
+%<*m-t|ebg>
+\DeclareCharacterInheritance
+  { encoding = LGR,
+%<ebg>    family = {EBGaramond-OsF,EBGaramond-TOsF,EBGaramond-LF,EBGaramond-TLF}
+  }
+  {
+%<m-t>    A = {012},
+%<ebg>    A = {009,012,253},
+%<ebg> (l)E = {199},
+%<ebg>    H = {010},
+%<ebg> (l)H = {159},
+    I = {219},
+%<ebg> (l)I = {155},
+    O = J,
+%<ebg> (l)O = {151},
+    U = {013,223},
+    W = {011},
+    a = {014,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,
+         144,145,146,148,149,150,248},
+    e = {224,225,226,227,232,233,234,235},
+    h = {152,153,154,156,157,158,160,161,162,163,164,165,166,167,168,169,170,
+         171,172,173,174,175,249},
+%<m-t>    i = {200,201,202,203,208,209,210,211,216,217,218,240,241,242,243},
+%<ebg>    i = {008,200,201,202,203,208,209,210,211,216,217,218,240,241,242,243},
+    o = {228,229,230,231,236,237,238,239},
+    r = {251,252},
+    u = {015,204,205,206,207,212,213,214,215,220,221,222,244,245,246,247},
+    w = {176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,
+         193,194,196,197,198,250},
+%<ebg>    \textstigma = \textvarstigma,
+  }
+
+%</m-t|ebg>
 %    \end{macrocode}
 %
 %\subsubsection{Euro symbols}
@@ -19118,7 +19156,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12071}
+% \CheckSum{12074}
 %
 % \Finale
 %
