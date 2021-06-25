@@ -2238,11 +2238,12 @@
 % at the beginning of a line should be placed as if they had no accent (the `H' in
 % the example above).
 % Base characters may have both unprefixed and prefixed inheritance lists;
-% characters in the latter will be implicitly added to the unprefixed ones.
+% characters in the latter will be implicitly added to the corresponding unprefixed one.
 % Inheriting characters may appear in both `|(l)|' and `|(r)|'-prefixed lists at the
-% same time, whereas lists prefixed with `|(l)|' or `|(r)|' and `|(lr)|'-prefixed
-% lists are mutually exclusive.
+% same time, whereas lists prefixed with `|(l)|' or `|(r)|' and those prefixed with
+% `|(lr)|' are mutually exclusive.
 % For all other features except protrusion, these prefixed lists will be ignored.
+%\looseness=-1 ^^A layout
 %
 %
 %\subsection{Configuration files}\label{sub:config-file}
