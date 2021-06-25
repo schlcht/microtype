@@ -1046,7 +1046,7 @@
 %  \item Enable the desired micro-typographic features, either via the
 %        respective package option or with the \cs{microtypesetup} command
 %        (section~\ref{sec:options}).
-%  \item Select the fonts to which this feature should be applied by declaring
+%  \item Select the fonts to which the features should be applied by declaring
 %        and activating `sets of fonts'. A number of sets are predefined, which may be
 %        activated directly in the package options
 %        (section~\ref{sec:font-sets}).
@@ -1058,6 +1058,8 @@
 %  \item You are even countenanced to leave the path of typographic virtue and
 %        steal some sheep (section~\ref{sec:lettersp}) or trespass in other ways
 %        (section~\ref{sec:disable-ligatures}).
+%  \item For the pedantic or the perfectionist, sections \ref{sec:pedantic}
+%        and \ref{sec:contrib} are warmly recommended.
 %  \item Should you encounter any obstacles, follow the hints and caveats
 %        (section~\ref{sec:caveats}).
 %\end{itemize}
@@ -1233,6 +1235,7 @@
 % at margins other than the text block margins.
 % They are described in detail in section~\ref{sec:pedantic}.
 %
+%\pagebreak ^^A layout
 %\medskip
 %\Describe{Option}{unit}{!character,:dimension}
 % This option is described in section~\ref{sub:protrusion}, apropos of the command
@@ -1299,6 +1302,7 @@
 % in case you are using a pre-1.40 \pdftex\ version, \opt{step} is by default
 % set to one fifth of the smaller value of \opt{stretch} and \opt{shrink}.
 %
+%\enlargethispage{\baselineskip} ^^A layout
 %\medskip
 %\Describe{Option}{selected}{true,!false}
 % When applying font expansion, it is possible to restrict the expansion of some
@@ -2282,7 +2286,7 @@
 %\let\footnoterule\relax
 %\def\thempfootnote{{\itshape\ifnum\c@mpfootnote=10 \global\advance\c@mpfootnote 1 \fi\@alph\c@mpfootnote}}
 %\def\fnref#1{\raisebox{0.3ex}{\sffamily\itshape\footnotesize\,\ifpdf\ref*{#1}\else\ref{#1}\fi}}
-%\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}Xll@{}}
+%\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}>{\leftprotrusion}Xll@{}}
 %       \footnotesize Font family (<NFSS> code)
 %      & \multicolumn{2}{l}{\footnotesize Features}\\
 %\cmidrule(r){2-3}
@@ -2359,7 +2363,7 @@
 %  \leavevmode\hbox to 1.2em{\sffamily\@thefnmark\hss}#1}
 %\let\footnoterule\relax
 %\def\fnref#1{\raisebox{0.3ex}{\sffamily\itshape\footnotesize\,\ifpdf\ref*{#1}\else\ref{#1}\fi}}
-%\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}Xll@{}}
+%\begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}>{\leftprotrusion}Xll@{}}
 %       \footnotesize Font family
 %      & \multicolumn{2}{l}{\footnotesize Features}\\
 %\cmidrule(r){2-3}
@@ -2647,9 +2651,9 @@
 % in situations where \TeX, in contrast to human eyes, would not see a margin,^^A
 %   \footnote{Possibly because \TeX\ tends to look through its gastro-intestinal tract.}
 % \eg, in |itemize| or |tabular| environments.
-% The \microtype\ package offers two commands that may be inserted at the
-% beginning or end of a line to make the first respectively last glyph
-% protrude as if it were located at a margin:
+% The \microtype\ package offers two commands that may be inserted at
+% such an effective inner margin to make the first respectively last glyph
+% protrude as if it were located at a normal outer  margin:
 %
 %\medskip
 %\Describe{Macro}{\leftprotrusion}{general text}
@@ -2672,7 +2676,7 @@
 %
 %\medskip\noindent
 %\DescribeMacro{\noprotrusion}
-% is just mentioned apropos, as it's a \LaTeX\ kernel command.
+% is a command from \LaTeX\ proper, so it's just mentioned apropos.
 % When added to the beginning or end of a line, protrusion at the respective
 % margin will be prevented.
 %
@@ -2728,6 +2732,58 @@
 % so I welcome any suggestions and problem reports you may have.
 %
 %
+%\section{Creating configurations and contributing}\label{sec:contrib}
+%
+% I would also be glad to include configuration files for more fonts. Preparing such
+% configurations is quite a time-consuming task and requires a lot of patience.
+% To alleviate this process, \microtype\ includes the companion package
+%\DescribePackage{microtype-show}
+% \pkg{microtype-show}, which offers some tools to visually debug protrusion
+% settings. It should not be used in production contexts.
+%
+%\medskip\noindent
+%^^A don't index the commands from microtype-show as "Commands"
+%{\def\SpecialUsageIndex#1{\let\special@index\index\SpecialIndex@{#1}{\encapchar dochyperpage}}^^A
+%\DescribeMacro{\ShowCharacterInheritance}
+% These commands show all defined inheritance resp. protrusion settings
+% (the latter relative to character width, to \EM{1}, and as the effective kerning amount)
+%\DescribeMacro{\ShowProtrusion}
+% for the current font. They are most useful for consistency checks.
+%
+%\DescribeMacro{\ShowMissingGlyphstrue}
+% If the boolean \cs{ifShowMissingGlyphs} is set to true, the glyphs \textit{not}
+% included in the configuration will also be shown. Setting the switch
+%\DescribeMacro{\ShowGlyphIndextrue}
+% \cs{ifShowGlyphIndex} to true will additionally display the glyph (\pdftex)
+%\DescribeMacro{\GlyphScaleFactor}
+% respectively Unicode (\luatex) index number. Furthermore, you may alter the glyphs'
+% display size by redefining \cs{GlyphScaleFactor} (default:~|2|).
+%
+%\medskip\noindent
+%\DescribeMacro{\ShowProtrusionAll}
+% When preparing the actual protrusion settings, these commands may prove helpful.
+% Conveniently placing the glyphs at the margins, they show, respectively:
+%\DescribeMacro{\ShowProtrusionDefined}
+% all glyphs in the current font; only those with defined protrusion settings;
+%\DescribeMacro{\ShowProtrusionMissing}
+% or those without any protrusion settings.
+% (Note that here, the protrusion amounts are given in 1000ths of \EM{1}, not in
+% 1000ths of character widths).
+%^^A
+% The package also includes a test file that shows all of these commands in action
+% (\file{test-microtype.tex}).
+%
+%\medskip\noindent
+% If you have created a configuration file for another font, or if you have any
+% suggestions for enhancements in the default configuration files, I~would
+% gratefully accept them: \mailtoRS.
+%\iffalse\footnote{^^A ... OK, so nobody has any ...
+%    Should you have lots of \pkg{pdfcprot} configuration files lying around,
+%    I can also provide you with a \TeX\ conversion script. Just ask me.}
+%\fi
+%}
+%
+%
 %\section{Hints and caveats}\label{sec:caveats}
 %
 %\paragraph{Use settings that match your font.}
@@ -2736,9 +2792,8 @@
 % shapes that necessitate more or less protrusion. In particular,
 % italic letter shapes may differ wildly in different fonts, hence I have
 % decided against providing default protrusion settings for them.
-% The package \pkg{microtype-show} and the file \file{test-microtype.tex}
-% might be of some help when creating protrusion settings for a font
-% (see section~\ref{sec:contrib}).
+% See the previous section for some tools for the preparation
+% of protrusion settings.
 %
 %\paragraph{Don't use too large a value for expansion.}
 % Font expansion is a feature that is supposed to enhance the typographic
@@ -2992,58 +3047,6 @@
 %\changes{v2.5a}{2013/05/23}{add notes on typesetting the documentation}
 % If you want to re-typeset the documentation, read the comments at the end of
 % \file{microtype.dtx}.
-%
-%
-%\section{Creating configurations and contributing}\label{sec:contrib}
-%
-% I would be glad to include configuration files for more fonts. Preparing such
-% configurations is quite a time-consuming task and requires a lot of patience.
-% To alleviate this process, \microtype\ also includes the companion package
-%\DescribePackage{microtype-show}
-% \pkg{microtype-show}, which offers some tools to visually debug protrusion
-% settings. It should not be used in production contexts.
-%
-%\medskip\noindent
-%^^A don't index the commands from microtype-show as "Commands"
-%{\def\SpecialUsageIndex#1{\let\special@index\index\SpecialIndex@{#1}{\encapchar dochyperpage}}
-%\DescribeMacro{\ShowCharacterInheritance}
-% These commands show all defined inheritance resp. protrusion settings
-% (relative to character width, to \EM{1}, and as the effective kerning amount)
-%\DescribeMacro{\ShowProtrusion}
-% for the current font. They are most useful for consistency checks.
-%
-%\DescribeMacro{\ShowMissingGlyphstrue}
-% If the boolean \cs{ifShowMissingGlyphs} is set to true, the glyphs \textit{not}
-% included in the configuration will also be shown. Setting the switch
-%\DescribeMacro{\ShowGlyphIndextrue}
-% \cs{ifShowGlyphIndex} to true will additionally display the glyph (\pdftex)
-%\DescribeMacro{\GlyphScaleFactor}
-% or Unicode (\luatex) index number. Furthermore, you may alter the glyphs'
-% display size by redefining \cs{GlyphScaleFactor} (default:~|2|).
-%
-%\medskip\noindent
-%\DescribeMacro{\ShowProtrusionAll}
-% When preparing the actual protrusion settings, these commands may prove helpful.
-% Conveniently placing the glyphs at the margins, they show, respectively:
-%\DescribeMacro{\ShowProtrusionDefined}
-% all glyphs in the current font; only those with defined protrusion settings;
-%\DescribeMacro{\ShowProtrusionMissing}
-% or those without any protrusion settings.
-% (Note that here, the protrusion amounts are given in 1000ths of \EM{1}, not in
-% 1000ths of character widths).
-%^^A
-% The package also includes a test file that shows all of these commands in action
-% (\file{test-microtype.tex}).
-%
-%\medskip\noindent
-% If you have created a configuration file for another font, or if you have any
-% suggestions for enhancements in the default configuration files, I~would
-% gratefully accept them: \mailtoRS.
-%\iffalse\footnote{^^A ... OK, so nobody has any ...
-%    Should you have lots of \pkg{pdfcprot} configuration files lying around,
-%    I can also provide you with a \TeX\ conversion script. Just ask me.}
-%\fi
-%}
 %
 %
 %\section{Acknowledgments}
