@@ -16105,6 +16105,76 @@ end
 
 %</ptm>
 %    \end{macrocode}
+%\changes{v2.8d}{2021/06/25}{<LGR> settings for <EB> Garamond}
+% For the Greek <LGR> encoding.
+%    \begin{macrocode}
+%<*ebg>
+\SetProtrusion
+  [ name = EBGaramond-LGR ]
+  { }
+  {
+     A = {50,50},
+     D = {100,100},
+     F = {50,50},
+     G = {  ,150},
+     K = {  ,50},
+     L = {100,100},
+     O = {50,50},
+     U = {100,100},
+     T = {50,50},
+     W = {  ,50},
+     Y = {50,50},
+     . = { ,600},
+    {,}= { ,500},
+     : = { ,400},
+     ; = { ,300},
+     ! = { ,100},
+     ? = { ,100},
+     ~ = {200,250},
+    \% = {50,50},
+     * = {300,300},
+     + = {250,250},
+    {=}= { 50, 50},
+     ( = {100,   },    ) = {   ,200},
+     / = {100,200},
+     - = {300,500},
+     \texteuro = { 50,100},
+     \textendash       = {300,300},   \textemdash        = {200,200},
+     \textquoteleft    = {300,500},   \textquoteright    = {400,400},
+     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
+  }
+
+\SetProtrusion
+   [ name     = EBGaramond-LGR-LF,
+     load     = EBGaramond-LGR ]
+   { encoding = LGR,
+     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF} }
+   {
+     1 = {50,50},
+     2 = {50,50},
+     4 = {50,50},
+     7 = {50,50},
+   }
+
+\SetProtrusion
+   [ name     = EBGaramond-LGR-TOsF,
+     load     = EBGaramond-LGR ]
+   { encoding = LGR,
+     family   = {EBGaramond-TOsF} }
+   {
+     1 = {150,150},
+     2 = {50,50},
+     3 = {50,50},
+     4 = {50,50},
+     5 = {50,50},
+     6 = {50,50},
+     7 = {50,80},
+     8 = {50,50},
+     9 = {50,50},
+   }
+
+%</ebg>
+%    \end{macrocode}
 %
 %\subsubsection{Italics}
 %
@@ -19160,7 +19230,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12074}
+% \CheckSum{12085}
 %
 % \Finale
 %
