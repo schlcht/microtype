@@ -689,7 +689,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\addtoUTFbookmarks{subsub:OT-inh-basic}
 % There are quite a few fonts out there that don't even fill the <T1> glyph set.
 % To prevent a plethora of warnings, they may be aliased to the surrogate font
-% |TU-basic|. Examples of such fonts are: Lato and Fontin.
+% |TU-basic|. Examples of such fonts are: Lato, Fontin and Bergamo.
 %\changes{v2.8b}{2021/02/21}{settings for the Lato font (\file{mt-Lato.cfg})
 %                            (reported by \contributor dsedivec <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/380812/microtype-warning-unknown-slot-number-of-character-with-lato-font
@@ -719,6 +719,10 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      U = {Ù,Ú,Û,Ü},
      u = {ù,ú,û,ü},
      Y = {Ý,Ÿ},
+%    \end{macrocode}
+% For some reason, the \"y in the next line comes out as \ss.
+% Don't worry, there's really a |y diaeresis| in the source.
+%    \begin{macrocode}
      y = {ý,ÿ},
      Z = {Ž},
      z = {ž}
