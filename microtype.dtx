@@ -562,7 +562,7 @@
       \,\expandafter\@gobble\@tempa\,}}}
 % ... and whistles
 \usepackage{listings}
-\lstset{
+\lstdefinestyle{microtype}{
   gobble=1,columns=flexible,keepspaces,upquote,escapechar=",
   basicstyle=\MacroFont,
   keywords=[0]{\microtypesetup,\DeclareMicrotypeSet,\UseMicrotypeSet,
@@ -584,6 +584,10 @@
   frame=single,backgroundcolor=\color{theshade},rulecolor=\color{theframe},
   framerule=\fboxrule,xleftmargin=3.4pt,xrightmargin=3.4pt,belowskip=\smallskipamount
 }
+\lstset{style=microtype}
+\lstdefinestyle{message}{deletekeywords={[1]{expansion,protrusion,auto}},
+  belowskip=-\smallskipamount,frame=none,xleftmargin=0pt,backgroundcolor=,
+  basicstyle=\MacroFont\footnotesize,delim=[is][\itshape\color{thegreen}]{<}{>}}
 \let\verbatim\relax
 \lstnewenvironment{verbatim}[1][]{\lstset{#1}}{}
 \def\todo#1{\changes{zTo Do}{0000/00/00}{#1}%
@@ -2265,13 +2269,13 @@
 % described in the current section~\ref{sec:fine-tuning}. These files will be
 % loaded automatically if you are actually using the respective fonts.
 % This package ships with configuration files for a number of font families.
-% They are listed in tables~\ref{tab:type1-fonts} (Type 1 fonts) and
+% They are listed in tables~\ref{tab:type1-fonts} (Type\,1 fonts) and
 % \ref{tab:ot-fonts} (OpenType fonts).
 %
 %\begin{table}[t]\small
 %\changes{v1.6a}{2005/02/02}{add table of fonts with tailored protrusion settings}
-%\caption[Type 1 fonts with  tailored protrusion settings]
-%        {Type 1 fonts with\\tailored protrusion settings}\label{tab:type1-fonts}
+%\caption[Type\,1 fonts with  tailored protrusion settings]
+%        {Type\,1 fonts with\\tailored protrusion settings}\label{tab:type1-fonts}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
 %\fcolorbox{theframe}{white}{^^A
@@ -2943,27 +2947,26 @@
 %\end{itemize}
 %
 %\changes{v1.8}{2005/06/23}{add hint about error messages}
-%\paragraph{Possible error messages and how to get rid of them (\textcolor{thegreen}{specs} may differ):}
+%\paragraph{Possible warning and error messages and how to get rid of them
+%           (\textcolor{thegreen}{specs} may differ):}
 %\begin{itemize}
-%\lstset{deletekeywords={[1]{expansion,auto}},belowskip=-\smallskipamount,frame=none,
-%        xleftmargin=0pt,backgroundcolor=,basicstyle=\MacroFont\footnotesize,
-%        delim=[is][\itshape\color{thegreen}]{<}{>}}
-%\changes{v1.9a}{2005/11/15}{add explanation for error message in <DVI> mode}
+%\lstset{style=message}
 %  \item
 %\begin{verbatim}
 %! Font csnameendcsname=<cmr10+20 at 10.0pt> not loadable: Metric (TFM) file not found.
 %\end{verbatim}
+%\changes{v1.9a}{2005/11/15}{add explanation for error message in <DVI> mode}
 % This error message will occur if you are trying to employ font expansion
 % while creating <DVI> output. Remember that \emph{automatic} font expansion
 % only works when running \pdftex\ or \luatex\ in <PDF> mode. Although expansion is also
 % possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
 % exist on your \TeX\ system.
 %
-%\changes{v2.2}{2007/06/13}{add hint about error message with \pdftex\ 1.40}
 %  \item
 %\begin{verbatim}
 %! pdfTeX error (font expansion): auto expansion is only possible with scalable fonts.
 %\end{verbatim}
+%\changes{v2.2}{2007/06/13}{add hint about error message with \pdftex\ 1.40}
 % Automatic font expansion has been improved in \pdftex\ 1.40, in that it now
 % not only works with Type\,1 fonts but also with TrueType, OpenType and even
 % non-embedded fonts. The above error message indicates either that you are
@@ -2971,12 +2974,35 @@
 % possible, or that the font isn't found at all, \eg, because of missing map
 % entries.
 %
-%\changes{v2.0}{2006/12/13}{qualify hints about expansion error messages with
-%                           regard to older \pdftex\ versions}
+%  \item
+%\begin{verbatim}
+%Package microtype Warning: Unknown slot number of character
+%(microtype)                `<\k A>'
+%(microtype)                in font encoding `<TU>' in inheritance list
+%(microtype)                `<microtype.cfg/406(protrusion)>'.
+%\end{verbatim}
+%\changes{v2.8d}{2021/06/26}{add hint about unknown slot numbers}
+% If you receive lots of warnings like the above, and you are running \luatex\
+% or \xetex, this probably means that the font you are using contains less
+% glyphs than are defined in the default protrusion and/or inheritance settings.
+% For such fonts, the \microtype\ package defines basic inheritance settings
+% to which you may alias your font (the default protrusion settings will
+% still be loaded). Try adding the line:
+%\begin{verbatim}[style=microtype,belowskip=0pt]
+%\DeclareMicrotypeAlias{"\rmfamily\meta{your font}"}{TU-basic}
+%\end{verbatim}
+% to the preamble. For symbol fonts, you may even use the alias |TU-empty|,
+% which is, well, empty, meaning that no protrusion will be applied at all
+% to this font. Note that these aliases are just meant to provide an easy way
+% of getting rid of the warnings, while the proper solution would be to create
+% inheritance and protrusion settings specific to the font in question.
+%
 %  \item
 %\begin{verbatim}
 %Warning: pdflatex: font <ptmr8r> cannot be expanded (not an included Type1 font)
 %\end{verbatim}
+%\changes{v2.0}{2006/12/13}{qualify hints about expansion error messages with
+%                           regard to older \pdftex\ versions}
 % and the <PDF> viewer complains about a missing font, \eg, Adobe Reader thusly:
 %\begin{verbatim}[aboveskip=\smallskipamount]
 %Could not find a font in the Resources dictionary - using Helvetica instead.
@@ -2988,23 +3014,23 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
-%\changes{v1.9a}{2005/11/15}{add explanation for error message with non-Type\,1 fonts}
 %  \item
 %\begin{verbatim}
 %Warning: pdflatex (file <ecrm1000+20>): Font <ecrm1000+20 at 1200> not found
 %\end{verbatim}
+%\changes{v1.9a}{2005/11/15}{add explanation for error message with non-Type\,1 fonts}
 % Furthermore, \pdftex\ versions older than 1.40 require Type\,1 fonts for
 % automatic font expansion. When you receive a message like the above, you are
 % probably trying to apply font expansion to a bitmap or TrueType font. With
 % older \pdftex\ versions, this is only possible if you manually create
 % expanded instances of the fonts.
 %
-%\changes{v2.0}{2006/11/05}{add hint about how to increase \texttt{font\textunderscore max}
-%                            and \texttt{font\textunderscore mem\textunderscore size}}
 %  \item
 %\begin{verbatim}
 %! Font <T1/cmr/m/n/10>=<ecrm1000 at 10.0pt> not loaded: Not enough room left.
 %\end{verbatim}
+%\changes{v2.0}{2006/11/05}{add hint about how to increase \texttt{font\textunderscore max}
+%                            and \texttt{font\textunderscore mem\textunderscore size}}
 % Memory parameter `|font_mem_size|' too small.
 %  \item
 %\begin{verbatim}
@@ -3024,12 +3050,12 @@
 % for \miktex, in the file \file{miktex.ini} (2.4 or older) resp.
 % \file{pdflatex.ini} (2.5 or newer).
 %
-%\changes{v2.0}{2007/01/05}{add hint about warning when tracking \emph{and}
-%                           expansion is applied to a font}
 %  \item
-%\begin{verbatim}[deletekeywords={[1]{expansion}}]
+%\begin{verbatim}
 %pdfTeX warning (font expansion): font should be expanded before its first use
 %\end{verbatim}
+%\changes{v2.0}{2007/01/05}{add hint about warning when tracking \emph{and}
+%                           expansion is applied to a font}
 % This warning will occur with \pdftex\ versions older than 1.40.4, if tracking
 % \emph{and} expansion is applied to a font. It is harmless and can be ignored.
 %\end{itemize}
@@ -17368,7 +17394,7 @@ end
 %    \end{macrocode}
 % For small caps italics, we copy the definitions from the small caps settings,
 %  except that we first load the italics settings.
-%\changes{v2.8d}{2021/06/23}{<EB> Garamond: settings for small caps italics}
+%\changes{v2.8d}{2021/06/23}{settings for <EB> Garamond small caps italics}
 %    \begin{macrocode}
 \SetProtrusion
    [ name     = EBGaramond-scit-OT1-Prop,
