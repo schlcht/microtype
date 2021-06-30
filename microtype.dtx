@@ -4660,8 +4660,7 @@
 % available, and some specifics have changed over time. Therefore, we have to
 % test which \pdftex\ we're using, if any. \cs{MT@pdftex@no} will be used
 % throughout the package to respectively do the right thing.
-%
-% Currently, we have to distinguish seven cases for \pdftex:
+% Currently, we have to distinguish the following cases for \pdftex:
 %\begin{enum}
 %  \item not running \pdftex
 %  \item \pdftex\ ($\less$~0.14f)
@@ -4671,13 +4670,13 @@
 %          protrusion no longer has to be set up first;
 %          scale factor fixed to 1000;
 %          default \cmd\efcode\,=\,1000 ($\geq$~1.20)
-%\changes{v1.8}{2005/04/15}{case 5: \pdftex\ 1.30}
 %  \item + \cmd{\(left,right)marginkern};
+%\changes{v1.8}{2005/04/15}{case 5: \pdftex\ 1.30}
 %          \cmd\pdfnoligatures;
 %          \cmd\pdfstrcmp;
 %          \cmd\pdfescapestring\ ($\geq$~1.30)
-%\changes{v2.0}{2005/08/20}{case 6: \pdftex\ 1.40} ^^A (beta:1)
 %  \item + adjustment of interword spacing;
+%\changes{v2.0}{2005/08/20}{case 6: \pdftex\ 1.40} ^^A (beta:1)
 %          extra kerning;
 %          \cmd\letterspacefont;
 %          \cmd\pdfmatch\footnote{This command was actually introduced
@@ -4685,10 +4684,14 @@
 %          \cmd\pdftracingfonts;
 %          always \etex\
 %          ($\geq$~1.40)
-%\changes{v2.2}{2007/02/23}{case 7: \pdftex\ 1.40.4}
 %  \item + \cmd\letterspacefont\ doesn't disable ligatures and kerns;
+%\changes{v2.2}{2007/02/23}{case 7: \pdftex\ 1.40.4}
 %          \cmd\pdfcopyfont\
 %          ($\geq$~1.40.4)
+%  \item + \cmd\letterspacefont\ uses explicit \fontdim6 if specified
+%\changes{v2.8d}{2021/07/01}{case 8: \pdftex\ 1.40.23}
+%          ^^A https://git.texlive.info/texlive/commit/?id=1c7ff5528e10e989ba7ea7b72182d5f34d4d4e29
+%          ($\geq$~1.40.23)
 %\end{enum}
 %\changes{v1.1}{2004/09/13}{fix: version check
 %               (reported by \contributor Harald Harders <h.harders\at tu-bs.de>)}
@@ -4696,10 +4699,13 @@
 %    \begin{macrocode}
 %<*pdftex-def>
 %<debug>\MT@dinfo@nl{0}{this is pdftex \the\pdftexversion(\pdftexrevision)}
-\def\MT@pdftex@no{7}
+\def\MT@pdftex@no{8}
 \ifnum\pdftexversion = 140
-  \ifnum\pdftexrevision < 4
-    \def\MT@pdftex@no{6}
+  \ifnum\pdftexrevision < 23
+    \def\MT@pdftex@no{7}
+    \ifnum\pdftexrevision < 4
+      \def\MT@pdftex@no{6}
+    \fi
   \fi
 \else
   \ifnum\pdftexversion < 140
@@ -6808,7 +6814,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<xetex-def>      \MT@size pt
     \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
              (new value: \the\fontdimen6\MT@font)}%
-%<pdftex-def>    \MT@glet@nc{\MT@@font-fake6}\@empty
+%<pdftex-def>    \MT@requires@pdftex8\relax{\MT@glet@nc{\MT@@font-fake6}\@empty}%
   \fi
   \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
 }
@@ -8455,8 +8461,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % settings from \cs{SetTracking}, or the global \opt{letterspace} option, in
 % this order.
 %
-% Tracking won't work (with \pdftex) if the original font's \fontdim6 is zero, in which
-%\changes{v2.8d}{2021/06/11}{with \luatex, tracking works also for fonts with a zero \fontdim6}
+% Tracking won't work with older \pdftex\ versions (\less\ 1.40.23)
+% if the original font's \fontdim6 is zero, in which
+%\changes{v2.8d}{2021/06/11}{with \luatex, tracking also works for fonts with a zero \fontdim6}
+%\changes{v2.8d}{2021/07/01}{with \pdftex\ 1.40.23, tracking also works for fonts with a zero \fontdim6}
 % case we issue a warning (once for every font).
 %    \begin{macrocode}
 %<*pdftex-def|luatex-def|letterspace>
@@ -8464,14 +8472,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*pdftex-def|luatex-def>
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
 %<*pdftex-def>
-  \MT@ifdefined@n@TF{\MT@@font-fake6}{%
-    \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
-      \MT@warning@nl{%
-        Font `\MT@@font' does not specify its\MessageBreak
-        \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
-        \@nameuse{MT@abbr@\MT@feat} will not work with this font}%
-      \MT@glet@nc{\MT@@font-fake6}\relax
-    \fi
+  \MT@requires@pdftex8\@firstofone{%
+    \MT@ifdefined@n@TF{\MT@@font-fake6}{%
+      \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
+        \MT@warning@nl{%
+          Font `\MT@@font' does not specify its\MessageBreak
+          \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
+          tracking will not work with this font}%
+        \MT@glet@nc{\MT@@font-fake6}\relax
+      \fi
+    }%
   }{%
 %</pdftex-def>
   \MT@if@list@exists
@@ -19258,7 +19268,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12086}
+% \CheckSum{12093}
 %
 % \Finale
 %
