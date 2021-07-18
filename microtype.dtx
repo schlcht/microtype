@@ -353,7 +353,7 @@
   \fi
 }
 \GlossaryPrologue{\section{Change history}\label{sec:changes}%
-  \ifcodedoc \PrintHistory \par\medskip\noindent 
+  \ifcodedoc \PrintHistory \par\medskip\noindent
     Numbers prefixed with `U' refer to the User manual.\fi
   \vspace*{-\multicolsep}}
  %\setcounter{finalcolumnbadness}{100}
@@ -13305,7 +13305,7 @@ end
 \define@key{MT}{nopatch}[all]{%
   \def\@tempa{#1}%
   \MT@ifstreq\@tempa{all}
-    {\let\MT@patches@list\relax}
+    {\let\MT@nopatches@list\relax}
     {\MT@ifstreq\@tempa{none}
       \relax
       {\def\MT@nopatches@list{#1}}}%
