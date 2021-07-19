@@ -7794,7 +7794,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \luatex\ offers the command \cmd\protrusionboundary, which could
 %   potentially be very helpful here, but it doesn't seem to do what it
 %   promises (not even the example from the manual works as advertised).}
-%   ^^A see https://mailman.ntg.nl/pipermail/dev-luatex/2021-May/006486.html
+%   ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-May/006486.html
+% These macros need to be \cmd\long.
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
@@ -7804,7 +7805,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
 %    \begin{macrocode}
-\def\MT@prot@l#1{%
+\long\def\MT@prot@l#1{%
   \MT@get@prot{#1}%
   \ifdim\MT@leftmarginkern=\z@ \else
     \leavevmode
@@ -7826,7 +7827,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@prot@r}
 %    \begin{macrocode}
-\def\MT@prot@r#1{%
+\long\def\MT@prot@r#1{%
   #1%
   \MT@get@prot{#1}%
   \ifdim\MT@rightmarginkern=\z@ \else
@@ -7841,7 +7842,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're in a |tabular|.
 %    \begin{macrocode}
-\def\MT@get@prot#1{%
+\long\def\MT@get@prot#1{%
   \MT@leftmarginkern=\z@
   \MT@rightmarginkern=\z@
   \begingroup
