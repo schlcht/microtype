@@ -6452,7 +6452,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
   \@ifclassloaded{beamer}
     {\MT@define@patch{item}
-      {\MT@append@patch\beamer@@callorigitem\leftprotrusion
+      {\MT@append@patch\@item\leftprotrusion
+       \MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
       {}}
 %    \end{macrocode}
@@ -7852,7 +7853,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \parfillskip=\z@skip
       \hbadness\@M
       \@newlistfalse
-      \noindent#1}%
+      \noindent #1}%
     \vbadness=\@M
     \splittopskip=\z@
     \setbox\MT@tempbox\vbox{%
@@ -19271,7 +19272,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12097}
+% \CheckSum{12100}
 %
 % \Finale
 %
