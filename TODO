@@ -1,4 +1,3 @@
-* \MT@set@tr@codes: in TL22, tracking will work with a manually specified fontdimen 6
 * different md* (etc.) for different fonts
 * mt-EBGaramond.cfg OpenType -> WIP
 * what about polyglossia?

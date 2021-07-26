@@ -2727,7 +2727,7 @@
 %
 %\medskip\noindent
 %\leavevmode\llap{\itshape\color{thegrey}Help wanted!\hskip\marginparsep}^^A
-% These pedantic protrusion patches are work-in-progress. I suspect many use cases
+%\leftprotrusion These pedantic protrusion patches are work-in-progress. I suspect many use cases
 % where they either do not work as advertised, or worse, where they may even lead to errors.
 % Also, I am aware that there are myriads of classes and packages out there that
 % modify internal commands in their own way, possibly rendering the patches useless.
@@ -16550,7 +16550,7 @@ end
      load     = EBGaramond-it-OT1 ]
    { encoding = OT1,
      family   = {EBGaramond-LF,EBGaramond-TLF},
-     shape    = {it,sl} }
+     shape    = it }
    {
      1 = {50,50},
      2 = {50,50},
@@ -16568,7 +16568,7 @@ end
      load     = EBGaramond-it-OT1 ]
    { encoding = OT1,
      family   = {EBGaramond-OsF},
-     shape    = {it,sl} }
+     shape    = it }
    {
      1 = {50,50},
      2 = {50,50},
@@ -16582,7 +16582,7 @@ end
      load     = EBGaramond-it-OT1 ]
    { encoding = OT1,
      family   = {EBGaramond-TOsF},
-     shape    = {it,sl} }
+     shape    = it }
    {
      0 = {150,150},
      1 = {150,150},
@@ -16627,8 +16627,8 @@ end
 %<ppl>     family   = {ppl,pplx,pplj},
 %<ptm>     family   = {ptm,ptmx,ptmj},
 %<ugm>     family   = ugm,
-%<m-t|bch|ebg|pmn|ppl|ptm>     shape    = {it,sl}  }
-%<blg|cmr|ugm>     shape    = it       }
+%<m-t|bch|pmn|ppl|ptm>     shape    = {it,sl}  }
+%<blg|cmr|ebg|ugm>     shape    = it       }
    {
 %<m-t|bch|pmn>     _ = {  ,100},
 %<blg>     _ = {0,300},
@@ -16688,7 +16688,7 @@ end
      load     = EBGaramond-it-T1 ]
    { encoding = T1,
      family   = {EBGaramond-LF,EBGaramond-TLF},
-     shape    = {it,sl} }
+     shape    = it }
    {
      1 = {50,50},
      2 = {50,50},
@@ -16706,7 +16706,7 @@ end
      load     = EBGaramond-it-T1 ]
    { encoding = T1,
      family   = {EBGaramond-OsF},
-     shape    = {it,sl} }
+     shape    = it }
    {
      1 = {50,50},
      2 = {50,50},
@@ -16720,7 +16720,7 @@ end
      load     = EBGaramond-it-T1 ]
    { encoding = T1,
      family   = {EBGaramond-TOsF},
-     shape    = {it,sl} }
+     shape    = it }
    {
      0 = {150,150},
      1 = {150,150},
@@ -17729,8 +17729,8 @@ end
 %<ebg>     family   = {EBGaramond-LF,EBGaramond-TLF,EBGaramond-OsF,EBGaramond-TOsF},
 %<pmn>     family   = {pmnx,pmnj},
 %<ugm>     family   = ugm,
-%<!ugm>     shape    = {it,sl} }
-%<ugm>     shape    = it }
+%<cmr|pmn>     shape    = {it,sl} }
+%<ebg|ugm>     shape    = it }
    {
 %<cmr>     \textquotestraightbase    = {300,600},
 %<ebg|pmn>     \textquotestraightbase    = {400,400},
