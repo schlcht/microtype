@@ -6444,15 +6444,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Now for the actual patches:
 %\begin{description}
 % \item [|item|] \cmd\@item, which is a kind of catch-all, as it's internally
-%    used for most basic environments (\eg, |itemize|, |enumerate|,
-%    but also |quote|, |flushleft| etc.),
+%    used for most basic environments (\eg, |itemize|, |enumerate|, but also
+%    |quote|, |flushleft| etc.). For |verse| (and probably other environments), ^^A found by \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>, private mail, 2021/08/01
+%    we also have to patch \cmd\everypar~\dots
 % \begin{itemize}
-% \item \pkg{beamer} also patches it
+% \item \pkg{beamer} patches it too
 %\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
 %    \begin{macrocode}
   \@ifclassloaded{beamer}
     {\MT@define@patch{item}
       {\MT@append@patch\@item\leftprotrusion
+       \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}%
        \MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
       {}}
@@ -6460,7 +6462,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \item standard \LaTeX\ classes
 %    \begin{macrocode}
     {\MT@define@patch{item}
-      {\MT@append@patch\@item\leftprotrusion}
+      {\MT@append@patch\@item\leftprotrusion
+       \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
       {}}%
 %    \end{macrocode}
 % \end{itemize}
@@ -19272,7 +19275,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12100}
+% \CheckSum{12110}
 %
 % \Finale
 %
