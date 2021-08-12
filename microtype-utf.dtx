@@ -32,6 +32,7 @@
 %</driver>
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
+%<NewComputerModern>  {mt-NewComputerModern.cfg}[2021/08/08 v1.0 microtype config. file: New Computer Modern (AT)]
 %<Palatino>  {mt-Palatino.cfg}[2012/03/10 v1.0 microtype config. file: Palatino and similar fonts (LBD)]
 %<TU-basic>  {mt-TU-basic.cfg}[2021/06/22 v1.1 microtype config. file: fonts with basic glyph set (RS)]
 %<TU-empty>  {mt-TU-empty.cfg}[2021/06/22 v1.1 microtype config. file: fonts with nonstandard glyph set (RS)]
@@ -49,6 +50,7 @@
  \defaultfontfeatures{RawFeature={notdef=false},WordSpace=2}
  \def\normalwordspace{\fontdimen2\font=.5\fontdimen2\font}
  \newfontface\LMR{Latin Modern Roman}
+ \newfontface\NCM{NewCM10-Book.otf}[WordSpace=1]
  \newfontface\CharisSIL{Charis SIL}
  \newfontface\Palatino{TeX Gyre Pagella}
  \newfontface\EBGaramond{EBGaramond-Regular}
@@ -170,6 +172,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %
 %\begin{itemize}
 %   \item {\LMR\normalwordspace Latin Modern Roman}
+%   \item {\NCM New Computer Modern}\footnote{These settings have been contributed by
+%                              \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>.}
 %   \item {\CharisSIL\normalwordspace Charis <SIL>}
 %   \item {\EBGaramond\normalwordspace <EB> Garamond}
 %   \item {\Palatino Palatino}\footnote{These settings have been contributed by
@@ -194,19 +198,25 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 
 %% for xetex (EU1) and luatex (EU2), resp. both (TU)
 %    \end{macrocode}
-%\subsubsection{Latin Modern Roman}
+%\subsubsection{Latin Modern Roman/New Computer Modern}
 %\addtoUTFbookmarks{subsub:OT-inh-LMR}
 %    \begin{macrocode}
-%<*LatinModernRoman>
+%<*LatinModernRoman|NewComputerModern>
 \DeclareCharacterInheritance
    { encoding = {EU1,EU2,TU},
-     family   = Latin Modern Roman }
+%<LatinModernRoman>     family   = Latin Modern Roman }
+%<NewComputerModern>     family   = {New Computer Modern} }
 %    \end{macrocode}
 %\changes{v2.8a}{2021/02/21}{specify `ff' ligature as Unicode instead of glyph name}
-%{\setmacrofont\LMR
+%\changes{v2.8d}{2021/08/08}{settings for New Computer Modern (provided by
+%                            \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
+%{\setmacrofont\NCM
 %    \begin{macrocode}
-   { A = {À,Á,Â,Ã,Ä,Å,Ā,Ă,Ą,Ǻ,Ȁ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ặ,
-          Α},  % Greek
+   {
+     A = {À,Á,Â,Ã,Ä,Å,Ā,Ă,Ą,Ǻ,Ȁ,Ạ,Ả,Ấ,Ầ,Ẩ,Ẫ,Ậ,Ắ,Ằ,Ẳ,Ặ,
+%<LatinModernRoman>           Α  % Greek
+%<NewComputerModern>           Α,Ά,ᾼ,Ά,Ᾰ,Ᾱ  % Ἁ,Ἂ,Ἃ,Ἄ,Ἅ,Ἆ,Ἇ,ᾈ,ᾉ,ᾊ,ᾋ,ᾌ,ᾍ,ᾎ,ᾏ,Ὰ,  % Greek
+         },
      Æ = {Ǽ},
      B = {฿,
           Β},  % Greek
@@ -214,11 +224,19 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      D = {Ð,Ď,Đ,Ḍ,Ḏ},
      E = {È,É,Ê,Ë,Ē,Ĕ,Ė,Ę,Ě,Ȅ,Ẹ,Ẻ,Ẽ,Ề,Ế,Ễ,Ể,Ệ,
           Ε},  % Greek
+%<NewComputerModern>  (l)E = {Έ,Ἐ,Ἑ,Ἒ,Ἓ,Ἔ,Ἕ,Ὲ,Έ}, % Greek accents fully protruded left
      G = {Ĝ,Ğ,Ġ,Ģ,Ǧ,Ǵ},
      H = {Ĥ,Ħ,Ḥ,Ḧ,Ḫ,
-          Η},  % Greek
+%<LatinModernRoman>           Η  % Greek
+%<NewComputerModern>           Η,ῌ  % Greek
+          },
+%<NewComputerModern>   (l)H = {Ἠ,Ἡ,Ἢ,Ἣ,Ἤ,Ἥ,Ἦ,Ἧ,ᾘ,ᾙ,ᾚ,ᾛ,ᾜ,ᾝ,ᾞ,ᾟ}, % Greek accents fully protruded left
+%<NewComputerModern>  %(l)/uni1FCC.alt = {/uni1F98.alt},
      I = {Ì,Í,Î,Ï,Ĩ,Ī,Ĭ,Į,İ,Ȉ,Ỉ,Ị,
-          Ι},  % Greek
+%<LatinModernRoman>          Ι  % Greek
+%<NewComputerModern>          Ι,Ῐ,Ῑ  % Greek
+          },
+%<NewComputerModern>  (l)I = {Ἰ,Ἱ,Ἲ,Ἳ,Ἴ,Ἵ,Ἶ,Ἷ,Ὶ,Ί}, % Greek
      J = {Ĵ},
      K = {Ķ,
           Κ},  % Greek
@@ -228,7 +246,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
           Ν},  % Greek
      O = {Ò,Ó,Ô,Õ,Ö,Ø,Ō,Ŏ,Ő,Ọ,Ơ,Ǫ,Ǿ,Ȍ,Ỏ,Ố,Ồ,Ổ,Ỗ,Ộ,Ớ,Ờ,Ỡ,Ở,Ợ,
           Ο},  % Greek
+%<NewComputerModern>  (l)O = {Ό,Ὀ,Ὁ,Ὂ,Ὃ,Ὄ,Ὅ,Ὸ}, % Greek accents except Ό that has indep. protrusion numbers (below)
      P = {Ρ},  % Greek
+%<NewComputerModern>  (l)P = {Ῥ}, % Greek accents fully protruded left
      R = {Ŕ,Ŗ,Ř,Ȑ,Ṛ,Ṙ,Ṝ},
      S = {Ś,Ŝ,Ş,Š,Ș,Ṣ},
      T = {Ţ,Ť,Ț,Ṭ,Ṯ,
@@ -237,6 +257,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      W = {Ŵ,Ẁ,Ẃ,Ẅ},
      X = {Χ},  % Greek
      Y = {Ý,Ŷ,Ÿ,Ỵ,Ỷ,Ỹ},
+%<NewComputerModern>     Υ = {Ϋ,Ῠ,Ῡ},
+%<NewComputerModern>  (l)Υ = {Ύ,Ὺ,Ύ,Ὑ,Ὓ,Ὕ,Ὗ},
      Z = {Ź,Ż,Ž,Ẓ,
           Ζ},  % Greek
      a = {à,á,â,ã,ä,å,ā,ă,ą,ǻ,ȁ,ạ,ả,ấ,ầ,ẩ,ẫ,ậ,ắ,ằ,ẳ,ẵ},
@@ -244,7 +266,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      c = {ç,ć,ĉ,ċ,č},
      d = {đ,ḍ,ḏ},
      e = {è,é,ê,ë,ē,ĕ,ė,ę,ě,ȅ,ẹ,ẻ,ẽ,ế,ề,ể,ễ,ệ},
-     f = {ﬀ}, % Unicode 64256, glyph name in Latin Modern Roman: /f_f
+     f = {ﬀ}, % Unicode 64256, glyph name in Latin Modern Roman: /f_f ; in New Computer Modern: /ff
      g = {ĝ,ğ,ġ,ģ,ǧ,ǵ},
      h = {ĥ,ħ,ḥ,ḧ,ḫ},
      i = {ì,í,î,ï,ĩ,ī,ĭ,į,ı,ȉ,ỉ,ị},
@@ -252,7 +274,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      k = {ķ},
      l = {ĺ,ļ,ł,ḷ,ḹ}, % ľ,l·
      n = {ñ,ń,ņ,ň,ṅ,ṇ},
-     o = {ò,ó,ô,õ,ö,ø,ō,ŏ,ő,ọ,ơ,ǫ,ǿ,ȍ,ỏ,ố,ồ,ổ,ỗ,ộ,ớ,ờ,ỡ,ở,ợ},
+     o = {ò,ó,ô,õ,ö,ø,ō,ŏ,ő,ọ,ơ,ǫ,ǿ,ȍ,ỏ,ố,ồ,ổ,ỗ,ộ,ớ,ờ,ỡ,ở,ợ
+%<NewComputerModern>         ,ο,ό,ὀ,ὁ,ὂ,ὃ,ὄ,ὅ,ὸ,ό % Greek
+         },
      r = {ŕ,ŗ,ř,ȑ,ṛ,ṙ,ṝ},
      s = {ś,ŝ,ş,š,ș,ṣ},
      t = {ţ,ț,ṭ,ṯ,ẗ}, % ť
@@ -260,11 +284,20 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      w = {ŵ,ẁ,ẃ,ẅ},
      y = {ý,ŷ,ÿ,ỳ,ỵ,ỷ,ỹ},
      z = {ź,ż,ž,ẓ},
+%<*NewComputerModern>
+     α = {ἁ,ἂ,ἃ,ἄ,ἅ,ἆ,ἇ,ᾀ,ᾁ,ᾂ,ᾃ,ᾄ,ᾅ,ᾆ,ᾇ,ὰ},
+     ε = {έ,ἐ,ἑ,ἒ,ἓ,ἔ,ἕ,ὲ,έ},
+     η = {ἠ,ἡ,ἢ,ἣ,ἤ,ἥ,ἦ,ἧ,ᾐ,ᾑ,ᾒ,ᾓ,ᾔ,ᾕ,ᾖ},
+     ι = {ἰ,ἱ,ὶ,ί,ῐ,ῑ,ϊ,ΐ},
+     ϊ = {ἲ,ἳ,ἴ,ἵ,ἶ,ἷ,ῐ,ῑ,ΐ},
+     υ = {ύ,ὺ,ύ,ὑ,ὓ,ὕ,ὗ,ϋ,ῠ,ῡ,ϋ,ΰ},
+     ω = {ώ,ὠ,ὡ,ὢ,ὣ,ὤ,ὥ,ὦ,ὧ,ᾠ,ᾡ,ᾢ,ᾣ,ᾤ,ᾥ,ᾦ},
+%</NewComputerModern>
    }
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
-%</LatinModernRoman>
+%</LatinModernRoman|NewComputerModern>
 %    \end{macrocode}
 %\subsubsection{Charis SIL}
 %\addtoUTFbookmarks{subsub:OT-inh-Charis}
@@ -755,17 +788,21 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %%% PROTRUSION
 
 %    \end{macrocode}
-%\subsubsection{Latin Modern Roman}
+%\subsubsection{Latin Modern Roman/New Computer Modern}
 %\addtoUTFbookmarks{subsub:OT-prot-LMR}
+%\changes{v2.8d}{2021/08/08}{settings for New Computer Modern (provided by
+%                            \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
 %    \begin{macrocode}
-%<*LatinModernRoman>
+%<*LatinModernRoman|NewComputerModern>
 \SetProtrusion
-   [ name     = LMR-default ]
+%<LatinModernRoman>   [ name     = LMR-default ]
+%<NewComputerModern>   [ name     = NCM-default ]
    { encoding = {EU1,EU2,TU},
-     family   = Latin Modern Roman }
+%<LatinModernRoman>     family   = Latin Modern Roman }
+%<NewComputerModern>     family   = {New Computer Modern} }
    {
 %    \end{macrocode}
-%{\setmacrofont\LMR
+%{\setmacrofont\NCM
 %    \begin{macrocode}
      A = {50,50},
      Æ = {50,  },
@@ -778,8 +815,14 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      W = {50,50},
      X = {50,50},
      Y = {50,50},
+%<NewComputerModern>     /a.end = {,330},
+%<NewComputerModern>     /e.end = {,350},
      k = {  ,50},
+%<NewComputerModern>     /k.alt = { ,50},
      r = {  ,50},
+%<NewComputerModern>     /r.end = {,300},
+%<NewComputerModern>     /m.end = {,200},
+%<NewComputerModern>     /n.end = {,300},
      t = {  ,70},
      v = {50,50},
      w = {50,50},
@@ -849,30 +892,121 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
     /three.oldstyle = { 30, 80},
     /four.oldstyle  = { 50, 50},
     /seven.oldstyle = { 50, 80},
+%<*NewComputerModern>
+     Ά = {50,50},   % /Alphatonos
+     Ὰ = {120,50},  %
+     Ἀ = {120,50},  %
+     Ἁ = {80,50},  %
+     Ἂ = {220,50}, %
+     Ἃ = {220,50}, %
+     Ἄ = {170,50}, %
+     Ἅ = {170,50}, %
+     Ἆ = {190,50}, %
+     Ἇ = {190,50}, %
+     ᾈ = {150,50}, %
+     ᾉ = {80,50},  %
+     ᾊ = {220,50}, %
+     ᾋ = {220,50}, %
+     ᾌ = {170,50}, %
+     ᾍ = {170,50}, %
+     ᾎ = {210,50}, %
+     ᾏ = {210,50}, %
+     /uni1FBC.alt = {,205}, % Alpha prosgegrammeni
+     /uni1F88.alt = {50,190}, %Alpha psili prosgegrammeni
+     /uni1F89.alt = {,200}, %Alpha dasia prosgegrammeni
+     /uni1F8A.alt = {130,180}, %Alpha psili baria prosgegrammeni
+     /uni1F8B.alt = {130,190}, %Alpha dasia baria prosgegrammeni
+     /uni1F8C.alt = {100,190}, %Alpha psili oxia prosgegrammeni
+     /uni1F8D.alt = {70,190}, %Alpha dasia oxia prosgegrammeni
+     /uni1F8E.alt = {120,190}, %Alpha psili perispomeni prosgegrammeni
+     /uni1F8F.alt = {120,190}, %Alpha dasia perispomeni prosgegrammeni
+   %
+     /uni1FCC.alt = {,205}, % Eta prosgegrammeni
+     /uni1F98.alt = {185,170}, %Eta psili prosgegrammeni
+     /uni1F99.alt = {185,170}, %Eta dasia prosgegrammeni
+     /uni1F9A.alt = {220,170}, %Eta psili baria prosgegrammeni
+     /uni1F9B.alt = {220,170}, %Eta dasia baria prosgegrammeni
+     /uni1F9C.alt = {220,170}, %Eta psili oxia prosgegrammeni
+     /uni1F9D.alt = {220,170}, %Eta dasia oxia prosgegrammeni
+     /uni1F9E.alt = {255,170}, %Eta psili perispomeni prosgegrammeni
+     /uni1F9F.alt = {255,170}, %Eta dasia perispomeni prosgegrammeni
+   %
+     Ό = {95,50}, %
+%</NewComputerModern>
      Γ = {   ,180}, % /Gamma
-     Δ = {100,100}, % /Delta
+%<LatinModernRoman>     Δ = {100,100}, % /Delta
+%<NewComputerModern>     Δ = {50,50}, % /Delta
      Θ = { 50, 50}, % /Theta
-     Λ = {100,100}, % /Lambda
+%<LatinModernRoman>     Λ = {100,100}, % /Lambda
+%<NewComputerModern>     Λ = {50,50}, % /Lambda
 %    Ξ = {,},       % /Xi
 %    Π = {,},       % /Pi
      Σ = { 50, 50}, % /Sigma
-     Υ = {100,100}, % /Upsilon
+%<LatinModernRoman>     Υ = {100,100}, % /Upsilon
+%<NewComputerModern>     Υ = {80,80}, % /Upsilon
      Φ = { 50, 50}, % /Phi
      Ψ = { 50, 50}, % /Psi
-%    Ω = {,},       % /Omega
+%<*NewComputerModern>
+     Ω = { 20, 30}, % /Omega
+     Ώ = {150,30},
+     Ὠ = {220,30},
+     Ὡ = {205,30},
+     Ὢ = {285,30},
+     Ὣ = {285,30},
+     Ὤ = {270,30},
+     Ὥ = {270,30},
+     Ὦ = {310,30},
+     Ὧ = {310,30},
+     ᾨ = {205,30},
+     ᾩ = {205,30},
+     ᾪ = {285,30},
+     ᾫ = {285,30},
+     ᾬ = {270,30},
+     ᾭ = {270,30},
+     ᾮ = {310,30},
+     ᾯ = {310,30},
+     /uni1FFC.alt = {,230}, % Omega prosgegrammeni
+     /uni1FA8.alt = {185,190}, %Omega psili prosgegrammeni
+     /uni1FA9.alt = {185,190}, %Omega dasia prosgegrammeni
+     /uni1FAA.alt = {220,190}, %Omega psili baria prosgegrammeni
+     /uni1FAB.alt = {220,190}, %Omega dasia baria prosgegrammeni
+     /uni1FAC.alt = {220,190}, %Omega psili oxia prosgegrammeni
+     /uni1FAD.alt = {220,190}, %Omega dasia oxia prosgegrammeni
+     /uni1FAE.alt = {255,190}, %Omega psili perispomeni prosgegrammeni
+     /uni1FAF.alt = {255,190}, %Omega dasia perispomeni prosgegrammeni
+   %
+     α = {,50},
+     γ = {50,50},
+     ζ = {,50},
+     θ = {30,40},
+     ι = {,50},
+     ϊ = {-20,-30},
+     κ = {50,50},
+     λ = {50,50},
+     ν = {50,25},
+     π = {50,50},
+     σ = {,50},
+     ς = {,50},
+     τ = {50,50},
+     χ = {50,50},
+     ψ = {50,50},
+%     /uni1F98.alt = {,},
+%</NewComputerModern>
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
    }
 
 \SetProtrusion
-   [ name     = LMR-it ]
+%<LatinModernRoman>   [ name     = LMR-it ]
+%<NewComputerModern>   [ name     = NCM-it ]
    { encoding = {EU1,EU2,TU},
-     family   = Latin Modern Roman,
+%<LatinModernRoman>     family   = Latin Modern Roman,
+%<NewComputerModern>     family   = {New Computer Modern},
      shape    = {it,sl}       }
    {
 %    \end{macrocode}
-%{\setmacrofont\LMR
+%{\setmacrofont\NCM
 %    \begin{macrocode}
      A = {125,100},
      Æ = {125,-55},
@@ -930,6 +1064,14 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      x = {65,-40},
      y = {130,-20},
      z = {110,-80},
+%<*NewComputerModern>
+     /a.end = {,330}, %Fix
+     /e.end = {,350}, %Fix
+     /k.alt = {  ,50}, %Fix
+     /r.end = {,300}, %Fix
+     /m.end = {,200}, %Fix
+     /n.end = {,300}, %Fix
+%</NewComputerModern>
      0 = {170,-85},
      1 = {230,110},
      2 = {130,-70},
@@ -1000,19 +1142,111 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      Γ = {100,120}, % /Gamma
      Δ = {120,100}, % /Delta
      Θ = {120, 50}, % /Theta
-     Λ = {130,100}, % /Lambda
+%<LatinModernRoman>     Λ = {130,100}, % /Lambda
+%<NewComputerModern>     Λ = {160,100}, % /Lambda
      Ξ = {100,},    % /Xi
      Π = {100,},    % /Pi
      Σ = {100, 50}, % /Sigma
-     Υ = {180,100}, % /Upsilon
+%<LatinModernRoman>     Υ = {180,100}, % /Upsilon
+%<NewComputerModern>     Υ = {260,100}, % /Upsilon
      Φ = {130, 70}, % /Phi
      Ψ = {130, 50}, % /Psi
      Ω = { 50,},    % /Omega
+%<*NewComputerModern>
+     Ὰ = {190,50},  %
+     Ἀ = {220,50},  %
+     Ἁ = {200,50},  %
+     Ἂ = {300,50}, %
+     Ἃ = {300,50}, %
+     Ἄ = {300,50}, %
+     Ἅ = {300,50}, %
+     Ἆ = {320,50}, %
+     Ἇ = {320,50}, %
+     ᾈ = {200,50}, %
+     ᾉ = {200,50},  %
+     ᾊ = {300,50}, %
+     ᾋ = {300,50}, %
+     ᾌ = {300,50}, %
+     ᾍ = {300,50}, %
+     ᾎ = {320,50}, %
+     ᾏ = {320,50}, %
+     /uni1FBC.alt = {,205}, % Alpha prosgegrammeni
+     /uni1F88.alt = {50,190}, %Alpha psili prosgegrammeni
+     /uni1F89.alt = {,200}, %Alpha dasia prosgegrammeni
+     /uni1F8A.alt = {130,180}, %Alpha psili baria prosgegrammeni
+     /uni1F8B.alt = {130,190}, %Alpha dasia baria prosgegrammeni
+     /uni1F8C.alt = {100,190}, %Alpha psili oxia prosgegrammeni
+     /uni1F8D.alt = {70,190}, %Alpha dasia oxia prosgegrammeni
+     /uni1F8E.alt = {120,190}, %Alpha psili perispomeni prosgegrammeni
+     /uni1F8F.alt = {120,190}, %Alpha dasia perispomeni prosgegrammeni
+   %
+     /uni1FCC.alt = {,205}, % Eta prosgegrammeni
+     /uni1F98.alt = {185,170}, %Eta psili prosgegrammeni
+     /uni1F99.alt = {185,170}, %Eta dasia prosgegrammeni
+     /uni1F9A.alt = {220,170}, %Eta psili baria prosgegrammeni
+     /uni1F9B.alt = {220,170}, %Eta dasia baria prosgegrammeni
+     /uni1F9C.alt = {220,170}, %Eta psili oxia prosgegrammeni
+     /uni1F9D.alt = {220,170}, %Eta dasia oxia prosgegrammeni
+     /uni1F9E.alt = {255,170}, %Eta psili perispomeni prosgegrammeni
+     /uni1F9F.alt = {255,170}, %Eta dasia perispomeni prosgegrammeni
+   %
+     Ό = {95,50}, %
+     Ω = {120, 30}, % /Omega
+     Ώ = {160,30},
+     Ὠ = {250,30},
+     Ὡ = {250,30},
+     Ὢ = {300,30},
+     Ὣ = {300,30},
+     Ὤ = {300,30},
+     Ὥ = {300,30},
+     Ὦ = {330,30},
+     Ὧ = {330,30},
+     ῼ = {30,30},
+     ᾨ = {230,30},
+     ᾩ = {230,30},
+     ᾪ = {300,30},
+     ᾫ = {300,30},
+     ᾬ = {300,30},
+     ᾭ = {300,30},
+     ᾮ = {330,30},
+     ᾯ = {330,30},
+     /uni1FFC.alt = {,230}, % Omega prosgegrammeni
+     /uni1FA8.alt = {185,190}, %Omega psili prosgegrammeni
+     /uni1FA9.alt = {185,190}, %Omega dasia prosgegrammeni
+     /uni1FAA.alt = {220,190}, %Omega psili baria prosgegrammeni
+     /uni1FAB.alt = {220,190}, %Omega dasia baria prosgegrammeni
+     /uni1FAC.alt = {220,190}, %Omega psili oxia prosgegrammeni
+     /uni1FAD.alt = {220,190}, %Omega dasia oxia prosgegrammeni
+     /uni1FAE.alt = {255,190}, %Omega psili perispomeni prosgegrammeni
+     /uni1FAF.alt = {255,190}, %Omega dasia perispomeni prosgegrammeni
+   %
+     α = {50,50},
+     γ = {100,50},
+     δ = {30,50},
+     ε = {30,},
+     ζ = {20,50},
+     θ = {30,40},
+     ι = {,50},
+     ϊ = {-20,-30},
+     κ = {50,50},
+     λ = {-20,50},
+     ν = {50,25},
+     ο ={40,},
+     π = {50,50},
+     σ = {40,50},
+     ς = {20,50},
+     τ = {50,50},
+     υ = {80,},
+     φ = {80,},
+     χ = {20,},
+     ψ = {80,},
+%    /uni1F98.alt = {,},
+%</NewComputerModern>
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
    }
-%</LatinModernRoman>
+%</LatinModernRoman|NewComputerModern>
 %    \end{macrocode}
 %\subsubsection{Charis SIL}
 %\addtoUTFbookmarks{subsub:OT-prot-Charis}

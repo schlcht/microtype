@@ -193,7 +193,7 @@
   \setlength\textheight{49\baselineskip}
 \else
   \let\bfdefault\bfdefault@previous % undo mathdesign's \def\bfdefault{b}
-  \def\Module#1{{\color{theblue}\textoractual{$\langle$}{<}\textit{#1}\textoractual{$\rangle$}{>}}}
+  \def\Module#1{{\color{theblue}\textoractual{$\langle$}{<}\texttt{\itshape#1}\textoractual{$\rangle$}{>}}}
   \DeclareRobustCommand\TeX{\textoractual{T\kern-.1em\lower.4ex\hbox{E}\kern-.075emX\@}{TeX}}
   \DeclareRobustCommand\LaTeX{\textoractual{L\kern-.26em{\sbox\z@ T\vbox to\ht\z@{%
      \hbox{\check@mathfonts\fontsize\sf@size\z@\math@fontsfalse\selectfont A}%
@@ -459,7 +459,7 @@
 \def\theCodelineNo{\reset@font\sffamily\color{thegrey}\scriptsize
   \textoractual{\arabic{CodelineNo}\ }{}}% don't copy line numbers
 \def\MacroFont{\ttfamily\small}
-\def\AltMacroFont{\ttfamily\footnotesize}
+\setcounter{StandardModuleDepth}{99}
 \def\PrintMacroName#1{\strut\MacroFont\string #1\hskip15pt}
 \def\ImplementationSettings{%
   \linespread{1}%
@@ -2377,8 +2377,11 @@
 % Generic
 %      & Latin
 %      & n, (it, sl, sc)\fnref{fn:ot-incmpl} \\
-% Latin Modern Roman\footnote{Alias: New Computer Modern}
+% Latin Modern Roman
 %      & Latin
+%      & n, it, (sl)\fnref{fn:ot-itsl}\\
+% New Computer Modern
+%      & Latin, Greek
 %      & n, it, (sl)\fnref{fn:ot-itsl}\\
 % Charis <SIL>
 %      & Latin, Cyrillic
@@ -2425,7 +2428,7 @@
 %\DeclareMicrotypeAlias{lmr}{cmr}
 %\end{verbatim}
 % which would make the package, whenever it encounters the font |lmr| and does
-% not find settings for it, also try the font |cmr|. In fact, you will find
+% not find settings for it, also try the font name |cmr|. In fact, you will find
 % this very line, along with some others, in the default configuration file.
 %
 %\medskip
@@ -2978,15 +2981,15 @@
 %\begin{verbatim}
 %Package microtype Warning: Unknown slot number of character
 %(microtype)                `<\k A>'
-%(microtype)                in font encoding `<TU>' in inheritance list
-%(microtype)                `<microtype.cfg/406(protrusion)>'.
+%(microtype)                in font encoding `TU' in inheritance list
+%(microtype)                `microtype.cfg/406(protrusion)'.
 %\end{verbatim}
 %\changes{v2.8d}{2021/06/26}{add hint about unknown slot numbers}
 % If you receive lots of warnings like the above, and you are running \luatex\
 % or \xetex, this probably means that the font you are using contains less
 % glyphs than are defined in the default protrusion and/or inheritance settings.
 % For such fonts, the \microtype\ package defines basic inheritance settings
-% to which you may alias your font (the default protrusion settings will
+% to which you may alias your font (the generic protrusion settings will
 % still be loaded). Try adding the line:
 %\begin{verbatim}[style=microtype,belowskip=0pt]
 %\DeclareMicrotypeAlias{"\rmfamily\meta{your font}"}{TU-basic}
@@ -3109,7 +3112,12 @@
 % who made substantial improvements to the Computer Modern Roman italic settings.
 % I thank
 %  \contributor Loren~B. Davis <davislo\at eecs.oregonstate.edu>
-% for providing protrusion settings for OpenType versions of Palatino Linotype.
+% for providing protrusion settings for OpenType versions of Palatino Linotype,
+% as well as
+%  \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>
+% for settings for his New Computer Modern font. The latter also showcase the
+% new feature of automatically calculated protrusion, which was an original idea by
+%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>. ^^A also https://tex.stackexchange.com/users/176404/d909
 % I am also very much indebted to
 %  \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>,
 % who not only contributed the |lua| module in the first place, but also,
@@ -3219,7 +3227,6 @@
 %  \contributor Oliver Kopp       <koppdev\at gmail.com>,
 %  \contributor Hironori Kitagawa <h_kitagawa2001\at yahoo.co.jp>,
 %  \contributor Aman Mehra        <reportaman\at gmail.com>, ^^A also https://tex.stackexchange.com/users/192717/reportaman
-%  \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>, ^^A also https://tex.stackexchange.com/users/176404/d909
 %  \contributor Md Ayquassar      <mdayq0\at lenta.ru>,
 %  \contributor Holger Gerhardt   <holger.gerhardt\at uni-bonn.de>,
 %  \contributor Marcel Kr\"uger   <tex\at 2krueger.de>,
@@ -3386,6 +3393,7 @@
 %        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
 %  \item New package \pkg{microtype-show} for visual debugging of protrusion settings
 %        \refsection{\ref{sec:contrib}}
+%  \item Protrusion settings for New Computer Modern (OpenType)
 %  \item Protrusion settings for <EB> Garamond (OpenType)
 %
 %\VersionDate{2.8c}{2021/03/14}
@@ -14651,10 +14659,10 @@ end
 %\changes{v2.8a}{2021/01/09}{reference New Computer Modern also by file name
 %                            (reported by \contributor Canageek <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/578121/how-do-i-properly-tell-microtype-that-newcomputermodern-is-the-same-as-comput
+%\changes{v2.8d}{2021/08/08}{New Computer Modern has its own settings}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{New Computer Modern}{Latin Modern Roman}
-\DeclareMicrotypeAlias{NewCM10-Book.otf}   {Latin Modern Roman}
-\DeclareMicrotypeAlias{NewCM10-Regular.otf}{Latin Modern Roman}
+\DeclareMicrotypeAlias{NewCM10-Book.otf}   {New Computer Modern}
+\DeclareMicrotypeAlias{NewCM10-Regular.otf}{New Computer Modern}
 %    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
@@ -19275,7 +19283,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12110}
+% \CheckSum{12109}
 %
 % \Finale
 %

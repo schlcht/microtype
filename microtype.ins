@@ -95,6 +95,9 @@ microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
       Harald Harders <h.harders{at}tu-bs.de> and
       Karl Karlsson <karl-karlsson{at}yandex.ru>.^^M
 \endpreamble
+\declarepreamble\antonispreamble^^M
+      Antonis Tsolomitis <antonis.tsolomitis{at}gmail.com>^^M
+\endpreamble
 \declarepreamble\lorenpreamble^^M
       Loren B. Davis.  (c) 2012
 
@@ -152,6 +155,8 @@ microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
     \makecfg{t}{pmn}
   \usepreamble\lorenpreamble
     \makeutfcfg{Palatino}
+  \usepreamble\antonispreamble
+    \makeutfcfg{NewComputerModern}
   \usepreamble\showpreamble
     \makefile{microtype-show.sty}{show\DEBUG}
   \usepreamble\testpreamble
