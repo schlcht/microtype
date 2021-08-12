@@ -572,7 +572,7 @@
     \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
     \textls,\lsstyle,\lslig,\leftprotrusion,\rightprotrusion,\Microtype@Hook},
   keywordstyle=[0]\color{thegreen},
-  keywords=[1]{protrusion,expansion,activate,DVIoutput,draft,final,verbose,
+  keywords=[1]{protrusion,expansion,activate,DVIoutput,concept,verbose,
     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
     spacing,letterspace,babel,context,patch,nopatch,
    %defersetup,copyfonts,enable,disable,% undocumented
@@ -1336,15 +1336,14 @@
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{draft}' option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\Describe{Option}{draft}{true,!false}
-%\DescribeOption{final}
-% If the \opt{draft} option is passed to the package, \emph{all
-% micro-typographic extensions will be disabled}, which may lead to different
-% line, and hence page, breaks. The \opt{draft} and \opt{final} options may
-% also be inherited from the class options; of course, you can override them in
-% the package options. E.g., if you are using the class option |draft| to
-% show any overfull boxes, you should load \microtype\ with the |final|
-% option.
+%\Describe{Option}{concept}{true,!false,ifdraft}
+% If the \opt{concept} option is passed to the package, all
+% micro-typographic extensions will be disabled, which may lead to different
+% line, and hence even page, breaks. This option replaces the |draft| option
+% from earlier versions,  which could be inherited from the class options;
+% to restore the previous behaviour, you may pass the value |ifdraft|:
+% in this case, the \opt{concept} option will be set to |true| if and only if
+% the document class has been loaded with the |draft| option.
 %
 %\medskip
 %\Describe{Option}{verbose}{true,!false,errors,silent}
@@ -1380,7 +1379,7 @@
 % instead, it is recommended to just call the respective program (|latex| resp.
 % |dvilualatex|).
 %\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
-% For \xetex, this option is not applicable.
+% For \xetex, this option is not applicable.\looseness=-1 ^^A layout
 %
 %\iffalse
 %\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
@@ -2612,8 +2611,8 @@
 % \microtype, omitting support for all the other extensions (and also omitting
 % the possibilities of the \cs{SetTracking} command -- all `|f|' ligatures will
 % be disabled, inner and outer spacing and outer kerning will be set to the
-% default values described in section~\ref{sub:tracking}). If you prefer to
-% forgo \microtype's specialties, you may load the \letterspace\ package
+% default values described in section~\ref{sub:tracking}). If you would rather
+% forgo \microtype's `magic' (Mittelbach), you may load the \letterspace\ package
 % instead. Both packages should not be used at the same time.
 %
 % In contrast to \microtype, which requires \LaTeX, the \letterspace\
@@ -3391,6 +3390,7 @@
 %        \refsection{\ref{sub:inheritance}}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
 %        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
+%  \item New option \opt{concept}, replacing the |draft| option~\refsection{\ref{sub:options-misc}}
 %  \item New package \pkg{microtype-show} for visual debugging of protrusion settings
 %        \refsection{\ref{sec:contrib}}
 %  \item Protrusion settings for New Computer Modern (OpenType)
@@ -4875,6 +4875,7 @@
 %\begin{macro}{\ifMT@selected}
 %\begin{macro}{\ifMT@noligatures}
 %\begin{macro}{\ifMT@draft}
+%\begin{macro}{\ifMT@concept}
 %\begin{macro}{\ifMT@spacing}
 %\begin{macro}{\ifMT@kerning}
 %\begin{macro}{\ifMT@tracking}
@@ -4887,11 +4888,13 @@
 \newif\ifMT@selected
 \newif\ifMT@noligatures
 \newif\ifMT@draft
+\newif\ifMT@concept
 \newif\ifMT@spacing
 \newif\ifMT@kerning
 \newif\ifMT@tracking
 \newif\ifMT@babel
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -13195,14 +13198,28 @@ end
 %    \end{macrocode}
 % \opt{final} is the opposite to \opt{draft}.
 %\changes{v1.4a}{2004/11/16}{new option: \opt{final}}
+% It's only kept for backwards compatibility.
+%\changes{v2.8d}{2021/08/13}{remove option \opt{final}}
 %    \begin{macrocode}
 %<*package>
-\MT@def@bool@opt{final}{%
-  \csname if\@tempa\endcsname
-    \MT@draftfalse
-  \else
-    \MT@drafttrue
-  \fi
+\MT@def@bool@opt{final}{}
+%    \end{macrocode}
+% The \opt{concept} option replaces the \opt{draft} option,
+% which could be inherited from the class options.
+% The third value |ifdraft| mimicks this behaviour.
+%\changes{v2.8d}{2021/08/13}{new option: \opt{concept}
+%                            (suggested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%                            ^^A private mail, 2018/07/04
+%    \begin{macrocode}
+\define@key{MT}{concept}[true]{%
+  \def\@tempa{#1}%
+  \MT@ifstreq\@tempa{true}\MT@concepttrue{%
+    \MT@ifstreq\@tempa{ifdraft}{\ifMT@draft\MT@concepttrue\fi}{%
+      \MT@ifstreq\@tempa{false}\relax{%
+        \MT@optwarn@admissible{#1}{concept}%
+      }%
+    }%
+  }%
 }
 %    \end{macrocode}
 % For \opt{verbose} output, we redefine \cs{MT@vinfo}.
@@ -13772,13 +13789,13 @@ end
 % options the user has chosen (in case it's interested).
 %    \begin{macrocode}
 \MT@addto@setup{%
-\ifMT@draft
+\ifMT@concept
 %    \end{macrocode}
 % We disable most of what we've just defined in the \arabic{CodelineNo} lines
-% above if we are running in draft mode.
+% above if we are running in concept (aka. draft) mode.
 %\changes{v1.7}{2005/02/06}{warning when running in draft mode}
 %    \begin{macrocode}
-  \MT@warning@nl{`draft' option active.\MessageBreak
+  \MT@warning@nl{The `concept' option is in effect.\MessageBreak
                  Disabling all micro-typographic extensions.\MessageBreak
                  This might lead to different line and page breaks}%
   \let\MT@setupfont\relax
@@ -19283,7 +19300,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12109}
+% \CheckSum{12119}
 %
 % \Finale
 %
