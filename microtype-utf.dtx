@@ -792,6 +792,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\addtoUTFbookmarks{subsub:OT-prot-LMR}
 %\changes{v2.8d}{2021/08/08}{settings for New Computer Modern (provided by
 %                            \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
+%\changes{v2.8d}{2021/08/13}{fix quotation marks in <LMR>}
 %    \begin{macrocode}
 %<*LatinModernRoman|NewComputerModern>
 \SetProtrusion
@@ -856,8 +857,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      / = {200,300},
     /backslash    = {200,300},
      ' = {300,400}, % /quotesingle
-     ‘ = {500,700},  ’ = {500,600},
-     “ = {500,300},  ” = {200,600},
+     ‘ = {300,400},  ’ = {300,400},
+     “ = {300,300},  ” = {300,300},
      ‚ = {400,400},  „ = {400,400},
      ‹ = {400,400},  › = {300,500},
      « = {300,200},  » = {100,400},
