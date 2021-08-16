@@ -2612,7 +2612,7 @@
 % the possibilities of the \cs{SetTracking} command -- all `|f|' ligatures will
 % be disabled, inner and outer spacing and outer kerning will be set to the
 % default values described in section~\ref{sub:tracking}). If you would rather
-% forgo \microtype's `magic' (Mittelbach), you may load the \letterspace\ package
+% forgo \microtype's specialties, you may load the \letterspace\ package
 % instead. Both packages should not be used at the same time.
 %
 % In contrast to \microtype, which requires \LaTeX, the \letterspace\
@@ -2703,7 +2703,7 @@
 %              slightly shifted to the right.
 %              This patch also affects environments such as |quote| or |flushleft|, which are
 %              implemented in \LaTeX\ as lists with an implicit empty item.
-%              \MTsupp{standard classes, \pkg{beamer}}
+%              \MTsupp{standard classes, \pkg{beamer}, \pkg{simplecv}}
 % \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
 %              \MTsupp{standard classes, \pkg{memoir}}
@@ -3801,6 +3801,7 @@
 %\DoNotIndex{\apptocmd,\patchcmd}                                            ^^A etoolbox
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem}                     ^^A beamer
 %\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
+%\DoNotIndex{\@topic@item}                                                   ^^A simplecv
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
@@ -6196,6 +6197,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           ^^A https://tex.stackexchange.com/questions/165846/
 %    \begin{macrocode}
   \MT@glet\MT@setupfont@hook\@empty
+%    \end{macrocode}
+% \microtype\ is so so loquacious~\dots\
+% Sometimes you just want to silence it when debugging a document.
+%    \begin{macrocode}
+  %\gdef\MT@setupfont@hook{\tracingnone
+  %  \MT@info{Silently doing my `magic' (Mittelbach) for font\MessageBreak\MT@@font}}%
   \MT@if@false
   \MT@with@babel@and@T{spanish} \MT@if@true
   \MT@with@babel@and@T{galician}\MT@if@true
@@ -6470,12 +6477,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
       {}}
 %    \end{macrocode}
+% \item the \pkg{simplecv} class
+%    \begin{macrocode}
+    {\@ifclassloaded{simplecv}
+      {\MT@define@patch{item}
+        {\MT@append@patch\@item\leftprotrusion
+         \MT@append@patch\@topic@item\leftprotrusion
+         \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
+        {}}%
+%    \end{macrocode}
 % \item standard \LaTeX\ classes
 %    \begin{macrocode}
-    {\MT@define@patch{item}
-      {\MT@append@patch\@item\leftprotrusion
-       \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
-      {}}%
+      {\MT@define@patch{item}
+        {\MT@append@patch\@item\leftprotrusion
+         \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
+        {}}}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|toc|] <TOC> and friends
@@ -7824,7 +7840,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@prot{#1}%
   \ifdim\MT@leftmarginkern=\z@ \else
     \leavevmode
-    \MT@vinfo{||| adding left margin kern for `#1':\MessageBreak
+    \MT@vinfo{|<< adding left margin kern for `#1':\MessageBreak
                   \the\MT@leftmarginkern \on@line}%
     \kern\MT@leftmarginkern
   \fi
@@ -7846,7 +7862,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   #1%
   \MT@get@prot{#1}%
   \ifdim\MT@rightmarginkern=\z@ \else
-    \MT@vinfo{||| adding right margin kern for `#1':\MessageBreak
+    \MT@vinfo{>>| adding right margin kern for `#1':\MessageBreak
                   \the\MT@rightmarginkern \on@line}%
     \kern\MT@rightmarginkern
   \fi
@@ -19300,7 +19316,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12119}
+% \CheckSum{12138}
 %
 % \Finale
 %
