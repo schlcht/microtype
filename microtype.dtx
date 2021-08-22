@@ -7970,22 +7970,28 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Begin filling toks.
 %    \begin{macrocode}
 \def\MT@prot@addtoken@first#1{%
-  \edef\MT@temp{\MT@toks={\the\MT@toks#1}}\MT@temp
+  \edef\MT@temp{\MT@toks={\the\MT@toks\noexpand#1}}\MT@temp
   \MT@prot@get@nextchar
 }
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@addtoken@next}
 % Add token to our toks and test whether we've seen enough (ligature completed).
+% For luatex, we have to jump through another hoop (\ie, box), because, contrary
+% to the manual, \cmd\lastnodetype\ isn't really compatible. ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-August/006536.html et seqq.
 %    \begin{macrocode}
+%<*pdftex-def|luatex-def|xetex-def>
 \def\MT@prot@addtoken@next#1{%
-  \edef\MT@temp{\MT@toks={\the\MT@toks#1}}\MT@temp
-  \setbox\MT@tempbox\hbox{\the\MT@toks\relax
+  \edef\MT@temp{\MT@toks={\the\MT@toks\noexpand#1}}\MT@temp
+  \setbox\MT@tempbox\hbox{\the\MT@toks
+%<pdftex-def|xetex-def>    \relax
+%<luatex-def>  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
     \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
       \MT@prot@get@nextchar
       {\MT@prot@l{\the\MT@toks}}%
 }
-%</package>
+%</pdftex-def|luatex-def|xetex-def>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -19316,7 +19322,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12138}
+% \CheckSum{12143}
 %
 % \Finale
 %
