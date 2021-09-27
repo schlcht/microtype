@@ -55,6 +55,9 @@ To install the package, use one of the following methods
   and move all generated files into a directory where LaTeX will find them,
   e.g., `TEXMF/tex/latex/microtype/`.
 
+- The use the lastest development version, clone the github repository at
+  `https://github.com/schlcht/microtype` and run `make`.
+
 
 License
 -------
@@ -65,7 +68,7 @@ your option) any later version. The latest version of this license is in:
 http://www.latex-project.org/lppl.txt, and version 1.3c or later is part
 of all distributions of LaTeX version 2005/12/01 or later.
 
-This work has the LPPL maintenance status 'author-maintained'.
+This work has the LPPL maintenance status 'maintained'.
 
 This work consists of the files `microtype.dtx` and `microtype.ins` and the
 derived files `microtype.sty`, `microtype-pdftex.def`, `microtype-luatex.def`,

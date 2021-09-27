@@ -13,7 +13,7 @@
 % http://www.latex-project.org/lppl.txt, and version 1.3c or later is part
 % of all distributions of LaTeX version 2005/12/01 or later.
 %
-% This work has the LPPL maintenance status `author-maintained'.
+% This work has the LPPL maintenance status `maintained'.
 %
 % This work consists of the files microtype.dtx and microtype.ins and the
 % derived files microtype.sty, microtype-pdftex.def, microtype-luatex.def,
@@ -223,7 +223,8 @@
   \begin{center}\sffamily
     {\huge \@title\par\vskip 1.5em}%
     {\large\hspace{4.5em}\parbox{.33\textwidth}{\@author}%
-                         \parbox{.33\textwidth}{\@date}\par\vskip 1em}%
+                         \parbox{.33\textwidth}{\@date}\par\vskip 1em
+           \textls*[-20]{\url{\githuburl}}}%
     \vskip 2.5em\rule{\textwidth}{.4pt}%
   \end{center}\par\vskip 1.5em}
 \def\abstractname{}
@@ -619,7 +620,7 @@
       This work may be distributed and/or modified under the conditions
       of the LaTeX Project Public License, either version 1.3c of this
       license or (at your option) any later version.\textLF
-      This work has the LPPL maintenance status `author-maintained'.},
+      This work has the LPPL maintenance status `maintained'.},
     pdflicenseurl={http://www.latex-project.org/lppl/},
     pdflang={en-GB}
   }
@@ -802,6 +803,7 @@
 \DeclareRobustCommand\xetex{\xe\kern-.1em\TeX\CatIndeX{\xe\TeX}{xetex}{engine}}
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
+\def\githuburl{https://github.com/schlcht/microtype}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -904,7 +906,7 @@
 % \IfFileExists{lppl.tex}{\hyperref[LPPL:LPPL]}{\href{http://www.latex-project.org/lppl/}}
 %   {\LaTeX\ Project Public License},
 % either version~1.3c of this license or (at your option) any later version.
-% This work has the <LPPL> maintenance status `author-maintained'.
+% This work has the <LPPL> maintenance status `maintained'.
 %\end{abstract}
 %
 %
@@ -2778,6 +2780,7 @@
 %^^A
 % The package also includes a test file that shows all of these commands in action
 % (\file{test-microtype.tex}).
+%}
 %
 %\medskip\noindent
 % If you have created a configuration file for another font, or if you have any
@@ -2787,7 +2790,11 @@
 %    Should you have lots of \pkg{pdfcprot} configuration files lying around,
 %    I can also provide you with a \TeX\ conversion script. Just ask me.}
 %\fi
-%}
+%
+%\medskip\noindent
+% Development of the package takes place at GitHub, which also provides an
+% issue tracker for submitting bug reports and feature requests:
+% \url{\githuburl/issues}.
 %
 %
 %\section{Hints and caveats}\label{sec:caveats}
@@ -19294,7 +19301,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %</test>
 %    \end{macrocode}
 % Needless to say that things may always be improved. For suggestions, mail to
-% \mailtoRS.
+% \mailtoRS\ or file an issue at \url{\githuburl/issues}.
 %
 % ^^A -------------------------------------------------------------------------
 %
