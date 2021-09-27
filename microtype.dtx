@@ -3769,9 +3769,9 @@
 %  \normalbaselineskip,\normalsize,\numberline,\par,\parbox,\quad,\raggedright,
 %  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\usefont,
 %  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
-%  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\InputIfFileExists,\MessageBreak,
-%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
-%  \RequirePackage,\@@enc@update,\UnicodeEncodingName}
+%  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
+%  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,
+%  \ProcessOptions,\RequirePackage,\@@enc@update,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -6066,12 +6066,18 @@ microtype.do_font = do_font
 %    \end{macrocode}
 %\end{macro}
 %\changes{v2.8c}{2021/03/12}{add to hook for \pkg{fontspec}}
+%\changes{v2.8d}{2021/09/27}{fix for changed hook name order
+%                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>
+%                             and \contributor Karl Berry <karl\at freefriends.org>)}
+%                            ^^A private mails, 2021/09/06 and 2021/09/26
 %\end{macro}
 % We need the correct value of the former for configuration commands
 % inside the preamble (to get the default families right).
 %    \begin{macrocode}
 \@ifl@t@r\fmtversion{2020/10/01}
-  {\AddToHook{package/after/fontspec}{\MT@fontspectrue}}\relax
+  {\IfFormatAtLeastTF{2021/11/15}
+    {\AddToHook{package/fontspec/after}{\MT@fontspectrue}}
+    {\AddToHook{package/after/fontspec}{\MT@fontspectrue}}}\relax
 %    \end{macrocode}
 %\begin{macro}{\MT@maybe@gobble@with@tikz}
 %\begin{macro}{\MT@tikz@setup}
@@ -19322,7 +19328,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12143}
+% \CheckSum{0}
 %
 % \Finale
 %
