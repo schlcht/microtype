@@ -573,10 +573,10 @@
     \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
     \textls,\lsstyle,\lslig,\leftprotrusion,\rightprotrusion,\Microtype@Hook},
   keywordstyle=[0]\color{thegreen},
-  keywords=[1]{protrusion,expansion,activate,DVIoutput,concept,verbose,
+  keywords=[1]{protrusion,expansion,activate,DVIoutput,disable,verbose,
     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
     spacing,letterspace,babel,context,patch,nopatch,
-   %defersetup,copyfonts,enable,disable,% undocumented
+   %defersetup,copyfonts,deactivate,reactivate,% undocumented
     no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
   keywordstyle=[1]\color{thered},
   comment=[l]\%,
@@ -1335,16 +1335,19 @@
 %
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
-%\changes{v2.0}{2006/11/28}{add remark about `\opt{draft}' option disabling \microtype\
+%\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously |draft|) option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\Describe{Option}{concept}{true,!false,ifdraft}
-% If the \opt{concept} option is passed to the package, all
+%\changes{v2.8d}{2021/09/28}{rename option |draft| option to \opt{disable}
+%                (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%                 ^^A private mail, 2018/07/04
+%\Describe{Option}{disable}{true,!false,ifdraft}
+% If the \opt{disable} option is passed to the package, all
 % micro-typographic extensions will be disabled, which may lead to different
 % line, and hence even page, breaks. This option replaces the |draft| option
-% from earlier versions,  which could be inherited from the class options;
+% from previous versions, which could be inherited from the class options;
 % to restore the previous behaviour, you may pass the value |ifdraft|:
-% in this case, the \opt{concept} option will be set to |true| if and only if
+% in this case, the \opt{disable} option will be set to |true| if and only if
 % the document class has been loaded with the |draft| option.
 %
 %\medskip
@@ -3396,8 +3399,9 @@
 %  \item Possibility of automatical protrusion based on difference of character widths
 %        \refsection{\ref{sub:inheritance}}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
-%        various patches to get protrusion right~\refsection{\ref{sec:pedantic}}
-%  \item New option \opt{concept}, replacing the |draft| option~\refsection{\ref{sub:options-misc}}
+%        various patches to get protrusion right \refsection{\ref{sec:pedantic}}
+%  \item New option \opt{disable}, replacing the |draft| option; deprecate option |final|
+%        \refsection{\ref{sub:options-misc}}
 %  \item New package \pkg{microtype-show} for visual debugging of protrusion settings
 %        \refsection{\ref{sec:contrib}}
 %  \item Protrusion settings for New Computer Modern (OpenType)
@@ -3594,7 +3598,7 @@
 %        \refsection{Implementation, \ref{sub:hook}}
 %  \item New option `\opt{verbose}|=errors|' to turn all warnings into errors
 %^^A  \item Disable expansion inside \cmd\showhyphens
-%  \item Warning when running in draft mode
+%  \item Warning when running in disable mode
 %
 %\VersionDate{1.6a}{2005/02/02}
 %
@@ -4883,7 +4887,7 @@
 %\begin{macro}{\ifMT@selected}
 %\begin{macro}{\ifMT@noligatures}
 %\begin{macro}{\ifMT@draft}
-%\begin{macro}{\ifMT@concept}
+%\begin{macro}{\ifMT@disable}
 %\begin{macro}{\ifMT@spacing}
 %\begin{macro}{\ifMT@kerning}
 %\begin{macro}{\ifMT@tracking}
@@ -4896,7 +4900,7 @@
 \newif\ifMT@selected
 \newif\ifMT@noligatures
 \newif\ifMT@draft
-\newif\ifMT@concept
+\newif\ifMT@disable
 \newif\ifMT@spacing
 \newif\ifMT@kerning
 \newif\ifMT@tracking
@@ -13129,7 +13133,7 @@ end
 %                                               ^^A (beta:1)
 %\begin{macro}{\MT@def@bool@opt}
 % The |true|/|false| options:
-% \opt{draft}, \opt{final} (may be inherited from the class options),
+% \opt{draft} (may be inherited from the class options),
 % \opt{auto},
 % \opt{selected},
 % \opt{babel},
@@ -13239,19 +13243,19 @@ end
 %<*package>
 \MT@def@bool@opt{final}{}
 %    \end{macrocode}
-% The \opt{concept} option replaces the \opt{draft} option,
+% The \opt{disable} option replaces the \opt{draft} option,
 % which could be inherited from the class options.
 % The third value |ifdraft| mimicks this behaviour.
-%\changes{v2.8d}{2021/08/13}{new option: \opt{concept}
+%\changes{v2.8d}{2021/08/13}{new option: \opt{disable}, replacing the \texttt{draft} option
 %                            (suggested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2018/07/04
 %    \begin{macrocode}
-\define@key{MT}{concept}[true]{%
+\define@key{MT}{disable}[true]{%
   \def\@tempa{#1}%
-  \MT@ifstreq\@tempa{true}\MT@concepttrue{%
-    \MT@ifstreq\@tempa{ifdraft}{\ifMT@draft\MT@concepttrue\fi}{%
+  \MT@ifstreq\@tempa{true}\MT@disabletrue{%
+    \MT@ifstreq\@tempa{ifdraft}{\ifMT@draft\MT@disabletrue\fi}{%
       \MT@ifstreq\@tempa{false}\relax{%
-        \MT@optwarn@admissible{#1}{concept}%
+        \MT@optwarn@admissible{#1}{disable}%
       }%
     }%
   }%
@@ -13729,19 +13733,19 @@ end
 %\begin{macro}{\MT@saved@setupfont}
 % Disable everything -- may be used as a temporary work-around in case
 % setting up fonts doesn't work under certain circumstances, but only until
-% that specific problem is fixed. This is \emph{undocumented}, as it completely
-% deprives us of the possibility to act -- we're blind and paralysed.
+% that specific problem is fixed. These options are \emph{undocumented}, as they
+% completely deprive us of the possibility to act -- we're blind and paralysed.
 %    \begin{macrocode}
 %<*package>
 \let\MT@saved@setupfont\MT@setupfont
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
-\define@key{MTX}{disable}[]{%
-  \MT@info{Inactivate `\MT@MT' package}%
+\define@key{MTX}{deactivate}[]{%
+  \MT@info{Deactivate `\MT@MT' package}%
   \let\MT@setupfont\relax
 }
-\define@key{MTX}{enable}[]{%
+\define@key{MTX}{reactivate}[]{%
   \MT@info{Reactivate `\MT@MT' package}%
   \let\MT@setupfont\MT@saved@setupfont
 }
@@ -13824,13 +13828,13 @@ end
 % options the user has chosen (in case it's interested).
 %    \begin{macrocode}
 \MT@addto@setup{%
-\ifMT@concept
+\ifMT@disable
 %    \end{macrocode}
 % We disable most of what we've just defined in the \arabic{CodelineNo} lines
-% above if we are running in concept (aka. draft) mode.
+% above if we are running in disable (aka. draft) mode.
 %\changes{v1.7}{2005/02/06}{warning when running in draft mode}
 %    \begin{macrocode}
-  \MT@warning@nl{The `concept' option is in effect.\MessageBreak
+  \MT@warning@nl{The `disable' option is in effect.\MessageBreak
                  Disabling all micro-typographic extensions.\MessageBreak
                  This might lead to different line and page breaks}%
   \let\MT@setupfont\relax
@@ -14468,7 +14472,7 @@ end
   \fi
 }
 %    \end{macrocode}
-% Now we close the \orig@cs{fi} from \cs{ifMT@draft}.
+% Now we close the \orig@cs{fi} from \cs{ifMT@disable}.
 %    \begin{macrocode}
 \MT@addto@setup{\fi
 %    \end{macrocode}
