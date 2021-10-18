@@ -3243,9 +3243,10 @@
 % `\contributor Canageek          <@\at @>', ^^A https://tex.stackexchange.com/users/7880/canageek
 % `\contributor dsedivec          <@\at @>', ^^A https://tex.stackexchange.com/users/1680/dsedivec
 % `\contributor DORpapst          <@\at @>', ^^A https://tex.stackexchange.com/users/104965/dorpapst
-% `\contributor chsk              <@\at @>'  ^^A https://tex.stackexchange.com/users/158639/chsk
+% `\contributor chsk              <@\at @>', ^^A https://tex.stackexchange.com/users/158639/chsk
+% `\contributor tnull             <@\at @>'  ^^A https://tex.stackexchange.com/users/91987/tnull
 % and
-% `\contributor tnull             <@\at @>'. ^^A https://tex.stackexchange.com/users/91987/tnull
+% `\contributor Safron            <@\at @>'. ^^A https://tex.stackexchange.com/users/149123/safron
 %
 %
 %\iffalse
@@ -10542,14 +10543,17 @@ end
 %                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2021/03/02
 %                            ^^A also: https://github.com/latex3/latex2e/issues/525
+%\changes{v2.8d}{2021/10/18}{fix for incompatibility with \pkg{syntax}
+%                            (reported by \contributor Safron <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/619410/conflict-between-microtype-and-syntax-packages/
 %    \begin{macrocode}
 \def\MT@is@opt@char#1\iffontchar#2\char#3\else#4\fi\relax{%
-  \ifx\\#1\\%
+  \MT@ifempty{#1}{%
     \iffontchar#2%
       \expandafter\chardef
         \csname\MT@encoding\MT@detokenize@c\@tempa\endcsname=#3\relax
     \fi
-  \fi
+  }\relax
 }
 %    \end{macrocode}
 %\end{macro}
