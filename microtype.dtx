@@ -2737,7 +2737,7 @@
 %\leftprotrusion These pedantic protrusion patches are work-in-progress. I suspect many use cases
 % where they either do not work as advertised, or worse, where they may even lead to errors.
 % Also, I am aware that there are myriads of classes and packages out there that
-% modify internal commands in their own way, possibly rendering the patches useless.
+% modify internal commands in their own ways, possibly rendering the patches useless.
 % Finally, there will certainly be many more situations where protrusion would be appropriate.
 % I would be happy to include more patches, or enhance the existing ones,
 % so I welcome any suggestions and problem reports you may have.
@@ -3773,7 +3773,7 @@
 %  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
 %  \check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
 %  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
-%  \strip@prefix,\strip@pt,\tw@,\z@,\z@skip,\zap@space,
+%  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
@@ -3797,7 +3797,8 @@
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
-%^^A            \UTF@three@octets@noexpand,\UTF@two@octets@noexpand}
+%^^A            \UTF@three@octets@noexpand,\UTF@two@octets@noexpand,
+%^^A            \UTFviii@four@octets,\UTFviii@three@octets,\UTFviii@two@octets}
 %\DoNotIndex{\PrerenderUnicode,\unicode@charfilter}                          ^^A inputenc/utf8x
 %\DoNotIndex{\define@key,\KV@@sp@def,\setkeys}                               ^^A keyval
 %\DoNotIndex{\l@dunhbox@line}                                                ^^A ((r)e)ledmac,((r)e)ledpar
@@ -7932,6 +7933,67 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@ifmacro}
+%\begin{macro}{\MT@prot@ifmacro@}
+%\begin{macro}{\MT@prot@ifmacro@@}
+% Test whether \meta{\#1} is a macro or an active character
+% that does not take an argument.
+% (inspired by Joseph Wright). ^^A https://tex.stackexchange.com/a/331696/
+% Only works with \etex.
+%    \begin{macrocode}
+\def\MT@prot@ifmacro{%
+  \expandafter\MT@prot@ifmacro@\meaning\MT@prot@next\@nil
+}
+\edef\MT@prot@ifmacro@#1\@nil{%
+  \noexpand\MT@prot@ifmacro@@#1{}{}\detokenize{macro:->}\noexpand\@nil
+}
+\edef\MT@temp{%
+  \def\noexpand\MT@prot@ifmacro@@##1\detokenize{macro:->}##2\noexpand\@nil{%
+    \noexpand\ifx\relax##1\relax
+    \unexpanded{\expandafter\@firstofone\else\expandafter\@gobble\fi}%
+  }%
+}
+\MT@temp
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@iffirstcmd}
+% Test for the first command.
+%    \begin{macrocode}
+\def\MT@prot@iffirstcmd#1{%
+  \ifx\relax#1\relax\expandafter\@secondoftwo\else
+    \MT@exp@two@c\ifx\@car\MT@prot@next\relax\@empty\@nil#1%
+      \expandafter\expandafter\expandafter\@firstoftwo
+    \else
+      \expandafter\expandafter\expandafter\@secondoftwo
+    \fi
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@iflicrcmd}
+% Fun with <LICR>:
+% Test if the first command of the third command of the first command
+% is \cmd\@text@composite, in which case also grab the next token,
+% otherwise it should be a text command.
+%    \begin{macrocode}
+\def\MT@getthird#1#2#3#4\@nil{#3}
+\def\MT@prot@iflicrcmd#1{%
+  \MT@exp@cs\MT@prot@iffirstcmd{#1-cmd}{%
+    \expandafter\expandafter\expandafter\let
+      \expandafter\expandafter\expandafter\@tempa
+      \expandafter\MT@getthird\MT@prot@next\relax\@nil
+    \MT@exp@two@c\ifx\@car\@tempa\relax\@nil\@text@composite
+      \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+    \else
+      \def\MT@temp*##1{\MT@prot@l{##1}}%
+    \fi
+    \@gobble
+  }\@firstofone
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@get@firstchar}
 %\begin{macro}{\MT@prot@get@nextchar}
 % Scan token by token.
@@ -7948,17 +8010,46 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@get@first@char{%
   \def\MT@temp*##1{\MT@prot@get@firstchar}%
   \MT@prot@ifcat\bgroup{%
-    \def\MT@temp*{\MT@prot@l}%
+    \long\def\MT@temp*##1{{\MT@prot@l{##1}}}%
   }{%
     \MT@prot@ifx\ignorespaces\relax{%
       \MT@prot@ifx\relax\relax{%
         \MT@prot@ifx\@sptoken{%
           \def\MT@temp* {\MT@prot@get@firstchar}%
         }{%
+%    \end{macrocode}
+% But only add it if it's a letter or a character, \dots
+%    \begin{macrocode}
           \def\MT@temp*{\MT@prot@addtoken@first}%
           \MT@prot@ifcat{a}\relax{%
             \MT@prot@ifcat{!}\relax{%
+%    \end{macrocode}
+% \dots~or a command/active char whose first command is one of the below.
+%    \begin{macrocode}
               \def\MT@temp*{}%
+              \MT@prot@ifmacro{%
+                \MT@prot@iffirstcmd\UTFviii@two@octets{%
+                  \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+                }{%
+                  \MT@prot@iffirstcmd\UTFviii@three@octets{%
+                    \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
+                  }{%
+                    \MT@prot@iffirstcmd\UTFviii@four@octets{%
+                      \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                    }{%
+                      \MT@prot@iflicrcmd{T1}{%
+                        \MT@prot@iflicrcmd{TU}{%
+                          \MT@prot@iflicrcmd{LY1}{%
+                            \MT@prot@iflicrcmd{OT1}{%
+                              \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+                            }%
+                          }%
+                        }%
+                      }%
+                    }%
+                  }%
+                }%
+              }%
             }%
           }%
         }%
