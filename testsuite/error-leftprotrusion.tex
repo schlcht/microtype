@@ -1,0 +1,50 @@
+\documentclass{article}
+\ifx\pdfprotrudechars\undefined
+  \usepackage{fontspec}
+\fi
+\usepackage[verbose]{microtype}
+{\catcode`<=13
+ \gdef<#1>{\textls{#1}}}
+%\AddToHook{cmd/leftprotrusion/before}
+%   {\typeout{==> \the\inputlineno}} % zeig wo es ausgeführt wird 
+%\AddToHook{para/begin}{\leftprotrusion} 
+\makeatletter
+\long\def\@makefntext#1{%
+  \leftskip 0pt
+  \parindent 0pt
+  \everypar{\parindent 0pt}%
+  \leavevmode\llap{\@thefnmark\hskip\marginparsep}#1}
+\makeatother
+\begin{document}
+\catcode`<=13
+\begin{itemize}
+  \item --- some words (wrong output with xetex)\newline --- a new line
+  \item — some words\newline — a new line
+  \item \textls{a\par aa} \textemdash\ some words\newline \textemdash\ a new line \par last line
+  \item \textemdash\ some words\newline \textemdash\ a new line \par last line
+  \item {—} some words\newline {—} a new line
+  \item {---} some words\newline {---} a new line
+  \item {\textemdash} some words\newline {\textemdash} a new line
+  \item <ABC> def
+\microtypesetup{nopatch=item}
+  \item --- some words (without patch)\newline --- a new line
+\end{itemize}
+
+\begin{flushleft}
+    ()\\
+    ()\\
+    ()
+\end{flushleft}
+
+\begin{verse}
+--A verse\\
+--(very terse)\footnote{-- footnote\newline -- text\par -- end}
+\end{verse}
+\begin{equation}
+\label{eq:abc} 
+a+b=c
+\end{equation}
+Test. Test. Test. Test. Test. Test. Test. Test.\hfill (1)\linebreak
+Test. Test. Test. Test. Test. Test. Test. Test.
+
+\end{document}
