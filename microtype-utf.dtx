@@ -435,6 +435,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %\subsubsection{EB Garamond}
 %\addtoUTFbookmarks{subsub:OT-inh-EBGaramond}
+%\changes{v2.8d}{2021/08/08}{settings for <EB> Garamond (OpenType)}
 %    \begin{macrocode}
 %<*EBGaramond>
 \DeclareCharacterInheritance
@@ -641,6 +642,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      🇦  = {🇧,🇨,🇩,🇪,🇫,🇬,🇭,🇮,🇯,🇰,🇱,🇲,🇳,🇴,🇵,🇶,🇷,🇸,🇹,🇺,🇻,🇼,🇽,🇾,🇿},
      ! = {‼},
      ? = {⁇},
+     . = {/onedotenleader},
+     /endash = {/figuredash},
    }
 %    \end{macrocode}
 %}
@@ -1616,8 +1619,293 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %\subsubsection{EB Garamond}
 %\addtoUTFbookmarks{subsub:OT-prot-EBGaramond}
+%\changes{v2.8d}{2021/10/25}{settings for <EB> Garamond (OpenType)}
 %    \begin{macrocode}
 %<*EBGaramond>
+\SetProtrusion
+  [ name     = EBGaramond-TU,
+    load     = EBGaramond-T1-LF ]
+  { encoding = {TU,EU1,EU2},
+    family   = EBGaramond }
+  {
+   /one.tosf   = {150,150},
+   /two.tosf   = {50,50},
+   /three.tosf = {50,50},
+   /four.tosf  = {50,50},
+   /five.tosf  = {50,50},
+   /six.tosf   = {50,50},
+   /seven.tosf = {50,80},
+   /eight.tosf = {50,50},
+   /nine.tosf  = {50,50},
+   /one.lf     = {50,50},
+   /two.lf     = {50,50},
+   /four.lf    = {50,50},
+   /seven.lf   = {50,50},
+   /one.osf    = {50,50},
+   /two.osf    = {50,50},
+   /four.osf   = {50,50},
+   /seven.osf  = {50,50},
+%    \end{macrocode}
+%{\setmacrofont\EBGaramond
+%    \begin{macrocode}
+    Ⅳ =  {   , 35},
+    Ⅵ =  { 35,   },
+    Ⅶ  = { 30,   },
+    Ⅷ  = { 25,   },
+    Ⅸ =  {   , 35},
+    Ⅺ =  { 35,   },
+    Ⅻ =  { 30,   },
+    ⅳ =  {   , 25},
+    ⅵ =  { 25,   },
+    ⅶ  = { 20,   },
+    ⅷ  = { 20,   },
+    ⅸ =  {   , 25},
+    ⅺ =  { 25,   },
+    ⅻ  = { 20,   },
+  % textcomp
+   \textquotesingle = {400,500},
+    ˷ = {200,250},
+    ƒ = {   ,100},
+    ₡ = { 50,   },
+    † = {100,100},
+    ‡ = { 80, 80},
+    • = {   ,100},
+    · = {300,400}, % periodcentered
+   /twodotenleader = {150,200},
+   /ellipsis  = {100,150},
+    ℃ = { 80,   },
+    ° = {400,400},
+    ™ = {100,100},
+    © = {100,100},
+    ® = {100,100},
+    ª = {200,200},
+    º = {200,200},
+    ¹ = {200,200},
+    ² = {200,200},
+    ³ = {200,200},
+    ¬ = {200,   },
+    ¶ = {   ,100},
+    − = {300,300}, % minus
+    ± = {150,200},
+    × = {100,150},
+    ÷ = {150,200},
+    € = { 50,100},
+    ¥ = { 50, 50},
+  % Greek
+    Γ = {   ,150},
+    Δ = {100,100},
+    Θ = { 50, 50},
+    Λ = {100,100},
+    Ξ = { 50, 50},
+    Υ = {100,100},
+    Φ = { 50, 50},
+    Ψ = { 50, 50},
+    Ω = {   , 50},
+    ζ = {   , 50},
+    λ = { 50, 50},
+    γ = { 50, 50},
+    π = { 50, 50},
+    ρ = {   , 50},
+    σ = { 50, 50},
+    τ = { 50, 50},
+    χ = { 50, 50},
+    φ = { 50, 50},
+    ϙ = { 50, 50},
+    ψ = { 50, 50},
+  % Cyrillic
+    Г = {   ,150},
+    Д = { 50, 50},
+    Ж = { 50, 50},
+    К = {   , 50},
+    Л = { 50,   },
+    Љ = { 50, 50},
+    З = { 50, 50},
+    У = { 50,100},
+    Ф = { 50, 50},
+    Ч = { 70,   },
+    Я = { 50,   },
+    Ъ = { 50, 50},
+    Ь = {   , 50},
+    ж = { 50, 50},
+    ф = { 50, 50},
+    ъ = { 50, 50},
+    Ѱ = { 50, 50},
+    г = {   , 50},
+    Ѵ = { 50, 50},
+  % other
+    Þ = {   , 50},
+    þ = {   , 50},
+    Ʌ = {100,100},
+    ⑴  = { 35, 65},
+    ⒜  = { 30, 60},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+  }
+
+\SetProtrusion
+  [ name     = EBGaramond-it-TU,
+    load     = EBGaramond-it-T1-LF ]
+  { encoding = {TU,EU1,EU2},
+    family   = EBGaramond,
+    shape    = it }
+  {
+   /zero.tosf  = {150,150},
+   /one.tosf   = {150,150},
+   /two.tosf   = {80,80},
+   /three.tosf = {50,80},
+   /four.tosf  = {50,80},
+   /five.tosf  = {50,80},
+   /six.tosf   = {50,50},
+   /seven.tosf = {50,100},
+   /eight.tosf = {50,50},
+   /nine.tosf  = {50,80},
+   /one.lf     = {50,50},
+   /two.lf     = {50,50},
+   /three.lf   = {80,50},
+   /four.lf    = {50,50},
+   /five.lf    = {50,50},
+   /six.lf     = {50,50},
+   /seven.lf   = {50,50},
+   /eight.lf   = {50,50},
+   /nine.lf    = {50,  },
+   /one.osf    = {50,50},
+   /two.osf    = {50,50},
+   /three.osf  = {  ,80},
+   /four.osf   = {50,50},
+   /seven.osf  = {50,50},
+%    \end{macrocode}
+%{\setmacrofont\EBGaramond
+%    \begin{macrocode}
+  % textcomp
+    \textquotesingle = {800,100},
+    − = {300,300}, % minus
+    ˷ = {200,250},
+    † = {200,100},
+    ‡ = { 80, 80},
+    • = {300,   },
+    ℃ = {200,   },
+    ƒ = {100,   },
+    ₡ = {100,   },
+    ™ = {200,   },
+    © = {200,100},
+    ® = {200,100},
+    ¬ = {300,   },
+    ° = {500,100},
+    ± = {200,150},
+    ¹ = {300,100},
+    ² = {300,   },
+    ³ = {300,   },
+    · = {300,500}, % periodcentered
+   /twodotenleader = {150,300},
+   /ellipsis  = {100,200},
+    € = {100,   },
+    × = {200,100},
+    ÷ = {200,200},
+    ¶ = {   ,100},
+    ª = {200,200},
+    º = {200,200},
+    ¥ = { 50, 50},
+  % Greek
+    Δ = {150,   },
+    Θ = { 50,   },
+    Λ = {150,   },
+    Υ = {100, 50},
+    Φ = { 50,   },
+    Χ = { 50,   },
+    Ψ = {100,   },
+    Ω = { 50,   },
+    γ = {   , 50},
+    λ = { 50,   },
+  % Cyrillic
+    Ү = { 50,   },
+    Ч = {100,   },
+    З = {100,   },
+  % other
+    Þ = { 50, 50},
+    þ = {   , 50},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+  }
+
+\SetProtrusion
+  [ name     = EBGaramond-sc-TU,
+    load     = EBGaramond-TU ]
+  { encoding = {TU,EU1,EU2},
+    family   = EBGaramond,
+    shape    = sc }
+  {
+%    \end{macrocode}
+%{\setmacrofont\EBGaramond
+%    \begin{macrocode}
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50},
+  % Greek
+     α = {50,50},
+     γ = {  ,50},
+     δ = {50,50},
+     λ = {50,50},
+     ο = {50,50},
+     τ = {50,50},
+     υ = {50,50},
+     ψ = {50,50},
+  % Cyrillic
+     т = {50,50},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+  }
+
+\SetProtrusion
+  [ name     = EBGaramond-scit-TU,
+    load     = EBGaramond-it-TU ]
+  { encoding = {TU,EU1,EU2},
+    family   = EBGaramond,
+    shape    = scit }
+  {
+%    \end{macrocode}
+%{\setmacrofont\EBGaramond
+%    \begin{macrocode}
+     a = {50,50},
+   \ae = {50,  },
+     d = {  ,50},
+     f = {  ,50},
+     g = {50,  },
+     j = {50,  },
+     l = {  ,50},
+     o = {50,50},
+   \oe = {50,  },
+     q = {50,70},
+     r = {  , 0},
+     t = {50,50},
+     y = {50,50},
+  % Greek
+     α = {50,50},
+     γ = {  ,50},
+     δ = {50,50},
+     λ = {50,50},
+     ο = {50,50},
+     τ = {50,50},
+     υ = {50,50},
+     ψ = {50,50},
+  % Cyrillic
+     т = {50,50},
+%    \end{macrocode}
+%}
+%    \begin{macrocode}
+  }
 %</EBGaramond>
 %    \end{macrocode}
 %\subsubsection{Palatino}

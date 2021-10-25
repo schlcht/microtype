@@ -64,7 +64,7 @@
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
 %<cmr>  {mt-cmr.cfg}[2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)]
-%<ebg>  {mt-EBGaramond.cfg}[2021/02/22 v1.6 microtype config. file: EB Garamond / Adobe Garamond (RS)]
+%<ebg>  {mt-EBGaramond.cfg}[2021/10/25 v2.0 microtype config. file: EB Garamond / Adobe Garamond (RS)]
 %<pmn>  {mt-pmn.cfg}[2009/11/14 v1.3 microtype config. file: Adobe Minion (HH/KK)]
 %<ppl>  {mt-ppl.cfg}[2005/11/16 v1.6 microtype config. file: Palatino (RS)]
 %<ptm>  {mt-ptm.cfg}[2006/04/20 v1.7 microtype config. file: Times (RS)]
@@ -2390,7 +2390,6 @@
 % Charis <SIL>
 %      & Latin, Cyrillic
 %      & n, it, sc\\
-% ^^A TODO:
 % <EB> Garamond
 %      & Latin, Cyrillic, Greek
 %      & n, it, sc, si\\
@@ -15707,9 +15706,9 @@ end
 %<ugm>     Q = {50,50},
 %<bch>     R = {  ,50},
 %<ugm|ebg>     R = {  ,70},
-%<m-t|bch|cmr|ebg|pmn|ppl|ptm>     T = {50,50},
+%<m-t|bch|cmr|pmn|ppl|ptm>     T = {50,50},
 %<blg>     T = {100,100},
-%<ugm>     T = {70,70},
+%<ebg|ugm>     T = {70,70},
 %<m-t|bch|cmr|ebg|pmn|ppl|ptm>     V = {50,50},
 %<blg|ugm>     V = {70,70},
 %<m-t|bch|cmr|ebg|pmn|ppl|ptm>     W = {50,50},
@@ -15726,8 +15725,8 @@ end
 %<ugm>     k = {  ,70},
 %<blg>     l = {150,150},
 %<pmn>     l = {  ,-50},
-%<ebg|ppl>     p = {50,50},
-%<ugm>     p = {  ,50},
+%<ppl>     p = {50,50},
+%<ebg|ugm>     p = {  ,50},
 %<ebg|ppl>     q = {50,  },
 %<!blg>     r = {  ,50},
 %<blg>     r = {100, 80},
@@ -16023,7 +16022,8 @@ end
 %<m-t>     \guillemotleft    = {200,200},   \guillemotright    = {200,200},
 %<cmr>     \guillemotleft    = {300,200},   \guillemotright    = {100,400},
 %<bch|pmn>     \guillemotleft    = {200,200},   \guillemotright    = {150,300},
-%<blg|ebg|ppl|ptm>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
+%<blg|ppl|ptm>     \guillemotleft    = {300,300},   \guillemotright    = {200,400},
+%<ebg>     \guillemotleft    = {300,300},   \guillemotright    = {200,300},
 %<ugm>     \guillemotleft    = {300,400},   \guillemotright    = {300,400},
 %<m-t|bch|cmr|ebg|pmn|ppl|ugm>     \textexclamdown   = {100,   },   \textquestiondown  = {100,   },
 %<blg>     \textexclamdown   = {200,   },   \textquestiondown  = {100,   },
