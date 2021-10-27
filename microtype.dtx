@@ -10273,7 +10273,7 @@ if luaotfload and luaotfload.aux and luaotfload.aux.slot_of_name then
   local slot_of_name = luaotfload.aux.slot_of_name
   microtype.name_to_slot = function(name, unsafe)
     local n = slot_of_name(font.current(), name, unsafe)
-    if n > 1114111 then n = -1 end
+    if n and n > 1114111 then n = -1 end
     return n
   end
 else
