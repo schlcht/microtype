@@ -820,7 +820,7 @@
  \AtBeginDocument{\catcode`\<=\active
    \def<#1>{\acronym{#1}}
    \def\contributor#1 <#2\at#3>{\@contributor{#1}{#2@#3}}}}
-\DeclareRobustCommand\@contributor[2]{\textit{#1}}
+%\DeclareRobustCommand\@contributor[2]{\textit{#1}}
 %\DeclareRobustCommand\@contributor[2]{\href{mailto:#2}{\textit{#1}}}
 \ifcodedoc \else
  \newwrite\@contributorsfile
@@ -10256,18 +10256,24 @@ end
 %</pdftex-def|luatex-def|xetex-def>
 %    \end{macrocode}
 % This is the lua function to translate glyph name into slot number.
-% Beginning with v2.2, \pkg{luaotfload} provides this function in an <API>, which
+% Beginning with v2.2, \pkg{luaotfload} provides this function in its <API>, which
 % we use if available, but (for now, at least) keep the old code for backward
 % compatibility.
 %\changes{v2.5a}{2013/04/19}{adapt to \pkg{luaotfload} v2.2
 %                            (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %                            ^^A MID: <516AAF6B.8040605@telecom-bretagne.eu>
+% With HarfBuzz, the return value is not guaranteed to be inside the
+% Unicode range, so we have to guard against this case as well.
+% ^^A cf. https://github.com/latex3/luaotfload/issues/198
+%\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range}
 %    \begin{macrocode}
 %<*luafile>
 if luaotfload and luaotfload.aux and luaotfload.aux.slot_of_name then
   local slot_of_name = luaotfload.aux.slot_of_name
   microtype.name_to_slot = function(name, unsafe)
-    return slot_of_name(font.current(), name, unsafe)
+    local n = slot_of_name(font.current(), name, unsafe)
+    if n > 1114111 then n = -1 end
+    return n
   end
 else
   -- we dig into internal structure (should be avoided)
