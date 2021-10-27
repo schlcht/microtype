@@ -7844,7 +7844,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   potentially be very helpful here, but it doesn't seem to do what it
 %   promises (not even the example from the manual works as advertised).}
 %   ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-May/006486.html
-% These macros need to be \cmd\long.
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
@@ -7853,12 +7852,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
+% These macros need to be \cmd\long.
 %    \begin{macrocode}
 \long\def\MT@prot@l#1{%
   \MT@get@prot{#1}%
   \ifdim\MT@leftmarginkern=\z@ \else
     \leavevmode
-    \MT@vinfo{|<< adding left margin kern for `#1':\MessageBreak
+    \MT@vinfo{|<< adding left margin kern for `\@tempa':\MessageBreak
                   \the\MT@leftmarginkern \on@line}%
     \kern\MT@leftmarginkern
   \fi
@@ -7880,7 +7880,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   #1%
   \MT@get@prot{#1}%
   \ifdim\MT@rightmarginkern=\z@ \else
-    \MT@vinfo{>>| adding right margin kern for `#1':\MessageBreak
+    \MT@vinfo{>>| adding right margin kern for `\@tempa':\MessageBreak
                   \the\MT@rightmarginkern \on@line}%
     \kern\MT@rightmarginkern
   \fi
@@ -7911,6 +7911,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   \endgroup
   \ifhbox\MT@tempbox
+    \def\@tempa{#1}%
     \MT@leftmarginkern=\leftmarginkern\MT@tempbox\relax
     \MT@rightmarginkern=\rightmarginkern\MT@tempbox\relax
   \fi
