@@ -33,7 +33,8 @@ The alternative package `letterspace`, which also works with plain TeX,
 provides the user commands for letterspacing only, omitting support for all
 other extensions.
 
-The documentation can be found in `microtype.pdf`.
+The documentation can be found in `microtype.pdf` (User manual) and
+`microtype-code.pdf` (Implementation).
 
 
 Installation
@@ -55,7 +56,7 @@ To install the package, use one of the following methods
   and move all generated files into a directory where LaTeX will find them,
   e.g., `TEXMF/tex/latex/microtype/`.
 
-- The use the lastest development version, clone the github repository at
+- To use the latest development version, clone the github repository at
   `https://github.com/schlcht/microtype` and run `make`.
 
 
@@ -70,9 +71,10 @@ of all distributions of LaTeX version 2005/12/01 or later.
 
 This work has the LPPL maintenance status 'maintained'.
 
-This work consists of the files `microtype.dtx` and `microtype.ins` and the
-derived files `microtype.sty`, `microtype-pdftex.def`, `microtype-luatex.def`,
-`microtype-xetex.def`, `microtype.lua`, `microtype-show.sty` and `letterspace.sty`.
+This work consists of the files `microtype.dtx`, `microtype-utf.dtx` and
+`microtype.ins` and the derived files `microtype.sty`, `microtype-pdftex.def`,
+`microtype-luatex.def`, `microtype-xetex.def`, `microtype.lua`, `microtype-show.sty`
+and `letterspace.sty`.
 
 Modified versions of the configuration files (`*.cfg`) may be distributed
 provided that: (1) the original copyright statement is not removed, and
