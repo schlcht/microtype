@@ -1754,7 +1754,7 @@
 %       (since the value that comes last will take precedence). Font settings
 %       will be loaded recursively.
 %       The following options will affect all loaded lists, in other words,
-%       any options from the loaded lists will be ignored:\looseness=-1 ^^A layout
+%       any options from the loaded lists will be ignored:
 %\changes{v1.8}{2005/06/23}{add example for \texttt{factor} option}
 %  \item[\key{factor}] This option can be used to influence all protrusion
 %       factors of the list, overriding any global \opt{factor} setting (see
@@ -2973,6 +2973,7 @@
 % possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
 % exist on your \TeX\ system.
 %
+%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %! pdfTeX error (font expansion): auto expansion is only possible with scalable fonts.
@@ -3062,6 +3063,7 @@
 % \file{pdflatex.ini} (2.5 or newer).
 %
 %  \item
+%\pagebreak ^^A layout
 %\begin{verbatim}
 %pdfTeX warning (font expansion): font should be expanded before its first use
 %\end{verbatim}
