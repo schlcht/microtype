@@ -5727,14 +5727,18 @@ microtype.if_luaotf_font = if_luaotf_font
 %</luatex-def>
 %    \end{macrocode}
 % This is the |lua| function, which is much faster than looping through all glyphs
-% in \TeX. Legacy fonts (which this function should never work on) don't contain a |v.index| field.
+% in \TeX. Legacy fonts (which this function should never work on) don't contain a
+% |v.index| field.
+%\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
+% Our test whether |i| is larger than 1114111 may seem strange, but with the
+% HarfBuzz renderer, we are not guaranteed to get a number within the Unicode range.
 %    \begin{macrocode}
 %<*luafile>
 local function do_font()
   local thefont = font.getfont(font.current())
   if thefont then
     for i,v in next,thefont.characters do
-      if v.index == nil or v.index > 0 then
+      if v.index == nil or ( v.index > 0 and i < 1114112 ) then
         microtype.sprint([[\@tempcnta=]]..i..[[\relax\MT@dofont@function]])
       end
     end
@@ -10267,9 +10271,10 @@ end
 %                            (contributed by \contributor \'Elie Roux <elie.roux\at telecom-bretagne.eu>)}
 %                            ^^A MID: <516AAF6B.8040605@telecom-bretagne.eu>
 % With HarfBuzz, the return value is not guaranteed to be inside the
-% Unicode range, so we have to guard against this case as well.
+% Unicode range, so we have to guard against this case as well (same as in
+% |do_font|).
 % ^^A cf. https://github.com/latex3/luaotfload/issues/198
-%\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range}
+%\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
 %    \begin{macrocode}
 %<*luafile>
 if luaotfload and luaotfload.aux and luaotfload.aux.slot_of_name then
