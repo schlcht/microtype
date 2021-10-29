@@ -253,15 +253,8 @@
   {\let\numberline\@gobble{\small #1~[#2]}}}
 \def\l@table{\@dottedtocline{1}{0pt}{1.5em}}
 \def\@pnumwidth{1.7em}
-\ifpdf
-  \let\ORIGpdfoutline\pdfoutline
-  \def\special@outlines{attr{/F 01}}
-  \def\normaloutline {\protected@write\@outlinefile{}{\let\pdfoutline \ORIGpdfoutline}}
-  \def\specialoutline{\protected@write\@outlinefile{}{\def\pdfoutline{\ORIGpdfoutline\special@outlines}}}
-  \g@addto@macro\appendix{\specialoutline}
-\fi
 \def\defspecial@toc#1#2#3{\long\def#1{%
-  \ifpdf\phantomsection\specialoutline\pdfbookmark[1]{#2}{#3}\normaloutline\fi
+  \ifpdf\phantomsection\bookmarksetupnext{italic}\pdfbookmark[1]{#2}{#3}\fi
   \section*{#2}\@mkboth{\textls*[70]{\MakeUppercase{\contentsname}}}{}%
   \@starttoc{#3}}}
 \defspecial@toc\tableofcontents\contentsname{toc}
@@ -600,10 +593,16 @@
 % fancy PDF document
 \ifpdf
   \usepackage{xr-hyper}
-  \usepackage[bookmarks,bookmarksopen,pdfdisplaydoctitle,
+  \usepackage[bookmarks,pdfdisplaydoctitle,
               colorlinks,linkcolor=theblue,citecolor=theblue,urlcolor=thered,
               hyperindex=false,hyperfootnotes=false]
              {hyperref}
+  \usepackage[atend]{bookmark}
+%<*!docsty>
+  \BookmarkAtEnd{%
+    \bookmark[startatroot,level=0,bold,gotor={microtype\ifcodedoc\else-code\fi.pdf}]
+    {\ifcodedoc User manual\else Implementation\fi}}
+%</!docsty>
   \externaldocument{microtype\ifcodedoc\else-code\fi}
   \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
   \usepackage{hyperxmp}                  % (hyperxmp loads totpages)
@@ -19371,7 +19370,7 @@ end
 \ShowMissingGlyphstrue
 \def\GlyphScaleFactor{2}
 
-%% load any required font packages
+%% load any required font packages:
 \ifpdftex
  \usepackage[T1]{fontenc}
 \else
@@ -19381,7 +19380,7 @@ end
 \begin{document}
 \microtypesetup{expansion=false}
 
-%% load your font here
+%% load your font here:
 
 \ShowCharacterInheritance
 
@@ -19451,7 +19450,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{0}
+% \CheckSum{12274}
 %
 % \Finale
 %
