@@ -7949,19 +7949,20 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % (inspired by Joseph Wright). ^^A https://tex.stackexchange.com/a/331696/
 % Only works with \etex.
 %    \begin{macrocode}
-\def\MT@prot@ifmacro{%
-  \expandafter\MT@prot@ifmacro@\meaning\MT@prot@next\@nil
-}
-\edef\MT@prot@ifmacro@#1\@nil{%
-  \noexpand\MT@prot@ifmacro@@#1{}{}\detokenize{macro:->}\noexpand\@nil
-}
-\edef\MT@temp{%
-  \def\noexpand\MT@prot@ifmacro@@##1\detokenize{macro:->}##2\noexpand\@nil{%
-    \noexpand\ifx\relax##1\relax
-    \unexpanded{\expandafter\@firstofone\else\expandafter\@gobble\fi}%
-  }%
-}
-\MT@temp
+^^X\def\MT@prot@ifmacro{%
+^^X  \expandafter\MT@prot@ifmacro@\meaning\MT@prot@next\@nil
+^^X}
+^^X\edef\MT@prot@ifmacro@#1\@nil{%
+^^X  \noexpand\MT@prot@ifmacro@@#1{}{}\detokenize{macro:->}\noexpand\@nil
+^^X}
+^^X\edef\MT@temp{%
+^^X  \def\noexpand\MT@prot@ifmacro@@##1\detokenize{macro:->}##2\noexpand\@nil{%
+^^X    \noexpand\ifx\relax##1\relax
+^^X    \unexpanded{\expandafter\@firstofone\else\expandafter\@gobble\fi}%
+^^X  }%
+^^X}
+^^X\MT@temp
+^^Q\let\MT@prot@ifmacro\@gobble
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
