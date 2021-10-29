@@ -1,10 +1,9 @@
-# Makefile for microtype 
-# (lots of it stolen from fontspec)
+# microtype makefile
 
 SHELL = /bin/sh
 .SUFFIXES:
 
-# Redefine this to print output if you need:
+# Redefine to print output:
 REDIRECT = > /dev/null
 
 help:
@@ -14,7 +13,6 @@ help:
 	@echo '          unpack - extract all files'
 	@echo '             doc - compile user and code documentation'
 	@echo '         userdoc - compile user documentation'
-	@echo '         codedoc - compile code documentation'
 	@echo '            ctan - generate archive for CTAN'
 	@echo '             all - unpack & doc'
 	@echo '           world - all & ctan'
@@ -99,7 +97,6 @@ DO_MAKEINDEX_CODE = \
 all:     $(GENERATED)
 doc:     make-doc-sty $(COMPILED) make-normal-sty
 userdoc: make-doc-sty $(DOC)      make-normal-sty
-codedoc: make-doc-sty $(CODEDOC)  make-normal-sty
 unpack:  docstrip.cfg $(UNPACKED)
 ctan:    $(CTAN_ZIP)
 tds:     $(TDS_ZIP)
