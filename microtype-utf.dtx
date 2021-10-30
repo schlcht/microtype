@@ -1,7 +1,5 @@
 %\iffalse meta-comment
-% !Mode:: "TeX:DTX:UK"
-% !smartQuote:: "English"
-% !DTXversion:: "2.8d"
+%
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -15,9 +13,10 @@
 %
 % This work has the LPPL maintenance status `maintained'.
 %
-% This work consists of the files microtype.dtx and microtype.ins and the
-% derived files microtype.sty, microtype-pdftex.def, microtype-luatex.def,
-% microtype-xetex.def, microtype.lua, microtype-show.sty and letterspace.sty.
+% This work consists of the files microtype.dtx, microtype-utf.dtx and
+% microtype.ins and the derived files microtype.sty, microtype-pdftex.def,
+% microtype-luatex.def, microtype-xetex.def, microtype.lua, letterspace.sty
+% and microtype-show.sty.
 %
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -28,7 +27,7 @@
 \ProvidesFile
 %</!EBGaramond>
 %<*driver>
-    {\jobname.dtx}[2021/03/14 v2.8c]
+    {\jobname.dtx}[2021/10/31 v3.0]
 %</driver>
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
@@ -208,8 +207,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<NewComputerModern>     family   = {New Computer Modern} }
 %    \end{macrocode}
 %\changes{v2.8a}{2021/02/21}{specify `ff' ligature as Unicode instead of glyph name}
-%\changes{v2.8d}{2021/08/08}{settings for New Computer Modern (provided by
-%                            \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
+%\changes{v3.0}{2021/08/08}{settings for New Computer Modern (provided by
+%                           \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
 %{\setmacrofont\NCM
 %    \begin{macrocode}
    {
@@ -435,7 +434,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %\subsubsection{EB Garamond}
 %\addtoUTFbookmarks{subsub:OT-inh-EBGaramond}
-%\changes{v2.8d}{2021/08/08}{settings for <EB> Garamond (OpenType)}
+%\changes{v3.0}{2021/08/08}{settings for <EB> Garamond (OpenType)}
 %    \begin{macrocode}
 %<*EBGaramond>
 \DeclareCharacterInheritance
@@ -729,7 +728,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %\changes{v2.8b}{2021/02/21}{settings for the Lato font (\file{mt-Lato.cfg})
 %                            (reported by \contributor dsedivec <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/380812/microtype-warning-unknown-slot-number-of-character-with-lato-font
-%\changes{v2.8d}{2021/06/22}{generalise basic inheritance settings}
+%\changes{v3.0}{2021/06/22}{generalise basic inheritance settings}
 %    \begin{macrocode}
 %<*TU-basic>
 \DeclareCharacterInheritance
@@ -771,7 +770,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 % have no meaningful glyph arsenal at all, and should therefore be
 % aliased so that empty settings are applied.
 %\changes{v2.8b}{2021/02/21}{dummy settings for the Font Awesome font (\file{mt-FontAwesome.cfg})}
-%\changes{v2.8d}{2021/06/22}{generalise empty settings}
+%\changes{v3.0}{2021/06/22}{generalise empty settings}
 %    \begin{macrocode}
 %<*TU-empty>
 \DeclareCharacterInheritance
@@ -793,9 +792,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %\subsubsection{Latin Modern Roman/New Computer Modern}
 %\addtoUTFbookmarks{subsub:OT-prot-LMR}
-%\changes{v2.8d}{2021/08/08}{settings for New Computer Modern (provided by
-%                            \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
-%\changes{v2.8d}{2021/08/13}{fix quotation marks in <LMR>}
+%\changes{v3.0}{2021/08/08}{settings for New Computer Modern (provided by
+%                           \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>)}
+%\changes{v3.0}{2021/08/13}{fix quotation marks in <LMR>}
 %    \begin{macrocode}
 %<*LatinModernRoman|NewComputerModern>
 \SetProtrusion
@@ -1619,7 +1618,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \end{macrocode}
 %\subsubsection{EB Garamond}
 %\addtoUTFbookmarks{subsub:OT-prot-EBGaramond}
-%\changes{v2.8d}{2021/10/25}{settings for <EB> Garamond (OpenType)}
+%\changes{v3.0}{2021/10/25}{settings for <EB> Garamond (OpenType)}
 %    \begin{macrocode}
 %<*EBGaramond>
 \SetProtrusion

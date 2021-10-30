@@ -4,7 +4,7 @@ The `microtype` package
 
 **Subliminal refinements towards typographical perfection**
 
-  (v2.8c -- 2021/03/14)
+  (v3.0 -- 2021/10/31)
 
 
 Overview
@@ -73,8 +73,8 @@ This work has the LPPL maintenance status 'maintained'.
 
 This work consists of the files `microtype.dtx`, `microtype-utf.dtx` and
 `microtype.ins` and the derived files `microtype.sty`, `microtype-pdftex.def`,
-`microtype-luatex.def`, `microtype-xetex.def`, `microtype.lua`, `microtype-show.sty`
-and `letterspace.sty`.
+`microtype-luatex.def`, `microtype-xetex.def`, `microtype.lua`, `letterspace.sty`
+and `microtype-show.sty`.
 
 Modified versions of the configuration files (`*.cfg`) may be distributed
 provided that: (1) the original copyright statement is not removed, and

@@ -1,7 +1,5 @@
 %\iffalse meta-comment
-% !Mode:: "TeX:DTX:UK"
-% !smartQuote:: "English"
-% !DTXversion:: "2.8d"
+%
 % ------------------------------------------------------------------------
 %                       The `microtype' package
 %         Subliminal refinements towards typographical perfection
@@ -17,8 +15,8 @@
 %
 % This work consists of the files microtype.dtx, microtype-utf.dtx and
 % microtype.ins and the derived files microtype.sty, microtype-pdftex.def,
-% microtype-luatex.def, microtype-xetex.def, microtype.lua, microtype-show.sty
-% and letterspace.sty.
+% microtype-luatex.def, microtype-xetex.def, microtype.lua, letterspace.sty
+% and microtype-show.sty.
 %
 % Modified versions of the configuration files (*.cfg) may be distributed
 % provided that: (1) the original copyright statement is not removed, and
@@ -39,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/99/99 v2.8d
+  [2021/10/31 v3.0
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -54,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "2.8c",
-%<luafile>    date         = "2021/03/14",
+%<luafile>    version      = "3.0",
+%<luafile>    date         = "2021/10/31",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -856,10 +854,11 @@
 %\changes{v1.0}{2004/09/11}{Initial version}
 %\changes{v2.0}{2006/12/29}{new package \letterspace: a stripped-down version,
 %                           containing the letterspacing commands only}
+%\changes{v3.0}{2021/10/31}{move development to \href{\githuburl}{GitHub}}
 %\GeneralChanges{Documentation}
 %\changes{v1.9b}{2006/01/13}{activate expansion in the distributed <PDF>}
 %\changes{v2.2}{2007/04/01}{logo transparency and amusement}
-%\changes{v2.8d}{2021/06/01}{\relax split up in User manual (\file{microtype.pdf})
+%\changes{v3.0}{2021/06/01}{\relax split up in User manual (\file{microtype.pdf})
 %                            and Implementation doc (\file{microtype-code.pdf})}
 %\fi
 %
@@ -1338,9 +1337,9 @@
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously |draft|) option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\changes{v2.8d}{2021/09/28}{rename option |draft| option to \opt{disable}
-%                (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
-%                 ^^A private mail, 2018/07/04
+%\changes{v3.0}{2021/09/28}{rename option |draft| option to \opt{disable}
+%               (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%                ^^A private mail, 2018/07/04
 %\Describe{Option}{disable}{true,!false,ifdraft}
 % If the \opt{disable} option is passed to the package, all
 % micro-typographic extensions will be disabled, which may lead to different
@@ -2356,7 +2355,7 @@
 %\end{table}
 %
 %\begin{table}[t]\small
-%\changes{v2.8d}{2021/06/16}{split up table of fonts with tailored protrusion settings}
+%\changes{v3.0}{2021/06/16}{split up table of fonts with tailored protrusion settings}
 %\caption{OpenType fonts with tailored protrusion settings}\label{tab:ot-fonts}
 %\setlength\fboxsep{4pt}
 %\leavevmode\kern-\dimexpr\fboxsep+\fboxrule\relax
@@ -2548,7 +2547,7 @@
 %
 %\section[Letterspacing revisited]
 %        {Letterspacing revisited \requires{\pdftex~1.40,\luatex~0.62}}
-%        \label{sec:lettersp}
+%        \label{sec:lettersp} ^^A [also referenced in microtype.ins]
 %
 %\Describe{Macro}{\textls}{?amount,general text}
 % While the \opt{tracking} feature, described in section~\ref{sub:tracking},
@@ -2742,7 +2741,7 @@
 % so I welcome any suggestions and problem reports you may have.
 %
 %
-%\section{Creating configurations and contributing}\label{sec:contrib}
+%\section{Creating configurations and contributing}\label{sec:contrib} ^^A [also referencd in microtype.ins]
 %
 % I would also be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
@@ -2794,12 +2793,12 @@
 %\fi
 %
 %\medskip\noindent
-% Development of the package takes place at GitHub, which also provides an
+% Development of the package takes place on GitHub, which also provides an
 % issue tracker for submitting bug reports and feature requests:
 % \url{\githuburl/issues}.
 %
 %
-%\section{Hints and caveats}\label{sec:caveats}
+%\section{Hints and caveats}\label{sec:caveats} ^^A [also referenced in: \MT@warn@unknown@once]
 %
 %\paragraph{Use settings that match your font.}
 % Although the default settings should give reasonable results for most fonts,
@@ -2821,7 +2820,7 @@
 % Multiple Master font, you may set expansion limits to up to 4\%.
 %
 %\changes{v2.0}{2006/12/13}{qualify hint about web documents with regard to older \pdftex\ versions}
-%\changes{v2.8d}{2021/05/25}{remove hint about web documents with pre-1.40 \pdftex\ (it's been 14 years~\dots)}
+%\changes{v3.0}{2021/05/25}{remove hint about web documents with pre-1.40 \pdftex\ (it's been 14 years~\dots)}
 %\iffalse ^^A pdftex 1.40 was released in 2007 ...
 %\paragraph{Don't use font expansion for web documents (with older \pdftex\ versions).}
 % With \pdftex\ versions older than 1.40, each expanded instance of the font
@@ -2836,8 +2835,8 @@
 %\changes{v2.2}{2007/07/06}{add hint about extra <TOC> leader dot
 %                           (first discovered by \contributor Morten H\o gholm <morten.hoegholm\at latex-project.org>)}
 %                                                                                       ^^A private mail, 2006/08/26
-%\changes{v2.8d}{2021/05/15}{remove hint about extra <TOC> leader dot
-%                            (fixed in \LaTeX)}
+%\changes{v3.0}{2021/05/15}{remove hint about extra <TOC> leader dot
+%                           (fixed in \LaTeX)}
 %\iffalse
 %\paragraph{You might want to disable protrusion in the Table of Contents.}
 % In unfortunate situations, enabled protrusion might internally alter the line
@@ -2993,7 +2992,7 @@
 %(microtype)                in font encoding `TU' in inheritance list
 %(microtype)                `microtype.cfg/406(protrusion)'.
 %\end{verbatim}
-%\changes{v2.8d}{2021/06/26}{add hint about unknown slot numbers}
+%\changes{v3.0}{2021/06/26}{add hint about unknown slot numbers}
 % If you receive lots of warnings like the above, and you are running \luatex\
 % or \xetex, this probably means that the font you are using contains less
 % glyphs than are defined in the default protrusion and/or inheritance settings.
@@ -3410,6 +3409,7 @@
 %  \item Protrusion settings for New Computer Modern (OpenType)
 %  \item Protrusion settings for <EB> Garamond (OpenType)
 %  \item New generic protrusion settings for \luatex/\xetex\ \refsection{\ref{sec:caveats}}
+%  \item Move development to \href{\githuburl}{GitHub}
 %
 %\VersionDate{2.8c}{2021/03/14}
 %
@@ -3997,7 +3997,7 @@
 % The old command names had one more hunch (|\..MicroType..|).
 % Before finally letting them sink into oblivion, raise an error.
 %\changes{v1.8}{2005/04/28}{renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}}
-%\changes{v2.8d}{2020/04/10}{old command names will raise an error}
+%\changes{v3.0}{2020/04/10}{old command names will raise an error}
 %    \begin{macrocode}
 \def\MT@old@cmd#1#2{%
   \newcommand*#1{\MT@error{%
@@ -4162,7 +4162,7 @@
 %
 %\subsubsection{Visual debugging}
 %
-%\changes{v2.8d}{2021/06/02}{new package: \pkg{microtype-show} for visual debugging}
+%\changes{v3.0}{2021/06/02}{new package: \pkg{microtype-show} for visual debugging}
 % The \pkg{microtype-show} package offers some tools for preparing
 % protrusion settings. We make use of the \microtype\ infrastructure,
 % redefining some of its internal commands (done later,
@@ -4714,7 +4714,7 @@
 %          \cmd\pdfcopyfont\
 %          ($\geq$~1.40.4)
 %  \item + \cmd\letterspacefont\ uses explicit \fontdim6 if specified
-%\changes{v2.8d}{2021/07/01}{case 8: \pdftex\ 1.40.23}
+%\changes{v3.0}{2021/07/01}{case 8: \pdftex\ 1.40.23}
 %          ^^A https://git.texlive.info/texlive/commit/?id=1c7ff5528e10e989ba7ea7b72182d5f34d4d4e29
 %          ($\geq$~1.40.23)
 %\end{enum}
@@ -4863,7 +4863,7 @@
 % implementation.
 %\changes{v2.1}{2007/01/15}{fix: \letterspace\ package forgot to load \pkg{keyval}}
 % For the \opt{patch} option, we use \pkg{etoolbox}, which requires \etex.
-%\changes{v2.8d}{2021/05/17}{require package \pkg{etoolbox} (for \opt{patch} option)}
+%\changes{v3.0}{2021/05/17}{require package \pkg{etoolbox} (for \opt{patch} option)}
 %    \begin{macrocode}
 %<*package|letterspace>
 \RequirePackage{keyval}[1997/11/10]
@@ -5077,7 +5077,7 @@
 % load \pkg{fontspec} before \microtype.
 % There will hardly be any \luatex\ documents that don't load this package, anyway.
 %\changes{v2.6}{2013/06/19}{load \pkg{luaotfload} with \luatex}
-%\changes{v2.8d}{2021/03/21}{\letterspace\ loads \file{microtype.lua}}
+%\changes{v3.0}{2021/03/21}{\letterspace\ loads \file{microtype.lua}}
 % Since 2017/01/01, it is already loaded in the format.
 %    \begin{macrocode}
 %<lua->\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
@@ -5730,7 +5730,7 @@ microtype.if_luaotf_font = if_luaotf_font
 % This is the |lua| function, which is much faster than looping through all glyphs
 % in \TeX. Legacy fonts (which this function should never work on) don't contain a
 % |v.index| field.
-%\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
+%\changes{v3.0}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
 % Our test whether |i| is larger than 1114111 may seem strange, but with the
 % HarfBuzz renderer, we are not guaranteed to get a number within the Unicode range.
 %    \begin{macrocode}
@@ -6086,9 +6086,9 @@ microtype.do_font = do_font
 %    \end{macrocode}
 %\end{macro}
 %\changes{v2.8c}{2021/03/12}{add to hook for \pkg{fontspec}}
-%\changes{v2.8d}{2021/09/27}{fix for changed hook name order
-%                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>
-%                             and \contributor Karl Berry <karl\at freefriends.org>)}
+%\changes{v3.0}{2021/09/27}{fix for changed hook name order
+%                           (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>
+%                            and \contributor Karl Berry <karl\at freefriends.org>)}
 %                            ^^A private mails, 2021/09/06 and 2021/09/26
 %\end{macro}
 % We need the correct value of the former for configuration commands
@@ -6365,8 +6365,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }%
 %    \end{macrocode}
-%\changes{v2.8d}{2021/04/16}{compatibility fix for \pkg{unicode-math} with \pkg{luainputenc}
-%                            (reported by \contributor tnull <@\at @>)}
+%\changes{v3.0}{2021/04/16}{compatibility fix for \pkg{unicode-math} with \pkg{luainputenc}
+%                           (reported by \contributor tnull <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/592946/microtype-unknown-slot-number-of-character-for-palatino-in-classicthesis-w-l
 % The \pkg{luainputenc} package makes all characters active, which can lead into
 % problems when the \pkg{unicode-math} package is loaded, as the latter doesn't
@@ -6493,7 +6493,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    we also have to patch \cmd\everypar~\dots
 % \begin{itemize}
 % \item \pkg{beamer} patches it too
-%\changes{v2.8d}{2021/05/20}{protrusion patch for \cmd\item}
+%\changes{v3.0}{2021/05/20}{protrusion patch for \cmd\item}
 %    \begin{macrocode}
   \@ifclassloaded{beamer}
     {\MT@define@patch{item}
@@ -6523,7 +6523,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \item [|toc|] <TOC> and friends
 % \begin{itemize}
 %   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
-%\changes{v2.8d}{2021/05/20}{protrusion patch for <TOC>}
+%\changes{v3.0}{2021/05/20}{protrusion patch for <TOC>}
 %    \begin{macrocode}
   \@ifclassloaded{memoir}
     {\MT@define@patch{toc}
@@ -6573,8 +6573,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \end{itemize}
 % \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
 %       on \cmd\tagform@, so we have to make it use the original definition.
-%\changes{v2.8d}{2021/05/21}{protrusion patch for equation numbers
-%                            (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
+%\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
+%                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %    \begin{macrocode}
   \@ifpackageloaded{amsmath}
     {\MT@define@patch{eqnum}
@@ -6588,7 +6588,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {}}%
 %    \end{macrocode}
 % \item [|footnote|] footnote text (only visible with block paragraphs).
-%\changes{v2.8d}{2021/05/25}{protrusion patch for footnote text}
+%\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
 %    \begin{macrocode}
   \@ifclassloaded{memoir}
     {\MT@define@patch{footnote}
@@ -7823,7 +7823,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\noprotrusion}
-%\changes{v2.8d}{2021/05/15}{provide command for older \LaTeX\ versions}
+%\changes{v3.0}{2021/05/15}{provide command for older \LaTeX\ versions}
 % This command may be used to inhibit protrusion on either side. It's part
 % of \LaTeX\ since 2018-12-01.
 % We provide it for older releases.
@@ -7845,7 +7845,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\leftprotrusion}
-%\changes{v2.8d}{2021/05/15}{new command}
+%\changes{v3.0}{2021/05/15}{new command}
 % This command may be used to add protrusion on the left hand side.
 % We try to reconstruct the next glyph (possibly a ligature).\footnote{
 %   \luatex\ offers the command \cmd\protrusionboundary, which could
@@ -7877,7 +7877,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\rightprotrusion}
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
 % so the counterpart cannot be symmetric.
-%\changes{v2.8d}{2021/05/15}{new command}
+%\changes{v3.0}{2021/05/15}{new command}
 %    \begin{macrocode}
 \DeclareRobustCommand\rightprotrusion{\MT@prot@r}
 %    \end{macrocode}
@@ -8621,8 +8621,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %
 % Tracking won't work with older \pdftex\ versions (\less\ 1.40.23)
 % if the original font's \fontdim6 is zero, in which
-%\changes{v2.8d}{2021/06/11}{with \luatex, tracking also works for fonts with a zero \fontdim6}
-%\changes{v2.8d}{2021/07/01}{with \pdftex\ 1.40.23, tracking also works for fonts with a zero \fontdim6}
+%\changes{v3.0}{2021/06/11}{with \luatex, tracking also works for fonts with a zero \fontdim6}
+%\changes{v3.0}{2021/07/01}{with \pdftex\ 1.40.23, tracking also works for fonts with a zero \fontdim6}
 % case we issue a warning (once for every font).
 %    \begin{macrocode}
 %<*pdf-|lua-|letterspace>
@@ -8854,10 +8854,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@ls@fontspec@font}
 %\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
 %\changes{v2.7}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
-%                            (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
+%                           (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
 %                            ^^A http://tug.org/pipermail/lualatex-dev/2017-February/001670.html
-%\changes{v2.8d}{2021/03/19}{use \texttt{lua} to parse font spec\slash fix for font spec containing spaces
-%                            (reported by \contributor Aman Mehra <reportaman\at gmail.com>)}
+%\changes{v3.0}{2021/03/19}{use \texttt{lua} to parse font spec\slash fix for font spec containing spaces
+%                           (reported by \contributor Aman Mehra <reportaman\at gmail.com>)}
 %                            ^^A https://tex.stackexchange.com/questions/567698/luatex-microtype-fontspec-luaotfload-buggy-interaction-canceling-each-others-s
 % Add the |kernfactor| feature to a font loaded by \pkg{fontspec}.
 %    \begin{macrocode}
@@ -10276,11 +10276,11 @@ end
 % Unicode range, so we have to guard against this case as well (same as in
 % |do_font|).
 % ^^A cf. https://github.com/latex3/luaotfload/issues/198
-%\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
-% Also, older versions of \pkg{luaotfload} returned the numbers as floats.
+%\changes{v3.0}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
+% Also, older versions of \pkg{luaotfload} (until v3.18) returned the numbers as floats.
 %^^A fixed here: https://github.com/latex3/luaotfload/commit/53b70cbdb60101e2869d879e9d8daf576b0c8f82
-%\changes{v2.8d}{2021/10/30}{convert floats to integers
-%                            (reported by \contributor azur <@\at @>)}
+%\changes{v3.0}{2021/10/30}{convert floats to integers
+%                           (reported by \contributor azur <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/616329/using-polyglossia-microtype-and-newcomputermodern-with-lualatex-results-in-0-0
 %    \begin{macrocode}
 %<*luafile>
@@ -10564,8 +10564,8 @@ end
 %                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2021/03/02
 %                            ^^A also: https://github.com/latex3/latex2e/issues/525
-%\changes{v2.8d}{2021/10/18}{fix for incompatibility with \pkg{syntax}
-%                            (reported by \contributor Safron <@\at @>)}
+%\changes{v3.0}{2021/10/18}{fix for incompatibility with \pkg{syntax}
+%                           (reported by \contributor Safron <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/619410/conflict-between-microtype-and-syntax-packages/
 %    \begin{macrocode}
 \def\MT@is@opt@char#1\iffontchar#2\char#3\else#4\fi\relax{%
@@ -12691,8 +12691,8 @@ end
 %\end{macro}
 %\begin{macro}{\MT@set@inh@list}
 % No need to create an inheritance list for tracking.
-%\changes{v2.8d}{2021/03/27}{fix: grouping with \cmd\begingroup~\dots~\cmd\endgroup\ instead of \texttt{\{}\dots\texttt{\}}
-%                            (reported by \contributor chsk <@\at @>)}
+%\changes{v3.0}{2021/03/27}{fix: grouping with \cmd\begingroup~\dots~\cmd\endgroup\ instead of \texttt{\{}\dots\texttt{\}}
+%                           (reported by \contributor chsk <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/590265/improper-halign-inside-s-with-lmodern-microtype-fontspec
 %    \begin{macrocode}
 \def\MT@set@inh@list#1#2{%
@@ -12806,8 +12806,8 @@ end
 % If the inheriting character is preceded by |(|\meta{prefix}|)|, where
 % \meta{prefix} is one of |l|, |r| or |lr|, this has a special meaning
 % for protrusion. For the other features, we ignore these settings.
-%\changes{v2.8d}{2021/03/27}{new: automatical protrusion based on char widths difference
-%                            (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
+%\changes{v3.0}{2021/03/27}{new: automatical protrusion based on char widths difference
+%                           (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
 %                            ^^A private mail, 2020/12/24
 %    \begin{macrocode}
 \def\MT@has@inh@prefix#1(#2)#3#4\@nil{%
@@ -13354,7 +13354,7 @@ end
 % \opt{final} is the opposite to \opt{draft}.
 %\changes{v1.4a}{2004/11/16}{new option: \opt{final}}
 % It's only kept for backwards compatibility.
-%\changes{v2.8d}{2021/08/13}{remove option \opt{final}}
+%\changes{v3.0}{2021/08/13}{remove option \opt{final}}
 %    \begin{macrocode}
 %<*package>
 \MT@def@bool@opt{final}{}
@@ -13362,8 +13362,8 @@ end
 % The \opt{disable} option replaces the \opt{draft} option,
 % which could be inherited from the class options.
 % The third value |ifdraft| mimicks this behaviour.
-%\changes{v2.8d}{2021/08/13}{new option: \opt{disable}, replacing the \texttt{draft} option
-%                            (suggested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
+%\changes{v3.0}{2021/08/13}{new option: \opt{disable}, replacing the \texttt{draft} option
+%                           (suggested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2018/07/04
 %    \begin{macrocode}
 \define@key{MT}{disable}[true]{%
@@ -13468,7 +13468,7 @@ end
   }%
 }
 %    \end{macrocode}
-%\changes{v2.8d}{2021/05/22}{new options: \opt{patch} and \opt{nopatch}}
+%\changes{v3.0}{2021/05/22}{new options: \opt{patch} and \opt{nopatch}}
 %\begin{macro}{\MT@patches@list}
 %\begin{macro}{\MT@nopatches@list}
 % The \opt{patch} and \opt{nopatch} options.
@@ -14831,7 +14831,7 @@ end
 %\changes{v2.8a}{2021/01/09}{reference New Computer Modern also by file name
 %                            (reported by \contributor Canageek <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/578121/how-do-i-properly-tell-microtype-that-newcomputermodern-is-the-same-as-comput
-%\changes{v2.8d}{2021/08/08}{New Computer Modern has its own settings}
+%\changes{v3.0}{2021/08/08}{New Computer Modern has its own settings}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{NewCM10-Book.otf}   {New Computer Modern}
 \DeclareMicrotypeAlias{NewCM10-Regular.otf}{New Computer Modern}
@@ -14978,8 +14978,8 @@ end
 % (see \ref{subsub:OT-inh-basic}) to prevent lots of warning
 % messages from the inheritance settings; they will still receive
 % protrusion settings from the default (<T1>) configuration.
-%\changes{v2.8d}{2021/06/22}{declare \texttt{basic} aliases for the Fontin font}
-%\changes{v2.8d}{2021/06/25}{declare \texttt{basic} alias for Bergamo Std}
+%\changes{v3.0}{2021/06/22}{declare \texttt{basic} aliases for the Fontin font}
+%\changes{v3.0}{2021/06/25}{declare \texttt{basic} alias for Bergamo Std}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{Lato}             {TU-basic}
 \DeclareMicrotypeAlias{Lato-Regular}     {TU-basic}
@@ -14989,7 +14989,7 @@ end
 %    \end{macrocode}
 % The \pkg{fontawesome} and \pkg{fontawesome5} packages are aliased
 % to empty settings (see \ref{subsub:OT-inh-empty} and \ref{subsub:OT-prot-empty}).
-%\changes{v2.8d}{2021/03/15}{declare \texttt{empty} aliases for \pkg{fontawesome5}}
+%\changes{v3.0}{2021/03/15}{declare \texttt{empty} aliases for \pkg{fontawesome5}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{FontAwesome}      {TU-empty} % fontawesome
 \DeclareMicrotypeAlias{fontawesomefree}  {TU-empty} % fontawesome5
@@ -15355,7 +15355,7 @@ end
 %</m-t>
 %    \end{macrocode}
 %\subsubsection{<LGR>}
-%\changes{v2.8d}{2021/06/24}{add settings for <LGR>}
+%\changes{v3.0}{2021/06/24}{add settings for <LGR>}
 % The Greek <LGR> encoding. <EB> Garamond contains some more glyphs.
 %    \begin{macrocode}
 %<*m-t|ebg>
@@ -15931,7 +15931,7 @@ end
 
 %    \end{macrocode}
 % Settings for figure variants.
-%\changes{v2.8d}{2021/06/10}{settings for <EB> Garamond figure variants}
+%\changes{v3.0}{2021/06/10}{settings for <EB> Garamond figure variants}
 %    \begin{macrocode}
 %<*ebg>
 \SetProtrusion
@@ -16331,7 +16331,7 @@ end
 
 %</ptm>
 %    \end{macrocode}
-%\changes{v2.8d}{2021/06/25}{<LGR> settings for <EB> Garamond}
+%\changes{v3.0}{2021/06/25}{<LGR> settings for <EB> Garamond}
 % For the Greek <LGR> encoding.
 %    \begin{macrocode}
 %<*ebg>
@@ -17592,7 +17592,7 @@ end
 %    \end{macrocode}
 % For small caps italics, we copy the definitions from the small caps settings,
 %  except that we first load the italics settings.
-%\changes{v2.8d}{2021/06/23}{settings for <EB> Garamond small caps italics}
+%\changes{v3.0}{2021/06/23}{settings for <EB> Garamond small caps italics}
 %    \begin{macrocode}
 \SetProtrusion
    [ name     = EBGaramond-scit-OT1-Prop,
