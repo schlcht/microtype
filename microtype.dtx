@@ -30,26 +30,26 @@
 \ProvidesFile{\jobname.dtx}
 %</driver>
 %<package|letterspace|show>\ProvidesPackage
-%<config|pdftex-def|luatex-def|xetex-def>\ProvidesFile
+%<config|pdf-|lua-|xe->\ProvidesFile
 %<package>  {microtype}
 %<letterspace>  {letterspace}
 %<show>  {microtype-show}
 %<m-t>  {microtype.cfg}
-%<pdftex-def>  {microtype-pdftex.def}
-%<luatex-def>  {microtype-luatex.def}
-%<xetex-def>  {microtype-xetex.def}
-%<*package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|show>
+%<pdf->  {microtype-pdftex.def}
+%<lua->  {microtype-luatex.def}
+%<xe->  {microtype-xetex.def}
+%<*package|letterspace|m-t|pdf-|lua-|xe-|show>
   [2021/99/99 v2.8d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
 %<m-t>   microtype main configuration file
-%<pdftex-def|luatex-def|xetex-def>   Definitions specific to
-%<pdftex-def>   pdftex
-%<luatex-def>   luatex
-%<xetex-def>   xetex
+%<pdf-|lua-|xe->   Definitions specific to
+%<pdf->   pdftex
+%<lua->   luatex
+%<xe->   xetex
    (RS)]
-%</package|letterspace|m-t|pdftex-def|luatex-def|xetex-def|show>
+%</package|letterspace|m-t|pdf-|lua-|xe-|show>
 %<luafile>microtype        = microtype or {}
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
@@ -404,7 +404,7 @@
 \pgfmathsetmacro{\MThisthshift}{3}
 \pgfmathsetmacro{\MThistnodewidth}{3mm}
 \def\MThistprepare{%
-  \pgfmathsetmacro{\MThistnodesep}{(\textwidth+\MThisthshift cm-1.5*\MThistnodewidth)/\theMThistitem}
+  \pgfmathsetmacro{\MThistnodesep}{(\textwidth+\MThisthshift cm-\MThistnodewidth-1pt)/\theMThistitem}
   \setcounter{MThistitem}{0}
   \node[inner sep=0pt] (n-0) at (-\MThisthshift,\MThistvsep) {}; }
 \let\MThistshow\@empty
@@ -438,8 +438,8 @@
     \draw (label-\x.north) -- ++ (0,0.2); }}
 \def\PrintHistory{%
   \InputIfFileExists{microtype-hist.tmp}{\let\VersionDate\MThist@versiondate\@firstofone}\@gobble
-   {\hypersetup{linkcolor=thered}
-    \hspace{-\MThisthshift cm}
+   {\hypersetup{linkcolor=thered}%
+    \hspace{-\MThisthshift cm}%
     \rlap{\begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont]
       \MThistprepare
       \MThistshow
@@ -601,7 +601,7 @@
 %<*!docsty>
   \BookmarkAtEnd{%
     \bookmark[startatroot,level=0,bold,gotor={microtype\ifcodedoc\else-code\fi.pdf}]
-    {\ifcodedoc User manual\else Implementation\fi}}
+             {\ifcodedoc User manual\else Implementation\fi}}
 %</!docsty>
   \externaldocument{microtype\ifcodedoc\else-code\fi}
   \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
@@ -3841,9 +3841,9 @@
 %  \item[|driver|]  The documentation driver, only visible in the \file{dtx} file.
 %  \item[|package|] The code for the \microtype\ package (\file{microtype.sty}).
 %  \item[|show|] The code for the \pkg{microtype-show} package (\file{microtype-show.sty}).
-%  \item[|pdftex-def|] Definitions specific to \pdftex\ (\file{microtype-pdftex.def}).
-%  \item[|xetex-def|] Definitions specific to \xetex\ (\file{microtype-xetex.def}).
-%  \item[|luatex-def|] Definitions specific to \luatex\ (\file{microtype-luatex.def}).
+%  \item[|pdf-|] Definitions specific to \pdftex\ (\file{microtype-pdftex.def}).
+%  \item[|lua-|] Definitions specific to \luatex\ (\file{microtype-luatex.def}).
+%  \item[|xe-|] Definitions specific to \xetex\ (\file{microtype-xetex.def}).
 %  \item[|letterspace|] The code for the \letterspace\ package (\file{letterspace.sty}).
 %   \begin{description}
 %    \item[|plain|]  Code for \pkg{eplain}, \pkg{miniltx} (\letterspace\ only).
@@ -4721,7 +4721,7 @@
 %               (reported by \contributor Harald Harders <h.harders\at tu-bs.de>)}
 %                                                   ^^A private mail, 2004/09/13
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 %<debug>\MT@dinfo@nl{0}{this is pdftex \the\pdftexversion(\pdftexrevision)}
 \def\MT@pdftex@no{8}
 \ifnum\pdftexversion = 140
@@ -4755,14 +4755,14 @@
   \fi
 \fi
 %<debug>\MT@dinfo@nl{0}{pdftex no.: \MT@pdftex@no}
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 %\changes{v2.5}{2010/05/05}{protrusion with \xetex}
 %\begin{macro}{\MT@xetex@no}
 % \xetex\ supports character protrusion since version 0.9997.
 %    \begin{macrocode}
-%<*xetex-def>
+%<*xe->
 %<debug>\MT@dinfo@nl{0}{this is xetex (\the\XeTeXversion\XeTeXrevision)}
 \ifdim 0\XeTeXrevision pt < 0.9997pt
   \def\MT@xetex@no{1}
@@ -4770,7 +4770,7 @@
   \def\MT@xetex@no{2}
 \fi
 %<debug>\MT@dinfo@nl{0}{xetex no.: \MT@xetex@no}
-%</xetex-def>
+%</xe->
 %    \end{macrocode}
 %\end{macro}
 %\changes{v2.3c}{2008/09/09}{\luatex\ supported by default}
@@ -4796,7 +4796,7 @@
 % Also, sometime between 1.0.4 and 1.0.7, the function |font.setexpansion|
 % has been introduced (but we're not using it for now).
 %    \begin{macrocode}
-%<*luatex-def>
+%<*lua->
 %<debug>\MT@dinfo@nl0{this is luatex (\the\luatexversion)}
 %    \end{macrocode}
 %\begin{macro}{\MT@lua}
@@ -4828,13 +4828,13 @@
 %\end{macro}
 %    \begin{macrocode}
 %<debug>\MT@dinfo@nl{0}{luatex no.: \MT@luatex@no}
-%</luatex-def>
+%</lua->
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|letterspace>
+%<*pdf-|xe-|letterspace>
 \ifnum
-%<pdftex-def|xetex-def>  \csname MT@\MT@engine tex@no\endcsname < 2
+%<pdf-|xe->  \csname MT@\MT@engine tex@no\endcsname < 2
 %<letterspace>  \MT@engine@tooold=\z@
   \MT@warning@nl{You
 %<*letterspace>
@@ -4845,8 +4845,8 @@
     \else
 %</letterspace>
       are using a \MT@engine tex version older than
-%<pdftex-def>      0.14f%
-%<xetex-def>      0.9997%
+%<pdf->      0.14f%
+%<xe->      0.9997%
 %<letterspace>        \MT@pdf@or@lua{1.40}{0.62}%
       .\MessageBreak
       `\MT@MT' does not work with this version.\MessageBreak
@@ -4855,7 +4855,7 @@
       .\MessageBreak I will quit now}
   \MT@clear@options
 \endinput\fi
-%</pdftex-def|xetex-def|letterspace>
+%</pdf-|xe-|letterspace>
 %    \end{macrocode}
 % Still there? Then we can begin:
 % We need the \pkg{keyval} package, including the `new' \cmd\KV@@sp@def\
@@ -5044,19 +5044,19 @@
 %\begin{macro}{\MT@requires@luatex}
 % For definitions that depend on a particular \pdftex\ resp. \luatex\ version.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def
-%<pdftex-def>  \MT@requires@pdftex%
-%<luatex-def>  \MT@requires@luatex%
+%<pdf->  \MT@requires@pdftex%
+%<lua->  \MT@requires@luatex%
   #1{\ifnum
-%<pdftex-def>  \MT@pdftex@no
-%<luatex-def>  \MT@luatex@no
+%<pdf->  \MT@pdftex@no
+%<lua->  \MT@luatex@no
     <#1 \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi}
-%<luatex-def&debug>\MT@requires@luatex4{\MT@lua{tex.enableprimitives('pdf',{'tracingfonts'})}}\relax
-%<pdftex-def&debug>\MT@requires@pdftex6{
+%<lua-&debug>\MT@requires@luatex4{\MT@lua{tex.enableprimitives('pdf',{'tracingfonts'})}}\relax
+%<pdf-&debug>\MT@requires@pdftex6{
 %<debug>\pdftracingfonts=1
-%<pdftex-def&debug>}\relax
-%</pdftex-def|luatex-def>
+%<pdf-&debug>}\relax
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -5069,7 +5069,7 @@
 %\changes{v2.7}{2017/02/08}{drop \pkg{luatexbase} with recent \LaTeX}
 % we load the \pkg{luatexbase} package.
 %    \begin{macrocode}
-%<luatex-def>\@ifl@t@r\fmtversion{2016/01/01}\relax{\RequirePackage{luatexbase}}
+%<lua->\@ifl@t@r\fmtversion{2016/01/01}\relax{\RequirePackage{luatexbase}}
 %    \end{macrocode}
 % We load \pkg{luaotfload}, because some of its functions are
 % required in \file{microtype.lua}. This eliminates the need for the user to
@@ -5079,10 +5079,10 @@
 %\changes{v2.8d}{2021/03/21}{\letterspace\ loads \file{microtype.lua}}
 % Since 2017/01/01, it is already loaded in the format.
 %    \begin{macrocode}
-%<luatex-def>\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
+%<lua->\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
 %<letterspace>\MT@pdf@or@lua\relax{
 %<letterspace>\ifx\newluafunction\@undefined \input ltluatex \fi
-%<luatex-def|letterspace>\MT@lua{require("microtype")}
+%<lua-|letterspace>\MT@lua{require("microtype")}
 %<letterspace>}
 %    \end{macrocode}
 % Here it begins. The module was contributed by \'Elie Roux.
@@ -5124,7 +5124,7 @@ end
 %\changes{v2.8a}{2020/02/01}{use \luatex's \cmd\glet, if available}
 % (finally implemented in \luatex).
 %    \begin{macrocode}
-%<luatex-def>\MT@requires@luatex6{\let\MT@glet\glet}\relax
+%<lua->\MT@requires@luatex6{\let\MT@glet\glet}\relax
 %<*package|letterspace>
 \def\MT@glet{\global\let}
 %    \end{macrocode}
@@ -5316,9 +5316,9 @@ end
 %    \begin{macrocode}
 %</package>
 %</package|letterspace>
-%<pdftex-def>\MT@requires@pdftex6{
+%<pdf->\MT@requires@pdftex6{
 %<letterspace>\MT@pdf@or@lua{
-%<*pdftex-def|letterspace>
+%<*pdf-|letterspace>
 \def\MT@ifint#1{%
   \ifcase\pdfmatch{^-*[0-9]+ *$}{#1}\relax
     \expandafter\@secondoftwo
@@ -5327,8 +5327,8 @@ end
   \fi
 }
 }{
-%</pdftex-def|letterspace>
-%<*pdftex-def|xetex-def|letterspace>
+%</pdf-|letterspace>
+%<*pdf-|xe-|letterspace>
 \def\MT@ifint#1{%
   \if!\ifnum9<1#1!\else?\fi
     \expandafter\@firstoftwo
@@ -5336,9 +5336,9 @@ end
     \expandafter\@secondoftwo
   \fi
 }
-%</pdftex-def|xetex-def|letterspace>
-%<pdftex-def|letterspace>}
-%<luatex-def>\def\MT@ifint#1{\csname\MT@lua{microtype.if_int([[#1]])}\endcsname}
+%</pdf-|xe-|letterspace>
+%<pdf-|letterspace>}
+%<lua->\def\MT@ifint#1{\csname\MT@lua{microtype.if_int([[#1]])}\endcsname}
 %<*luafile>
 local function if_int(s)
   if find(s,"^-*[0-9]+ *$") then
@@ -5363,7 +5363,7 @@ microtype.if_int = if_int
 %\changes{v2.2}{2007/05/10}{employ \luatex\ features if available}
 %\todo{fix \texttt{lua} expression}
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 \MT@requires@pdftex6{
 \def\MT@ifdimen#1{%
   \ifcase\pdfmatch{^([0-9]+([.,][0-9]+)?|[.,][0-9]+)%
@@ -5374,8 +5374,8 @@ microtype.if_int = if_int
   \fi
 }
 }{
-%</pdftex-def>
-%<*pdftex-def|xetex-def>
+%</pdf->
+%<*pdf-|xe->
 \def\MT@ifdimen#1{%
   \setbox\z@=\hbox{%
     \MT@count=1#1\relax
@@ -5386,9 +5386,9 @@ microtype.if_int = if_int
     \fi
   }%
 }
-%</pdftex-def|xetex-def>
-%<pdftex-def>}
-%<luatex-def>\def\MT@ifdimen#1{\csname\MT@lua{microtype.if_dimen([[#1]])}\endcsname}
+%</pdf-|xe->
+%<pdf->}
+%<lua->\def\MT@ifdimen#1{\csname\MT@lua{microtype.if_dimen([[#1]])}\endcsname}
 %<*luafile>
 local function if_dimen(s)
   if (find(s, "^-*[0-9]+(%a*) *$") or
@@ -5426,18 +5426,18 @@ microtype.if_dimen = if_dimen
 %\changes{v2.2}{2007/05/10}{employ \luatex\ features if available}
 %\changes{v2.8}{2020/06/18}{use \xetex's \cmd\stringcmp}
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def>
-%<pdftex-def>\MT@requires@pdftex5{
+%<*pdf-|xe->
+%<pdf->\MT@requires@pdftex5{
 \def\MT@ifstreq#1#2{%
-%<pdftex-def>  \ifnum\pdfstrcmp{#1}{#2}=\z@
-%<xetex-def>  \ifnum\strcmp{#1}{#2}=\z@
+%<pdf->  \ifnum\pdfstrcmp{#1}{#2}=\z@
+%<xe->  \ifnum\strcmp{#1}{#2}=\z@
     \expandafter\@firstoftwo
   \else
     \expandafter\@secondoftwo
   \fi
 }
-%</pdftex-def|xetex-def>
-%<*pdftex-def>
+%</pdf-|xe->
+%<*pdf->
 }{
 \def\MT@ifstreq#1#2{%
   \edef\MT@res@a{#1}%
@@ -5449,8 +5449,8 @@ microtype.if_dimen = if_dimen
   \fi
 }
 }
-%</pdftex-def>
-%<luatex-def>\def\MT@ifstreq#1#2{\csname\MT@lua{microtype.if_str_eq([[#1]],[[#2]])}\endcsname}
+%</pdf->
+%<lua->\def\MT@ifstreq#1#2{\csname\MT@lua{microtype.if_str_eq([[#1]],[[#2]])}\endcsname}
 %<*luafile>
 local function if_str_eq(s1, s2)
   if s1 == s2 then
@@ -5684,12 +5684,12 @@ microtype.if_str_eq = if_str_eq
 % For fonts loaded by \pkg{luaotfload} we query the font's table.
 %    \begin{macrocode}
 %<letterspace>\MT@pdf@or@lua{\let\MT@if@luaotf@font\@secondoftwo}{
-%<*luatex-def|letterspace>
+%<*lua-|letterspace>
 \def\MT@if@luaotf@font{\csname\MT@lua{%
   microtype.if_luaotf_font()
   }\endcsname
 }
-%</luatex-def|letterspace>
+%</lua-|letterspace>
 %<letterspace>}
 %<*luafile>
 local function if_luaotf_font()
@@ -5707,7 +5707,7 @@ microtype.if_luaotf_font = if_luaotf_font
 %\begin{macro}{\MT@do@font}
 % Execute \meta{\#1} 256 times,
 %    \begin{macrocode}
-%<pdftex-def|letterspace>\def\MT@do@font{\MT@while@num\z@\@cclvi}
+%<pdf-|letterspace>\def\MT@do@font{\MT@while@num\z@\@cclvi}
 %    \end{macrocode}
 % resp. for the whole font for \luatex, if it's a Unicode font.
 %\changes{v2.5}{2010/08/14}{adapt for \luatex}
@@ -5717,14 +5717,14 @@ microtype.if_luaotf_font = if_luaotf_font
 %                             ^^A private mail, 2016/05/10
 %\changes{v2.8}{2020/06/20}{simplify \texttt{lua} function}
 %    \begin{macrocode}
-%<*luatex-def>
+%<*lua->
 \def\MT@do@font#1{%
   \MT@if@luaotf@font{%
     \def\MT@dofont@function{#1}%
     \MT@lua{microtype.do_font()}%
   }{\MT@while@num\z@\@cclvi{#1}}%
 }
-%</luatex-def>
+%</lua->
 %    \end{macrocode}
 % This is the |lua| function, which is much faster than looping through all glyphs
 % in \TeX. Legacy fonts (which this function should never work on) don't contain a
@@ -5752,7 +5752,7 @@ microtype.do_font = do_font
 %\changes{v2.5}{2010/05/18}{adapt for \xetex}
 %\changes{v2.8}{2020/02/06}{fix for \xetex}
 %    \begin{macrocode}
-%<*xetex-def>
+%<*xe->
 \def\MT@do@font#1{%
   \@tempcnta=\z@
   \MT@loop
@@ -5760,7 +5760,7 @@ microtype.do_font = do_font
     \advance\@tempcnta\@ne
     \ifnum\@tempcnta < \XeTeXlastfontchar\MT@font \MT@repeat
 }
-%</xetex-def>
+%</xe->
 %<*package>
 %    \end{macrocode}
 %\end{macro}
@@ -6015,8 +6015,8 @@ microtype.do_font = do_font
 % The successor packages \pkg{eledmac} and \pkg{reledmac} are also supported.
 %    \begin{macrocode}
 %</package>
-%<pdftex-def>\MT@requires@pdftex5{
-%<*pdftex-def|luatex-def|xetex-def>
+%<pdf->\MT@requires@pdftex5{
+%<*pdf-|lua-|xe->
   \def\MT@ledmac@setup{%
     \ifMT@protrusion
       \MT@ifdefined@c@TF\l@dunhbox@line{%
@@ -6045,8 +6045,8 @@ microtype.do_font = do_font
       }%
     \fi
   }
-%</pdftex-def|luatex-def|xetex-def>
-%<*pdftex-def>
+%</pdf-|lua-|xe->
+%<*pdf->
 }{
   \def\MT@ledmac@setup{%
     \ifMT@protrusion
@@ -6058,7 +6058,7 @@ microtype.do_font = do_font
     \fi
   }
 }
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 % The \pkg{shapepar} package (v2.2) fixes this in a similar manner by itself,
@@ -6620,7 +6620,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Setting up a font entails checking for each feature whether it should be
 % applied to the current font (\cs{MT@font}).
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 \def\MT@setupfont{%
 %    \end{macrocode}
 %\changes{v2.5}{2012/08/22}{select font with \pkg{fontspec} (found by \contributor Georg Duffner <g.duffner\at gmail.com>)}
@@ -6633,7 +6633,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % hence we might see a wrong font (in \cs{MT@get@slot}).
 % Therefore, we first load the current font.
 %    \begin{macrocode}
-%<xetex-def|luatex-def>  \MT@font
+%<xe-|lua->  \MT@font
 %    \end{macrocode}
 % We might have to disable stuff when used together with adventurous
 % packages.
@@ -6644,9 +6644,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % and the use of more than one set of protrusion factors for a font within one
 % paragraph).
 %    \begin{macrocode}
-%<pdftex-def>\MT@requires@pdftex7{
-%<pdftex-def|luatex-def>\g@addto@macro\MT@setupfont\MT@copy@font
-%<pdftex-def>}\relax
+%<pdf->\MT@requires@pdftex7{
+%<pdf-|lua->\g@addto@macro\MT@setupfont\MT@copy@font
+%<pdf->}\relax
 %    \end{macrocode}
 % The font properties must be extracted from \cs{MT@font}, since the current
 % value of \cmd\f@encoding\ and friends may be wrong!
@@ -6676,9 +6676,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Tracking has to come first, since it means actually loading a different font.
 %\changes{v2.2}{2007/04/15}{only add features that are available with the respective \pdftex}
 %    \begin{macrocode}
-%<pdftex-def>\MT@requires@pdftex6
-%<luatex-def>\MT@requires@luatex3
-%<pdftex-def|luatex-def>  {\g@addto@macro\MT@setupfont\MT@tracking}\relax
+%<pdf->\MT@requires@pdftex6
+%<lua->\MT@requires@luatex3
+%<pdf-|lua->  {\g@addto@macro\MT@setupfont\MT@tracking}\relax
 \g@addto@macro\MT@setupfont{%
   \MT@check@font
   \ifMT@inlist@
@@ -6695,22 +6695,22 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % with 1.20, the order doesn't matter.
 %    \begin{macrocode}
   \MT@protrusion
-%<pdftex-def|luatex-def>  \MT@expansion
+%<pdf-|lua->  \MT@expansion
 }
 %    \end{macrocode}
 % Interword spacing and kerning (\pdftex\ 1.40).
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 \MT@requires@pdftex6{
 \g@addto@macro\MT@setupfont{\MT@spacing\MT@kerning}
 }\relax
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 % Disable ligatures (\pdftex\ 1.30).
 %    \begin{macrocode}
-%<pdftex-def>\MT@requires@pdftex5{
-%<pdftex-def|luatex-def>\g@addto@macro\MT@setupfont\MT@noligatures
-%<pdftex-def>}\relax
+%<pdf->\MT@requires@pdftex5{
+%<pdf-|lua->\g@addto@macro\MT@setupfont\MT@noligatures
+%<pdf->}\relax
 \g@addto@macro\MT@setupfont{%
 %    \end{macrocode}
 % Debugging.
@@ -6722,7 +6722,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@register@font
   \fi
 }
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@copy@font}
@@ -6734,9 +6734,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \cs{SetProtrusion} or \cs{SetExpansion} in the preamble, or when the package
 % has been loaded with the \opt{copyfonts} option.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \let\MT@copy@font\relax
-%<pdftex-def>\MT@requires@pdftex7{
+%<pdf->\MT@requires@pdftex7{
 \def\MT@copy@font@{%
 %    \end{macrocode}
 %\begin{macro}{\MT@font@copy}
@@ -6759,7 +6759,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \else
       \MT@exp@two@c\let\font@name\MT@font@orig
     \fi
-%<pdftex-def>    \global\MT@exp@two@c\pdfcopyfont\MT@font@copy\font@name
+%<pdf->    \global\MT@exp@two@c\pdfcopyfont\MT@font@copy\font@name
 %    \end{macrocode}
 %\end{macro}
 % Even though \luatex\ also provides the primitive from \pdftex\ (even renamed to
@@ -6772,7 +6772,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                          ^^A https://tex.stackexchange.com/questions/419288/microtypecontext-with-lualatex
 % Therefore, we do not copy the font but load it anew.
 %    \begin{macrocode}
-%<luatex-def>    \MT@exp@two@c\MT@lua@copyfont\meaning\font@name\@nil
+%<lua->    \MT@exp@two@c\MT@lua@copyfont\meaning\font@name\@nil
 %<debug>\MT@dinfo1{creating new copy: \MT@font@copy}%
 %    \end{macrocode}
 % Since it's a new font, we have to remove it from the context lists.
@@ -6805,16 +6805,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@font \csname MT@\@tempa @#1font@list\endcsname
   \fi
 }
-%<pdftex-def>}\relax
+%<pdf->}\relax
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@lua@copy@font}
 % \meta{\#1} and \meta{\#2} are `|select|' and `|font|', respectively,
 % \meta{\#3} is the font spec.
 %    \begin{macrocode}
-%<luatex-def>\def\MT@lua@copyfont #1 #2 #3\@nil{%
-%<luatex-def>  \global\expandafter\font\MT@font@copy=#3\relax}
-%</pdftex-def|luatex-def>
+%<lua->\def\MT@lua@copyfont #1 #2 #3\@nil{%
+%<lua->  \global\expandafter\font\MT@font@copy=#3\relax}
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\ifpdf\phantomsection\fi\label{exp-hack}
@@ -6861,20 +6861,20 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \xetex\ doesn't provide an equivalent to \cmd\pdffontsize, so we use the
 % nominal size instead.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|xetex-def>
+%<*pdf-|lua-|xe->
 \def\MT@fix@fontdimen@six{%
   \ifnum\fontdimen6\MT@font=\z@
     \fontdimen6\MT@font=%
-%<pdftex-def>      \pdffontsize\MT@font
-%<luatex-def>      \MT@requires@luatex4{\pdffeedback fontsize}{\pdffontsize}\MT@font
-%<xetex-def>      \MT@size pt
+%<pdf->      \pdffontsize\MT@font
+%<lua->      \MT@requires@luatex4{\pdffeedback fontsize}{\pdffontsize}\MT@font
+%<xe->      \MT@size pt
     \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
              (new value: \the\fontdimen6\MT@font)}%
-%<pdftex-def>    \MT@requires@pdftex8\relax{\MT@glet@nc{\MT@@font-fake6}\@empty}%
+%<pdf->    \MT@requires@pdftex8\relax{\MT@glet@nc{\MT@@font-fake6}\@empty}%
   \fi
   \edef\MT@dimen@six{\number\fontdimen6\MT@font}%
 }
-%</pdftex-def|luatex-def|xetex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -7142,11 +7142,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           characters}
 %\changes{v1.6}{2004/12/18}{introduce \texttt{factor} option}
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def|show>
+%<*pdf-|lua-|xe-|show>
 %<show>\def\MTS@show@pr
-%<pdftex-def|xetex-def|luatex-def>\def\MT@set@pr@codes
+%<pdf-|lua-|xe->\def\MT@set@pr@codes
   {%
-%<pdftex-def|xetex-def|luatex-def> \MT@nofamilyfalse
+%<pdf-|lua-|xe-> \MT@nofamilyfalse
 %    \end{macrocode}
 % Check whether and if, which list should be applied to the current font.
 % If family-specific settings don't exist, we write it to the log
@@ -7157,7 +7157,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<show>  \MTS@printtext{Protrusion settings for font `\texttt{\MT@@font}':}\\
   \MT@if@list@exists{%
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
     \ifMT@nofamily
       \MT@ifdefined@n@TF{\MT@encoding-\MT@family-settings}\relax{%
         \MT@info@nl{Loading generic protrusion settings for font family\MessageBreak
@@ -7167,7 +7167,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \MT@glet@nc{\MT@encoding-\MT@family-settings}\@empty
       }%
     \fi
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %<show>    \MTS@printtext{First matching list is for `\texttt{\@tempa}':\\\texttt{\MT@pr@c@name}}%
     \MT@get@opt
     \MT@reset@pr@codes
@@ -7217,7 +7217,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A https://tex.stackexchange.com/questions/25036/microtype-package-v-2-5-beta-06-and-footnote-protrusion
 %                            ^^A (beta:08)
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 \def\MT@set@all@pr#1#2{%
 %<debug>\MT@dinfo@nl{3}{-- lp/rp: setting all to #1/#2}%
   \let\MT@temp\@empty
@@ -7245,14 +7245,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % the margin kerns. This will be activated in \cs{MT@set@tr@codes}.
 %    \begin{macrocode}
 \def\MT@the@pr@code{\@tempcntb}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex6
-%<luatex-def>\MT@requires@luatex3
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex6
+%<lua->\MT@requires@luatex3
   {\def\MT@the@pr@code@tr{%
     \numexpr\@tempcntb+\MT@letterspace@/2\relax
   }
 }\relax
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -7279,8 +7279,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \def\@tempa{#1}%
   \ifx\@tempa\@empty \else
     \MT@get@slot
-%<pdftex-def|luatex-def>    \ifnum\MT@char > \m@ne
-%<xetex-def>    \ifx\MT@char\@empty \else
+%<pdf-|lua->    \ifnum\MT@char > \m@ne
+%<xe->    \ifx\MT@char\@empty \else
       \MT@get@char@unit
       \csname MT@\MT@feat @split@val\endcsname#2\relax
     \fi
@@ -7291,24 +7291,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@pr@split@val}
 %    \begin{macrocode}
 \def\MT@pr@split@val#1,#2\relax
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %<show>\def\MTS@pr@split@val#1,#2\relax
   {\def\@tempb{#1}%
   \MT@ifempty\@tempb
-%<pdftex-def|xetex-def|luatex-def>    \relax
+%<pdf-|lua-|xe->    \relax
 %<show>  {\MTS@lp@=\z@ \let\MTS@lpcode\@empty}%
   {\MT@scale@to@em
-%<pdftex-def|xetex-def|luatex-def>    \lpcode\MT@font\MT@char=\MT@the@pr@code
+%<pdf-|lua-|xe->    \lpcode\MT@font\MT@char=\MT@the@pr@code
 %<show>    \MTS@lp@=\dimexpr\@tempcntb em/1000\relax\relax
 %<show>    \edef\MTS@lpcode{[\@tempb] \the\@tempcntb/\the\MTS@lp@}%
 %<debug>\MT@dinfo@nl{4}{;;; lp (\MT@char): \number\lpcode\MT@font\MT@char: [#1]}%
   }%
   \def\@tempb{#2}%
   \MT@ifempty\@tempb
-%<pdftex-def|xetex-def|luatex-def>    \relax
+%<pdf-|lua-|xe->    \relax
 %<show>  {\MTS@rp@=\z@ \let\MTS@rpcode\@empty}%
   {\MT@scale@to@em
-%<pdftex-def|xetex-def|luatex-def>    \rpcode\MT@font\MT@char=\MT@the@pr@code
+%<pdf-|lua-|xe->    \rpcode\MT@font\MT@char=\MT@the@pr@code
 %<show>    \MTS@rp@=\dimexpr\@tempcntb em/1000\relax\relax
 %<show>    \edef\MTS@rpcode{[\@tempb] \the\@tempcntb/\the\MTS@rp@}%
 %<debug>\MT@dinfo@nl{4}{;;; rp (\MT@char): \number\rpcode\MT@font\MT@char: [#2]}%
@@ -7326,13 +7326,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@ifdefined@n@T{MT@inh@\MT@pr@inh@name @\MT@char @}{%
       \MT@exp@cs\MT@map@tlist@c
         {MT@inh@\MT@pr@inh@name @\MT@char @}%
-%<pdftex-def|xetex-def|luatex-def>        \MT@set@pr@heirs
+%<pdf-|lua-|xe->        \MT@set@pr@heirs
 %<show>      \MTS@show@char@pr
     }%
   }%
 %<show>  }\newline
 }
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@scale@to@em}
@@ -7351,7 +7351,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % The unit is in \cs{MT@count}, the desired factor in \cmd\@tempb, and the
 % result will be returned in \cmd\@tempcntb.
 %    \begin{macrocode}
-%<pdftex-def>\MT@requires@pdftex3{
+%<pdf->\MT@requires@pdftex3{
 \def\MT@scale@to@em{%
   \@tempcntb=\MT@count\relax
 %    \end{macrocode}
@@ -7374,24 +7374,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.8}{2005/05/25}{warning for missing (resp. zero-width) characters}
 %    \begin{macrocode}
 \def\MT@get@charwd{%
-%<*pdftex-def>
+%<*pdf->
 ^^X  \MT@count=\fontcharwd\MT@font\MT@char\relax
 ^^Q  \setbox\z@=\hbox{\MT@font \char\MT@char}%
 ^^Q  \MT@count=\wd\z@
-%</pdftex-def>
-%<luatex-def>  \MT@count=\fontcharwd\MT@font\MT@char\relax
+%</pdf->
+%<lua->  \MT@count=\fontcharwd\MT@font\MT@char\relax
 %    \end{macrocode}
 % \cs{MT@char} contains a slot number (legacy fonts), a Unicode number,
 % or a glyph name (if \cs{MT@char@} is negative).
 %    \begin{macrocode}
-%<*xetex-def>
+%<*xe->
   \ifnum\MT@char@<\z@
     \setbox\z@=\hbox{\MT@font \XeTeXglyph-\MT@char@}%
     \MT@count=\wd\z@
   \else
     \MT@count=\fontcharwd\MT@font\MT@char@\relax
   \fi
-%</xetex-def>
+%</xe->
   \ifnum\MT@count=\z@ \MT@info@missing@char \fi
 }
 %    \end{macrocode}
@@ -7401,7 +7401,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \cs{MT@set@pr@codes}.
 % The letterspaced font is already loaded so that \EM{1} = \fontdim6.
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 \MT@requires@pdftex6{
   \g@addto@macro\MT@get@charwd{%
     \MT@ifdefined@c@T\MT@letterspace@
@@ -7424,9 +7424,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@get@charwd{\MT@count=\MT@dimen@six}
 }
-%</pdftex-def>
-%</pdftex-def|xetex-def|luatex-def>
-%</pdftex-def|xetex-def|luatex-def|show>
+%</pdf->
+%</pdf-|lua-|xe->
+%</pdf-|lua-|xe-|show>
 %    \end{macrocode}
 %\begin{macro}{\MT@get@font@dimen}
 % For the |space| unit.
@@ -7725,9 +7725,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % translate to glyph numbers because \cmd\fontcharwd\ doesn't have the nice
 % feature of understanding the `|U|' or `|/|' prefixes.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|xetex-def|show>
-%<pdftex-def|luatex-def|xetex-def>\def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
-%<pdftex-def|luatex-def|xetex-def>\def\MT@set@pr@prefixes@#1#2#3#4%
+%<*pdf-|lua-|xe-|show>
+%<pdf-|lua-|xe->\def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
+%<pdf-|lua-|xe->\def\MT@set@pr@prefixes@#1#2#3#4%
 %<show>\def\MTS@set@pr@prefixes@#1#2#3#4%
   {%
 %<show>  \MTS@lp@=\z@ \MTS@rp@=\z@
@@ -7735,27 +7735,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<show>    \par\leavevmode
 %<show>    \llap{\MTS@show@char@pr{#1} \MTS@printtext{=} }%
 %<show>  \fi
-%<*xetex-def>
+%<*xe->
   \edef\@tempa{\expandafter\ifx\@car#1\@nil U\@gobble#1\else\number\XeTeXglyphindex"#1" \fi}%
   \edef\@tempb{\expandafter\ifx\@car#2\@nil U\@gobble#2\else\number\XeTeXglyphindex"#2" \fi}%
-%</xetex-def>
+%</xe->
   \@tempcnta=\z@
   \ifnum#3>\z@
     \@tempcnta=\numexpr
-%<luatex-def|pdftex-def|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
-%<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
+%<pdf-|lua-|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
+%<xe->      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
       *#3/\MT@dimen@six\relax
   \fi
-%<pdftex-def|luatex-def|xetex-def>  \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
+%<pdf-|lua-|xe->  \lpcode\MT@font #2=\numexpr\lpcode\MT@font#1+\@tempcnta\relax
 %<show>  \MTS@lp@=\dimexpr\numexpr\lpcode\MT@font#1+\@tempcnta\relax em/1000\relax
   \@tempcnta=\z@
   \ifnum#4>\z@
     \@tempcnta=\numexpr
-%<luatex-def|pdftex-def|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
-%<xetex-def>      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
+%<pdf-|lua-|show>      (\fontcharwd\MT@font#2-\fontcharwd\MT@font#1)%
+%<xe->      (\fontcharwd\MT@font\@tempb-\fontcharwd\MT@font\@tempa)%
       *#4/\MT@dimen@six\relax
   \fi
-%<pdftex-def|luatex-def|xetex-def>  \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
+%<pdf-|lua-|xe->  \rpcode\MT@font #2=\numexpr\rpcode\MT@font#1+\@tempcnta\relax
 %<show>  \MTS@rp@=\dimexpr\numexpr\rpcode\MT@font#1+\@tempcnta\relax em/1000\relax
 %<debug>\MT@dinfo@nl{2}{-- (prefix) heir of #1: #2}%
 %<debug>\MT@dinfo@nl{4}{;;; lp/rp (#2): \number\lpcode\MT@font#2/%
@@ -7763,7 +7763,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<show>  \MTS@show@char@pr{#2}%
 %<show>  \@tempcntb=#1\relax
 }
-%</pdftex-def|luatex-def|xetex-def|show>
+%</pdf-|lua-|xe-|show>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -8098,17 +8098,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % For luatex, we have to jump through another hoop (\ie, box), because, contrary
 % to the manual, \cmd\lastnodetype\ isn't really compatible. ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-August/006536.html et seqq.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|xetex-def>
+%<*pdf-|lua-|xe->
 \def\MT@prot@addtoken@next#1{%
   \edef\MT@temp{\MT@toks={\the\MT@toks\noexpand#1}}\MT@temp
   \setbox\MT@tempbox\hbox{\the\MT@toks
-%<pdftex-def|xetex-def>    \relax
-%<luatex-def>  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
+%<pdf-|xe->    \relax
+%<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
     \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
       \MT@prot@get@nextchar
       {\MT@prot@l{\the\MT@toks}}%
 }
-%</pdftex-def|luatex-def|xetex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %
@@ -8117,7 +8117,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@expansion}
 % Set up for expansion?
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@expansion{\MT@maybe@do{ex}}
 %    \end{macrocode}
 %\end{macro}
@@ -8142,7 +8142,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@expandfont
   }\relax
 }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %
@@ -8157,7 +8157,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@set@ex@codes@n{%
   \MT@nonselectedtrue
   \MT@if@list@exists
@@ -8194,7 +8194,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.7d}{2019/11/17}{use \luatex\ function \texttt{font.}\penalty\exhyphenpenalty\texttt{setexpansion} if available}
 %\fi
 %    \begin{macrocode}
-%<*luatex-def>
+%<*lua->
 \MT@requires@luatex3{
 \MT@requires@luatex4{\let\pdffontexpand\expandglyphsinfont}\relax
 \ifnum\luatexversion<79
@@ -8207,11 +8207,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 \fi
 }{
-%</luatex-def>
+%</lua->
 \def\MT@expandfont{%
   \pdffontexpand\MT@font \MT@stretch@ \MT@shrink@ \MT@step@ \MT@auto@\relax
 }
-%<luatex-def>}
+%<lua->}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@all@ex}
@@ -8233,8 +8233,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v1.6a}{2005/01/30}{only reset \cmd\efcode s for older \pdftex\ versions}
 %\changes{v2.7}{2017/02/13}{only reset \cmd\efcode s for older \luatex\ versions}
 %    \begin{macrocode}
-%<pdftex-def>\MT@requires@pdftex4
-%<luatex-def>\MT@requires@luatex5
+%<pdf->\MT@requires@pdftex4
+%<lua->\MT@requires@luatex5
 {
   \def\MT@reset@ef@codes{%
     \ifnum\MT@ex@factor@=\@m \else
@@ -8307,9 +8307,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@get@ex@opt@{stretch}{Setting stretch limit to \number\MT@stretch@}%
   \MT@get@ex@opt@{shrink} {Setting shrink limit to \number\MT@shrink@}%
   \MT@get@ex@opt@{step}   {Setting expansion step to \number\MT@step@}%
-%<luatex-def>  \MT@requires@luatex3\relax{%
+%<lua->  \MT@requires@luatex3\relax{%
   \MT@get@ex@opt@{auto}{\MT@ifstreq{\MT@auto@}{autoexpand}{En}{Dis}abling automatic expansion}%
-%<luatex-def>  }%
+%<lua->  }%
   \MT@ifdefined@n@T{MT@ex@c@\MT@ex@c@name @preset}{%
     \MT@preset@ex
     \let\MT@reset@ef@codes\relax
@@ -8350,7 +8350,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@scale@factor
   \MT@set@all@ex\@tempcntb
 }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %
@@ -8359,7 +8359,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@spacing}
 % Adjustment of interword spacing? Only works with \pdftex.
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 \MT@requires@pdftex6{
 \def\MT@spacing{\MT@maybe@do{sp}}
 %    \end{macrocode}
@@ -8571,7 +8571,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@set@all@kn\@tempa\@tempb
 }
 }\relax
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -8582,9 +8582,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5}{2010/09/17}{letterspacing with \luatex\ 0.62} ^^A (beta:03)
 % or \luatex\ 0.62.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex6
-%<luatex-def>\MT@requires@luatex3
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex6
+%<lua->\MT@requires@luatex3
 {
 %    \end{macrocode}
 %\begin{macro}{\MT@tracking}
@@ -8605,9 +8605,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \fi
   \fi
 }
-%</pdftex-def|luatex-def>
-%<pdftex-def|luatex-def|letterspace>\let\MT@tracking
-%<pdftex-def|luatex-def>  \MT@tracking@
+%</pdf-|lua->
+%<pdf-|lua-|letterspace>\let\MT@tracking
+%<pdf-|lua->  \MT@tracking@
 %<letterspace>  \relax
 %    \end{macrocode}
 %\end{macro}
@@ -8624,11 +8624,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.8d}{2021/07/01}{with \pdftex\ 1.40.23, tracking also works for fonts with a zero \fontdim6}
 % case we issue a warning (once for every font).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|letterspace>
+%<*pdf-|lua-|letterspace>
 \def\MT@set@tr@codes{%
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
-%<*pdftex-def>
+%<*pdf->
   \MT@requires@pdftex8\@firstofone{%
     \MT@ifdefined@n@TF{\MT@@font-fake6}{%
       \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
@@ -8640,11 +8640,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \fi
     }%
   }{%
-%</pdftex-def>
+%</pdf->
   \MT@if@list@exists
     \MT@get@tr@opt
     \relax
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
   \MT@ifdefined@c@TF\MT@letterspace@\relax{\let\MT@letterspace@\MT@letterspace}%
   \ifnum\MT@letterspace@=\z@
 %    \end{macrocode}
@@ -8653,7 +8653,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \MT@set@tr@zero
   \else
-%<pdftex-def|luatex-def>    \MT@vinfo{... Tracking by \number\MT@letterspace@}%
+%<pdf-|lua->    \MT@vinfo{... Tracking by \number\MT@letterspace@}%
 %    \end{macrocode}
 % Letterspacing only works in <PDF> mode.
 %    \begin{macrocode}
@@ -8684,21 +8684,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % use when dealing with non-legacy fonts, as it is less problematic and faster
 % than the \pdftex\ primitive \cmd\letterspacefont.
 %    \begin{macrocode}
-%<*luatex-def|letterspace>
+%<*lua-|letterspace>
       \MT@if@luaotf@font{%
-%<luatex-def&debug>\MT@dinfo@nl{1}{... luaotf font: \MessageBreak
-%<luatex-def&debug>         \expandafter\fontname\font@name}%
+%<lua-&debug>\MT@dinfo@nl{1}{... luaotf font: \MessageBreak
+%<lua-&debug>         \expandafter\fontname\font@name}%
         \global\expandafter\font\MT@lsfont=\MT@ls@fontspec@font
       }{%
-%</luatex-def|letterspace>
-%<luatex-def&debug>\MT@dinfo@nl{1}{... legacy font}%
+%</lua-|letterspace>
+%<lua-&debug>\MT@dinfo@nl{1}{... legacy font}%
       \global\expandafter\letterspacefont\MT@lsfont\font@name\MT@letterspace@
-%<luatex-def|letterspace>      }%
+%<lua-|letterspace>      }%
 %    \end{macrocode}
 %\changes{v2.2}{2007/06/16}{possibility to customise interword spacing}
 % Scale interword spacing (not configurable in \letterspace).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
       \MT@ifdefined@c@TF\MT@tr@ispace
         {\let\@tempa\MT@tr@ispace}%
         {\edef\@tempa{\MT@letterspace@*,,}}%
@@ -8706,7 +8706,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         {\edef\@tempa{\@tempa,\MT@tr@ospace}}%
         {\edef\@tempa{\@tempa,,,}}%
       \expandafter\MT@tr@set@space\@tempa,%
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %<*letterspace>
       % spacing = {<letterspace amount>*,,}
       \fontdimen2\MT@lsfont=\dimexpr\numexpr 1000+\MT@letterspace@\relax sp
@@ -8718,7 +8718,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A MID: <46aa1cbb$0$31620$9b4e6d93@newsspool3.arcor-online.net>
 % Adjust outer kerning (\microtype\ only).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
       \MT@ifdefined@c@TF\MT@tr@okern{\let\@tempa\MT@tr@okern}{\def\@tempa{*,*}}%
       \expandafter\MT@tr@set@okern\@tempa,%
 %    \end{macrocode}
@@ -8727,7 +8727,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Disable ligatures (not configurable in \letterspace).
 %    \begin{macrocode}
       \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %<*letterspace>
       % no ligatures = {f}
       \tagcode\MT@lsfont`f=\m@ne
@@ -8743,12 +8743,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Wolfram Schaalo <schaalo\at gmx.net>)}
 %                                                              ^^A private mail, 2008/05/12
 %    \begin{macrocode}
-%<luatex-def|letterspace>      \MT@if@luaotf@font\relax{%
+%<lua-|letterspace>      \MT@if@luaotf@font\relax{%
 %<debug>\MT@dinfo@nl{2}{... compensating for tracking (\number\MT@letterspace@)}%
       \MT@do@font{\lpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax
                   \rpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax}%
       \let\MT@the@pr@code\MT@the@pr@code@tr
-%<luatex-def|letterspace>     }%
+%<lua-|letterspace>     }%
     \fi
 %    \end{macrocode}
 % Finally, let the letterspaced font propagate.
@@ -8756,8 +8756,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5a}{2013/05/15}{fix: load font for \pkg{fontspec}} ^^A for MT@get@slot
 %    \begin{macrocode}
     \aftergroup\MT@set@lsfont
-%<pdftex-def|luatex-def>    \let\MT@font\MT@lsfont
-%<luatex-def>    \MT@if@luaotf@font\MT@font\relax
+%<pdf-|lua->    \let\MT@font\MT@lsfont
+%<lua->    \MT@if@luaotf@font\MT@font\relax
 %    \end{macrocode}
 %\begin{macro}{\MT@set@curr@ls}
 %\begin{macro}{\MT@curr@ls}
@@ -8774,11 +8774,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We get the current outer spacing and adjust it, then, after the end of the
 % current outer group, set the current outer spacing, again, and adjust.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
     \MT@outer@space=\csname MT@outer@space\expandafter\string\font@name\endcsname\relax
     \xdef\MT@set@curr@os{\MT@outer@space=\the\MT@outer@space\relax}%
     \MT@tr@outer@l
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 % If \cs{MT@ls@adjust} is empty, it's the starred version of \cs{textls}.
@@ -8792,14 +8792,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Otherwise, get the current outer kerning and adjust it, for left and right
 % side (\microtype\ only).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
     \else
       \MT@outer@kern=\expandafter\expandafter\expandafter\@firstoftwo
                       \csname MT@outer@kern\expandafter\string\font@name\endcsname\relax
       \ifdim\MT@outer@kern=\z@\else \MT@ls@outer@k \fi
       \MT@outer@kern=\expandafter\expandafter\expandafter\@secondoftwo
                       \csname MT@outer@kern\expandafter\string\font@name\endcsname\relax
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %<*letterspace>
       \xdef\MT@set@curr@ok{\MT@outer@kern=\the\MT@outer@kern\relax}%
       \MT@afteraftergroup{%
@@ -8808,7 +8808,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       }%
 %</letterspace>
     \fi
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 %    \end{macrocode}
 %\begin{macro}{\MT@set@curr@ok}
 % Carry the outer kerning amount to outside the next group, then set outer
@@ -8825,9 +8825,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@set@curr@ok
       \noexpand\MT@tr@outer@r
     }%
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
   \fi
-%<pdftex-def>  }%
+%<pdf->  }%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8847,7 +8847,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
 %<!letterspace>  }%
 }
-%</pdftex-def|luatex-def|letterspace>
+%</pdf-|lua-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ls@fontspec@font}
@@ -8860,11 +8860,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A https://tex.stackexchange.com/questions/567698/luatex-microtype-fontspec-luaotfload-buggy-interaction-canceling-each-others-s
 % Add the |kernfactor| feature to a font loaded by \pkg{fontspec}.
 %    \begin{macrocode}
-%<*luatex-def|letterspace>
+%<*lua-|letterspace>
 \def\MT@ls@fontspec@font{%
   \MT@lua{microtype.add_ls([[\MT@letterspace@]])}%
 }
-%</luatex-def|letterspace>
+%</lua-|letterspace>
 %<*luafile>
 local function add_ls(k)
   local f = tex.fontname(font.current())
@@ -8890,7 +8890,7 @@ microtype.add_ls = add_ls
 %\begin{macro}{\MT@get@tr@opt}
 % Various settings (only for the \microtype\ version).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@get@tr@opt{%
   \MT@set@listname
   \let\MT@tr@factor@\@m
@@ -8946,14 +8946,14 @@ microtype.add_ls = add_ls
   \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name @#1}%
     {\MT@let@nn{MT@tr@#2}{MT@tr@c@\MT@tr@c@name @#1}}%
 }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@lsfont}
 % Redefine \cmd\font@name, which will be called a second later (in
 % \cmd\selectfont).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|letterspace>
+%<*pdf-|lua-|letterspace>
 %<plain>\MT@requires@latex2{
 \def\MT@set@lsfont{\MT@exp@two@c\let\font@name\MT@lsfont}
 %    \end{macrocode}
@@ -8989,8 +8989,8 @@ microtype.add_ls = add_ls
 \DeclareRobustCommand\lsstyle{%
   \not@math@alphabet\lsstyle\textls
   \let\glb@currsize\@empty
-%<pdftex-def|luatex-def>  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
-%<pdftex-def|luatex-def>  \def\MT@feat{tr}%
+%<pdf-|lua->  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
+%<pdf-|lua->  \def\MT@feat{tr}%
   \let\MT@tracking\MT@set@tr@codes
   \selectfont
 }
@@ -9074,15 +9074,15 @@ microtype.add_ls = add_ls
     \aftergroup\MT@set@lsbasefont
   \fi
 }
-%</pdftex-def|luatex-def|letterspace>
+%</pdf-|lua-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@tr@noligatures}
 % \pdftex\ 1.40.0--1.40.3 disabled all ligatures in letterspaced fonts.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex7{
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex7{
   \def\MT@tr@noligatures{%
     \ifx\MT@tr@ligatures\@empty
       \MT@noligatures@\MT@lsfont\@undefined
@@ -9090,7 +9090,7 @@ microtype.add_ls = add_ls
       \MT@noligatures@\MT@lsfont\MT@tr@ligatures
     \fi
   }
-%<*pdftex-def>
+%<*pdf->
 }{
   \def\MT@tr@noligatures{%
     \MT@warning@nl{%
@@ -9099,7 +9099,7 @@ microtype.add_ls = add_ls
     \MT@glet\MT@tr@noligatures\relax
   }
 }
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@outer@space}
@@ -9382,8 +9382,8 @@ microtype.add_ls = add_ls
 }{
   \DeclareRobustCommand\lsstyle{%
     \MT@error{Letterspacing only works with \MT@engine tex version
-%<pdftex-def>      1.40%
-%<luatex-def>      0.62%
+%<pdf->      1.40%
+%<lua->      0.62%
       \MessageBreak or newer}
       {Upgrade \MT@engine tex, or try the `soul' package instead.}%
     \MT@glet\lsstyle\relax
@@ -9392,14 +9392,14 @@ microtype.add_ls = add_ls
 %    \end{macrocode}
 % And for \xetex, too.
 %    \begin{macrocode}
-%</pdftex-def|luatex-def>
-%<*xetex-def>
+%</pdf-|lua->
+%<*xe->
 \DeclareRobustCommand\lsstyle{%
   \MT@error{Letterspacing currently doesn't work with xetex}
            {Run pdftex or luatex, or use the `soul' package instead.}%
   \MT@glet\lsstyle\relax
 }
-%</xetex-def>
+%</xe->
 %    \end{macrocode}
 %\begin{macro}{\textls}
 %\changes{v2.0}{2005/09/21}{new command: letterspacing} ^^A (beta:1)
@@ -9489,7 +9489,7 @@ microtype.add_ls = add_ls
 %    \begin{macrocode}
 \newdimen\MT@outer@kern
 %</package|letterspace>
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@tr@set@okern#1,#2,{%
   \let\MT@temp\@empty
   \MT@ifempty{#1}{\MT@tr@set@okern@{*}}{\MT@tr@set@okern@{#1}}%
@@ -9518,7 +9518,7 @@ microtype.add_ls = add_ls
                              * \fontdimen6\MT@lsfont/2000\relax
   \edef\MT@temp{\MT@temp{\the\@tempdima}}%
 }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ls@outer@k}
@@ -9526,7 +9526,7 @@ microtype.add_ls = add_ls
 % for cases of nested letterspacing without anything actually printed. ^^A eg. \LaTeX!
 %\changes{v2.5a}{2013/05/15}{add marker for tightly nested letterspacing}
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|letterspace>
+%<*pdf-|lua-|letterspace>
 \def\MT@ls@outer@k{%
   \ifhmode
     \ifdim\lastkern=-3sp \unkern
@@ -9541,7 +9541,7 @@ microtype.add_ls = add_ls
     {\kern\MT@outer@kern\kern3sp\kern-3sp\relax}%
   \fi
 }
-%</pdftex-def|luatex-def|letterspace>
+%</pdf-|lua-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -9552,8 +9552,8 @@ microtype.add_ls = add_ls
 % also works with \luatex.
 %\changes{v2.3}{2007/10/23}{fix: set evaluation didn't work (bug introduced in v2.2)}
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex5{
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex5{
 \def\MT@noligatures{%
   \MT@dotrue
   \let\@tempa\MT@nl@setname
@@ -9571,7 +9571,7 @@ microtype.add_ls = add_ls
 %\begin{macro}{\MT@noligatures@}
 % This is also used by \cs{MT@set@tr@codes}.
 %    \begin{macrocode}
-%<luatex-def>\MT@requires@luatex4{\let\pdfnoligatures\ignoreligaturesinfont}\relax
+%<lua->\MT@requires@luatex4{\let\pdfnoligatures\ignoreligaturesinfont}\relax
 \def\MT@noligatures@#1#2{%
   \MT@ifdefined@c@TF#2{%
 %    \end{macrocode}
@@ -9593,8 +9593,8 @@ microtype.add_ls = add_ls
 % in a table (used by the \pkg{luaotfload} function |keepligature|).
 %\changes{v2.6}{2016/04/20}{use \pkg{luaotfload} function to keep\slash inhibit ligatures}
 %    \begin{macrocode}
-%<luatex-def>          \MT@if@luaotf@font
-%<luatex-def>             {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
+%<lua->          \MT@if@luaotf@font
+%<lua->             {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
         \fi
       }%
       \MT@vinfo{... Disabling ligatures for characters: #2}%
@@ -9606,13 +9606,13 @@ microtype.add_ls = add_ls
     }%
   }{%
     \pdfnoligatures#1%
-%<luatex-def>    \MT@if@luaotf@font
-%<luatex-def>        {\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
+%<lua->    \MT@if@luaotf@font
+%<lua->        {\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
     \MT@vinfo{... Disabling all ligatures}%
   }%
 }
-%<pdftex-def>}\relax
-%</pdftex-def|luatex-def>
+%<pdf->}\relax
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -10162,12 +10162,12 @@ end
 %\begin{macro}{\MT@get@slot@}
 %\changes{v2.5}{2010/05/18}{adapt for \xetex}
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|xetex-def>
+%<*pdf-|lua-|xe->
 \def\MT@get@slot@{%
 %    \end{macrocode}
 % If it's a legacy (\ie, <TFM>) font, proceed as usual.
 %    \begin{macrocode}
-%<xetex-def>  \ifnum\XeTeXfonttype\MT@font=\z@
+%<xe->  \ifnum\XeTeXfonttype\MT@font=\z@
   \ifnum\MT@char > \m@ne
 %    \end{macrocode}
 % In \luatex, it may also be a glyph name, prefixed with `|/|'.
@@ -10175,7 +10175,7 @@ end
 %                           ^^A private mail, 2012/07/17
 %                           ^^A (beta:10)
 %    \begin{macrocode}
-%<*luatex-def>
+%<*lua->
     \ifnum\MT@char=47\relax
       \ifMT@norest \else
         \@tempcnta=\MT@lua{
@@ -10193,7 +10193,7 @@ end
         \fi
       \fi
     \else
-%</luatex-def>
+%</lua->
 %    \end{macrocode}
 % If the user has specified something like `|fi|', or wanted to define a number
 % but forgot to use three digits, we'll have something left of the string. In
@@ -10204,15 +10204,15 @@ end
 %    \begin{macrocode}
     \ifMT@norest \else
       \MT@warn@rest
-%<pdftex-def|luatex-def>      \let\MT@char\m@ne
-%<xetex-def>      \let\MT@char\@empty
+%<pdf-|lua->      \let\MT@char\m@ne
+%<xe->      \let\MT@char\@empty
     \fi
-%<luatex-def>    \fi
+%<lua->    \fi
   \else
     \MT@warn@unknown
-%<xetex-def>    \let\MT@char\@empty
+%<xe->    \let\MT@char\@empty
   \fi
-%<*xetex-def>
+%<*xe->
   \else
 %    \end{macrocode}
 % There are more possibilities for \xetex:
@@ -10260,9 +10260,9 @@ end
       \fi
     \fi
   \fi
-%</xetex-def>
+%</xe->
 }
-%</pdftex-def|luatex-def|xetex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 % This is the lua function to translate glyph name into slot number.
 % Beginning with v2.2, \pkg{luaotfload} provides this function in its <API>, which
@@ -10320,14 +10320,14 @@ end
 %\begin{macro}{\MT@max@slot}
 % Warning if resulting character or slot number is too large.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|xetex-def>
+%<*pdf-|lua-|xe->
 \def\MT@max@char
-%<pdftex-def>  {127 }
-%<luatex-def|xetex-def>  {1114111 }
+%<pdf->  {127 }
+%<lua-|xe->  {1114111 }
 \def\MT@max@slot
-%<pdftex-def>  {255 }
-%<luatex-def|xetex-def>  {1114111 }
-%</pdftex-def|luatex-def|xetex-def>
+%<pdf->  {255 }
+%<lua-|xe->  {1114111 }
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12011,8 +12011,8 @@ end
 %
 % The optional argument may be used to disable selected ligatures only.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex5{
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex5{
 \def\DisableLigatures{%
   \MT@begin@catcodes
   \MT@DisableLigatures
@@ -12025,25 +12025,25 @@ end
   \gdef\MT@nl@setname{no ligatures}%
   \MT@end@catcodes
 }
-%<pdftex-def>}{
-%</pdftex-def|luatex-def>
+%<pdf->}{
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %\end{macro}
 % If \pdftex\ is too old, we throw an error.
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def>
+%<*pdf-|xe->
 \renewcommand*\DisableLigatures[2][]{%
   \MT@error{Disabling ligatures of a font is only possible\MessageBreak
     with pdftex version 1.30 or newer.\MessageBreak
     Ignoring \string\DisableLigatures}{%
-%<pdftex-def>    Upgrade
-%<xetex-def>    Use
+%<pdf->    Upgrade
+%<xe->    Use
     pdftex.}%
 }
-%<pdftex-def>}
-%</pdftex-def|xetex-def>
+%<pdf->}
+%</pdf-|xe->
 %    \end{macrocode}
 %\end{macro}
 %
@@ -12084,7 +12084,7 @@ end
 % A new macro called |\MT@pr@c@|\meta{name} will be defined to be \meta{\#3}
 % (\ie, the list of characters, not expanded).
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 \def\SetProtrusion{%
   \MT@begin@catcodes
   \MT@SetProtrusion
@@ -12120,7 +12120,7 @@ end
   \MT@gdef@n{MT@pr@c@\MT@pr@c@name}{#3}%
   \MT@end@catcodes
 }
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12133,7 +12133,7 @@ end
 % \cs{SetExpansion} only differs in that it allows some extra options
 % (|stretch|, |shrink|, |step|, |auto|).
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\SetExpansion{%
   \MT@begin@catcodes
   \MT@SetExpansion
@@ -12203,13 +12203,13 @@ end
                    tracking set `\MT@curr@set@name'}}}%
   \MT@end@catcodes
 }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\SetExtraSpacing}
 %\changes{v2.0}{2005/09/28}{new command: adjustment of interword spacing} ^^A (beta:1)
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 \def\SetExtraSpacing{%
   \MT@begin@catcodes
   \MT@SetExtraSpacing
@@ -12260,7 +12260,7 @@ end
   \MT@gdef@n{MT@kn@c@\MT@kn@c@name}{#3}%
   \MT@end@catcodes
 }
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12457,8 +12457,8 @@ end
 %\changes{v2.5}{2010/02/27}{allow contexts for \luatex}
 % It also works with \luatex\ 0.30 or newer.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex7{
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex7{
   \define@key{MT@ex@c}{context}[]{%
     \MT@ifempty{#1}\relax{%
       \MT@glet\MT@copy@font\MT@copy@font@
@@ -12500,26 +12500,26 @@ end
       \fi
     }%
   }
-%</pdftex-def|luatex-def>
-%<*pdftex-def>
+%</pdf-|lua->
+%<*pdf->
 }{
   \define@key{MT@ex@c}{context}[]{%
     \MT@error{Expansion contexts only work with pdftex 1.40.4\MessageBreak
         or later. Ignoring `context' key\on@line}%
       {Upgrade pdftex.}%
   }
-%</pdftex-def>
-%<*pdftex-def|xetex-def>
+%</pdf->
+%<*pdf-|xe->
   \define@key{MT@pr@c}{context}[]{%
     \MT@error{Protrusion contexts only work with pdftex
-%<pdftex-def>        1.40.4\MessageBreak or later.
-%<xetex-def>        \MessageBreak or luatex.
+%<pdf->        1.40.4\MessageBreak or later.
+%<xe->        \MessageBreak or luatex.
         Ignoring `context' key\on@line}%
-%<pdftex-def>      {Upgrade pdftex.}%
-%<xetex-def>      {Use pdftex or luatex.}%
+%<pdf->      {Upgrade pdftex.}%
+%<xe->      {Use pdftex or luatex.}%
   }
-%</pdftex-def|xetex-def>
-%<pdftex-def>}
+%</pdf-|xe->
+%<pdf->}
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@nodim}
 %    \begin{macrocode}
@@ -12539,7 +12539,7 @@ end
 %\todo{new key for unit: \texttt{dimen} (for \texttt{kerning}, especially)}
 % Protrusion codes may be relative to character width, or to any dimension.
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 \define@key{MT@pr@c}{unit}[character]{%
   \MT@glet@nc{MT@pr@c@\MT@curr@set@name @unit}\@empty
   \def\@tempa{#1}%
@@ -12553,11 +12553,11 @@ end
       {\MT@warn@nodim{character widths}}%
   }%
 }
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 % Tracking may only be relative to a dimension.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \define@key{MT@tr@c}{unit}[1em]{%
   \MT@glet@nc{MT@tr@c@\MT@curr@set@name @unit}\@empty
   \def\@tempa{#1}%
@@ -12566,11 +12566,11 @@ end
     {\MT@warn@nodim{1em}%
      \MT@gdef@n{MT@tr@c@\MT@curr@set@name @unit}{1em}}%
 }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 % Spacing and kerning codes may additionally be relative to space dimensions.
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
 \MT@map@clist@n{sp,kn}{%
   \define@key{MT@#1@c}{unit}[space]{%
     \MT@glet@nc{MT@#1@c@\MT@curr@set@name @unit}\@empty
@@ -12585,11 +12585,11 @@ end
     }%
   }%
 }
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 % The first argument to \cs{SetExpansion} accepts some more options.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \MT@map@clist@n{stretch,shrink,step}{%
   \define@key{MT@ex@c}{#1}[]{%
     \MT@ifempty{##1}\relax{%
@@ -12615,19 +12615,19 @@ end
 %\changes{v1.7}{2005/03/07}{disallow automatic expansion if \pdftex\ too old}
 %\changes{v2.7a}{2017/08/08}{disallow non-automatic expansion with \luatex}
 %    \begin{macrocode}
-%<pdftex-def>    \MT@requires@pdftex4%
-%<luatex-def>    \MT@requires@luatex3\relax
+%<pdf->    \MT@requires@pdftex4%
+%<lua->    \MT@requires@luatex3\relax
       {\MT@gdef@n{MT@ex@c@\MT@curr@set@name @auto}{autoexpand}}%
-%<pdftex-def>      {\MT@warning{pdftex too old for automatic font expansion}}%
+%<pdf->      {\MT@warning{pdftex too old for automatic font expansion}}%
   \else
-%<pdftex-def>    \MT@requires@pdftex4%
-%<*luatex-def>
+%<pdf->    \MT@requires@pdftex4%
+%<*lua->
     \MT@requires@luatex3{%
       \MT@warning{Non-automatic font expansion doesn't work with\MessageBreak
                   luatex}}%
-%</luatex-def>
+%</lua->
       {\MT@glet@nc{MT@ex@c@\MT@curr@set@name @auto}\@empty}%
-%<pdftex-def>      \relax
+%<pdf->      \relax
   \fi
 }
 %    \end{macrocode}
@@ -12646,7 +12646,7 @@ end
 \define@key{MT@tr@c}{outer spacing}[]{\setkeys{MT@tr@c}{outerspacing={#1}}}
 \define@key{MT@tr@c}{outer kerning}[]{\setkeys{MT@tr@c}{outerkerning={#1}}}
 \define@key{MT@tr@c}{no ligatures}[]{\setkeys{MT@tr@c}{noligatures={#1}}}
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %
 %\subsubsection{Character inheritance}
@@ -12764,21 +12764,21 @@ end
 % in |\MT@set@|\meta{feature}|@codes|.
 %    \begin{macrocode}
 %</package>
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 \def\MT@inh@split#1=#2=#3\relax{%
   \def\@tempa{#1}%
   \ifx\@tempa\@empty \else
     \expandafter\MT@has@inh@prefix\@tempa()\relax\@nil
     \MT@get@slot
-%<pdftex-def|luatex-def>    \ifnum\MT@char > \m@ne
-%<xetex-def>    \ifx\MT@char\@empty\else
+%<pdf-|lua->    \ifnum\MT@char > \m@ne
+%<xe->    \ifx\MT@char\@empty\else
       \let\MT@val\MT@char
       \MT@map@clist@n{#2}{%
         \def\@tempa{##1}%
         \ifx\@tempa\@empty \else
           \MT@get@slot
-%<pdftex-def|luatex-def>          \ifnum\MT@char > \m@ne
-%<xetex-def>          \ifx\MT@char\@empty\else
+%<pdf-|lua->          \ifnum\MT@char > \m@ne
+%<xe->          \ifx\MT@char\@empty\else
             \ifx\MT@inh@prefix\@empty
               \MT@exp@cs\MT@xadd{MT@inh@\MT@listname @\MT@val @}{{\MT@char}}%
             \else
@@ -12828,7 +12828,7 @@ end
   \fi
   \MT@temp
 }
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -13276,21 +13276,21 @@ end
 %\changes{v2.5}{2010/09/17}{disable `\opt{DVIoutput}' option for \xetex} ^^A (beta:03)
 %    \begin{macrocode}
 %</package>
-%<*pdftex-def|luatex-def|xetex-def>
-%<luatex-def>\MT@requires@luatex4{\let\pdfoutput\outputmode}\relax
+%<*pdf-|lua-|xe->
+%<lua->\MT@requires@luatex4{\let\pdfoutput\outputmode}\relax
 \MT@def@bool@opt{DVIoutput}{%
   \csname if\@tempa\endcsname
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
     \ifnum\pdfoutput>\z@ \MT@opt@DVItrue \fi
     \pdfoutput\z@
   \else
     \ifnum\pdfoutput<\@ne \MT@opt@DVItrue \fi
     \pdfoutput\@ne
-%</pdftex-def|luatex-def>
-%<xetex-def>    \MT@warning@nl{Ignoring `DVIoutput' option}%
+%</pdf-|lua->
+%<xe->    \MT@warning@nl{Ignoring `DVIoutput' option}%
   \fi
 }
-%</pdftex-def|luatex-def|xetex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\changes{v1.9a}{2005/11/21}{new option: \opt{defersetup}, by default true}
 % Setting the \opt{defersetup} option to false will restore the old behaviour,
@@ -13321,8 +13321,8 @@ end
 % out automatically whether it's required.
 % It also works with \luatex\ 0.30 or newer.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex7{
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex7{
   \MT@def@bool@opt{copyfonts}{%
     \csname if\@tempa\endcsname
       \MT@glet\MT@copy@font\MT@copy@font@
@@ -13330,20 +13330,20 @@ end
       \MT@glet\MT@copy@font\relax
     \fi
   }
-%<pdftex-def>}{
-%</pdftex-def|luatex-def>
-%<*pdftex-def|xetex-def>
+%<pdf->}{
+%</pdf-|lua->
+%<*pdf-|xe->
   \MT@def@bool@opt{copyfonts}{%
     \csname if\@tempa\endcsname
       \MT@error
-%<pdftex-def>        {The pdftex version you are using is too old\MessageBreak
-%<pdftex-def>        to use the `copyfonts' option}{Upgrade pdftex.}%
-%<xetex-def>        {The `copyfonts' option does not work with xetex}
-%<xetex-def>        {Use pdftex or luatex instead.}%
+%<pdf->        {The pdftex version you are using is too old\MessageBreak
+%<pdf->        to use the `copyfonts' option}{Upgrade pdftex.}%
+%<xe->        {The `copyfonts' option does not work with xetex}
+%<xe->        {Use pdftex or luatex instead.}%
     \fi
   }
-%<pdftex-def>}
-%</pdftex-def|xetex-def>
+%<pdf->}
+%</pdf-|xe->
 %    \end{macrocode}
 % \opt{final} is the opposite to \opt{draft}.
 %\changes{v1.4a}{2004/11/16}{new option: \opt{final}}
@@ -13546,20 +13546,20 @@ end
 %    \begin{macrocode}
 \MT@protrusiontrue
 %</package>
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \ifnum\pdfoutput<\@ne \else
 %    \end{macrocode}
 % Also, we only enable expansion by default if \pdftex\ can expand the fonts
 % automatically.
 %\changes{v1.6}{2004/12/23}{defaults: turn off expansion for old \pdftex\ versions}
 %    \begin{macrocode}
-%<pdftex-def>  \MT@requires@pdftex4{
+%<pdf->  \MT@requires@pdftex4{
     \MT@expansiontrue
-%<pdftex-def>    \MT@autotrue
-%<pdftex-def>  }\relax
+%<pdf->    \MT@autotrue
+%<pdf->  }\relax
 \fi
-%<luatex-def>\MT@autotrue
-%</pdftex-def|luatex-def>
+%<lua->\MT@autotrue
+%</pdf-|lua->
 %    \end{macrocode}
 % The main configuration file will be loaded before processing the package
 % options.
@@ -13687,7 +13687,7 @@ end
 \def\microtypesetup{\setkeys{MT}}
 \MT@addto@setup{\def\microtypesetup#1{\setkeys{MTX}{#1}\selectfont}}
 %</package>
-%<*pdftex-def|luatex-def|xetex-def>
+%<*pdf-|lua-|xe->
 \def\MT@define@optionX#1#2{%
   \define@key{MTX}{#1}[true]{%
     \edef\@tempb{\csname MT@rbba@#1\endcsname}%
@@ -13757,26 +13757,26 @@ end
 %\end{macro}
 %    \begin{macrocode}
 \MT@define@optionX{protrusion}\MT@protrudechars
-%</pdftex-def|luatex-def|xetex-def>
-%<*pdftex-def|luatex-def>
+%</pdf-|lua-|xe->
+%<*pdf-|lua->
 \MT@define@optionX{expansion}\MT@adjustspacing
 %    \end{macrocode}
 %\begin{macro}{\MT@protrudechars}
 %\begin{macro}{\MT@adjustspacing}
 %    \begin{macrocode}
-%<*luatex-def>
+%<*lua->
 \MT@requires@luatex4{
   \let\pdfprotrudechars\protrudechars
   \let\pdfadjustspacing\adjustspacing
 }\relax
-%</luatex-def>
+%</lua->
 \let\MT@protrudechars\pdfprotrudechars
 \let\MT@adjustspacing\pdfadjustspacing
-%</pdftex-def|luatex-def>
-%<*xetex-def>
+%</pdf-|lua->
+%<*xe->
 \let\MT@protrudechars\XeTeXprotrudechars
 \define@key{MTX}{expansion}[true]{\MT@warning{Ignoring expansion setup}}
-%</xetex-def>
+%</xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -13784,9 +13784,9 @@ end
 % The same for |tracking|, |spacing| and |kerning|, which do not have a
 % |compatibility| level.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex6{
-%<luatex-def>\MT@requires@luatex3{
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex6{
+%<lua->\MT@requires@luatex3{
   \def\MT@define@optionX@#1#2{%
     \define@key{MTX}{#1}[true]{%
       \MT@map@clist@n{##1}{%
@@ -13820,25 +13820,25 @@ end
 %    \begin{macrocode}
   \MT@define@optionX@{tracking}{\ifnum\@tempcnta=\z@ \let\MT@tracking\MT@set@tr@zero
                                 \else \let\MT@tracking\MT@tracking@ \fi}
-%<pdftex-def>  \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
-%<pdftex-def>  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta
-%<pdftex-def>                               \pdfappendkern\@tempcnta}
+%<pdf->  \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
+%<pdf->  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta
+%<pdf->                               \pdfappendkern\@tempcnta}
 }{
-%</pdftex-def|luatex-def>
-%<*pdftex-def|luatex-def|xetex-def>
+%</pdf-|lua->
+%<*pdf-|lua-|xe->
 %    \end{macrocode}
 % Disable for older \pdftex\ versions and for \xetex\ and \luatex.
 %    \begin{macrocode}
 \define@key{MTX}{tracking}[true]{\MT@warning{Ignoring tracking setup}}
-%<luatex-def>}
+%<lua->}
 \define@key{MTX}{kerning}[true]{\MT@warning{Ignoring kerning setup}}
 \define@key{MTX}{spacing}[true]{\MT@warning{Ignoring spacing setup}}
-%<pdftex-def>}
+%<pdf->}
 \define@key{MTX}{activate}[true]{%
   \setkeys{MTX}{protrusion={#1}}%
-%<pdftex-def|luatex-def>  \setkeys{MTX}{expansion={#1}}%
+%<pdf-|lua->  \setkeys{MTX}{expansion={#1}}%
 }
-%</pdftex-def|luatex-def|xetex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\begin{macro}{\MT@saved@setupfont}
 % Disable everything -- may be used as a temporary work-around in case
@@ -13982,7 +13982,7 @@ end
 % for each package (that's not our job), we only say that it was \microtype\
 % that changed it. This must be sufficient!
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@setup@PDF{%
   \MT@info@nl{Generating \ifnum\pdfoutput<\@ne DVI \else PDF \fi output%
               \ifMT@opt@DVI\space (changed by \MT@MT)\fi}%
@@ -13995,17 +13995,17 @@ end
 \def\MT@setup@copies{%
   \ifx\MT@copy@font\relax\else \MT@info@nl{Using font copies for contexts}\fi
 }
-%</pdftex-def|luatex-def>
-%<*xetex-def>
+%</pdf-|lua->
+%<*xe->
 \let\MT@setup@PDF\relax
 \let\MT@setup@copies\relax
-%</xetex-def>
+%</xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@protrusion}
 % Protrusion.
 %    \begin{macrocode}
-%<*pdftex-def|xetex-def|luatex-def>
+%<*pdf-|lua-|xe->
 \def\MT@setup@protrusion{%
   \ifMT@protrusion
     \edef\MT@active@features{\MT@active@features,pr}%
@@ -14020,7 +14020,7 @@ end
     \MT@info@nl{No character protrusion}%
   \fi
 }
-%</pdftex-def|xetex-def|luatex-def>
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@expansion}
@@ -14035,11 +14035,11 @@ end
 %                           (reported by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)} ^^A aka `d909'
 %                           ^^A https://tex.stackexchange.com/questions/531413/dvipdfmx-and-dvips-do-not-expand-fonts-properly-with-lualatex-in-dvi-mode
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@setup@expansion{%
   \ifnum\pdfoutput<\@ne
     \ifMT@opt@expansion
-%<*luatex-def>
+%<*lua->
       \ifMT@expansion
         \MT@requires@luatex3{%
           \MT@warning@nl{Font expansion doesn't work properly with luatex in\MessageBreak
@@ -14049,7 +14049,7 @@ end
           %\MT@expansionfalse
         }\relax
       \fi
-%</luatex-def>
+%</lua->
     \else
       \MT@expansionfalse
     \fi
@@ -14081,9 +14081,9 @@ end
 %\changes{v1.9}{2005/07/08}{warning if user requested zero \opt{step}}
 %    \begin{macrocode}
     \ifnum\MT@step=\m@ne
-%<pdftex-def>    \MT@requires@pdftex6{%
+%<pdf->    \MT@requires@pdftex6{%
       \def\MT@step{1 }%
-%<*pdftex-def>
+%<*pdf->
     }{%
       \ifnum\MT@stretch>\MT@shrink
         \ifnum\MT@shrink=\z@
@@ -14102,7 +14102,7 @@ end
       \ifnum\@tempcnta=\z@ \@tempcnta=\@ne \fi
       \edef\MT@step{\number\@tempcnta\space}%
     }%
-%</pdftex-def>
+%</pdf->
     \fi
     \ifnum\MT@step=\z@
       \MT@warning@nl{The expansion step cannot be set to zero.\MessageBreak
@@ -14134,7 +14134,7 @@ end
 %\changes{v1.5}{2004/12/02}{disable automatic expansion for <DVI> output}
 %\changes{v2.7}{2017/07/02}{don't disable automatic expansion for <DVI> output with \luatex}
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
       \MT@requires@pdftex4{%
         \ifnum\pdfoutput<\@ne
           \ifMT@opt@auto
@@ -14165,18 +14165,18 @@ end
         \MT@autofalse
         \def\MT@auto{1000 }%
       }%
-%</pdftex-def>
-%<luatex-def>      \MT@requires@luatex3\relax{\def\MT@auto{autoexpand}}%
+%</pdf->
+%<lua->      \MT@requires@luatex3\relax{\def\MT@auto{autoexpand}}%
     \else
-%<*pdftex-def>
+%<*pdf->
 %    \end{macrocode}
 % No automatic expansion.
 %    \begin{macrocode}
       \MT@requires@pdftex4\relax{%
         \def\MT@auto{1000 }%
       }%
-%</pdftex-def>
-%<*luatex-def>
+%</pdf->
+%<*lua->
       \MT@requires@luatex3{%
         \ifMT@opt@auto
           \MT@error{Non-automatic font expansion does not work with\MessageBreak
@@ -14184,7 +14184,7 @@ end
           \MT@autotrue
         \fi
       }\relax
-%</luatex-def>
+%</lua->
     \fi
 %    \end{macrocode}
 % Choose the appropriate macro for selected expansion.
@@ -14273,8 +14273,8 @@ end
     \MT@info@nl{No font expansion}%
   \fi
 }
-%</pdftex-def|luatex-def>
-%<*xetex-def>
+%</pdf-|lua->
+%<*xe->
 \def\MT@setup@expansion{%
   \ifMT@expansion
     \ifMT@opt@expansion
@@ -14283,15 +14283,15 @@ end
     \fi
   \fi
 }
-%</xetex-def>
+%</xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@tracking}
 % Tracking, spacing and kerning.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
-%<pdftex-def>\MT@requires@pdftex6{%
-%<luatex-def>\MT@requires@luatex3{%
+%<*pdf-|lua->
+%<pdf->\MT@requires@pdftex6{%
+%<lua->\MT@requires@luatex3{%
   \def\MT@setup@tracking{%
     \ifMT@tracking
       \edef\MT@active@features{\MT@active@features,tr}%
@@ -14307,12 +14307,12 @@ end
       \MT@info@nl{No adjustment of tracking}%
     \fi
   }
-%</pdftex-def|luatex-def>
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@spacing}
 %    \begin{macrocode}
-%<*pdftex-def>
+%<*pdf->
   \def\MT@setup@spacing{%
     \ifMT@spacing
       \edef\MT@active@features{\MT@active@features,sp}%
@@ -14380,7 +14380,7 @@ end
       \MT@info@nl{No adjustment of character kerning}%
     \fi
   }
-%</pdftex-def>
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@error@doesnt@work}
@@ -14389,8 +14389,8 @@ end
 % and throw an error message.
 % We also switch the features off for \luatex\ and \xetex.
 %    \begin{macrocode}
-%<pdftex-def|luatex-def>}{
-%<*luatex-def>
+%<pdf-|lua->}{
+%<*lua->
   \def\MT@setup@tracking{%
     \ifMT@tracking
       \MT@error{The tracking feature only works with luatex 0.62\MessageBreak
@@ -14402,33 +14402,33 @@ end
     \fi
   }
 }
-%</luatex-def>
-%<*pdftex-def|xetex-def|luatex-def>
+%</lua->
+%<*pdf-|lua-|xe->
   \def\MT@error@doesnt@work#1{%
     \csname ifMT@#1\endcsname
       \MT@error{The #1 feature only works with pdftex 1.40\MessageBreak
         or newer. Switching it off}
-%<pdftex-def>        {Upgrade pdftex.}%
-%<luatex-def|xetex-def>        {Use pdftex instead.}%
+%<pdf->        {Upgrade pdftex.}%
+%<lua-|xe->        {Use pdftex instead.}%
       \csname MT@#1false\endcsname
       \MT@let@nc{MT@#1}\relax
     \else
       \MT@info@nl{No adjustment of #1%
-%<pdftex-def>      \space(pdftex too old)%
+%<pdf->      \space(pdftex too old)%
       }%
     \fi
   }
-%<pdftex-def|xetex-def>  \def\MT@setup@tracking{\MT@error@doesnt@work{tracking}}
+%<pdf-|xe->  \def\MT@setup@tracking{\MT@error@doesnt@work{tracking}}
   \def\MT@setup@kerning {\MT@error@doesnt@work{kerning}}
   \def\MT@setup@spacing {\MT@error@doesnt@work{spacing}}
-%<pdftex-def>}
-%</pdftex-def|xetex-def|luatex-def>
+%<pdf->}
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@warntracking}
 %    \begin{macrocode}
 %<letterspace>\MT@addto@setup
-%<pdftex-def|luatex-def>\def\MT@setup@warntracking
+%<pdf-|lua->\def\MT@setup@warntracking
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@tracking@DVI}
 %\changes{v2.2}{2007/02/11}{warning when letterspacing in <DVI> mode}
@@ -14437,9 +14437,9 @@ end
 % not work. We also switch on protrusion if it isn't already, to compensate for
 % the letterspacing kerns.
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def|letterspace>
+%<*pdf-|lua-|letterspace>
 {%
-%<*pdftex-def|letterspace>
+%<*pdf-|letterspace>
   \ifnum\pdfoutput<\@ne
     \def\MT@warn@tracking@DVI{%
 %<letterspace>      \MT@pdf@or@lua{%
@@ -14452,12 +14452,12 @@ end
       \MT@glet\MT@warn@tracking@DVI\relax
     }%
   \else
-%</pdftex-def|letterspace>
+%</pdf-|letterspace>
     \def\MT@warn@tracking@DVI{%
       \ifnum\pdfprotrudechars<\@ne \global\pdfprotrudechars\@ne \fi
       \MT@glet\MT@warn@tracking@DVI\relax
     }%
-%<pdftex-def|letterspace>  \fi
+%<pdf-|letterspace>  \fi
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
@@ -14467,8 +14467,8 @@ end
     \MT@ls@too@large\MT@letterspace
   \fi
 }
-%</pdftex-def|luatex-def|letterspace>
-%<xetex-def>\let\MT@setup@warntracking\relax
+%</pdf-|lua-|letterspace>
+%<xe->\let\MT@setup@warntracking\relax
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@noligatures}
@@ -14476,16 +14476,16 @@ end
 % now disable the corresponding macro, if it was never called.
 %\changes{v2.0}{2006/12/14}{maybe disable \cs{MT@noligatures} after the preamble}
 %    \begin{macrocode}
-%<*pdftex-def|luatex-def>
+%<*pdf-|lua->
 \def\MT@setup@noligatures{%
-%<pdftex-def>  \MT@requires@pdftex5{%
+%<pdf->  \MT@requires@pdftex5{%
     \ifMT@noligatures \else
       \let\MT@noligatures\relax
     \fi
-%<pdftex-def>  }\relax
+%<pdf->  }\relax
 }
-%</pdftex-def|luatex-def>
-%<xetex-def>\let\MT@setup@noligatures\relax
+%</pdf-|lua->
+%<xe->\let\MT@setup@noligatures\relax
 %    \end{macrocode}
 %\end{macro}
 % Remove the leading comma in \cs{MT@active@features}, and set the
