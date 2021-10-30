@@ -3245,7 +3245,8 @@
 % `\contributor dsedivec          <@\at @>', ^^A https://tex.stackexchange.com/users/1680/dsedivec
 % `\contributor DORpapst          <@\at @>', ^^A https://tex.stackexchange.com/users/104965/dorpapst
 % `\contributor chsk              <@\at @>', ^^A https://tex.stackexchange.com/users/158639/chsk
-% `\contributor tnull             <@\at @>'  ^^A https://tex.stackexchange.com/users/91987/tnull
+% `\contributor tnull             <@\at @>', ^^A https://tex.stackexchange.com/users/91987/tnull
+% `\contributor azur              <@\at @>'  ^^A https://tex.stackexchange.com/users/216369/azur
 % and
 % `\contributor Safron            <@\at @>'. ^^A https://tex.stackexchange.com/users/149123/safron
 %
@@ -10276,12 +10277,17 @@ end
 % |do_font|).
 % ^^A cf. https://github.com/latex3/luaotfload/issues/198
 %\changes{v2.8d}{2021/10/26}{guard against return values outside Unicode range (for HarfBuzz)}
+% Also, older versions of \pkg{luaotfload} returned the numbers as floats.
+%^^A fixed here: https://github.com/latex3/luaotfload/commit/53b70cbdb60101e2869d879e9d8daf576b0c8f82
+%\changes{v2.8d}{2021/10/30}{convert floats to integers
+%                            (reported by \contributor azur <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/616329/using-polyglossia-microtype-and-newcomputermodern-with-lualatex-results-in-0-0
 %    \begin{macrocode}
 %<*luafile>
 if luaotfload and luaotfload.aux and luaotfload.aux.slot_of_name then
   local slot_of_name = luaotfload.aux.slot_of_name
   microtype.name_to_slot = function(name, unsafe)
-    local n = slot_of_name(font.current(), name, unsafe)
+    local n = math.tointeger(slot_of_name(font.current(), name, unsafe))
     if n and n > 1114111 then n = -1 end
     return n
   end
