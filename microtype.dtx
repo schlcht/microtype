@@ -6401,7 +6401,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@patches@def}
 %\begin{macro}{\MT@define@patch}
-% Define a patch and it add to the list of patches.
+% Define a patch and add it to the list of patches.
 % The third argument may contain more revert commands, but will
 % mostly be empty.
 %    \begin{macrocode}
@@ -12068,7 +12068,6 @@ end
     \MT@gdef@n{MT@babel@\@tempa}{#2}%
   }%
 }
-%</package>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -12090,7 +12089,6 @@ end
 % A new macro called |\MT@pr@c@|\meta{name} will be defined to be \meta{\#3}
 % (\ie, the list of characters, not expanded).
 %    \begin{macrocode}
-%<*pdf-|lua-|xe->
 \def\SetProtrusion{%
   \MT@begin@catcodes
   \MT@SetProtrusion
@@ -12126,7 +12124,7 @@ end
   \MT@gdef@n{MT@pr@c@\MT@pr@c@name}{#3}%
   \MT@end@catcodes
 }
-%</pdf-|lua-|xe->
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12534,7 +12532,6 @@ end
   \MT@warning{`\@tempa' is not a dimension.\MessageBreak
               Ignoring it and setting values relative to\MessageBreak #1}%
 }
-%</package>
 %    \end{macrocode}
 %\end{macro}
 %\changes{v1.8}{2005/04/14}{\cs{SetProtrusion}: new key: \texttt{unit}}
@@ -12545,7 +12542,6 @@ end
 %\todo{new key for unit: \texttt{dimen} (for \texttt{kerning}, especially)}
 % Protrusion codes may be relative to character width, or to any dimension.
 %    \begin{macrocode}
-%<*pdf-|lua-|xe->
 \define@key{MT@pr@c}{unit}[character]{%
   \MT@glet@nc{MT@pr@c@\MT@curr@set@name @unit}\@empty
   \def\@tempa{#1}%
@@ -12559,7 +12555,7 @@ end
       {\MT@warn@nodim{character widths}}%
   }%
 }
-%</pdf-|lua-|xe->
+%</package>
 %    \end{macrocode}
 % Tracking may only be relative to a dimension.
 %    \begin{macrocode}
@@ -12799,6 +12795,7 @@ end
     \fi
   \fi
 }
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@inh@prefix}
@@ -12810,6 +12807,7 @@ end
 %                           (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
 %                            ^^A private mail, 2020/12/24
 %    \begin{macrocode}
+%<*package>
 \def\MT@has@inh@prefix#1(#2)#3#4\@nil{%
   \let\MT@temp\relax
   \ifx\relax#3%
@@ -12834,7 +12832,6 @@ end
   \fi
   \MT@temp
 }
-%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12873,7 +12870,6 @@ end
 %\end{verbatim}
 % would yield the following assignments:
 %    \begin{macrocode}
-%<*package>
 \MT@gdef@n{MT@pr@c@U/euroitc///}{euroitc}
 \MT@gdef@n{MT@pr@c@U/euroitcs///}{euroitc}
 \MT@gdef@n{MT@pr@c@U/euroitc//it/}{euroitci}
