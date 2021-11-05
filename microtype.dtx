@@ -3245,9 +3245,10 @@
 % `\contributor DORpapst          <@\at @>', ^^A https://tex.stackexchange.com/users/104965/dorpapst
 % `\contributor chsk              <@\at @>', ^^A https://tex.stackexchange.com/users/158639/chsk
 % `\contributor tnull             <@\at @>', ^^A https://tex.stackexchange.com/users/91987/tnull
-% `\contributor azur              <@\at @>'  ^^A https://tex.stackexchange.com/users/216369/azur
+% `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
+% `\contributor Safron            <@\at @>'  ^^A https://tex.stackexchange.com/users/149123/safron
 % and
-% `\contributor Safron            <@\at @>'. ^^A https://tex.stackexchange.com/users/149123/safron
+% `\contributor gusbrs            <@\at @>'. ^^A https://tex.stackexchange.com/users/105447/gusbrs
 %
 %
 %\iffalse
@@ -6240,6 +6241,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{csquotes}{%
     \@ifpackagelater{csquotes}{2005/05/11}{%
       \g@addto@macro\MT@setupfont@hook\@disablequotes
+      \g@addto@macro\MT@prot@hook\@disablequotes
     }{%
       \MT@warning@nl{%
         Should you receive warnings about unknown slot\MessageBreak
@@ -7895,11 +7897,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@hook}
 %\begin{macro}{\MT@get@prot}
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
+%\changes{v3.1}{2021/11/05}{compatibility fix for \pkg{csquotes}
+%                           (reported by \contributor gusbrs <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
+% We also have a hook for compatibility fixes.
 %    \begin{macrocode}
+\let\MT@prot@hook\@empty
 \long\def\MT@get@prot#1{%
   \MT@leftmarginkern=\z@
   \MT@rightmarginkern=\z@
@@ -7909,6 +7917,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \parfillskip=\z@skip
       \hbadness\@M
       \@newlistfalse
+      \MT@prot@hook
       \noindent #1}%
     \vbadness=\@M
     \splittopskip=\z@
@@ -7925,6 +7934,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@ifx}
 % Test next token.
@@ -19452,7 +19462,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12274}
+% \CheckSum{12281}
 %
 % \Finale
 %
