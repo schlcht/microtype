@@ -3,6 +3,8 @@
   \usepackage{fontspec}
 \fi
 \usepackage[verbose]{microtype}
+\usepackage{csquotes}
+\MakeAutoQuote{“}{”}
 {\catcode`<=13
  \gdef<#1>{\textls{#1}}}
 %\AddToHook{cmd/leftprotrusion/before}
@@ -29,6 +31,7 @@
   \item {—} some words\newline {—} a new line
   \item {---} some words\newline {---} a new line
   \item {\textemdash} some words\newline {\textemdash} a new line
+  \item “quote”
   \item <ABC> def
 \microtypesetup{nopatch=item}
   \item --- some words (without patch)\newline --- a new line
