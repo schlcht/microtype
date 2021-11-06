@@ -802,6 +802,7 @@
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\githuburl{https://github.com/schlcht/microtype}
+\def\githubissue#1{ [issue~\href{\githuburl/issues/#1}{\#1}]}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -3248,7 +3249,7 @@
 % `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
 % `\contributor Safron            <@\at @>'  ^^A https://tex.stackexchange.com/users/149123/safron
 % and
-% `\contributor gusbrs            <@\at @>'. ^^A https://tex.stackexchange.com/users/105447/gusbrs
+%  \contributor Gustavo Barros    <@\at @>.  ^^A https://tex.stackexchange.com/users/105447/gusbrs
 %
 %
 %\iffalse
@@ -7905,7 +7906,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
 %\changes{v3.1}{2021/11/05}{compatibility fix for \pkg{csquotes}
-%                           (reported by \contributor gusbrs <@\at @>)}
+%                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
 % We also have a hook for compatibility fixes.
 %    \begin{macrocode}
