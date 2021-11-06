@@ -10,11 +10,9 @@ assignees: schlcht
 ## Description
 A sentence or two describing the issue.
 
-## Check/indicate
-- [ ] Relevant for pdfTeX
-- [ ] Relevant for LuaTeX
-- [ ] Relevant for XeTeX
-- [ ] Links to <tex.stackexchange.com> discussion if appropriate
+_Please also indicate the engine(s) with which the issue occurs: pdfTeX/LuaTeX/XeTeX_
+
+_Links to <tex.stackexchange.com> discussion if appropriate_
 
 ## Minimal example demonstrating the issue
 ```
@@ -24,5 +22,3 @@ A sentence or two describing the issue.
 Hello, bug!
 \end{document}
 ```
-
-## Further details
