@@ -401,6 +401,7 @@
 \pgfmathsetmacro{\MThistvsep}{1.75}
 \pgfmathsetmacro{\MThisthshift}{3}
 \pgfmathsetmacro{\MThistnodewidth}{2.8mm}
+\def\MThist@yshift{0}
 \def\MThistprepare{%
   \pgfmathsetmacro{\MThistnodesep}{(\textwidth+\MThisthshift cm-\MThistnodewidth-1pt)/\theMThistitem}
   \setcounter{MThistitem}{0}
@@ -422,8 +423,8 @@
   \fi
   \stepcounter{MThistitem}
   \node[right=\MThistnodesep,text width=\MThistnodewidth,inner sep=1pt,outer sep=0pt,
-        fill=\ifMThist@major theshade\else white\fi,align=center]
-       (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{\MThist@current\strut}};
+        major,align=center]
+        (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{\MThist@current\strut}};
   \draw (n-\theMThistitem.north west) -- (n-\theMThistitem.north east);
   \ifMThist@major
   \draw (n-\theMThistitem.south west) -- (n-\theMThistitem.south east);
@@ -453,7 +454,14 @@
    {\hypersetup{linkcolor=thered}%
     \hspace{-\MThisthshift cm}%
     \rlap{%
-      \begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont]
+      \begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont,
+        major/.code={%
+          \ifMThist@major
+            \tikzset{fill=theshade}
+          \else
+            \tikzset{fill=white}
+          \fi
+        }]
         \MThistprepare
         \MThistshow
         \MThisttimeline
