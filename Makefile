@@ -194,7 +194,6 @@ $(NAME).idx: $(DTX)
 	@$(DO_PDFLATEX_DOC)
 
 $(NAME).ind: $(NAME)-stamp
-	@echo "Compiling user documentation (ind)"
 	@$(DO_MAKEINDEX_DOC)
 
 $(NAME)-stamp: $(NAME).idx
@@ -206,7 +205,6 @@ $(NAMEC).idx $(NAMEC).glo: $(DTX)
 	@$(DO_PDFLATEX_CODE)
 
 $(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
-	@echo "Compiling code documentation (ind,gls)"
 	@$(DO_MAKEINDEX_CODE)
 
 $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx
@@ -219,8 +217,8 @@ $(NAMEC).tmp:
 	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	@if `grep $(RERUN_STR) $(NAMEC).log > /dev/null` ; then \
-		echo "Re-compiling code documentation (for Unicode part)" ; \
 		$(DO_MAKEINDEX_CODE) ; \
+		echo "Re-compiling code documentation (for Unicode part)" ; \
 		$(DO_PDFLATEX_CODE) ; \
 	fi
 
