@@ -2384,7 +2384,7 @@
 % Latin Modern Roman
 %      & Latin
 %      & n, it, (sl)\fnref{fn:ot-itsl}\\
-% New Computer Modern
+% New Computer Modern\footnote{Alias: <CMU> Serif}
 %      & Latin, Greek
 %      & n, it, (sl)\fnref{fn:ot-itsl}\\
 % Charis <SIL>
@@ -14845,6 +14845,11 @@ end
 \DeclareMicrotypeAlias{NewCM10-Book.otf}   {New Computer Modern}
 \DeclareMicrotypeAlias{NewCM10-Regular.otf}{New Computer Modern}
 %    \end{macrocode}
+%\changes{v3.1}{2021/11/09}{declare <CMU> Serif as an alias of New Computer Modern}
+% <CMU> Serif can use the settings from New Computer Modern too.
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{CMU Serif}          {New Computer Modern}
+%    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
 %\changes{v1.8}{2005/04/19}{declare \texttt{pxr} and \texttt{txr}
@@ -19465,7 +19470,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12281}
+% \CheckSum{12282}
 %
 % \Finale
 %
