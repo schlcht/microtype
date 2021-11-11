@@ -3967,6 +3967,8 @@
 \newcommand*\microtypesetup[1]{}
 \newcommand*\microtypecontext[1]{}
 \newcommand*\textmicrotypecontext[2]{#2}
+\newcommand\leftprotrusion[1]{#1}
+\newcommand\rightprotrusion[1]{#1}
 \@ifpackageloaded{letterspace}{\let\MT@textls\relax}{%
 %</package>
 \newcommand*\lsstyle{}
@@ -4616,7 +4618,6 @@
 %<plain>  \MT@requires@latex1{%
   \AtEndOfPackage{\let\@unprocessedoptions\relax\MT@restore@catcodes}%
   \let\CurrentOption\@empty
-%<package>  \let\MT@endinput\endinput
 %<plain>  }\relax
 }
 %    \end{macrocode}
@@ -4678,6 +4679,16 @@
     \fi
   \fi
 \fi
+%    \end{macrocode}
+% Abort if no capable engine found.
+%\changes{v3.1}{2021/11/10}{abort earlier if no capable engine found}
+%    \begin{macrocode}
+\ifx\MT@engine\relax
+  \MT@warning@nl{You don't seem to be using pdftex, luatex or xetex.\MessageBreak
+    `\MT@MT' only works with these engines.\MessageBreak
+    I will quit now}
+  \MT@clear@options
+\endinput\fi
 %</package>
 %</package|letterspace>
 %    \end{macrocode}
@@ -13529,25 +13540,9 @@ end
 %
 %\subsubsection{Loading the definition file}
 %
-%\begin{macro}{\MT@endinput}
-% Abort if no capable engine found.
+% Load the engine-specific code (as strewn across this file).
 %    \begin{macrocode}
-\let\MT@endinput\relax
-%    \end{macrocode}
-%\end{macro}
-%    \begin{macrocode}
-\ifx\MT@engine\relax
-  \MT@warning@nl{You don't seem to be using pdftex, luatex or xetex.\MessageBreak
-    `\MT@MT' only works with these engines.\MessageBreak
-    I will quit now}
-  \MT@clear@options
-\else
-%    \end{macrocode}
-% Otherwise load the engine-specific code (as strewn across this file).
-%    \begin{macrocode}
-  \input{microtype-\MT@engine tex.def}
-\fi
-\MT@endinput
+\input{microtype-\MT@engine tex.def}
 %    \end{macrocode}
 %
 % \subsubsection{Reading the configuration file}
@@ -19470,7 +19465,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12282}
+% \CheckSum{12279}
 %
 % \Finale
 %
