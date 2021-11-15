@@ -4610,9 +4610,9 @@
 %\changes{v2.5}{2010/05/05}{new files: \file{microtype-pdftex.def}, \file{microtype-xetex.def}, \file{microtype-luatex.def},
 %                           containing engine-specific definitions}
 % We check whether we are running \pdftex, \xetex, or \luatex, and
-% load the appropriate definition file.
+% load the appropriate definition file (later).
 %\begin{macro}{\MT@clear@options}
-% If we are using neither of these engines, we disable everything and exit.
+% If we are using neither of these engines, or a too old version, we disable everything and exit.
 %    \begin{macrocode}
 \def\MT@clear@options{%
 %<plain>  \MT@requires@latex1{%
@@ -4637,30 +4637,41 @@
 %    \end{macrocode}
 %\begin{macro}{\MT@engine}
 %\changes{v2.6}{2016/03/25}{fix test with \luatex\ 0.85}
-%\begin{macro}{\MT@engine@tooold}
+%\begin{macro}{\MT@engine@capable}
+%\begin{macro}{\MT@engine@minversion}
 % Old packages might have let \cmd\pdftexversion\ to \cmd\relax.
 %    \begin{macrocode}
 \let\MT@engine\relax
-%<letterspace>\def\MT@engine@tooold{0}
+\def\MT@engine@capable{0}
 \ifx\pdftexversion\@undefined \else
   \ifx\pdftexversion\relax \else
     \def\MT@engine{pdf}
+    \ifnum\pdftexversion
+%<package>      > 13
+%<letterspace>      > 139
+      \def\MT@engine@capable{1}
+    \else
+      \def\MT@engine@minversion{0.14f}
+    \fi
 %<letterspace>    \let\MT@pdf@or@lua\@firstoftwo
-%<letterspace>    \ifnum\pdftexversion > 139 \def\MT@engine@tooold{1}\fi
   \fi
 \fi
 \ifx\directlua\@undefined \else
   \ifx\directlua\relax \else
     \def\MT@engine{lua}
+    \ifnum\luatexversion > 35
+      \def\MT@engine@capable{1}
+    \else
+      \def\MT@engine@minversion{0.36}
+    \fi
 %    \end{macrocode}
 % Since approx. \luatex\ 0.80, \cmd\pdftexversion\ is let to \cmd\luatexversion,
-% so that we would be fooled to think that \pdftex\ is too old.
+% so that we would be fooled into thinking that \pdftex\ is too old.
 %    \begin{macrocode}
 %<*letterspace>
     \let\MT@pdf@or@lua\@secondoftwo
-    \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}
+    \ifnum\luatexversion < 62 \def\MT@engine@capable{0}
     \else
-      \def\MT@engine@tooold{1}
       \let\MT@lua\directlua
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
@@ -4676,22 +4687,18 @@
   \ifx\XeTeXversion\@undefined \else
     \ifx\XeTeXversion\relax \else
       \def\MT@engine{xe}
+      \ifdim 0\XeTeXrevision pt > 0.9996pt
+        \def\MT@engine@capable{1}
+      \else
+        \def\MT@engine@minversion{0.9997}
+      \fi
     \fi
   \fi
 \fi
-%    \end{macrocode}
-% Abort if no capable engine found.
-%\changes{v3.1}{2021/11/10}{abort earlier if no capable engine found}
-%    \begin{macrocode}
-\ifx\MT@engine\relax
-  \MT@warning@nl{You don't seem to be using pdftex, luatex or xetex.\MessageBreak
-    `\MT@MT' only works with these engines.\MessageBreak
-    I will quit now}
-  \MT@clear@options
-\endinput\fi
 %</package>
 %</package|letterspace>
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@pdftex@no}
@@ -4777,15 +4784,18 @@
 %\changes{v2.5}{2010/05/05}{protrusion with \xetex}
 %\begin{macro}{\MT@xetex@no}
 % \xetex\ supports character protrusion since version 0.9997.
+% This test is not necessary here, we just keep it for the
+% (unlikely) case that features get added to \xetex\ in the
+% future.
 %    \begin{macrocode}
 %<*xe->
 %<debug>\MT@dinfo@nl{0}{this is xetex (\the\XeTeXversion\XeTeXrevision)}
-\ifdim 0\XeTeXrevision pt < 0.9997pt
-  \def\MT@xetex@no{1}
-\else
-  \def\MT@xetex@no{2}
-\fi
-%<debug>\MT@dinfo@nl{0}{xetex no.: \MT@xetex@no}
+%\ifdim 0\XeTeXrevision pt < 0.9997pt
+%  \def\MT@xetex@no{1}
+%\else
+%  \def\MT@xetex@no{2}
+%\fi
+%<debug>%\MT@dinfo@nl{0}{xetex no.: \MT@xetex@no}
 %</xe->
 %    \end{macrocode}
 %\end{macro}
@@ -4847,31 +4857,29 @@
 %</lua->
 %    \end{macrocode}
 %\end{macro}
+% Abort if no capable engine found.
+%\changes{v3.1}{2021/11/10}{abort earlier if no capable engine found}
 %    \begin{macrocode}
-%<*pdf-|xe-|letterspace>
-\ifnum
-%<pdf-|xe->  \csname MT@\MT@engine tex@no\endcsname < 2
-%<letterspace>  \MT@engine@tooold=\z@
-  \MT@warning@nl{You
-%<*letterspace>
-    \ifx\MT@engine\relax
-      don't seem to be using pdftex or luatex.\MessageBreak
-      Try running `pdftex' or `luatex' instead of\MessageBreak
-        `\ifx\XeTeXversion\@undefined\else xe\fi tex'%
-    \else
-%</letterspace>
-      are using a \MT@engine tex version older than
-%<pdf->      0.14f%
-%<xe->      0.9997%
-%<letterspace>        \MT@pdf@or@lua{1.40}{0.62}%
-      .\MessageBreak
-      `\MT@MT' does not work with this version.\MessageBreak
-      Please install a newer version of \MT@engine tex%
-%<letterspace>    \fi
-      .\MessageBreak I will quit now}
+%<*package|letterspace>
+\ifx\MT@engine\relax
+  \MT@warning@nl{You don't seem to be using pdftex%
+%<package>    , luatex or xetex%
+%<letterspace>    \space or luatex%
+    .\MessageBreak `\MT@MT' only works with these engines.%
+    \MessageBreak I will quit now}
   \MT@clear@options
 \endinput\fi
-%</pdf-|xe-|letterspace>
+\ifnum\MT@engine@capable=\z@
+  \MT@warning@nl{You
+      are using a \MT@engine tex version older than
+%<package>       \MT@engine@minversion
+%<letterspace>        \MT@pdf@or@lua{1.40}{0.62}%
+      .\MessageBreak `\MT@MT' does not work with this version.%
+      \MessageBreak Please install a newer version of \MT@engine tex.%
+      \MessageBreak I will quit now}
+  \MT@clear@options
+\endinput\fi
+%</package|letterspace>
 %    \end{macrocode}
 % Still there? Then we can begin:
 % We need the \pkg{keyval} package, including the `new' \cmd\KV@@sp@def\
@@ -19465,7 +19473,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12279}
+% \CheckSum{12283}
 %
 % \Finale
 %
