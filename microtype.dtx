@@ -295,7 +295,7 @@
     \expandafter\list
       \csname\@itemitem\endcsname
       {\ifnum\@itemdepth=\@ne\leftmargin 0pt\fi
-	      \def\makelabel##1{\hss\llap{\color{sectioning}##1}}}%
+       \def\makelabel##1{\hss\llap{\color{sectioning}##1}}}%
    \fi}
   {\endlist}
 \newenvironment{enum}[1][0]
@@ -331,7 +331,7 @@
           \hsize\dimexpr\marginparwidth-\marginparsep-4pt-\fboxrule\relax
           \rightskip\dimexpr\marginparsep+4pt+\fboxrule\relax plus 2.5em
           \footnotesize \sffamily #1:\\[-\dimexpr\aboverulesep+\cmidrulewidth+3.5\fboxrule]
-	  \textcolor{theframe}{\rlap{\vrule width \hsize height\fboxrule}}\\[.3\baselineskip] #2}}}
+  \textcolor{theframe}{\rlap{\vrule width \hsize height\fboxrule}}\\[.3\baselineskip] #2}}}
   \mt@unvdimen\dimexpr\ht\mt@box+\dp\mt@box\relax
   \unvbox\mt@box
   \vskip-\mt@unvdimen}
@@ -797,7 +797,7 @@
 \DeclareRobustCommand\etex{\mbox{e-\kern-.075em\TeX}\CatIndeX{e-\TeX}{etex}{engine}}
 \DeclareRobustCommand\nonetex{\rlap{\kern.05em/}\etex} % aka. \TeX
 \def\@reflect#1{\ifdim\fontdimen1\font=0pt \reflectbox{#1}\else\rotatebox[origin=c]{180}{#1}\fi}
-\DeclareRobustCommand\xe{\textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}% also reflect the initial `X'? 
+\DeclareRobustCommand\xe{\textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}% also reflect the initial `X'?
 \DeclareRobustCommand\xetex{\xe\kern-.1em\TeX\CatIndeX{\xe\TeX}{xetex}{engine}}
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}

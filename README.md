@@ -17,7 +17,7 @@ furthermore the adjustment of interword spacing and additional kerning, as
 well as hyphenatable letterspacing (tracking) and the possibility to disable
 all or selected ligatures.
 
-These features may be applied to customisable sets of fonts, and all 
+These features may be applied to customisable sets of fonts, and all
 micro-typographic aspects of the fonts can be configured in a straight-forward
 and flexible way. Settings for various fonts are provided.
 
@@ -43,12 +43,12 @@ Installation
 To install the package, use one of the following methods
 (in decreasing order of simplicity):
 
-- Use the package manager of your TeX system 
+- Use the package manager of your TeX system
   (TeXLive: `tlmgr install microtype`;
    MiKTeX: MiKTeX Package Manager).
- 
-- Download `microtype.tds.zip` from CTAN, 
-  extract it in the root of one of your TDS trees, 
+
+- Download `microtype.tds.zip` from CTAN,
+  extract it in the root of one of your TDS trees,
   and update the filename database.
 
 - Get the source (`microtype.zip`) from CTAN and extract it,

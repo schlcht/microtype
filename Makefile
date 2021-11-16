@@ -122,9 +122,9 @@ world:   all ctan
 .PHONY: help install sty-install manifest mostlyclean clean \
 	test testerrors testunknown testoutput
 
-# for the documentation we need the debug version of microtype.sty 
+# for the documentation we need the debug version of microtype.sty
 # as well as microtype-doc.sty and microtype-gind.ist
-make-doc-sty: $(INS) $(DTX) docstrip.cfg  
+make-doc-sty: $(INS) $(DTX) docstrip.cfg
 	@echo "Creating doc sty"
 	@sed -i '' '/\\def\\DEBUG/s/^%//'   $<
 	@sed -i '' '/microtype-gind/s/^%//' $<
@@ -133,7 +133,7 @@ make-doc-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-doc-sty
 
 # undo
-make-normal-sty: $(INS) $(DTX) docstrip.cfg  
+make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@echo "Creating normal sty"
 	@sed -i '' '/\\def\\DEBUG/s/^\\/%\\/'   $<
 	@sed -i '' '/microtype-doc/s/^\\/%\\/'  $<
@@ -276,7 +276,7 @@ sty-install: $(RUNFILES)
 	@echo "Installing in '$(TEXMFROOT)'."
 	$(run-sty-install)
 
-manifest: $(SOURCE) 
+manifest: $(SOURCE)
 	@echo "=== Source files ==="
 	@LANG=C && sed -n '/%<\*package|letterspace|m-t|pdf-|lua-|xe-|show>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
 	@LANG=C && sed -n '/ *version *= *.*$$/{N;s/^.*= *"\(.*\)",.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
@@ -351,7 +351,7 @@ run-output-file = \
 	$(call run-test-file,output,$1) \
 	if ! $$(eval $$(grep grep $1.tex) $1.log > /dev/null) ; \
 		then $(not-ok) ; \
-	fi ; 
+	fi ;
 
-not-ok = echo "  ... NOT OK !!! <-------" 
+not-ok = echo "  ... NOT OK !!! <-------"
 
