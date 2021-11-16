@@ -152,7 +152,7 @@
 \fi
 \ifpdf
   \microtypesetup{expansion=alltext} % with activated expansion ...
-  \tolerance=300 %     ... we can make TeX almost as intolerant as it normally is
+  \tolerance=250 % ... we can make TeX almost as intolerant as it normally is (200)
   \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
   % bonus material
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
@@ -456,7 +456,7 @@
 \def\PrintMacroName#1{\strut\MacroFont\string #1\hskip15pt}
 \def\ImplementationSettings{%
   \linespread{1}%
-  \hfuzz=10pt
+  \hfuzz=50pt
   \def\MacroFont{\ttfamily\footnotesize}%
   \let\macro@font\MacroFont}
 % additional bells ...
@@ -1832,8 +1832,8 @@
 %
 %\paragraph{Options:}
 %\begin{options}
-%  \item[\key{name}, \key{load}, \key{preset}, \key{inputenc}, \key{context}]
-%       Analogous to \cs{SetProtrusion}, the optional argument may be used to
+%  \item[{\spaceskip=.75\fontdimen2\font\key{name}, \key{load}, \key{preset}, \key{inputenc}, \key{context}}]
+%       \hspace{-1.5pt}Analogous to \cs{SetProtrusion}, the optional argument may be used to
 %       assign a name to the list, to load another list, to preset all
 %       expansion factors, to set the input encoding, or to determine the
 %       context of the list (expansion contexts are only possible with \pdftex\
@@ -1846,7 +1846,6 @@
 %       options (see section~\ref{sub:options-expansion}). If you don't specify
 %       either one of |stretch|, |shrink| and |step|, their respective global
 %       value will be used (that is, no calculation will take place).
-%
 %       As a practical example, suppose you have a paragraph containing a widow
 %       that could be avoided by shrinking the font a bit more.
 %       In conjunction with the |context| option (see section~\ref{sec:context}
@@ -2177,8 +2176,8 @@
 %
 %\paragraph{Options:}
 %\begin{options}
-%  \item[\key{name}, \key{load}, \key{factor}, \key{preset}, \key{inputenc}, \key{context}]
-%       These options serve the same function as in the previous configuration
+%  \item[{\spaceskip=.85\fontdimen2\font\key{name}, \key{load}, \key{factor}, \key{preset}, \key{inputenc}, \key{context}}]
+%       \hspace{-0.5pt}These options serve the same function as in the previous configuration
 %       commands.
 %  \item[\key{unit}] You can specify the unit by which the specified numbers are
 %       measured. Possible values are: |character|, a \meta{dimension} and,
