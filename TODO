@@ -1,3 +1,4 @@
+* fix tointeger with older luatex
 * make microtype-show work with xetex
 * different md* (etc.) for different fonts
 * what about polyglossia?

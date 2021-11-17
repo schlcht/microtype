@@ -4636,40 +4636,41 @@
 %    \end{macrocode}
 %\begin{macro}{\MT@engine}
 %\changes{v2.6}{2016/03/25}{fix test with \luatex\ 0.85}
-%\begin{macro}{\MT@engine@capable}
+%\begin{macro}{\ifMT@engine@unfit}
 %\begin{macro}{\MT@engine@minversion}
 % Old packages might have let \cmd\pdftexversion\ to \cmd\relax.
 %    \begin{macrocode}
 \let\MT@engine\relax
-\def\MT@engine@capable{0}
+\newif\ifMT@engine@unfit
+\MT@engine@unfittrue
 \ifx\pdftexversion\@undefined \else
   \ifx\pdftexversion\relax \else
     \def\MT@engine{pdf}
-    \ifnum\pdftexversion
-%<package>      > 13
-%<letterspace>      > 139
-      \def\MT@engine@capable{1}
-    \else
-      \def\MT@engine@minversion{0.14f}
-    \fi
+%<package>    \def\MT@engine@minversion{0.14f}
 %<letterspace>    \let\MT@pdf@or@lua\@firstoftwo
+    \ifnum\pdftexversion
+%<package>        > 13
+%<letterspace>        > 139
+      \MT@engine@unfitfalse
+%<package>      \ifnum \pdftexversion=14
+%<package>        \ifnum \expandafter`\pdftexrevision < `f
+%<package>          \MT@engine@unfittrue
+%<package>        \fi
+%<package>      \fi
+    \fi
   \fi
 \fi
 \ifx\directlua\@undefined \else
   \ifx\directlua\relax \else
     \def\MT@engine{lua}
-    \ifnum\luatexversion > 35
-      \def\MT@engine@capable{1}
-    \else
-      \def\MT@engine@minversion{0.36}
-    \fi
+    \MT@engine@unfitfalse
 %    \end{macrocode}
 % Since approx. \luatex\ 0.80, \cmd\pdftexversion\ is let to \cmd\luatexversion,
 % so that we would be fooled into thinking that \pdftex\ is too old.
 %    \begin{macrocode}
 %<*letterspace>
     \let\MT@pdf@or@lua\@secondoftwo
-    \ifnum\luatexversion < 62 \def\MT@engine@capable{0}
+    \ifnum\luatexversion < 62 \MT@engine@unfittrue
     \else
       \let\MT@lua\directlua
       \ifnum\luatexversion > 84
@@ -4686,10 +4687,9 @@
   \ifx\XeTeXversion\@undefined \else
     \ifx\XeTeXversion\relax \else
       \def\MT@engine{xe}
+      \def\MT@engine@minversion{0.9997}
       \ifdim 0\XeTeXrevision pt > 0.9996pt
-        \def\MT@engine@capable{1}
-      \else
-        \def\MT@engine@minversion{0.9997}
+        \MT@engine@unfitfalse
       \fi
     \fi
   \fi
@@ -4709,7 +4709,7 @@
 % Currently, we have to distinguish the following cases for \pdftex:
 %\begin{enum}
 %  \item not running \pdftex
-%  \item \pdftex\ ($\less$~0.14f)
+%  \item \pdftex\ ($\less$~0.14f) (already checked above)
 %  \item + micro-typographic extensions (0.14f,g)
 %  \item + protrusion relative to \EM{1} ($\geq$~0.14h)
 %  \item + automatic font expansion;
@@ -4763,13 +4763,6 @@
         \ifnum\pdftexversion = 14
           \ifnum \expandafter`\pdftexrevision < `h
             \def\MT@pdftex@no{2}
-            \ifnum \expandafter`\pdftexrevision < `f
-              \def\MT@pdftex@no{1}
-            \fi
-          \fi
-        \else
-          \ifnum\pdftexversion < 14
-            \def\MT@pdftex@no{1}
           \fi
         \fi
       \fi
@@ -4868,7 +4861,7 @@
     \MessageBreak I will quit now}
   \MT@clear@options
 \endinput\fi
-\ifnum\MT@engine@capable=\z@
+\ifMT@engine@unfit
   \MT@warning@nl{You
       are using a \MT@engine tex version older than
 %<package>       \MT@engine@minversion
@@ -19472,7 +19465,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12283}
+% \CheckSum{12266}
 %
 % \Finale
 %
