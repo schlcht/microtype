@@ -4853,22 +4853,21 @@
 %\changes{v3.1}{2021/11/10}{abort earlier if no capable engine found}
 %    \begin{macrocode}
 %<*package|letterspace>
-\ifx\MT@engine\relax
-  \MT@warning@nl{You don't seem to be using pdftex%
-%<package>    , luatex or xetex%
-%<letterspace>    \space or luatex%
-    .\MessageBreak `\MT@MT' only works with these engines.%
-    \MessageBreak I will quit now}
-  \MT@clear@options
-\endinput\fi
 \ifMT@engine@unfit
   \MT@warning@nl{You
+    \ifx\MT@engine\relax
+      don't seem to be using pdftex%
+%<package>      , luatex or xetex%
+%<letterspace>      \space or luatex%
+     .\MessageBreak `\MT@MT' only works with these engines.%
+    \else
       are using a \MT@engine tex version older than
 %<package>       \MT@engine@minversion
-%<letterspace>        \MT@pdf@or@lua{1.40}{0.62}%
-      .\MessageBreak `\MT@MT' does not work with this version.%
+%<letterspace>      \MT@pdf@or@lua{1.40}{0.62}%
+     .\MessageBreak `\MT@MT' does not work with this version.%
       \MessageBreak Please install a newer version of \MT@engine tex.%
-      \MessageBreak I will quit now}
+    \fi
+    \MessageBreak I will quit now}
   \MT@clear@options
 \endinput\fi
 %</package|letterspace>
@@ -19465,7 +19464,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12266}
+% \CheckSum{12263}
 %
 % \Finale
 %
