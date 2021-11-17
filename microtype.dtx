@@ -1846,7 +1846,8 @@
 %       options (see section~\ref{sub:options-expansion}). If you don't specify
 %       either one of |stretch|, |shrink| and |step|, their respective global
 %       value will be used (that is, no calculation will take place).
-%       As a practical example, suppose you have a paragraph containing a widow
+%
+%       As a practical example, suppose you have a paragraph with a lone widow
 %       that could be avoided by shrinking the font a bit more.
 %       In conjunction with the |context| option (see section~\ref{sec:context}
 %       for further details), you could thus allow for more expansion in this
@@ -4609,7 +4610,7 @@
 %\changes{v2.5}{2010/05/05}{new files: \file{microtype-pdftex.def}, \file{microtype-xetex.def}, \file{microtype-luatex.def},
 %                           containing engine-specific definitions}
 % We check whether we are running \pdftex, \xetex, or \luatex, and
-% load the appropriate definition file (later).
+% load the appropriate definition file (later in section~\ref{ssub:def-files}).
 %\begin{macro}{\MT@clear@options}
 % If we are using neither of these engines, or a too old version, we disable everything and exit.
 %    \begin{macrocode}
@@ -13537,7 +13538,7 @@ end
 }
 %    \end{macrocode}
 %
-%\subsubsection{Loading the definition file}
+%\subsubsection{Loading the definition file}\label{ssub:def-files}
 %
 % Load the engine-specific code (as strewn across this file).
 %    \begin{macrocode}
