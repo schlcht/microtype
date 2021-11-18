@@ -59,6 +59,7 @@
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    license      = "LPPL",
 %<luafile>}
+%<luafile>luatexbase.provides_module(microtype.module)
 %<*config>
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
@@ -5129,6 +5130,24 @@ else
 end
 function microtype.sprint (...)
   tex.sprint(catpackage, ...)
+end
+
+%    \end{macrocode}
+% We need the function |math.tointeger|, which is missing in older
+% \luatex\ versions, and Con\TeX t (inherited via \pkg{luaotfload})
+% faultily overwrites its own definition.
+%\changes{v3.1}{2021/11/17}{define function \texttt{math.tointeger} for older \luatex\ versions}
+%                           ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-November/006556.html
+% The following is the (correct) definition from \file{l-math.lua}.
+%    \begin{macrocode}
+if not math.tointeger or not pcall(math.tointeger,0) then
+  math.mininteger=-0x4FFFFFFFFFFF
+  math.maxinteger=0x4FFFFFFFFFFF
+  local floor=math.floor
+  function math.tointeger(n)
+    local f=floor(n)
+    return f==n and f or nil
+  end
 end
 
 %</luafile>
@@ -10311,9 +10330,10 @@ end
 if luaotfload and luaotfload.aux and luaotfload.aux.slot_of_name then
   local slot_of_name = luaotfload.aux.slot_of_name
   microtype.name_to_slot = function(name, unsafe)
-    local n = math.tointeger(slot_of_name(font.current(), name, unsafe))
-    if n and n > 1114111 then n = -1 end
-    return n
+    local n = slot_of_name(font.current(), name, unsafe)
+    if not n then return -1 end
+    if n > 1114111 then return -1 end
+    return math.tointeger(n)
   end
 else
   -- we dig into internal structure (should be avoided)
