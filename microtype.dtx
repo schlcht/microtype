@@ -3749,16 +3749,17 @@
 %  \chardef,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
 %  \endinput,\escapechar,\everypar,\expandafter,\fi,\futurelet,\gdef,\global,
 %  \hbadness,\hbox,\hfill,\hrule,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
-%  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifx,\ignorespaces,\immediate,\input,
-%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,\let,\lowercase,
-%  \maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,\number,
+%  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifvbox,\ifx,\ignorespaces,\immediate,\input,
+%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,\let,\long,
+%  \lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,\number,
 %  \or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
 %  \string,\the,\tolerance,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
 %  \vrule,\vsplit,\wd,\write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
-%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr}
+%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,
+%  \scantokens,\unexpanded}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
 %\DoNotIndex{\pdfannot,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}
@@ -3774,22 +3775,22 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
-%  \@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,
-%  \@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
+%  \@currname,\@defaultunits,\@elt,\@empty,\@eqnnum,\@expandtwoargs,\@fileswfalse,
+%  \@firstofone,\@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,
+%  \@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
 %  \@let@token,\@m,\@M,\@makeother,\@minus,\@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,
 %  \@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,\@removeelement,
 %  \@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
 %  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
-%  \check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
+%  \check@icr,\cl@@ckpt,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
 %  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
-%  \normalbaselineskip,\normalsize,\numberline,\par,\parbox,\quad,\raggedright,
-%  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\usefont,
-%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\quad,\raggedright,
+%  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\tracingnone,\usefont,
+%  \value,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
 %  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
 %  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,
 %  \ProcessOptions,\RequirePackage,\@@enc@update,\UnicodeEncodingName}
@@ -7916,19 +7917,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@prot@hook}
 %\begin{macro}{\MT@get@prot}
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
+%\changes{v3.1}{2021/11/22}{reset counters}
 %\changes{v3.1}{2021/11/05}{compatibility fix for \pkg{csquotes}
 %                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
-% We also have a hook for compatibility fixes.
+%\begin{macro}{\MT@ckpt}
+% We also reset the counters and disable writing to auxiliary files.
+%\begin{macro}{\MT@prot@hook}
+% Furthermore, we have a hook for compatibility fixes.
 %    \begin{macrocode}
 \let\MT@prot@hook\@empty
 \long\def\MT@get@prot#1#2{%
   \begingroup
+    \def\@elt##1{\global\value{##1}\the\value{##1}\relax}%
+    \edef\MT@ckpt{\cl@@ckpt}%
+    \let\@elt\relax
+    \@fileswfalse
     \setbox\MT@tempbox\vbox{%
       \everypar{}%
       \parfillskip=\z@skip
@@ -7945,6 +7953,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \global\setbox\MT@tempbox=\lastbox
       \fi
     }%
+    \MT@ckpt
   \endgroup
   \ifhbox\MT@tempbox
 %    \def\@tempa{#1}%
@@ -7959,6 +7968,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@ifx}
@@ -8050,6 +8060,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % |\verb|, |verbatim| or |lstlistings| material: before reading
 % the argument, make the backslash a letter to prevent spaces
 % from being inserted after commands, and have line breaks preserved.
+% The \nonetex\ version will fail in lots of cases.
 %    \begin{macrocode}
 \def\MT@prot@group{%
   \begingroup
@@ -8063,6 +8074,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {\expandafter\MT@prot@l\expandafter
       {\expandafter\scantokens\expandafter{\the\MT@toks\noexpand}}}%
   \endgroup}
+^^Q\def\MT@prot@group#1{\MT@prot@l{#1}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -19505,7 +19517,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12270}
+% \CheckSum{12288}
 %
 % \Finale
 %
