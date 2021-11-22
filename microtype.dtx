@@ -2716,7 +2716,7 @@
 %              the footnote text is set in block paragraphs, like in this document).
 %              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
 % \item[eqnum] Protrusion for equation numbers on either side.
-%              \MTsupp{standard classes, \pkg{amsmath}}
+%              \MTsupp{standard classes, \pkg{amsmath}, \pkg{IEEEtran}}
 %\endlist\endgroup
 %
 %\medskip\noindent
@@ -3830,6 +3830,7 @@
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
 %  \cftsubsubsectionafterpnum,\cfttableafterpnum}                            ^^A memoir
 %\DoNotIndex{\setuptoc,\unsettoc,\scr@saved@footnotetext}                    ^^A koma (tocbasic)
+%\DoNotIndex{\theequationdis,\theIEEEsubequationdis}                         ^^A IEEEtran
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
 %  \MT@show@pdfannot,\iftracingmicrotypeinpdfall,\tracingmicrotypeinpdfalltrue,
@@ -6612,6 +6613,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
+%\changes{v3.1}{2021/11/22}{protrusion patch for \pkg{IEEEtran} (equation numbers)}
 %    \begin{macrocode}
   \@ifpackageloaded{amsmath}
     {\MT@define@patch{eqnum}
@@ -6619,10 +6621,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
        \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
       {}}
-    {\MT@define@patch{eqnum}
-      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
-       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
-      {}}%
+    {\@ifclassloaded{IEEEtran}
+      {\MT@define@patch{eqnum}
+        {\MT@patch@patch\theequationdis{(}{\leftprotrusion{(}}%
+         \MT@patch@patch\theequationdis{)}{\rightprotrusion{)}}%
+         \MT@patch@patch\theIEEEsubequationdis{(}{\leftprotrusion{(}}%
+         \MT@patch@patch\theIEEEsubequationdis{)}{\rightprotrusion{)}}}%
+        {}}
+      {\MT@define@patch{eqnum}
+        {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+         \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
+        {}}}%
 %    \end{macrocode}
 % \item [|footnote|] footnote text (only visible with block paragraphs).
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
@@ -19523,7 +19532,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12290}
+% \CheckSum{12304}
 %
 % \Finale
 %
