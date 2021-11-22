@@ -4,12 +4,10 @@
 \fi
 \usepackage[verbose]{microtype}
 \usepackage{csquotes}
+\usepackage{listings,verbatim,fancyvrb}
 \MakeAutoQuote{“}{”}
 {\catcode`<=13
  \gdef<#1>{\textls{#1}}}
-%\AddToHook{cmd/leftprotrusion/before}
-%   {\typeout{==> \the\inputlineno}} % zeig wo es ausgeführt wird 
-%\AddToHook{para/begin}{\leftprotrusion} 
 \makeatletter
 \long\def\@makefntext#1{%
   \leftskip 0pt
@@ -53,5 +51,31 @@ a+b=c
 \end{equation}
 Test. Test. Test. Test. Test. Test. Test. Test.\hfill (1)\linebreak
 Test. Test. Test. Test. Test. Test. Test. Test.
+
+\leftprotrusion{-- a\verb|b|i \par ic}
+
+\leftprotrusion\verb|--|
+
+\leftprotrusion{\begin{tabular}{ll}ab&bc\\de&x\end{tabular}}
+
+\leftprotrusion {--
+\begin{verbatim}
+$ verbatim
+$ 2nd line
+\end{verbatim}
+  }
+
+\leftprotrusion {--
+%[commentchar=!] % doesn't work (because of ^^M)
+\begin{Verbatim}
+$ Verbatim
+! extra text
+\end{Verbatim}
+  }
+
+\leftprotrusion{--\begin{lstlisting}
+listing
+end
+\end{lstlisting}}
 
 \end{document}

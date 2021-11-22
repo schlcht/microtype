@@ -3248,9 +3248,10 @@
 % `\contributor chsk              <@\at @>', ^^A https://tex.stackexchange.com/users/158639/chsk
 % `\contributor tnull             <@\at @>', ^^A https://tex.stackexchange.com/users/91987/tnull
 % `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
-% `\contributor Safron            <@\at @>'  ^^A https://tex.stackexchange.com/users/149123/safron
+% `\contributor Safron            <@\at @>', ^^A https://tex.stackexchange.com/users/149123/safron
+%  \contributor Gustavo Barros    <@\at @>   ^^A https://tex.stackexchange.com/users/105447/gusbrs
 % and
-%  \contributor Gustavo Barros    <@\at @>.  ^^A https://tex.stackexchange.com/users/105447/gusbrs
+%  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>.
 %
 %
 %\iffalse
@@ -7869,15 +7870,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@tempbox}
-%\begin{macro}{\MT@leftmarginkern}
-%\begin{macro}{\MT@rightmarginkern}
 %    \begin{macrocode}
 \newbox\MT@tempbox
-\newdimen\MT@leftmarginkern
-\newdimen\MT@rightmarginkern
 %    \end{macrocode}
-%\end{macro}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\leftprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
@@ -7895,23 +7890,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
-% These macros need to be \cmd\long.
+% This macro no longer needs to be \cmd\long\ as we're providing
+% the argument wrapped in a rescanned toks.
 %    \begin{macrocode}
-\long\def\MT@prot@l#1{%
-  \MT@get@prot{#1}%
-  \ifdim\MT@leftmarginkern=\z@ \else
-    \leavevmode
-    \MT@vinfo{|<< adding left margin kern for `\@tempa':\MessageBreak
-                  \the\MT@leftmarginkern \on@line}%
-    \kern\MT@leftmarginkern
-  \fi
+\def\MT@prot@l#1{%
+  \MT@get@prot{#1}{left}%
   #1%
 }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
+% But \cs{rightprotrusion} must be \cmd\long.
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
-% so the counterpart cannot be symmetric.
+% so the counterpart cannot be defined symmetrically.
 %\changes{v3.0}{2021/05/15}{new command}
 %    \begin{macrocode}
 \DeclareRobustCommand\rightprotrusion{\MT@prot@r}
@@ -7920,13 +7911,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@r}
 %    \begin{macrocode}
 \long\def\MT@prot@r#1{%
-  #1%
-  \MT@get@prot{#1}%
-  \ifdim\MT@rightmarginkern=\z@ \else
-    \MT@vinfo{>>| adding right margin kern for `\@tempa':\MessageBreak
-                  \the\MT@rightmarginkern \on@line}%
-    \kern\MT@rightmarginkern
-  \fi
+  {#1}%
+  \MT@get@prot{#1}{right}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -7941,9 +7927,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We also have a hook for compatibility fixes.
 %    \begin{macrocode}
 \let\MT@prot@hook\@empty
-\long\def\MT@get@prot#1{%
-  \MT@leftmarginkern=\z@
-  \MT@rightmarginkern=\z@
+\long\def\MT@get@prot#1#2{%
   \begingroup
     \setbox\MT@tempbox\vbox{%
       \everypar{}%
@@ -7955,15 +7939,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \vbadness=\@M
     \splittopskip=\z@
     \setbox\MT@tempbox\vbox{%
-      \global\setbox\MT@tempbox=\vsplit\MT@tempbox to \normalbaselineskip
-      \unvbox\MT@tempbox
-      \global\setbox\MT@tempbox=\lastbox
+      \ifvbox\MT@tempbox
+        \global\setbox\MT@tempbox=\vsplit\MT@tempbox to \normalbaselineskip
+        \unvbox\MT@tempbox
+        \global\setbox\MT@tempbox=\lastbox
+      \fi
     }%
   \endgroup
   \ifhbox\MT@tempbox
-    \def\@tempa{#1}%
-    \MT@leftmarginkern=\leftmarginkern\MT@tempbox\relax
-    \MT@rightmarginkern=\rightmarginkern\MT@tempbox\relax
+%    \def\@tempa{#1}%
+    \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
+    \expandafter\ifdim\@tempdima=\z@ \else
+      \leavevmode
+      \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % TODO
+        :\MessageBreak
+        \the\@tempdima \on@line}%
+      \kern\@tempdima
+    \fi
   \fi
 }
 %    \end{macrocode}
@@ -8047,6 +8039,34 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@group}
+%\changes{v3.1}{2021/11/20}{rescan grouped material to allow \texttt{verbatim} etc.
+%               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
+%               ^^A private mail, 2021/11/18
+%               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
+%\begin{macro}{\MT@prot@group@}
+%\begin{macro}{\MT@prot@group@@}
+% If we have a group, we need to rescan in order to allow, \eg,
+% |\verb|, |verbatim| or |lstlistings| material: before reading
+% the argument, make the backslash a letter to prevent spaces
+% from being inserted after commands, and have line breaks preserved.
+%    \begin{macrocode}
+\def\MT@prot@group{%
+  \begingroup
+    \catcode`\\=11
+    \obeylines
+    \MT@prot@group@}
+\def\MT@prot@group@{\afterassignment\MT@prot@group@@ \MT@toks}
+\def\MT@prot@group@@{%
+    \catcode`\\=0
+    \catcode`\^^M=10
+    {\expandafter\MT@prot@l\expandafter
+      {\expandafter\scantokens\expandafter{\the\MT@toks\noexpand}}}%
+  \endgroup}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@prot@get@firstchar}
 %\begin{macro}{\MT@prot@get@nextchar}
 % Scan token by token.
@@ -8063,7 +8083,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@get@first@char{%
   \def\MT@temp*##1{\MT@prot@get@firstchar}%
   \MT@prot@ifcat\bgroup{%
-    \long\def\MT@temp*##1{{\MT@prot@l{##1}}}%
+    \def\MT@temp*{\MT@prot@group}%
   }{%
     \MT@prot@ifx\ignorespaces\relax{%
       \MT@prot@ifx\relax\relax{%
@@ -19485,7 +19505,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12263}
+% \CheckSum{12270}
 %
 % \Finale
 %
@@ -19550,5 +19570,4 @@ makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo 
 % -----------------------------------------------------------------------------
 %
 % vim: ts=2:sw=2:et:
-
 %
