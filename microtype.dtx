@@ -8093,21 +8093,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % we find a beginning char.
 %    \begin{macrocode}
 \def\MT@prot@get@first@char{%
-  \def\MT@temp*##1{\MT@prot@get@firstchar}%
   \MT@prot@ifcat\bgroup{%
     \def\MT@temp*{\MT@prot@group}%
   }{%
-    \MT@prot@ifx\ignorespaces\relax{%
-      \MT@prot@ifx\relax\relax{%
+    \MT@prot@ifx\ignorespaces{%
+      \def\MT@temp*##1{\MT@prot@get@firstchar}%
+    }{%
+      \MT@prot@ifx\relax{%
+        \def\MT@temp*##1{\MT@prot@get@firstchar}%
+      }{%
         \MT@prot@ifx\@sptoken{%
           \def\MT@temp* {\MT@prot@get@firstchar}%
         }{%
 %    \end{macrocode}
 % But only add it if it's a letter or a character, \dots
 %    \begin{macrocode}
-          \def\MT@temp*{\MT@prot@addtoken@first}%
-          \MT@prot@ifcat{a}\relax{%
-            \MT@prot@ifcat{!}\relax{%
+          \MT@prot@ifcat{a}{%
+            \def\MT@temp*{\MT@prot@addtoken@first}%
+          }{%
+            \MT@prot@ifcat{!}{%
+              \def\MT@temp*{\MT@prot@addtoken@first}%
+            }{%
 %    \end{macrocode}
 % \dots~or a command/active char whose first command is one of the below.
 %    \begin{macrocode}
@@ -19517,7 +19523,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12288}
+% \CheckSum{12290}
 %
 % \Finale
 %
