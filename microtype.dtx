@@ -411,23 +411,26 @@
   \gpreto\MThistshow{\MT@doversion{#1}{#2}}
   \stepcounter{MThistitem}}
 \def\MThist@last{0}
+\edef\MThistlastmajor{1}
 \expandafter\newif\csname ifMThist@major\endcsname
 \def\MT@doversion#1#2{%
   \ifnum\pdfmatch{\MThist@last([a-z])}{#1}=1
     \MThist@majorfalse
     \edef\MThist@current{(\expandafter\strip@prefix\pdflastmatch1)}%
+%    \draw [fill=theshade] (n-\theMThistitem.north west) rectangle (n-\theMThistitem.south east);
   \else
     \MThist@majortrue
     \def\MThist@current{#1}%
     \let\MThist@last\MThist@current
   \fi
   \stepcounter{MThistitem}
-  \node[right=\MThistnodesep,text width=\MThistnodewidth,inner sep=1pt,outer sep=0pt,
-        major,align=center]
+  \node[right=\MThistnodesep,outer sep=0pt,align=center,major]
         (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{\MThist@current\strut}};
-  \draw (n-\theMThistitem.north west) -- (n-\theMThistitem.north east);
-  \ifMThist@major
-  \draw (n-\theMThistitem.south west) -- (n-\theMThistitem.south east);
+  \ifMThist@major\ifnum\theMThistitem>1
+      \draw [->](n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)-(\MThistnodesep pt,0)$);
+      \draw (n-\MThistlastmajor.south west) -- (n-\theMThistitem.south east);
+      \edef\MThistlastmajor{\theMThistitem}%
+    \fi
   \fi
   \MThist@splitdate#2\relax
   \pgfcalendardatetojulian{\MTYear-\MTMonth-\MTDay}{\@tempcnta}
@@ -457,9 +460,9 @@
       \begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont,
         major/.code={%
           \ifMThist@major
-            \tikzset{fill=theshade}
+            \tikzset{fill=theshade,rectangle,text width=\MThistnodewidth,inner sep=1pt}
           \else
-            \tikzset{fill=white}
+          \tikzset{fill=theshade,circle,draw,text width=\MThistnodewidth*3/5,font=\fontsize{3.5}{6}\selectfont,inner sep=0pt}
           \fi
         }]
         \MThistprepare
@@ -865,6 +868,7 @@
 \else
   \OnlyDescription
 \fi
+  \OnlyDescription
 \begin{document}
   \DocInput{microtype.dtx}
 \end{document}
@@ -3734,7 +3738,7 @@
 %  \ifx\Finale\relax
 %    \AppendixSettings
 %  \fi
-%  \PrintIndex
+%  \PrintHistory
 %}
 %
 % \GeneralChanges*
