@@ -426,9 +426,13 @@
   \stepcounter{MThistitem}
   \node[right=\MThistnodesep,outer sep=0pt,align=center,major]
         (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{\MThist@current\strut}};
-  \ifMThist@major\ifnum\theMThistitem>1
-      \draw [->](n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)-(\MThistnodesep pt,0)$);
-      \draw (n-\MThistlastmajor.south west) -- (n-\theMThistitem.south east);
+  \ifMThist@major
+    \draw ($(n-\theMThistitem.north west)+(0.2pt,0)$) -- ($(n-\theMThistitem.south west)+(0.2pt,0)$);
+%    \draw ($(n-\theMThistitem.north east)-(0.2pt,0)$) -- ($(n-\theMThistitem.south east)-(0.2pt,0)$);
+    \ifnum\theMThistitem>1
+      \draw (n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)-(\MThistnodesep pt,0)$);
+      \draw (n-\MThistlastmajor.south west) -- ($(n-\theMThistitem.south east)-(\MThistnodesep pt,0)$);
+      \draw [->]($(n-\theMThistitem.north west)-(\dimexpr-0.2pt+\dimexpr\MThistnodesep pt-\MThistnodewidth pt\relax/2\relax,0)$)  -- (n-\theMThistitem.south west);
       \edef\MThistlastmajor{\theMThistitem}%
     \fi
   \fi
@@ -438,7 +442,7 @@
   \advance\@tempcnta-\@tempcntb
   \pgfmathsetmacro{\MTDate}{\MTYear-\MThistfirstyear+\@tempcnta/365}
   \expandafter\edef\csname MThistnodetime\theMThistitem\endcsname{\MTDate}
-  \expandafter\edef\csname MThistcolour\theMThistitem\endcsname{the\ifMThist@major red\else grey\fi}
+  \expandafter\edef\csname MThistcolour\theMThistitem\endcsname{\ifMThist@major\else very \fi thin}
   \edef\MThistlastnode{n-\theMThistitem}}
 \def\MThist@splitdate#1/#2/#3\relax{\def\MTYear{#1}\def\MTMonth{#2}\def\MTDay{#3}}
 \def\MThisttimeline{%
@@ -446,7 +450,7 @@
   \pgfmathsetmacro{\MThistxposition}{\MT@tempdim/28.452755}
   \foreach \x in {1,...,\theMThistitem}{
     \pgfmathsetmacro{\MThisttimeposition}{\MThistxposition/(\MThistlastyear-\MThistfirstyear)*\csname MThistnodetime\x \endcsname}
-    \draw[color=\csname MThistcolour\x\endcsname,rounded corners=2pt] (\MThisttimeposition,0) -- (\MThisttimeposition,0.5) -- ($(n-\x.south)-(0,0.5)$) -- (n-\x.south); }
+    \draw[\csname MThistcolour\x\endcsname,rounded corners=2pt] (\MThisttimeposition,0) -- (\MThisttimeposition,0.5) -- ($(n-\x.south)-(0,0.5)$) -- (n-\x.south); }
   \draw[very thick,-latex] (0,0) -- ($(\MThistlastnode.east)-(0,\MThistvsep)+(1,0)$) ;
   \foreach \x in {0,...,\MThistyears}{
     \pgfmathsetmacro{\MThistlabelposition}{\MThistxposition/(\MThistlastyear-\MThistfirstyear)*\x}
