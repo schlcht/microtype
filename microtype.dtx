@@ -6012,13 +6012,14 @@ microtype.do_font = do_font
 %\end{macro}
 %\begin{macro}{\MT@with@babel@and@T}
 %\changes{v2.2}{2007/05/25}{also inspect class options}
+%\changes{v3.1}{2021/11/23}{fix grouping}
 % \LaTeX's \cmd\@ifpackagewith\ ignores the class options.
 %    \begin{macrocode}
 \def\MT@with@babel@and@T#1{%
   \MT@ifdefined@n@T{opt@babel.\@pkgextension}{%
     \@expandtwoargs\MT@in@clist{#1}
       {\csname opt@babel.\@pkgextension\endcsname,\@classoptionslist}%
-    \ifMT@inlist@\expandafter\@gobble\fi
+    \ifMT@inlist@\expandafter\@secondoftwo\else\expandafter\@firstofone\fi
   }\@gobble
 }
 %    \end{macrocode}
