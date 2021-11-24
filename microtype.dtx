@@ -3800,7 +3800,7 @@
 %^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
-%\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
+%\DoNotIndex{\activatequoting,\deactivatequoting,\percentsign}               ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
@@ -6483,6 +6483,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patches@applied}
 %\begin{macro}{\MT@apply@patch}
 % Apply a previously defined patch.
+%\changes{v3.1}{2021/11/23}{compatibility with \pkg{babel}\slash\texttt{spanish}:
+%                           fix catcodes}
+% With some packages, we have to reset catcodes (\eg, for the `|item|'
+% patch with Spanish \pkg{babel}, which makes `|>|' active).
 %    \begin{macrocode}
 \let\MT@patches@applied\@gobble
 \def\MT@apply@patch#1{%
@@ -6493,10 +6497,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@warning{Patch `#1' has already been applied,\MessageBreak
                    cannot reapply it}%
      \else
+       \let\MT@restore@catcodes\@empty
+       \MT@with@babel@and@T{spanish} {\MT@fix@catcode{62}{12}}% >
+       \MT@with@babel@and@T{galician}{\MT@fix@catcode{62}{12}}% >
        \def\MT@patch@name{#1}%
        \g@addto@macro\MT@patches@applied{,#1}%
        \@nameuse{MT@patch@@#1}%
        \@nameuse{MT@patch@\ifMT@patch@ok info\else warn\fi}{#1}%
+       \MT@restore@catcodes
      \fi}
     {\MT@patch@undef{#1}}%
 }
@@ -19533,7 +19541,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12304}
+% \CheckSum{12315}
 %
 % \Finale
 %
