@@ -3252,9 +3252,10 @@
 % `\contributor tnull             <@\at @>', ^^A https://tex.stackexchange.com/users/91987/tnull
 % `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
 % `\contributor Safron            <@\at @>', ^^A https://tex.stackexchange.com/users/149123/safron
-%  \contributor Gustavo Barros    <@\at @>   ^^A https://tex.stackexchange.com/users/105447/gusbrs
+%  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
+%  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>
 % and
-%  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>.
+% `\contributor florian           <@\at @>'. ^^A https://tex.stackexchange.com/users/172863/florian
 %
 %
 %\iffalse
@@ -7946,6 +7947,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.1}{2021/11/05}{compatibility fix for \pkg{csquotes}
 %                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
+%\changes{v3.1}{2021/11/27}{set penalties to zero and vfuzz to max
+%                           (reported by \contributor florian <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
+% We set various penalties to zero to allow linebreaking, and don't
+% bother if the split box is overfull.
 %\begin{macro}{\MT@ckpt}
 % We also reset the counters and disable writing to auxiliary files.
 %\begin{macro}{\MT@prot@hook}
@@ -7962,11 +7968,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \everypar{}%
       \parfillskip=\z@skip
       \hbadness\@M
+      \clubpenalty\z@
+      \widowpenalty\z@
+      \interlinepenalty\z@
       \@newlistfalse
       \MT@prot@hook
       \noindent #1}%
     \vbadness=\@M
     \splittopskip=\z@
+    \vfuzz=\maxdimen
     \setbox\MT@tempbox\vbox{%
       \ifvbox\MT@tempbox
         \global\setbox\MT@tempbox=\vsplit\MT@tempbox to \normalbaselineskip
@@ -7981,7 +7991,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
     \expandafter\ifdim\@tempdima=\z@ \else
       \leavevmode
-      \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % TODO
+      \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % FIXME
         :\MessageBreak
         \the\@tempdima \on@line}%
       \kern\@tempdima
@@ -19545,7 +19555,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12315}
+% \CheckSum{12323}
 %
 % \Finale
 %
