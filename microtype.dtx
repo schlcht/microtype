@@ -251,6 +251,7 @@
   \parindent 0pt
   {\let\numberline\@gobble{\small #1~[#2]}}}
 \def\l@table{\@dottedtocline{1}{0pt}{1.5em}}
+\let\l@figure\l@table
 \def\@pnumwidth{1.7em}
 \def\defspecial@toc#1#2#3{\long\def#1{%
   \ifpdf\phantomsection\bookmarksetupnext{italic}\pdfbookmark[1]{#2}{#3}\fi
@@ -258,6 +259,7 @@
   \@starttoc{#3}}}
 \defspecial@toc\tableofcontents\contentsname{toc}
 \defspecial@toc\listoftables\listtablename{lot}
+\defspecial@toc\listoffigures\listfigurename{lof}
 % bibliography
 \def\@cite#1#2{#1\if@tempswa, #2\fi}
 \def\thebibliography#1{%
@@ -917,6 +919,7 @@
 %{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\DeclareFontSeriesDefault[sf]{bf}{sb}\fi
 % \tableofcontents
 % \listoftables
+% \ifcodedoc\listoffigures\fi
 % \vskip2\baselineskip
 % \Large\MTsectionfont
 % \noindent
@@ -2268,12 +2271,12 @@
 % with the `\opt{config}' option, see section~\ref{sub:options-misc}).
 %
 % If you embark on creating new settings for a font family, you should
-% put them into a separate file, whose name must be: `|mt-|\meta{font
+% put them into a dedicated file, whose name must be: `|mt-|\meta{font
 % family}|.cfg|' (\eg, `\file{mt-cmr.cfg}'; any spaces in the font name should
 % be removed, \eg, `\file{mt-MinionPro.cfg}'), and may contain all commands
 % described in the current section~\ref{sec:fine-tuning}. These files will be
 % loaded automatically if you are actually using the respective fonts.
-% This package ships with configuration files for a number of font families.
+% The \microtype\ package ships with configuration files for a number of font families.
 % They are listed in tables~\ref{tab:type1-fonts} (Type\,1 fonts) and
 % \ref{tab:ot-fonts} (OpenType fonts).
 %
@@ -19094,12 +19097,13 @@ end
 % , who also provided the sample in figure~\ref{fig:example-spacing}^^A
 %\changes{v2.2}{2007/04/05}{add sample}^^A
 %   \begin{figure}
-%     \caption{^^A
-%       Example of interword spacing (from: M.~Siemoneit, \emph{Typographisches Gestalten}, Frankfurt/M. 1989).
+%     \caption[Example of interword spacing]
+%             {Example of interword spacing
+%              (from: M.~Siemoneit, \emph{Typographisches Gestalten}, Frankfurt/M. 1989).
 %         ^^A Manfred Siemoneit, Typographisches Gestalten.
 %         ^^A   Regeln und Tips f\"ur die richtige Gestaltung von Drucksachen,
 %         ^^A   Frankfurt/M.: Polygraph Verlag, 1989
-%       The numbers indicate the preference for shrinking the interword space.}
+%       \\The numbers indicate the preference for shrinking the interword space.}
 %     \label{fig:example-spacing}
 %     \includegraphics[width=.66\textwidth]{justification.png}
 %   \end{figure}^^A
