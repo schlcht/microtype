@@ -6431,13 +6431,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patch@info}
 %\begin{macro}{\MT@patch@warn}
 %\begin{macro}{\MT@patch@undef}
+%\begin{macro}{\MT@patch@undo}
 % We have to patch some macros to get protrusion right.
 %    \begin{macrocode}
 \newif\ifMT@patch@ok
 \def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
 \def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
 \def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
+\def\MT@patch@undo#1{\MT@info{Reverting patch `#1'}}
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -6523,6 +6526,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \ifMT@inlist@
     \MT@rem@from@clist{#1}\MT@patches@applied
     \@nameuse{MT@patch@undo@@#1}%
+    \MT@patch@undo{#1}%
   \else
     \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
   \fi
@@ -13965,7 +13969,7 @@ end
 \define@key{MTX}{patch}[all]{%
   \def\@tempa{#1}%
   \MT@ifstreq\@tempa{all}
-    \relax
+    {\let\@tempa\MT@patches@def}
     {\MT@ifstreq\@tempa{none}
       {\let\@tempa\@empty}
       \relax}%
@@ -13977,7 +13981,7 @@ end
 \define@key{MTX}{nopatch}[all]{%
   \def\@tempa{#1}%
   \MT@ifstreq\@tempa{all}
-    \relax
+    {\let\@tempa\MT@patches@def}
     {\MT@ifstreq\@tempa{none}
       {\let\@tempa\@empty}
       \relax}%
