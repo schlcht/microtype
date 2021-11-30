@@ -3750,15 +3750,15 @@
 %\DoNotIndex{\!,\",\',\(,\),\*,\+,\,,\-,\.,\/,\:,\;,\<,\=,\>,\?,\[,\\,\],\`,
 %  \#,\$,\&,\^,\_,\|,\~,\ ,
 %  \advance,\afterassignment,\aftergroup,\begingroup,\bgroup,\catcode,\char,
-%  \chardef,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
+%  \chardef,\clubpenalty,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
 %  \endinput,\escapechar,\everypar,\expandafter,\fi,\futurelet,\gdef,\global,
 %  \hbadness,\hbox,\hfill,\hrule,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
 %  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifvbox,\ifx,\ignorespaces,\immediate,\input,
-%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,\let,\long,
-%  \lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,\number,
-%  \or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
-%  \string,\the,\tolerance,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
-%  \vrule,\vsplit,\wd,\write,\xdef}
+%  \inputlineno,\interlinepenalty,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,
+%  \let,\long,\lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,
+%  \number,\or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
+%  \string,\the,\tolerance,\unhbox,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
+%  \vfuzz,\vrule,\vsplit,\wd,\widowpenalty,\write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
@@ -7951,7 +7951,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (reported by \contributor florian <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
 % We set various penalties to zero to allow linebreaking, and don't
-% bother if the split box is overfull.
+% bother if the split box is overfull (but shouldn't we? -- after all,
+% that's how the penalties bug was discovered~\dots).
 %\begin{macro}{\MT@ckpt}
 % We also reset the counters and disable writing to auxiliary files.
 %\begin{macro}{\MT@prot@hook}
