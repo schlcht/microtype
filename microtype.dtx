@@ -6643,17 +6643,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
-    \@ifpackageloaded{hyperref}{%
-      \MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-      \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
-    }{%
-      \@ifpackageloaded{scrbase}
+    \@ifpackageloaded{hyperref}
+      {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
+      {\@ifpackageloaded{scrbase}
         {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
         {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
          \@ifclassloaded{memoir}
-           {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}{}}%
-           {}%
-    }%
+           {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+           {}}}%
   }{}%
 }}
 %    \end{macrocode}
