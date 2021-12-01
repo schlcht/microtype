@@ -805,7 +805,7 @@
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\githuburl{https://github.com/schlcht/microtype}
-\def\githubissue#1{ [issue~\href{\githuburl/issues/#1}{\#1}]}
+\def\githubissue#1{ [issue~\href{\githuburl/issues/#1}{\##1}]}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -2717,7 +2717,7 @@
 %              \MTsupp{standard classes, \pkg{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (only visible when
 %              the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
+%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side.
 %              \MTsupp{standard classes, \pkg{amsmath}, \pkg{IEEEtran}}
 %\endlist\endgroup
@@ -3253,10 +3253,10 @@
 % `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
 % `\contributor Safron            <@\at @>', ^^A https://tex.stackexchange.com/users/149123/safron
 %  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
-%  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>
+%  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
+% `\contributor florian           <@\at @>'  ^^A https://tex.stackexchange.com/users/172863/florian
 % and
-% `\contributor florian           <@\at @>'. ^^A https://tex.stackexchange.com/users/172863/florian
-%
+%  \contributor Liang-Bo Wang <@\at @>.      ^^A https://github.com/ccwang002
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -6634,19 +6634,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
        \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}
       {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
-         \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
+       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
   }{}%
 %    \end{macrocode}
 % \item [|footnote|] footnote text (only visible with block paragraphs).
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
+%\changes{v3.1}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
+%                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
-    \MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-    \@ifclassloaded{memoir}
-      {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
-      {\@ifpackageloaded{scrbase}
+    \@ifpackageloaded{hyperref}{%
+      \MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+      \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
+    }{%
+      \@ifpackageloaded{scrbase}
         {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
-        {}}%
+        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+         \@ifclassloaded{memoir}
+           {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}{}}%
+           {}%
+    }%
   }{}%
 }}
 %    \end{macrocode}
@@ -19545,7 +19552,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12300}
+% \CheckSum{12313}
 %
 % \Finale
 %
