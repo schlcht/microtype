@@ -1339,10 +1339,10 @@
 %
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
-%\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously |draft|) option disabling \microtype\
+%\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously \texttt{draft}) option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\changes{v3.0}{2021/09/28}{rename option |draft| option to \opt{disable}
+%\changes{v3.0}{2021/09/28}{rename option \texttt{draft} option to \opt{disable}
 %               (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                ^^A private mail, 2018/07/04
 %\Describe{Option}{disable}{true,!false,ifdraft}
@@ -6431,14 +6431,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patch@info}
 %\begin{macro}{\MT@patch@warn}
 %\begin{macro}{\MT@patch@undef}
-%\begin{macro}{\MT@patch@undo}
+%\begin{macro}{\MT@patch@info@undo}
 % We have to patch some macros to get protrusion right.
 %    \begin{macrocode}
 \newif\ifMT@patch@ok
 \def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
 \def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
 \def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
-\def\MT@patch@undo#1{\MT@info{Reverting patch `#1'}}
+\def\MT@patch@info@undo#1{\MT@info{Reverting patch `#1'}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -6526,7 +6526,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \ifMT@inlist@
     \MT@rem@from@clist{#1}\MT@patches@applied
     \@nameuse{MT@patch@undo@@#1}%
-    \MT@patch@undo{#1}%
+    \MT@patch@info@undo{#1}%
   \else
     \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
   \fi
@@ -6547,43 +6547,38 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    |quote|, |flushleft| etc.). For |verse| (and probably other environments), ^^A found by \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>, private mail, 2021/08/01
 %    we also have to patch \cmd\everypar~\dots
 % \begin{itemize}
-% \item \pkg{beamer} patches it too
 %\changes{v3.0}{2021/05/20}{protrusion patch for \cmd\item}
+%   \item for the base classes
 %    \begin{macrocode}
-  \@ifclassloaded{beamer}
-    {\MT@define@patch{item}
-      {\MT@append@patch\@item\leftprotrusion
-       \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}%
-       \MT@append@patch\beamer@@callorigitem\leftprotrusion
+  \MT@define@patch{item}{%
+    \MT@append@patch\@item\leftprotrusion
+    \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}%
+%    \end{macrocode}
+% \item \pkg{beamer} patches it too
+%    \begin{macrocode}
+    \@ifclassloaded{beamer}
+      {\MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
-      {}}
 %    \end{macrocode}
 % \item the \pkg{simplecv} class
 %    \begin{macrocode}
-    {\@ifclassloaded{simplecv}
-      {\MT@define@patch{item}
-        {\MT@append@patch\@item\leftprotrusion
-         \MT@append@patch\@topic@item\leftprotrusion
-         \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
+      {\@ifclassloaded{simplecv}
+        {\MT@append@patch\@topic@item\leftprotrusion}
         {}}%
-%    \end{macrocode}
-% \item standard \LaTeX\ classes
-%    \begin{macrocode}
-      {\MT@define@patch{item}
-        {\MT@append@patch\@item\leftprotrusion
-         \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
-        {}}}%
+  }{}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|toc|] <TOC> and friends
-% \begin{itemize}
-%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
 %\changes{v3.0}{2021/05/20}{protrusion patch for <TOC>}
 %    \begin{macrocode}
-  \@ifclassloaded{memoir}
-    {\MT@define@patch{toc}
-      {\MT@append@patch\numberline\leftprotrusion
-       \MT@append@patch\booknumberline\leftprotrusion
+  \MT@define@patch{toc}{%
+    \MT@append@patch\numberline\leftprotrusion
+%    \end{macrocode}
+% \begin{itemize}
+%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
+%    \begin{macrocode}
+    \@ifclassloaded{memoir}
+      {\MT@append@patch\booknumberline\leftprotrusion
        \MT@append@patch\partnumberline\leftprotrusion
        \MT@append@patch\chapternumberline\leftprotrusion
        \MT@append@patch\cftbookafterpnum\noprotrusion
@@ -6596,7 +6591,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@append@patch\cftsubparagraphafterpnum\noprotrusion
        \MT@append@patch\cftfigureafterpnum\noprotrusion
        \MT@append@patch\cfttableafterpnum\noprotrusion}
-      {}}
+      {}%
+  }{}%
 %    \end{macrocode}
 % \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on; this will
@@ -6607,7 +6603,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       who would understand <KOMA> better than me.
 %\todo{fix KOMA patch (add \cmd\noprotrusion)}
 %    \begin{macrocode}
-%    {\@ifpackageloaded{tocbasic}
+%    \@ifpackageloaded{tocbasic}
 %      {\MT@define@patch{toc}
 %        {\MT@append@patch\numberline\leftprotrusion
 %         \setuptoc{toc}{noprotrusion}%
@@ -6615,13 +6611,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         \setuptoc{lot}{noprotrusion}}
 %        {\unsettoc{toc}{noprotrusion}%
 %         \unsettoc{lof}{noprotrusion}%
-%         \unsettoc{lot}{noprotrusion}}}
-%    \end{macrocode}
-% \item \dots, and for the rest:
-%    \begin{macrocode}
-      {\MT@define@patch{toc}
-        {\MT@append@patch\numberline\leftprotrusion}
-        {}}%
+%         \unsettoc{lot}{noprotrusion}}}{}%
 %    \end{macrocode}
 % \item (a patch for \pkg{titletoc} would also be worthwhile~\dots)
 %\todo{patch for \pkg{titletoc}}
@@ -6630,41 +6620,34 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
-%\changes{v3.1}{2021/11/22}{protrusion patch for \pkg{IEEEtran} (equation numbers)}
+%\changes{v3.1}{2021/11/22}{protrusion patch \texttt{eqnum} for \pkg{IEEEtran}}
 %    \begin{macrocode}
-  \@ifpackageloaded{amsmath}
-    {\MT@define@patch{eqnum}
+  \MT@define@patch{eqnum}{%
+    \@ifclassloaded{IEEEtran}
+      {\MT@patch@patch\theequationdis{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\theequationdis{)}{\rightprotrusion{)}}%
+       \MT@patch@patch\theIEEEsubequationdis{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\theIEEEsubequationdis{)}{\rightprotrusion{)}}}%
+      {}%
+    \@ifpackageloaded{amsmath}
       {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
-       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
-      {}}
-    {\@ifclassloaded{IEEEtran}
-      {\MT@define@patch{eqnum}
-        {\MT@patch@patch\theequationdis{(}{\leftprotrusion{(}}%
-         \MT@patch@patch\theequationdis{)}{\rightprotrusion{)}}%
-         \MT@patch@patch\theIEEEsubequationdis{(}{\leftprotrusion{(}}%
-         \MT@patch@patch\theIEEEsubequationdis{)}{\rightprotrusion{)}}}%
-        {}}
-      {\MT@define@patch{eqnum}
-        {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}
+      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
          \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
-        {}}}%
+  }{}%
 %    \end{macrocode}
 % \item [|footnote|] footnote text (only visible with block paragraphs).
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
 %    \begin{macrocode}
-  \@ifclassloaded{memoir}
-    {\MT@define@patch{footnote}
-      {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-       \MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
-      {}}
-    {\@ifpackageloaded{scrbase}
-      {\MT@define@patch{footnote}
+  \MT@define@patch{footnote}{%
+    \MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+    \@ifclassloaded{memoir}
+      {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+      {\@ifpackageloaded{scrbase}
         {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
-        {}}
-      {\MT@define@patch{footnote}
-        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
-        {}}}%
+        {}}%
+  }{}%
 }}
 %    \end{macrocode}
 %\end{description}
@@ -6672,13 +6655,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</package>
 %</package|letterspace>
 %    \end{macrocode}
+%
+%\subsection{Font setup}\label{sub:font-setup}
+%
 %\changes{v1.6}{2005/01/19}{load a font if none is selected}
 % We need a font (the \pkg{minimal} class doesn't load one).
 %    \begin{macrocode}
 %<package>\expandafter\ifx\the\font\nullfont\normalfont\fi
 %    \end{macrocode}
-%
-%\subsection{Font setup}\label{sub:font-setup}
 %
 %\begin{macro}{\MT@setupfont}
 % Setting up a font entails checking for each feature whether it should be
@@ -13965,6 +13949,7 @@ end
 }
 %    \end{macrocode}
 % Apply or revert patches.
+%\changes{v3.1}{2021/11/29}{allow \cmd\microtypesetup\texttt{\{(no)patch\quotechar=all\}}}
 %    \begin{macrocode}
 \define@key{MTX}{patch}[all]{%
   \def\@tempa{#1}%
@@ -19560,7 +19545,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12323}
+% \CheckSum{12300}
 %
 % \Finale
 %
