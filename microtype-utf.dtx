@@ -27,11 +27,11 @@
 \ProvidesFile
 %</!EBGaramond>
 %<*driver>
-    {\jobname.dtx}[2021/10/31 v3.0]
+    {\jobname.dtx}[2021/12/02 v3.0a]
 %</driver>
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
-%<NewComputerModern>  {mt-NewComputerModern.cfg}[2021/08/08 v1.0 microtype config. file: New Computer Modern (AT)]
+%<NewComputerModern>  {mt-NewComputerModern.cfg}[2021/11/09 v1.1 microtype config. file: New Computer Modern (AT)]
 %<Palatino>  {mt-Palatino.cfg}[2012/03/10 v1.0 microtype config. file: Palatino and similar fonts (LBD)]
 %<TU-basic>  {mt-TU-basic.cfg}[2021/06/22 v1.1 microtype config. file: fonts with basic glyph set (RS)]
 %<TU-empty>  {mt-TU-empty.cfg}[2021/06/22 v1.1 microtype config. file: fonts with nonstandard glyph set (RS)]
@@ -202,7 +202,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %<*LatinModernRoman|NewComputerModern>
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
 %<LatinModernRoman>     family   = Latin Modern Roman }
 %<NewComputerModern>     family   = {New Computer Modern} }
 %    \end{macrocode}
@@ -303,7 +303,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %<*CharisSIL>
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = Charis SIL }
 %    \end{macrocode}
 %{\setmacrofont\CharisSIL
@@ -654,7 +654,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %    \begin{macrocode}
 %<*Palatino>
 \DeclareCharacterInheritance
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family = {Palatino} }
 %    \end{macrocode}
 % Unfortunately, I don't have a Palatino variant containing all of the following
@@ -800,9 +800,9 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 \SetProtrusion
 %<LatinModernRoman>   [ name     = LMR-default ]
 %<NewComputerModern>   [ name     = NCM-default ]
-   { encoding = {EU1,EU2,TU},
+%<LatinModernRoman>   { encoding = {TU,EU1,EU2},
 %<LatinModernRoman>     family   = Latin Modern Roman }
-%<NewComputerModern>     family   = {New Computer Modern} }
+%<NewComputerModern>   { }
    {
 %    \end{macrocode}
 %{\setmacrofont\NCM
@@ -818,14 +818,8 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      W = {50,50},
      X = {50,50},
      Y = {50,50},
-%<NewComputerModern>     /a.end = {,330},
-%<NewComputerModern>     /e.end = {,350},
      k = {  ,50},
-%<NewComputerModern>     /k.alt = { ,50},
      r = {  ,50},
-%<NewComputerModern>     /r.end = {,300},
-%<NewComputerModern>     /m.end = {,200},
-%<NewComputerModern>     /n.end = {,300},
      t = {  ,70},
      v = {50,50},
      w = {50,50},
@@ -890,11 +884,13 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      × = {150,250},
      ÷ = {150,250},
      € = {100,   },
+%<*LatinModernRoman>
     /one.oldstyle   = {100,100},
     /two.oldstyle   = { 50, 50},
     /three.oldstyle = { 30, 80},
     /four.oldstyle  = { 50, 50},
     /seven.oldstyle = { 50, 80},
+%</LatinModernRoman>
 %<*NewComputerModern>
      Ά = {50,50},   % /Alphatonos
      Ὰ = {120,50},  %
@@ -994,19 +990,52 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      χ = {50,50},
      ψ = {50,50},
 %     /uni1F98.alt = {,},
-%</NewComputerModern>
 %    \end{macrocode}
 %}
+% <CMU> Serif doesn't include |*.end| glyphs, and the OldStyle numbers' names differ.
 %    \begin{macrocode}
+   }
+
+\SetProtrusion
+   [ name     = NCM-TU,
+     load     = NCM-default ]
+   { encoding = {TU,EU1,EU2},
+     family   = {New Computer Modern} }
+   {
+     /a.end = {,330},
+     /e.end = {,350},
+     /k.alt = { ,50},
+     /r.end = {,300},
+     /m.end = {,200},
+     /n.end = {,300},
+     /one.oldstyle   = {100,100},
+     /two.oldstyle   = { 50, 50},
+     /three.oldstyle = { 30, 80},
+     /four.oldstyle  = { 50, 50},
+     /seven.oldstyle = { 50, 80},
+   }
+
+\SetProtrusion
+   [ name     = CMU-TU,
+     load     = NCM-default ]
+   { encoding = {TU,EU1,EU2},
+     family   = {CMU Serif} }
+   {
+     /oneoldstyle   = {100,100},
+     /twooldstyle   = { 50, 50},
+     /threeoldstyle = { 30, 80},
+     /fouroldstyle  = { 50, 50},
+     /sevenoldstyle = { 50, 80},
+%</NewComputerModern>
    }
 
 \SetProtrusion
 %<LatinModernRoman>   [ name     = LMR-it ]
 %<NewComputerModern>   [ name     = NCM-it ]
-   { encoding = {EU1,EU2,TU},
+%<LatinModernRoman>   { encoding = {TU,EU1,EU2},
 %<LatinModernRoman>     family   = Latin Modern Roman,
-%<NewComputerModern>     family   = {New Computer Modern},
-     shape    = {it,sl}       }
+%<LatinModernRoman>     shape    = {it,sl}       }
+%<NewComputerModern>   { }
    {
 %    \end{macrocode}
 %{\setmacrofont\NCM
@@ -1067,14 +1096,6 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      x = {65,-40},
      y = {130,-20},
      z = {110,-80},
-%<*NewComputerModern>
-     /a.end = {,330}, %Fix
-     /e.end = {,350}, %Fix
-     /k.alt = {  ,50}, %Fix
-     /r.end = {,300}, %Fix
-     /m.end = {,200}, %Fix
-     /n.end = {,300}, %Fix
-%</NewComputerModern>
      0 = {170,-85},
      1 = {230,110},
      2 = {130,-70},
@@ -1134,6 +1155,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      × = {200,200},
      ÷ = {200,200},
      € = {150,   },
+%<*LatinModernRoman>
     /one.oldstyle   = {100,100},
     /two.oldstyle   = {100, 80},
     /three.oldstyle = { 80, 50},
@@ -1142,6 +1164,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
     /six.oldstyle   = { 50,   },
     /seven.oldstyle = { 80, 80},
     /eight.oldstyle = { 50,   },
+%</LatinModernRoman>
      Γ = {100,120}, % /Gamma
      Δ = {120,100}, % /Delta
      Θ = {120, 50}, % /Theta
@@ -1244,10 +1267,50 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
      χ = {20,},
      ψ = {80,},
 %    /uni1F98.alt = {,},
-%</NewComputerModern>
 %    \end{macrocode}
 %}
 %    \begin{macrocode}
+   }
+
+\SetProtrusion
+   [ name     = NCM-it-TU,
+     load     = NCM-it ]
+   { encoding = {TU,EU1,EU2},
+     family   = {New Computer Modern},
+     shape    = {it,sl} }
+   {
+     /a.end = {,330}, %Fix
+     /e.end = {,350}, %Fix
+     /k.alt = {  ,50}, %Fix
+     /r.end = {,300}, %Fix
+     /m.end = {,200}, %Fix
+     /n.end = {,300}, %Fix
+     /one.oldstyle   = {100,100},
+     /two.oldstyle   = {100, 80},
+     /three.oldstyle = { 80, 50},
+     /four.oldstyle  = { 80, 80},
+     /five.oldstyle  = { 50,   },
+     /six.oldstyle   = { 50,   },
+     /seven.oldstyle = { 80, 80},
+     /eight.oldstyle = { 50,   },
+   }
+
+\SetProtrusion
+   [ name     = CMU-it-TU,
+     load     = NCM-it ]
+   { encoding = {TU,EU1,EU2},
+     family   = {CMU Serif},
+     shape    = {it,sl} }
+   {
+     /oneoldstyle   = {100,100},
+     /twooldstyle   = {100, 80},
+     /threeoldstyle = { 80, 50},
+     /fouroldstyle  = { 80, 80},
+     /fiveoldstyle  = { 50,   },
+     /sixoldstyle   = { 50,   },
+     /sevenoldstyle = { 80, 80},
+     /eightoldstyle = { 50,   },
+%</NewComputerModern>
    }
 %</LatinModernRoman|NewComputerModern>
 %    \end{macrocode}
@@ -1257,7 +1320,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<*CharisSIL>
 \SetProtrusion
    [ name     = Charis-default ]
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = Charis SIL }
    {
 %    \end{macrocode}
@@ -1436,7 +1499,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 
 \SetProtrusion
    [ name     = Charis-it   ]
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = Charis SIL,
      shape    = {it,sl}  }
    {
@@ -1590,7 +1653,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
    [ name     = Charis-sc,
      load     = Charis-default,
      command  = {MT@get@CHARIS@SC} ]
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = Charis SIL,
      shape    = {sc}  }
    {
@@ -1913,7 +1976,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 %<*Palatino>
 \SetProtrusion
    [ name     = palatino-default ]
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = {Palatino} }
    {
 %    \end{macrocode}
@@ -2015,7 +2078,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 
 \SetProtrusion
    [ name     = palatino-it   ]
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = {Palatino},
      shape    = {it,sl}  }
    {
@@ -2114,7 +2177,7 @@ luatexbase.add_to_callback("pre_linebreak_filter", nodeprocessor, "replace missi
 \SetProtrusion
    [ name     = palatino-sc,
      load     = palatino-default ]
-   { encoding = {EU1,EU2,TU},
+   { encoding = {TU,EU1,EU2},
      family   = {Palatino},
      shape    = sc }
    {

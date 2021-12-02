@@ -22,6 +22,7 @@ microtype-gind.ist
 *.idx
 *.ind
 *.ilg
+*.lof
 *.log
 *.lot
 *.out

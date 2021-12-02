@@ -1,7 +1,7 @@
+* make microtype-show work with xetex
 * different md* (etc.) for different fonts
 * what about polyglossia?
 * check contexts in lua again -> contexts
-* cm-unicode alias
 * guard against expanding context? -:
 \newcommand{\@ifexpanding}{\let\@ifexpanding@\@ifexpanding@\@secondoftwo}
 \newcommand{\@ifexpanding@}[4]{\relax\relax#3}

@@ -3,6 +3,23 @@
 SHELL = /bin/sh
 .SUFFIXES:
 
+# path
+ARCH     := x86_64-darwinlegacy
+COMPAT   := $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
+ifeq ($(shell expr $(COMPAT) \< 2021 ),1)
+  ARCH := x86_64-darwin
+endif
+ifeq ($(shell expr $(COMPAT) \< 2014 ),1)
+  ARCH := universal-darwin
+endif
+TLPATH := ~/Library/texlive/$(COMPAT)/bin/$(ARCH)
+
+ifdef DEV
+  override DEV=-dev
+endif
+
+TESTDIR = ./testsuite
+WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
 # Redefine to print output:
 REDIRECT = > /dev/null
 
@@ -105,9 +122,9 @@ world:   all ctan
 .PHONY: help install sty-install manifest mostlyclean clean \
 	test testerrors testunknown testoutput
 
-# for the documentation we need the debug version of microtype.sty 
+# for the documentation we need the debug version of microtype.sty
 # as well as microtype-doc.sty and microtype-gind.ist
-make-doc-sty: $(INS) $(DTX) docstrip.cfg  
+make-doc-sty: $(INS) $(DTX) docstrip.cfg
 	@echo "Creating doc sty"
 	@sed -i '' '/\\def\\DEBUG/s/^%//'   $<
 	@sed -i '' '/microtype-gind/s/^%//' $<
@@ -116,7 +133,7 @@ make-doc-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-doc-sty
 
 # undo
-make-normal-sty: $(INS) $(DTX) docstrip.cfg  
+make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@echo "Creating normal sty"
 	@sed -i '' '/\\def\\DEBUG/s/^\\/%\\/'   $<
 	@sed -i '' '/microtype-doc/s/^\\/%\\/'  $<
@@ -125,12 +142,14 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@touch make-doc-sty
 	@touch make-normal-sty
 
+RERUN_STR = 'Rerun to get \|pdfTeX warning (dest)'
+
 define rerun-check
-@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; do \
+@while `grep $(RERUN_STR) $(NAMEU).log > /dev/null` ; do \
    echo "Re-compiling Unicode documentation" ; \
    $(DO_LUALATEX) ; \
 done
-@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; do \
+@while `grep $(RERUN_STR) $(NAMEC).log > /dev/null` ; do \
    shasum $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx > $(NAMEC)-stamp2 ; \
    if cmp -s $(NAMEC)-stamp2 $(NAMEC)-stamp; then rm $(NAMEC)-stamp2; \
    else mv -f $(NAMEC)-stamp2 $(NAMEC)-stamp; $(DO_MAKEINDEX_CODE); fi ; \
@@ -142,7 +161,7 @@ done
    echo "Re-compiling user documentation" ; \
    $(DO_PDFLATEX_DOC) ; \
 done
-@while `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; do \
+@while `grep $(RERUN_STR) $(NAME).log > /dev/null` ; do \
    shasum $(NAME).idx > $(NAME)-stamp2 ; \
    if cmp -s $(NAME)-stamp2 $(NAME)-stamp; then rm $(NAME)-stamp2; \
    else mv -f $(NAME)-stamp2 $(NAME)-stamp; $(DO_MAKEINDEX_DOC); fi ; \
@@ -152,7 +171,7 @@ done
 endef
 
 $(DOC): $(DTX) $(NAME).ind
-	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAME).log > /dev/null` ; then \
+	@if `grep $(RERUN_STR) $(NAME).log > /dev/null` ; then \
 		echo "Re-compiling user documentation" ; \
 		$(DO_PDFLATEX_DOC) ; \
 	fi
@@ -165,7 +184,7 @@ $(CODEDOC): $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 $(UTFDOC): $(UTFDTX) $(NAMEC).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
-	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEU).log > /dev/null` ; then \
+	@if `grep $(RERUN_STR) $(NAMEU).log > /dev/null` ; then \
 		echo "Re-compiling Unicode documentation" ; \
 		$(DO_LUALATEX) ; \
 	fi
@@ -175,7 +194,6 @@ $(NAME).idx: $(DTX)
 	@$(DO_PDFLATEX_DOC)
 
 $(NAME).ind: $(NAME)-stamp
-	@echo "Compiling user documentation (ind)"
 	@$(DO_MAKEINDEX_DOC)
 
 $(NAME)-stamp: $(NAME).idx
@@ -187,7 +205,6 @@ $(NAMEC).idx $(NAMEC).glo: $(DTX)
 	@$(DO_PDFLATEX_CODE)
 
 $(NAMEC).ind $(NAMEC).gls: $(NAMEC)-stamp
-	@echo "Compiling code documentation (ind,gls)"
 	@$(DO_MAKEINDEX_CODE)
 
 $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $(NAMEU).idx $(NAME).cdx
@@ -199,9 +216,9 @@ $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $
 $(NAMEC).tmp:
 	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
-	@if `grep 'Rerun to get \|pdfTeX warning (dest)' $(NAMEC).log > /dev/null` ; then \
-		echo "Re-compiling code documentation (for Unicode part)" ; \
+	@if `grep $(RERUN_STR) $(NAMEC).log > /dev/null` ; then \
 		$(DO_MAKEINDEX_CODE) ; \
+		echo "Re-compiling code documentation (for Unicode part)" ; \
 		$(DO_PDFLATEX_CODE) ; \
 	fi
 
@@ -259,7 +276,7 @@ sty-install: $(RUNFILES)
 	@echo "Installing in '$(TEXMFROOT)'."
 	$(run-sty-install)
 
-manifest: $(SOURCE) 
+manifest: $(SOURCE)
 	@echo "=== Source files ==="
 	@LANG=C && sed -n '/%<\*package|letterspace|m-t|pdf-|lua-|xe-|show>$$/{N;s/.*\[\(.*\)$$/-- \1 ($(DTX))/p;}' $(DTX)
 	@LANG=C && sed -n '/ *version *= *.*$$/{N;s/^.*= *"\(.*\)",.*date *= *"\(.*\)",/  (\2 v\1 (microtype.lua))/p;}' $(DTX)
@@ -279,20 +296,6 @@ clean: mostlyclean
 	@$(RM) -- $(GENERATED) $(ZIPS)
 
 # testing the package
-TESTDIR = ./testsuite
-WORDCOUNT = ~/texmf/scripts/wordcount/wordcount.sh
-COMPAT   := $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
-ARCH     := x86_64-darwinlegacy
-ifeq ($(shell expr $(COMPAT) \< 2021 ),1)
-  ARCH := x86_64-darwin
-endif
-ifeq ($(shell expr $(COMPAT) \< 2014 ),1)
-  ARCH := universal-darwin
-endif
-TLPATH := ~/Library/texlive/$(COMPAT)/bin/$(ARCH)
-ifdef DEV
-  override DEV=-dev
-endif
 
 test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.log
@@ -348,7 +351,7 @@ run-output-file = \
 	$(call run-test-file,output,$1) \
 	if ! $$(eval $$(grep grep $1.tex) $1.log > /dev/null) ; \
 		then $(not-ok) ; \
-	fi ; 
+	fi ;
 
-not-ok = echo "  ... NOT OK !!! <-------" 
+not-ok = echo "  ... NOT OK !!! <-------"
 

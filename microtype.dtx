@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/10/31 v3.0
+  [2021/12/02 v3.0a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,13 +52,14 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.0",
-%<luafile>    date         = "2021/10/31",
+%<luafile>    version      = "3.0a",
+%<luafile>    date         = "2021/12/02",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    license      = "LPPL",
 %<luafile>}
+%<luafile>luatexbase.provides_module(microtype.module)
 %<*config>
 %<bch>  {mt-bch.cfg}[2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)]
 %<blg>  {mt-blg.cfg}[2007/07/14 v1.0 microtype config. file: Bitstream Letter Gothic (RS)]
@@ -152,7 +153,7 @@
 \fi
 \ifpdf
   \microtypesetup{expansion=alltext} % with activated expansion ...
-  \tolerance=300 %     ... we can make TeX almost as intolerant as it normally is
+  \tolerance=250 % ... we can make TeX almost as intolerant as it normally is (200)
   \g@addto@macro\macrocode{\microtypesetup{expansion=false}}
   % bonus material
   \InputIfFileExists{microtype-logo.dtx}\relax\relax
@@ -250,6 +251,7 @@
   \parindent 0pt
   {\let\numberline\@gobble{\small #1~[#2]}}}
 \def\l@table{\@dottedtocline{1}{0pt}{1.5em}}
+\let\l@figure\l@table
 \def\@pnumwidth{1.7em}
 \def\defspecial@toc#1#2#3{\long\def#1{%
   \ifpdf\phantomsection\bookmarksetupnext{italic}\pdfbookmark[1]{#2}{#3}\fi
@@ -257,6 +259,7 @@
   \@starttoc{#3}}}
 \defspecial@toc\tableofcontents\contentsname{toc}
 \defspecial@toc\listoftables\listtablename{lot}
+\defspecial@toc\listoffigures\listfigurename{lof}
 % bibliography
 \def\@cite#1#2{#1\if@tempswa, #2\fi}
 \def\thebibliography#1{%
@@ -295,7 +298,7 @@
     \expandafter\list
       \csname\@itemitem\endcsname
       {\ifnum\@itemdepth=\@ne\leftmargin 0pt\fi
-	      \def\makelabel##1{\hss\llap{\color{sectioning}##1}}}%
+       \def\makelabel##1{\hss\llap{\color{sectioning}##1}}}%
    \fi}
   {\endlist}
 \newenvironment{enum}[1][0]
@@ -331,7 +334,7 @@
           \hsize\dimexpr\marginparwidth-\marginparsep-4pt-\fboxrule\relax
           \rightskip\dimexpr\marginparsep+4pt+\fboxrule\relax plus 2.5em
           \footnotesize \sffamily #1:\\[-\dimexpr\aboverulesep+\cmidrulewidth+3.5\fboxrule]
-	  \textcolor{theframe}{\rlap{\vrule width \hsize height\fboxrule}}\\[.3\baselineskip] #2}}}
+  \textcolor{theframe}{\rlap{\vrule width \hsize height\fboxrule}}\\[.3\baselineskip] #2}}}
   \mt@unvdimen\dimexpr\ht\mt@box+\dp\mt@box\relax
   \unvbox\mt@box
   \vskip-\mt@unvdimen}
@@ -456,7 +459,7 @@
 \def\PrintMacroName#1{\strut\MacroFont\string #1\hskip15pt}
 \def\ImplementationSettings{%
   \linespread{1}%
-  \hfuzz=10pt
+  \hfuzz=50pt
   \def\MacroFont{\ttfamily\footnotesize}%
   \let\macro@font\MacroFont}
 % additional bells ...
@@ -797,11 +800,12 @@
 \DeclareRobustCommand\etex{\mbox{e-\kern-.075em\TeX}\CatIndeX{e-\TeX}{etex}{engine}}
 \DeclareRobustCommand\nonetex{\rlap{\kern.05em/}\etex} % aka. \TeX
 \def\@reflect#1{\ifdim\fontdimen1\font=0pt \reflectbox{#1}\else\rotatebox[origin=c]{180}{#1}\fi}
-\DeclareRobustCommand\xe{\textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}% also reflect the initial `X'? 
+\DeclareRobustCommand\xe{\textoractual{\@reflect{X}\lower.4ex\hbox{\kern-.066em\@reflect{E}}}{Xe}}% also reflect the initial `X'?
 \DeclareRobustCommand\xetex{\xe\kern-.1em\TeX\CatIndeX{\xe\TeX}{xetex}{engine}}
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\githuburl{https://github.com/schlcht/microtype}
+\def\githubissue#1{ [issue~\href{\githuburl/issues/#1}{\##1}]}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -915,6 +919,7 @@
 %{\sffamily\def\familydefault{\sfdefault}\ifcmr\else\DeclareFontSeriesDefault[sf]{bf}{sb}\fi
 % \tableofcontents
 % \listoftables
+% \ifcodedoc\listoffigures\fi
 % \vskip2\baselineskip
 % \Large\MTsectionfont
 % \noindent
@@ -1334,10 +1339,10 @@
 %
 %\subsection{Miscellaneous options}\label{sub:options-misc}
 %
-%\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously |draft|) option disabling \microtype\
+%\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously \texttt{draft}) option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\changes{v3.0}{2021/09/28}{rename option |draft| option to \opt{disable}
+%\changes{v3.0}{2021/09/28}{rename option \texttt{draft} option to \opt{disable}
 %               (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                ^^A private mail, 2018/07/04
 %\Describe{Option}{disable}{true,!false,ifdraft}
@@ -1831,8 +1836,8 @@
 %
 %\paragraph{Options:}
 %\begin{options}
-%  \item[\key{name}, \key{load}, \key{preset}, \key{inputenc}, \key{context}]
-%       Analogous to \cs{SetProtrusion}, the optional argument may be used to
+%  \item[{\spaceskip=.75\fontdimen2\font\key{name}, \key{load}, \key{preset}, \key{inputenc}, \key{context}}]
+%       \hspace{-1.5pt}Analogous to \cs{SetProtrusion}, the optional argument may be used to
 %       assign a name to the list, to load another list, to preset all
 %       expansion factors, to set the input encoding, or to determine the
 %       context of the list (expansion contexts are only possible with \pdftex\
@@ -1846,7 +1851,7 @@
 %       either one of |stretch|, |shrink| and |step|, their respective global
 %       value will be used (that is, no calculation will take place).
 %
-%       As a practical example, suppose you have a paragraph containing a widow
+%       As a practical example, suppose you have a paragraph with a lone widow
 %       that could be avoided by shrinking the font a bit more.
 %       In conjunction with the |context| option (see section~\ref{sec:context}
 %       for further details), you could thus allow for more expansion in this
@@ -2176,8 +2181,8 @@
 %
 %\paragraph{Options:}
 %\begin{options}
-%  \item[\key{name}, \key{load}, \key{factor}, \key{preset}, \key{inputenc}, \key{context}]
-%       These options serve the same function as in the previous configuration
+%  \item[{\spaceskip=.85\fontdimen2\font\key{name}, \key{load}, \key{factor}, \key{preset}, \key{inputenc}, \key{context}}]
+%       \hspace{-0.5pt}These options serve the same function as in the previous configuration
 %       commands.
 %  \item[\key{unit}] You can specify the unit by which the specified numbers are
 %       measured. Possible values are: |character|, a \meta{dimension} and,
@@ -2266,12 +2271,12 @@
 % with the `\opt{config}' option, see section~\ref{sub:options-misc}).
 %
 % If you embark on creating new settings for a font family, you should
-% put them into a separate file, whose name must be: `|mt-|\meta{font
+% put them into a dedicated file, whose name must be: `|mt-|\meta{font
 % family}|.cfg|' (\eg, `\file{mt-cmr.cfg}'; any spaces in the font name should
 % be removed, \eg, `\file{mt-MinionPro.cfg}'), and may contain all commands
 % described in the current section~\ref{sec:fine-tuning}. These files will be
 % loaded automatically if you are actually using the respective fonts.
-% This package ships with configuration files for a number of font families.
+% The \microtype\ package ships with configuration files for a number of font families.
 % They are listed in tables~\ref{tab:type1-fonts} (Type\,1 fonts) and
 % \ref{tab:ot-fonts} (OpenType fonts).
 %
@@ -2383,7 +2388,7 @@
 % Latin Modern Roman
 %      & Latin
 %      & n, it, (sl)\fnref{fn:ot-itsl}\\
-% New Computer Modern
+% New Computer Modern\footnote{Alias: <CMU> Serif}
 %      & Latin, Greek
 %      & n, it, (sl)\fnref{fn:ot-itsl}\\
 % Charis <SIL>
@@ -2697,8 +2702,7 @@
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
 %     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
 %\def\MTsupp#1{\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
-%   {\smaller(#1)}\parfillskip=0pt \finalhyphendemerits=0
-%}
+%   {\smaller(#1)}\parfillskip=0pt \finalhyphendemerits=0 }
 %^^A \microtypesetup{nopatch=item}
 % \item[item]  Affects the first line of \cmd\item\kern.6pts in various environments, so that,
 %              \eg, the two\break A's here -- the one in the current line and the one in the
@@ -2712,12 +2716,13 @@
 %              \MTsupp{standard classes, \pkg{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (only visible when
 %              the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes}
+%              \MTsupp{standard classes, \pkg{memoir}, <\pkg{KOMA}> classes, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side.
-%              \MTsupp{standard classes, \pkg{amsmath}}
+%              \MTsupp{standard classes, \pkg{amsmath}, \pkg{IEEEtran}}
 %\endlist\endgroup
 %
-%\medskip\noindent
+%\enlargethispage{\baselineskip} ^^A layout
+%\noindent
 % By default, all of the above patches will be applied. Should this not be desired,
 % or in case you are running into problems, you may prevent or undo the patches through
 % the \textcolor{thered}{\opt{patch}} and \textcolor{thered}{\opt{nopatch}} options,
@@ -3245,10 +3250,14 @@
 % `\contributor DORpapst          <@\at @>', ^^A https://tex.stackexchange.com/users/104965/dorpapst
 % `\contributor chsk              <@\at @>', ^^A https://tex.stackexchange.com/users/158639/chsk
 % `\contributor tnull             <@\at @>', ^^A https://tex.stackexchange.com/users/91987/tnull
-% `\contributor azur              <@\at @>'  ^^A https://tex.stackexchange.com/users/216369/azur
+% `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
+% `\contributor Safron            <@\at @>', ^^A https://tex.stackexchange.com/users/149123/safron
+%  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
+%  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
+% `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
+%  \contributor Liang-Bo Wang     <@\at @>   ^^A https://github.com/ccwang002
 % and
-% `\contributor Safron            <@\at @>'. ^^A https://tex.stackexchange.com/users/149123/safron
-%
+%  \contributor MisterFiLou       <@\at @>.  ^^A https://github.com/MisterFiLou
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3397,7 +3406,9 @@
 %
 %\begin{History}
 %
-%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\Version{3.0}{2021/10/31}
 %  \item Possibility of automatical protrusion based on difference of character widths
 %        \refsection{\ref{sub:inheritance}}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
@@ -3740,19 +3751,20 @@
 %\DoNotIndex{\!,\",\',\(,\),\*,\+,\,,\-,\.,\/,\:,\;,\<,\=,\>,\?,\[,\\,\],\`,
 %  \#,\$,\&,\^,\_,\|,\~,\ ,
 %  \advance,\afterassignment,\aftergroup,\begingroup,\bgroup,\catcode,\char,
-%  \chardef,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
+%  \chardef,\clubpenalty,\csname,\def,\divide,\edef,\egroup,\else,\endcsname,\endgroup,
 %  \endinput,\escapechar,\everypar,\expandafter,\fi,\futurelet,\gdef,\global,
 %  \hbadness,\hbox,\hfill,\hrule,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
-%  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifx,\ignorespaces,\immediate,\input,
-%  \inputlineno,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,\let,\lowercase,
-%  \maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,\number,
-%  \or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
-%  \string,\the,\tolerance,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
-%  \vrule,\vsplit,\wd,\write,\xdef}
+%  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifvbox,\ifx,\ignorespaces,\immediate,\input,
+%  \inputlineno,\interlinepenalty,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,
+%  \let,\long,\lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,
+%  \number,\or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
+%  \string,\the,\tolerance,\unhbox,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
+%  \vfuzz,\vrule,\vsplit,\wd,\widowpenalty,\write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
-%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr}
+%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,
+%  \scantokens,\unexpanded}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
 %\DoNotIndex{\pdfannot,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}
@@ -3768,22 +3780,22 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
-%  \@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,
-%  \@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
+%  \@currname,\@defaultunits,\@elt,\@empty,\@eqnnum,\@expandtwoargs,\@fileswfalse,
+%  \@firstofone,\@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,
+%  \@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
 %  \@let@token,\@m,\@M,\@makeother,\@minus,\@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,
 %  \@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,\@removeelement,
 %  \@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
 %  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
-%  \check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
+%  \check@icr,\cl@@ckpt,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
 %  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
-%  \normalbaselineskip,\normalsize,\numberline,\par,\parbox,\quad,\raggedright,
-%  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\usefont,
-%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\quad,\raggedright,
+%  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\tracingnone,\usefont,
+%  \value,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
 %  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
 %  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,
 %  \ProcessOptions,\RequirePackage,\@@enc@update,\UnicodeEncodingName}
@@ -3793,11 +3805,11 @@
 %^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
-%\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
+%\DoNotIndex{\activatequoting,\deactivatequoting,\percentsign}               ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
-%\DoNotIndex{\pdfstringdefDisableCommands,\pdfstringdefWarn}                 ^^A hyperref
+%\DoNotIndex{\ifHy@hyperfootnotes,\pdfstringdefDisableCommands,\pdfstringdefWarn} ^^A hyperref
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
@@ -3823,6 +3835,7 @@
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
 %  \cftsubsubsectionafterpnum,\cfttableafterpnum}                            ^^A memoir
 %\DoNotIndex{\setuptoc,\unsettoc,\scr@saved@footnotetext}                    ^^A koma (tocbasic)
+%\DoNotIndex{\theequationdis,\theIEEEsubequationdis}                         ^^A IEEEtran
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
 %  \MT@show@pdfannot,\iftracingmicrotypeinpdfall,\tracingmicrotypeinpdfalltrue,
@@ -3963,6 +3976,8 @@
 \newcommand*\microtypesetup[1]{}
 \newcommand*\microtypecontext[1]{}
 \newcommand*\textmicrotypecontext[2]{#2}
+\newcommand\leftprotrusion[1]{#1}
+\newcommand\rightprotrusion[1]{#1}
 \@ifpackageloaded{letterspace}{\let\MT@textls\relax}{%
 %</package>
 \newcommand*\lsstyle{}
@@ -4604,15 +4619,14 @@
 %\changes{v2.5}{2010/05/05}{new files: \file{microtype-pdftex.def}, \file{microtype-xetex.def}, \file{microtype-luatex.def},
 %                           containing engine-specific definitions}
 % We check whether we are running \pdftex, \xetex, or \luatex, and
-% load the appropriate definition file.
+% load the appropriate definition file (later in section~\ref{ssub:def-files}).
 %\begin{macro}{\MT@clear@options}
-% If we are using neither of these engines, we disable everything and exit.
+% If we are using neither of these engines, or a too old version, we disable everything and exit.
 %    \begin{macrocode}
 \def\MT@clear@options{%
 %<plain>  \MT@requires@latex1{%
   \AtEndOfPackage{\let\@unprocessedoptions\relax\MT@restore@catcodes}%
   \let\CurrentOption\@empty
-%<package>  \let\MT@endinput\endinput
 %<plain>  }\relax
 }
 %    \end{macrocode}
@@ -4632,30 +4646,42 @@
 %    \end{macrocode}
 %\begin{macro}{\MT@engine}
 %\changes{v2.6}{2016/03/25}{fix test with \luatex\ 0.85}
-%\begin{macro}{\MT@engine@tooold}
+%\begin{macro}{\ifMT@engine@unfit}
+%\begin{macro}{\MT@engine@minversion}
 % Old packages might have let \cmd\pdftexversion\ to \cmd\relax.
 %    \begin{macrocode}
 \let\MT@engine\relax
-%<letterspace>\def\MT@engine@tooold{0}
+\newif\ifMT@engine@unfit
+\MT@engine@unfittrue
 \ifx\pdftexversion\@undefined \else
   \ifx\pdftexversion\relax \else
     \def\MT@engine{pdf}
+%<package>    \def\MT@engine@minversion{0.14f}
 %<letterspace>    \let\MT@pdf@or@lua\@firstoftwo
-%<letterspace>    \ifnum\pdftexversion > 139 \def\MT@engine@tooold{1}\fi
+    \ifnum\pdftexversion
+%<package>        > 13
+%<letterspace>        > 139
+      \MT@engine@unfitfalse
+%<package>      \ifnum \pdftexversion=14
+%<package>        \ifnum \expandafter`\pdftexrevision < `f
+%<package>          \MT@engine@unfittrue
+%<package>        \fi
+%<package>      \fi
+    \fi
   \fi
 \fi
 \ifx\directlua\@undefined \else
   \ifx\directlua\relax \else
     \def\MT@engine{lua}
+    \MT@engine@unfitfalse
 %    \end{macrocode}
 % Since approx. \luatex\ 0.80, \cmd\pdftexversion\ is let to \cmd\luatexversion,
-% so that we would be fooled to think that \pdftex\ is too old.
+% so that we would be fooled into thinking that \pdftex\ is too old.
 %    \begin{macrocode}
 %<*letterspace>
     \let\MT@pdf@or@lua\@secondoftwo
-    \ifnum\luatexversion < 62 \def\MT@engine@tooold{0}
+    \ifnum\luatexversion < 62 \MT@engine@unfittrue
     \else
-      \def\MT@engine@tooold{1}
       \let\MT@lua\directlua
       \ifnum\luatexversion > 84
         \let\pdfoutput\outputmode
@@ -4671,12 +4697,17 @@
   \ifx\XeTeXversion\@undefined \else
     \ifx\XeTeXversion\relax \else
       \def\MT@engine{xe}
+      \def\MT@engine@minversion{0.9997}
+      \ifdim 0\XeTeXrevision pt > 0.9996pt
+        \MT@engine@unfitfalse
+      \fi
     \fi
   \fi
 \fi
 %</package>
 %</package|letterspace>
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@pdftex@no}
@@ -4688,7 +4719,7 @@
 % Currently, we have to distinguish the following cases for \pdftex:
 %\begin{enum}
 %  \item not running \pdftex
-%  \item \pdftex\ ($\less$~0.14f)
+%  \item \pdftex\ ($\less$~0.14f) (already checked above)
 %  \item + micro-typographic extensions (0.14f,g)
 %  \item + protrusion relative to \EM{1} ($\geq$~0.14h)
 %  \item + automatic font expansion;
@@ -4742,13 +4773,6 @@
         \ifnum\pdftexversion = 14
           \ifnum \expandafter`\pdftexrevision < `h
             \def\MT@pdftex@no{2}
-            \ifnum \expandafter`\pdftexrevision < `f
-              \def\MT@pdftex@no{1}
-            \fi
-          \fi
-        \else
-          \ifnum\pdftexversion < 14
-            \def\MT@pdftex@no{1}
           \fi
         \fi
       \fi
@@ -4762,15 +4786,18 @@
 %\changes{v2.5}{2010/05/05}{protrusion with \xetex}
 %\begin{macro}{\MT@xetex@no}
 % \xetex\ supports character protrusion since version 0.9997.
+% This test is not necessary here, we just keep it for the
+% (unlikely) case that features get added to \xetex\ in the
+% future.
 %    \begin{macrocode}
 %<*xe->
 %<debug>\MT@dinfo@nl{0}{this is xetex (\the\XeTeXversion\XeTeXrevision)}
-\ifdim 0\XeTeXrevision pt < 0.9997pt
-  \def\MT@xetex@no{1}
-\else
-  \def\MT@xetex@no{2}
-\fi
-%<debug>\MT@dinfo@nl{0}{xetex no.: \MT@xetex@no}
+%\ifdim 0\XeTeXrevision pt < 0.9997pt
+%  \def\MT@xetex@no{1}
+%\else
+%  \def\MT@xetex@no{2}
+%\fi
+%<debug>%\MT@dinfo@nl{0}{xetex no.: \MT@xetex@no}
 %</xe->
 %    \end{macrocode}
 %\end{macro}
@@ -4832,31 +4859,28 @@
 %</lua->
 %    \end{macrocode}
 %\end{macro}
+% Abort if no capable engine found.
+%\changes{v3.0a}{2021/11/10}{abort earlier if no capable engine found}
 %    \begin{macrocode}
-%<*pdf-|xe-|letterspace>
-\ifnum
-%<pdf-|xe->  \csname MT@\MT@engine tex@no\endcsname < 2
-%<letterspace>  \MT@engine@tooold=\z@
+%<*package|letterspace>
+\ifMT@engine@unfit
   \MT@warning@nl{You
-%<*letterspace>
     \ifx\MT@engine\relax
-      don't seem to be using pdftex or luatex.\MessageBreak
-      Try running `pdftex' or `luatex' instead of\MessageBreak
-        `\ifx\XeTeXversion\@undefined\else xe\fi tex'%
+      don't seem to be using pdftex%
+%<package>      , luatex or xetex%
+%<letterspace>      \space or luatex%
+     .\MessageBreak `\MT@MT' only works with these engines.%
     \else
-%</letterspace>
       are using a \MT@engine tex version older than
-%<pdf->      0.14f%
-%<xe->      0.9997%
-%<letterspace>        \MT@pdf@or@lua{1.40}{0.62}%
-      .\MessageBreak
-      `\MT@MT' does not work with this version.\MessageBreak
-      Please install a newer version of \MT@engine tex%
-%<letterspace>    \fi
-      .\MessageBreak I will quit now}
+%<package>       \MT@engine@minversion
+%<letterspace>      \MT@pdf@or@lua{1.40}{0.62}%
+     .\MessageBreak `\MT@MT' does not work with this version.%
+      \MessageBreak Please install a newer version of \MT@engine tex.%
+    \fi
+    \MessageBreak I will quit now}
   \MT@clear@options
 \endinput\fi
-%</pdf-|xe-|letterspace>
+%</package|letterspace>
 %    \end{macrocode}
 % Still there? Then we can begin:
 % We need the \pkg{keyval} package, including the `new' \cmd\KV@@sp@def\
@@ -5114,6 +5138,24 @@ else
 end
 function microtype.sprint (...)
   tex.sprint(catpackage, ...)
+end
+
+%    \end{macrocode}
+% We need the function |math.tointeger|, which is missing in older
+% \luatex\ versions, and Con\TeX t (inherited via \pkg{luaotfload})
+% faultily overwrites its own definition.
+%\changes{v3.0a}{2021/11/17}{define function \texttt{math.tointeger} for older \luatex\ versions}
+%                           ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-November/006556.html
+% The following is the (correct) definition from \file{l-math.lua}.
+%    \begin{macrocode}
+if not math.tointeger or not pcall(math.tointeger,0) then
+  math.mininteger=-0x4FFFFFFFFFFF
+  math.maxinteger=0x4FFFFFFFFFFF
+  local floor=math.floor
+  function math.tointeger(n)
+    local f=floor(n)
+    return f==n and f or nil
+  end
 end
 
 %</luafile>
@@ -5975,13 +6017,14 @@ microtype.do_font = do_font
 %\end{macro}
 %\begin{macro}{\MT@with@babel@and@T}
 %\changes{v2.2}{2007/05/25}{also inspect class options}
+%\changes{v3.0a}{2021/11/23}{fix grouping}
 % \LaTeX's \cmd\@ifpackagewith\ ignores the class options.
 %    \begin{macrocode}
 \def\MT@with@babel@and@T#1{%
   \MT@ifdefined@n@T{opt@babel.\@pkgextension}{%
     \@expandtwoargs\MT@in@clist{#1}
       {\csname opt@babel.\@pkgextension\endcsname,\@classoptionslist}%
-    \ifMT@inlist@\expandafter\@gobble\fi
+    \ifMT@inlist@\expandafter\@secondoftwo\else\expandafter\@firstofone\fi
   }\@gobble
 }
 %    \end{macrocode}
@@ -6240,6 +6283,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{csquotes}{%
     \@ifpackagelater{csquotes}{2005/05/11}{%
       \g@addto@macro\MT@setupfont@hook\@disablequotes
+      \g@addto@macro\MT@prot@hook\@disablequotes
     }{%
       \MT@warning@nl{%
         Should you receive warnings about unknown slot\MessageBreak
@@ -6388,20 +6432,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patch@info}
 %\begin{macro}{\MT@patch@warn}
 %\begin{macro}{\MT@patch@undef}
+%\begin{macro}{\MT@patch@info@undo}
 % We have to patch some macros to get protrusion right.
 %    \begin{macrocode}
 \newif\ifMT@patch@ok
 \def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
 \def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
 \def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
+\def\MT@patch@info@undo#1{\MT@info{Reverting patch `#1'}}
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@patches@def}
 %\begin{macro}{\MT@define@patch}
-% Define a patch and it add to the list of patches.
+% Define a patch and add it to the list of patches.
 % The third argument may contain more revert commands, but will
 % mostly be empty.
 %    \begin{macrocode}
@@ -6414,6 +6461,28 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@redefined@patches}
+%\begin{macro}{\MT@redefine@patch}
+% We also provide an easier way of redefining patches, which
+% would otherwise be a bit tricky because of the timing (patches
+% are defined \emph{and} executed <ABD>).
+%\changes{v3.0a}{2021/12/01}{facilitate redefinition of patches}
+%    \begin{macrocode}
+\let\MT@redefined@patches\@empty
+\def\MT@redefine@patch#1#2#3{%
+  \g@addto@macro\MT@redefined@patches{%
+    \MT@def@n{MT@patch@@#1}{#2}%
+    \MT@def@n{MT@patch@undo@@#1}{#3}%
+  }%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+% Both macros are only allowed in the preamble.
+%    \begin{macrocode}
+\@onlypreamble\MT@define@patch
+\@onlypreamble\MT@redefine@patch
+%    \end{macrocode}
 %\begin{macro}{\MT@append@patch}
 %\begin{macro}{\MT@patch@patch}
 % Wrappers around \pkg{etoolbox} commands.
@@ -6444,6 +6513,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patches@applied}
 %\begin{macro}{\MT@apply@patch}
 % Apply a previously defined patch.
+%\changes{v3.0a}{2021/11/23}{compatibility with \pkg{babel}\slash\texttt{spanish}:
+%                           fix catcodes}
+% With some packages, we have to reset catcodes (\eg, for the `|item|'
+% patch with Spanish \pkg{babel}, which makes `|>|' active).
 %    \begin{macrocode}
 \let\MT@patches@applied\@gobble
 \def\MT@apply@patch#1{%
@@ -6454,10 +6527,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@warning{Patch `#1' has already been applied,\MessageBreak
                    cannot reapply it}%
      \else
+       \let\MT@restore@catcodes\@empty
+       \MT@with@babel@and@T{spanish} {\MT@fix@catcode{62}{12}}% >
+       \MT@with@babel@and@T{galician}{\MT@fix@catcode{62}{12}}% >
        \def\MT@patch@name{#1}%
        \g@addto@macro\MT@patches@applied{,#1}%
        \@nameuse{MT@patch@@#1}%
        \@nameuse{MT@patch@\ifMT@patch@ok info\else warn\fi}{#1}%
+       \MT@restore@catcodes
      \fi}
     {\MT@patch@undef{#1}}%
 }
@@ -6472,6 +6549,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \ifMT@inlist@
     \MT@rem@from@clist{#1}\MT@patches@applied
     \@nameuse{MT@patch@undo@@#1}%
+    \MT@patch@info@undo{#1}%
   \else
     \MT@warning{Patch `#1' hasn't been applied,\MessageBreak cannot revert it}%
   \fi
@@ -6492,43 +6570,38 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    |quote|, |flushleft| etc.). For |verse| (and probably other environments), ^^A found by \contributor Antonis Tsolomitis <antonis.tsolomitis\at gmail.com>, private mail, 2021/08/01
 %    we also have to patch \cmd\everypar~\dots
 % \begin{itemize}
-% \item \pkg{beamer} patches it too
 %\changes{v3.0}{2021/05/20}{protrusion patch for \cmd\item}
+%   \item for the base classes
 %    \begin{macrocode}
-  \@ifclassloaded{beamer}
-    {\MT@define@patch{item}
-      {\MT@append@patch\@item\leftprotrusion
-       \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}%
-       \MT@append@patch\beamer@@callorigitem\leftprotrusion
+  \MT@define@patch{item}{%
+    \MT@append@patch\@item\leftprotrusion
+    \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}%
+%    \end{macrocode}
+% \item \pkg{beamer} patches it too
+%    \begin{macrocode}
+    \@ifclassloaded{beamer}
+      {\MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
-      {}}
 %    \end{macrocode}
 % \item the \pkg{simplecv} class
 %    \begin{macrocode}
-    {\@ifclassloaded{simplecv}
-      {\MT@define@patch{item}
-        {\MT@append@patch\@item\leftprotrusion
-         \MT@append@patch\@topic@item\leftprotrusion
-         \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
+      {\@ifclassloaded{simplecv}
+        {\MT@append@patch\@topic@item\leftprotrusion}
         {}}%
-%    \end{macrocode}
-% \item standard \LaTeX\ classes
-%    \begin{macrocode}
-      {\MT@define@patch{item}
-        {\MT@append@patch\@item\leftprotrusion
-         \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}}
-        {}}}%
+  }{}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|toc|] <TOC> and friends
-% \begin{itemize}
-%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
 %\changes{v3.0}{2021/05/20}{protrusion patch for <TOC>}
 %    \begin{macrocode}
-  \@ifclassloaded{memoir}
-    {\MT@define@patch{toc}
-      {\MT@append@patch\numberline\leftprotrusion
-       \MT@append@patch\booknumberline\leftprotrusion
+  \MT@define@patch{toc}{%
+    \MT@append@patch\numberline\leftprotrusion
+%    \end{macrocode}
+% \begin{itemize}
+%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
+%    \begin{macrocode}
+    \@ifclassloaded{memoir}
+      {\MT@append@patch\booknumberline\leftprotrusion
        \MT@append@patch\partnumberline\leftprotrusion
        \MT@append@patch\chapternumberline\leftprotrusion
        \MT@append@patch\cftbookafterpnum\noprotrusion
@@ -6541,18 +6614,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@append@patch\cftsubparagraphafterpnum\noprotrusion
        \MT@append@patch\cftfigureafterpnum\noprotrusion
        \MT@append@patch\cfttableafterpnum\noprotrusion}
-      {}}
+      {}%
+  }{}%
 %    \end{macrocode}
-% \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
+% \item for the <\pkg{KOMA}> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on; this will
 %       re-introduce the risk of getting an extra leader dot, but I
 %       currently don't see how to easily add \cmd\noprotrusion.
 %       Therefore, I'll skip this patch for now, saving the joy of wading
 %       through |scr| files for later, all the while waiting for somebody
-%       who would understand <KOMA> better than me.
+%       who would understand <\pkg{KOMA}> better than me.
 %\todo{fix KOMA patch (add \cmd\noprotrusion)}
 %    \begin{macrocode}
-%    {\@ifpackageloaded{tocbasic}
+%    \@ifpackageloaded{tocbasic}
 %      {\MT@define@patch{toc}
 %        {\MT@append@patch\numberline\leftprotrusion
 %         \setuptoc{toc}{noprotrusion}%
@@ -6560,13 +6634,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         \setuptoc{lot}{noprotrusion}}
 %        {\unsettoc{toc}{noprotrusion}%
 %         \unsettoc{lof}{noprotrusion}%
-%         \unsettoc{lot}{noprotrusion}}}
-%    \end{macrocode}
-% \item \dots, and for the rest:
-%    \begin{macrocode}
-      {\MT@define@patch{toc}
-        {\MT@append@patch\numberline\leftprotrusion}
-        {}}%
+%         \unsettoc{lot}{noprotrusion}}}{}%
 %    \end{macrocode}
 % \item (a patch for \pkg{titletoc} would also be worthwhile~\dots)
 %\todo{patch for \pkg{titletoc}}
@@ -6575,33 +6643,59 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
+%\changes{v3.0a}{2021/11/22}{protrusion patch \texttt{eqnum} for \pkg{IEEEtran}}
 %    \begin{macrocode}
-  \@ifpackageloaded{amsmath}
-    {\MT@define@patch{eqnum}
+  \MT@define@patch{eqnum}{%
+    \@ifclassloaded{IEEEtran}
+      {\MT@patch@patch\theequationdis{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\theequationdis{)}{\rightprotrusion{)}}%
+       \MT@patch@patch\theIEEEsubequationdis{(}{\leftprotrusion{(}}%
+       \MT@patch@patch\theIEEEsubequationdis{)}{\rightprotrusion{)}}}%
+      {}%
+    \@ifpackageloaded{amsmath}
       {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
-       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}%
-      {}}
-    {\MT@define@patch{eqnum}
+       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}
       {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
        \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
-      {}}%
+  }{}%
 %    \end{macrocode}
-% \item [|footnote|] footnote text (only visible with block paragraphs).
+% \item [|footnote|] footnote text (only visible with block paragraphs)
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
+%\begin{itemize}
+%   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
+%\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
+%                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
-  \@ifclassloaded{memoir}
-    {\MT@define@patch{footnote}
+  \MT@define@patch{footnote}{%
+    \@ifpackageloaded{hyperref}
+        {\ifHy@hyperfootnotes\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
+        \@secondoftwo
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-       \MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
-      {}}
-    {\@ifpackageloaded{scrbase}
-      {\MT@define@patch{footnote}
+       \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
+%    \end{macrocode}
+%   \item so do the <\pkg{KOMA}> classes (which load \pkg{scrkbase})
+%\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\pkg{KOMA}> classes
+%                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
+%    \begin{macrocode}
+      {\@ifpackageloaded{scrkbase}
         {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
-        {}}
-      {\MT@define@patch{footnote}
-        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
-        {}}}%
+%    \end{macrocode}
+%   \item  base classes
+%    \begin{macrocode}
+        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+%    \end{macrocode}
+%   \item \pkg{memoir} additionally allows footnotes in the margins
+%    \begin{macrocode}
+         \@ifclassloaded{memoir}
+           {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+           {}}}%
+  }{}%
+%    \end{macrocode}
+%\end{itemize}
+% Finally, execute any redefinitions.
+%    \begin{macrocode}
+  \MT@redefined@patches
 }}
 %    \end{macrocode}
 %\end{description}
@@ -6609,13 +6703,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %</package>
 %</package|letterspace>
 %    \end{macrocode}
+%
+%\subsection{Font setup}\label{sub:font-setup}
+%
 %\changes{v1.6}{2005/01/19}{load a font if none is selected}
 % We need a font (the \pkg{minimal} class doesn't load one).
 %    \begin{macrocode}
 %<package>\expandafter\ifx\the\font\nullfont\normalfont\fi
 %    \end{macrocode}
-%
-%\subsection{Font setup}\label{sub:font-setup}
 %
 %\begin{macro}{\MT@setupfont}
 % Setting up a font entails checking for each feature whether it should be
@@ -7834,15 +7929,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@tempbox}
-%\begin{macro}{\MT@leftmarginkern}
-%\begin{macro}{\MT@rightmarginkern}
 %    \begin{macrocode}
 \newbox\MT@tempbox
-\newdimen\MT@leftmarginkern
-\newdimen\MT@rightmarginkern
 %    \end{macrocode}
-%\end{macro}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\leftprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
@@ -7860,23 +7949,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
-% These macros need to be \cmd\long.
+% This macro no longer needs to be \cmd\long\ as we're providing
+% the argument wrapped in a rescanned toks.
 %    \begin{macrocode}
-\long\def\MT@prot@l#1{%
-  \MT@get@prot{#1}%
-  \ifdim\MT@leftmarginkern=\z@ \else
-    \leavevmode
-    \MT@vinfo{|<< adding left margin kern for `\@tempa':\MessageBreak
-                  \the\MT@leftmarginkern \on@line}%
-    \kern\MT@leftmarginkern
-  \fi
+\def\MT@prot@l#1{%
+  \MT@get@prot{#1}{left}%
   #1%
 }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
+% But \cs{rightprotrusion} must be \cmd\long.
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
-% so the counterpart cannot be symmetric.
+% so the counterpart cannot be defined symmetrically.
 %\changes{v3.0}{2021/05/15}{new command}
 %    \begin{macrocode}
 \DeclareRobustCommand\rightprotrusion{\MT@prot@r}
@@ -7885,13 +7970,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@r}
 %    \begin{macrocode}
 \long\def\MT@prot@r#1{%
-  #1%
-  \MT@get@prot{#1}%
-  \ifdim\MT@rightmarginkern=\z@ \else
-    \MT@vinfo{>>| adding right margin kern for `\@tempa':\MessageBreak
-                  \the\MT@rightmarginkern \on@line}%
-    \kern\MT@rightmarginkern
-  \fi
+  {#1}%
+  \MT@get@prot{#1}{right}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -7899,32 +7979,65 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
+%\changes{v3.0a}{2021/11/22}{reset counters}
+%\changes{v3.0a}{2021/11/05}{compatibility fix for \pkg{csquotes}
+%                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
+%                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
+%\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
+%                           (reported by \contributor florian <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
+% We set various penalties to zero to allow linebreaking, and don't
+% bother if the split box is overfull (but shouldn't we? -- after all,
+% that's how the penalties bug was discovered~\dots).
+%\begin{macro}{\MT@ckpt}
+% We also reset the counters and disable writing to auxiliary files.
+%\begin{macro}{\MT@prot@hook}
+% Furthermore, we have a hook for compatibility fixes.
 %    \begin{macrocode}
-\long\def\MT@get@prot#1{%
-  \MT@leftmarginkern=\z@
-  \MT@rightmarginkern=\z@
+\let\MT@prot@hook\@empty
+\long\def\MT@get@prot#1#2{%
   \begingroup
+    \def\@elt##1{\global\value{##1}\the\value{##1}\relax}%
+    \edef\MT@ckpt{\cl@@ckpt}%
+    \let\@elt\relax
+    \@fileswfalse
     \setbox\MT@tempbox\vbox{%
       \everypar{}%
       \parfillskip=\z@skip
       \hbadness\@M
+      \clubpenalty\z@
+      \widowpenalty\z@
+      \interlinepenalty\z@
       \@newlistfalse
+      \MT@prot@hook
       \noindent #1}%
     \vbadness=\@M
     \splittopskip=\z@
+    \vfuzz=\maxdimen
     \setbox\MT@tempbox\vbox{%
-      \global\setbox\MT@tempbox=\vsplit\MT@tempbox to \normalbaselineskip
-      \unvbox\MT@tempbox
-      \global\setbox\MT@tempbox=\lastbox
+      \ifvbox\MT@tempbox
+        \global\setbox\MT@tempbox=\vsplit\MT@tempbox to \normalbaselineskip
+        \unvbox\MT@tempbox
+        \global\setbox\MT@tempbox=\lastbox
+      \fi
     }%
+    \MT@ckpt
   \endgroup
   \ifhbox\MT@tempbox
-    \def\@tempa{#1}%
-    \MT@leftmarginkern=\leftmarginkern\MT@tempbox\relax
-    \MT@rightmarginkern=\rightmarginkern\MT@tempbox\relax
+%    \def\@tempa{#1}%
+    \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
+    \expandafter\ifdim\@tempdima=\z@ \else
+      \leavevmode
+      \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % FIXME
+        :\MessageBreak
+        \the\@tempdima \on@line}%
+      \kern\@tempdima
+    \fi
   \fi
 }
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@ifx}
 % Test next token.
@@ -8004,6 +8117,36 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@group}
+%\changes{v3.0a}{2021/11/20}{rescan grouped material to allow \texttt{verbatim} etc.
+%               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
+%               ^^A private mail, 2021/11/18
+%               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
+%\begin{macro}{\MT@prot@group@}
+%\begin{macro}{\MT@prot@group@@}
+% If we have a group, we need to rescan in order to allow, \eg,
+% |\verb|, |verbatim| or |lstlistings| material: before reading
+% the argument, make the backslash a letter to prevent spaces
+% from being inserted after commands, and have line breaks preserved.
+% The \nonetex\ version will fail in lots of cases.
+%    \begin{macrocode}
+\def\MT@prot@group{%
+  \begingroup
+    \catcode`\\=11
+    \obeylines
+    \MT@prot@group@}
+\def\MT@prot@group@{\afterassignment\MT@prot@group@@ \MT@toks}
+\def\MT@prot@group@@{%
+    \catcode`\\=0
+    \catcode`\^^M=10
+    {\expandafter\MT@prot@l\expandafter
+      {\expandafter\scantokens\expandafter{\the\MT@toks\noexpand}}}%
+  \endgroup}
+^^Q\def\MT@prot@group#1{\MT@prot@l{#1}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@prot@get@firstchar}
 %\begin{macro}{\MT@prot@get@nextchar}
 % Scan token by token.
@@ -8018,21 +8161,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % we find a beginning char.
 %    \begin{macrocode}
 \def\MT@prot@get@first@char{%
-  \def\MT@temp*##1{\MT@prot@get@firstchar}%
   \MT@prot@ifcat\bgroup{%
-    \long\def\MT@temp*##1{{\MT@prot@l{##1}}}%
+    \def\MT@temp*{\MT@prot@group}%
   }{%
-    \MT@prot@ifx\ignorespaces\relax{%
-      \MT@prot@ifx\relax\relax{%
+    \MT@prot@ifx\ignorespaces{%
+      \def\MT@temp*##1{\MT@prot@get@firstchar}%
+    }{%
+      \MT@prot@ifx\relax{%
+        \def\MT@temp*##1{\MT@prot@get@firstchar}%
+      }{%
         \MT@prot@ifx\@sptoken{%
           \def\MT@temp* {\MT@prot@get@firstchar}%
         }{%
 %    \end{macrocode}
 % But only add it if it's a letter or a character, \dots
 %    \begin{macrocode}
-          \def\MT@temp*{\MT@prot@addtoken@first}%
-          \MT@prot@ifcat{a}\relax{%
-            \MT@prot@ifcat{!}\relax{%
+          \MT@prot@ifcat{a}{%
+            \def\MT@temp*{\MT@prot@addtoken@first}%
+          }{%
+            \MT@prot@ifcat{!}{%
+              \def\MT@temp*{\MT@prot@addtoken@first}%
+            }{%
 %    \end{macrocode}
 % \dots~or a command/active char whose first command is one of the below.
 %    \begin{macrocode}
@@ -10287,9 +10436,10 @@ end
 if luaotfload and luaotfload.aux and luaotfload.aux.slot_of_name then
   local slot_of_name = luaotfload.aux.slot_of_name
   microtype.name_to_slot = function(name, unsafe)
-    local n = math.tointeger(slot_of_name(font.current(), name, unsafe))
-    if n and n > 1114111 then n = -1 end
-    return n
+    local n = slot_of_name(font.current(), name, unsafe)
+    if not n then return -1 end
+    if n > 1114111 then return -1 end
+    return math.tointeger(n)
   end
 else
   -- we dig into internal structure (should be avoided)
@@ -12068,7 +12218,6 @@ end
     \MT@gdef@n{MT@babel@\@tempa}{#2}%
   }%
 }
-%</package>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -12090,7 +12239,6 @@ end
 % A new macro called |\MT@pr@c@|\meta{name} will be defined to be \meta{\#3}
 % (\ie, the list of characters, not expanded).
 %    \begin{macrocode}
-%<*pdf-|lua-|xe->
 \def\SetProtrusion{%
   \MT@begin@catcodes
   \MT@SetProtrusion
@@ -12126,7 +12274,7 @@ end
   \MT@gdef@n{MT@pr@c@\MT@pr@c@name}{#3}%
   \MT@end@catcodes
 }
-%</pdf-|lua-|xe->
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12534,7 +12682,6 @@ end
   \MT@warning{`\@tempa' is not a dimension.\MessageBreak
               Ignoring it and setting values relative to\MessageBreak #1}%
 }
-%</package>
 %    \end{macrocode}
 %\end{macro}
 %\changes{v1.8}{2005/04/14}{\cs{SetProtrusion}: new key: \texttt{unit}}
@@ -12545,7 +12692,6 @@ end
 %\todo{new key for unit: \texttt{dimen} (for \texttt{kerning}, especially)}
 % Protrusion codes may be relative to character width, or to any dimension.
 %    \begin{macrocode}
-%<*pdf-|lua-|xe->
 \define@key{MT@pr@c}{unit}[character]{%
   \MT@glet@nc{MT@pr@c@\MT@curr@set@name @unit}\@empty
   \def\@tempa{#1}%
@@ -12559,7 +12705,7 @@ end
       {\MT@warn@nodim{character widths}}%
   }%
 }
-%</pdf-|lua-|xe->
+%</package>
 %    \end{macrocode}
 % Tracking may only be relative to a dimension.
 %    \begin{macrocode}
@@ -12799,6 +12945,7 @@ end
     \fi
   \fi
 }
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@inh@prefix}
@@ -12810,6 +12957,7 @@ end
 %                           (suggested by \contributor Daniel Benjamin Miller <dbmiller\at dbmiller.org>)}
 %                            ^^A private mail, 2020/12/24
 %    \begin{macrocode}
+%<*package>
 \def\MT@has@inh@prefix#1(#2)#3#4\@nil{%
   \let\MT@temp\relax
   \ifx\relax#3%
@@ -12834,7 +12982,6 @@ end
   \fi
   \MT@temp
 }
-%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12873,7 +13020,6 @@ end
 %\end{verbatim}
 % would yield the following assignments:
 %    \begin{macrocode}
-%<*package>
 \MT@gdef@n{MT@pr@c@U/euroitc///}{euroitc}
 \MT@gdef@n{MT@pr@c@U/euroitcs///}{euroitc}
 \MT@gdef@n{MT@pr@c@U/euroitc//it/}{euroitci}
@@ -13518,27 +13664,11 @@ end
 }
 %    \end{macrocode}
 %
-%\subsubsection{Loading the definition file}
+%\subsubsection{Loading the definition file}\label{ssub:def-files}
 %
-%\begin{macro}{\MT@endinput}
-% Abort if no capable engine found.
+% Load the engine-specific code (as strewn across this file).
 %    \begin{macrocode}
-\let\MT@endinput\relax
-%    \end{macrocode}
-%\end{macro}
-%    \begin{macrocode}
-\ifx\MT@engine\relax
-  \MT@warning@nl{You don't seem to be using pdftex, luatex or xetex.\MessageBreak
-    `\MT@MT' only works with these engines.\MessageBreak
-    I will quit now}
-  \MT@clear@options
-\else
-%    \end{macrocode}
-% Otherwise load the engine-specific code (as strewn across this file).
-%    \begin{macrocode}
-  \input{microtype-\MT@engine tex.def}
-\fi
-\MT@endinput
+\input{microtype-\MT@engine tex.def}
 %    \end{macrocode}
 %
 % \subsubsection{Reading the configuration file}
@@ -13867,11 +13997,12 @@ end
 }
 %    \end{macrocode}
 % Apply or revert patches.
+%\changes{v3.0a}{2021/11/29}{allow \cmd\microtypesetup\texttt{\{(no)patch\quotechar=all\}}}
 %    \begin{macrocode}
 \define@key{MTX}{patch}[all]{%
   \def\@tempa{#1}%
   \MT@ifstreq\@tempa{all}
-    \relax
+    {\let\@tempa\MT@patches@def}
     {\MT@ifstreq\@tempa{none}
       {\let\@tempa\@empty}
       \relax}%
@@ -13883,7 +14014,7 @@ end
 \define@key{MTX}{nopatch}[all]{%
   \def\@tempa{#1}%
   \MT@ifstreq\@tempa{all}
-    \relax
+    {\let\@tempa\MT@patches@def}
     {\MT@ifstreq\@tempa{none}
       {\let\@tempa\@empty}
       \relax}%
@@ -14835,6 +14966,11 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{NewCM10-Book.otf}   {New Computer Modern}
 \DeclareMicrotypeAlias{NewCM10-Regular.otf}{New Computer Modern}
+%    \end{macrocode}
+%\changes{v3.0a}{2021/11/09}{declare <CMU> Serif as an alias of New Computer Modern}
+% <CMU> Serif can use the settings from New Computer Modern too.
+%    \begin{macrocode}
+\DeclareMicrotypeAlias{CMU Serif}          {New Computer Modern}
 %    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
@@ -19009,12 +19145,13 @@ end
 % , who also provided the sample in figure~\ref{fig:example-spacing}^^A
 %\changes{v2.2}{2007/04/05}{add sample}^^A
 %   \begin{figure}
-%     \caption{^^A
-%       Example of interword spacing (from: M.~Siemoneit, \emph{Typographisches Gestalten}, Frankfurt/M. 1989).
+%     \caption[Example of interword spacing]
+%             {Example of interword spacing
+%              (from: M.~Siemoneit, \emph{Typographisches Gestalten}, Frankfurt/M. 1989).
 %         ^^A Manfred Siemoneit, Typographisches Gestalten.
 %         ^^A   Regeln und Tips f\"ur die richtige Gestaltung von Drucksachen,
 %         ^^A   Frankfurt/M.: Polygraph Verlag, 1989
-%       The numbers indicate the preference for shrinking the interword space.}
+%       \\The numbers indicate the preference for shrinking the interword space.}
 %     \label{fig:example-spacing}
 %     \includegraphics[width=.66\textwidth]{justification.png}
 %   \end{figure}^^A
@@ -19456,7 +19593,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12274}
+% \CheckSum{12335}
 %
 % \Finale
 %
@@ -19521,5 +19658,4 @@ makeindex -s gglo.ist -t microtype-code.glg -o microtype-code.gls microtype.glo 
 % -----------------------------------------------------------------------------
 %
 % vim: ts=2:sw=2:et:
-
 %

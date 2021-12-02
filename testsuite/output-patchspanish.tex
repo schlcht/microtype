@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{microtype}
+\begin{document}
+<<a>>
+
+\microtypesetup{nopatch=item}
+<<b>>
+
+\microtypesetup{patch=item}
+<<c>>
+
+\deactivatequoting
+\microtypesetup{nopatch=item}
+<<d>>
+
+\microtypesetup{patch=item}
+<<e>>
+\end{document}
+
+! grep "Unable to apply"
