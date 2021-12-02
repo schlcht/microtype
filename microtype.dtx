@@ -2702,8 +2702,7 @@
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
 %     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
 %\def\MTsupp#1{\unskip\nobreak\hfil\penalty50 \hskip2em\hbox{}\nobreak\hfil
-%   {\smaller(#1)}\parfillskip=0pt \finalhyphendemerits=0
-%}
+%   {\smaller(#1)}\parfillskip=0pt \finalhyphendemerits=0 }
 %^^A \microtypesetup{nopatch=item}
 % \item[item]  Affects the first line of \cmd\item\kern.6pts in various environments, so that,
 %              \eg, the two\break A's here -- the one in the current line and the one in the
@@ -2717,12 +2716,13 @@
 %              \MTsupp{standard classes, \pkg{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (only visible when
 %              the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{standard classes, \pkg{memoir}, <KOMA> classes, \pkg{hyperref}}
+%              \MTsupp{standard classes, \pkg{memoir}, <\pkg{KOMA}> classes, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side.
 %              \MTsupp{standard classes, \pkg{amsmath}, \pkg{IEEEtran}}
 %\endlist\endgroup
 %
-%\medskip\noindent
+%\enlargethispage{\baselineskip} ^^A layout
+%\noindent
 % By default, all of the above patches will be applied. Should this not be desired,
 % or in case you are running into problems, you may prevent or undo the patches through
 % the \textcolor{thered}{\opt{patch}} and \textcolor{thered}{\opt{nopatch}} options,
@@ -3809,7 +3809,7 @@
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
-%\DoNotIndex{\pdfstringdefDisableCommands,\pdfstringdefWarn}                 ^^A hyperref
+%\DoNotIndex{\ifHy@hyperfootnotes,\pdfstringdefDisableCommands,\pdfstringdefWarn} ^^A hyperref
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
@@ -6617,13 +6617,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {}%
   }{}%
 %    \end{macrocode}
-% \item for the <KOMA> classes (which load the \pkg{tocbasic} package)
+% \item for the <\pkg{KOMA}> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on; this will
 %       re-introduce the risk of getting an extra leader dot, but I
 %       currently don't see how to easily add \cmd\noprotrusion.
 %       Therefore, I'll skip this patch for now, saving the joy of wading
 %       through |scr| files for later, all the while waiting for somebody
-%       who would understand <KOMA> better than me.
+%       who would understand <\pkg{KOMA}> better than me.
 %\todo{fix KOMA patch (add \cmd\noprotrusion)}
 %    \begin{macrocode}
 %    \@ifpackageloaded{tocbasic}
@@ -6663,17 +6663,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \item [|footnote|] footnote text (only visible with block paragraphs)
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
 %\begin{itemize}
-%   \item \pkg{hyperref} also patches this command
+%   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
 %\changes{v3.1}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
     \@ifpackageloaded{hyperref}
+        {\ifHy@hyperfootnotes\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
+        \@secondoftwo
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
-%   \item so do the <KOMA> classes (which load \pkg{scrkbase})
-%\changes{v3.1}{2021/12/02}{fix protrusion patch \texttt{footnote} with \pkg{KOMA} classes
+%   \item so do the <\pkg{KOMA}> classes (which load \pkg{scrkbase})
+%\changes{v3.1}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\pkg{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
       {\@ifpackageloaded{scrkbase}
@@ -19591,7 +19593,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12327}
+% \CheckSum{12335}
 %
 % \Finale
 %
