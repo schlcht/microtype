@@ -3254,9 +3254,10 @@
 % `\contributor Safron            <@\at @>', ^^A https://tex.stackexchange.com/users/149123/safron
 %  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
 %  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
-% `\contributor florian           <@\at @>'  ^^A https://tex.stackexchange.com/users/172863/florian
+% `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
+%  \contributor Liang-Bo Wang     <@\at @>   ^^A https://github.com/ccwang002
 % and
-%  \contributor Liang-Bo Wang <@\at @>.      ^^A https://github.com/ccwang002
+%  \contributor MisterFiLou       <@\at @>.  ^^A https://github.com/MisterFiLou
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -6659,8 +6660,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
   }{}%
 %    \end{macrocode}
-% \item [|footnote|] footnote text (only visible with block paragraphs).
+% \item [|footnote|] footnote text (only visible with block paragraphs)
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
+%\begin{itemize}
+%   \item \pkg{hyperref} also patches this command
 %\changes{v3.1}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
@@ -6668,14 +6671,26 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \@ifpackageloaded{hyperref}
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
-      {\@ifpackageloaded{scrbase}
+%    \end{macrocode}
+%   \item so do the <KOMA> classes (which load \pkg{scrkbase})
+%\changes{v3.1}{2021/12/02}{fix protrusion patch \texttt{footnote} with \pkg{KOMA} classes
+%                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
+%    \begin{macrocode}
+      {\@ifpackageloaded{scrkbase}
         {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
+%    \end{macrocode}
+%   \item  base classes
+%    \begin{macrocode}
         {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+%    \end{macrocode}
+%   \item \pkg{memoir} additionally allows footnotes in the margins
+%    \begin{macrocode}
          \@ifclassloaded{memoir}
            {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
            {}}}%
   }{}%
 %    \end{macrocode}
+%\end{itemize}
 % Finally, execute any redefinitions.
 %    \begin{macrocode}
   \MT@redefined@patches
