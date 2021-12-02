@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/99/99 v3.1
+  [2021/12/02 v3.0a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.1",
-%<luafile>    date         = "2021/99/99",
+%<luafile>    version      = "3.0a",
+%<luafile>    date         = "2021/12/02",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -3406,7 +3406,7 @@
 %
 %\begin{History}
 %
-%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
 %\Version{3.0}{2021/10/31}
 %  \item Possibility of automatical protrusion based on difference of character widths
@@ -4860,7 +4860,7 @@
 %    \end{macrocode}
 %\end{macro}
 % Abort if no capable engine found.
-%\changes{v3.1}{2021/11/10}{abort earlier if no capable engine found}
+%\changes{v3.0a}{2021/11/10}{abort earlier if no capable engine found}
 %    \begin{macrocode}
 %<*package|letterspace>
 \ifMT@engine@unfit
@@ -5144,7 +5144,7 @@ end
 % We need the function |math.tointeger|, which is missing in older
 % \luatex\ versions, and Con\TeX t (inherited via \pkg{luaotfload})
 % faultily overwrites its own definition.
-%\changes{v3.1}{2021/11/17}{define function \texttt{math.tointeger} for older \luatex\ versions}
+%\changes{v3.0a}{2021/11/17}{define function \texttt{math.tointeger} for older \luatex\ versions}
 %                           ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-November/006556.html
 % The following is the (correct) definition from \file{l-math.lua}.
 %    \begin{macrocode}
@@ -6017,7 +6017,7 @@ microtype.do_font = do_font
 %\end{macro}
 %\begin{macro}{\MT@with@babel@and@T}
 %\changes{v2.2}{2007/05/25}{also inspect class options}
-%\changes{v3.1}{2021/11/23}{fix grouping}
+%\changes{v3.0a}{2021/11/23}{fix grouping}
 % \LaTeX's \cmd\@ifpackagewith\ ignores the class options.
 %    \begin{macrocode}
 \def\MT@with@babel@and@T#1{%
@@ -6466,7 +6466,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We also provide an easier way of redefining patches, which
 % would otherwise be a bit tricky because of the timing (patches
 % are defined \emph{and} executed <ABD>).
-%\changes{v3.1}{2021/12/01}{facilitate redefinition of patches}
+%\changes{v3.0a}{2021/12/01}{facilitate redefinition of patches}
 %    \begin{macrocode}
 \let\MT@redefined@patches\@empty
 \def\MT@redefine@patch#1#2#3{%
@@ -6513,7 +6513,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patches@applied}
 %\begin{macro}{\MT@apply@patch}
 % Apply a previously defined patch.
-%\changes{v3.1}{2021/11/23}{compatibility with \pkg{babel}\slash\texttt{spanish}:
+%\changes{v3.0a}{2021/11/23}{compatibility with \pkg{babel}\slash\texttt{spanish}:
 %                           fix catcodes}
 % With some packages, we have to reset catcodes (\eg, for the `|item|'
 % patch with Spanish \pkg{babel}, which makes `|>|' active).
@@ -6643,7 +6643,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
-%\changes{v3.1}{2021/11/22}{protrusion patch \texttt{eqnum} for \pkg{IEEEtran}}
+%\changes{v3.0a}{2021/11/22}{protrusion patch \texttt{eqnum} for \pkg{IEEEtran}}
 %    \begin{macrocode}
   \MT@define@patch{eqnum}{%
     \@ifclassloaded{IEEEtran}
@@ -6664,7 +6664,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
 %\begin{itemize}
 %   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
-%\changes{v3.1}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
+%\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
@@ -6675,7 +6675,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
 %   \item so do the <\pkg{KOMA}> classes (which load \pkg{scrkbase})
-%\changes{v3.1}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\pkg{KOMA}> classes
+%\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\pkg{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
       {\@ifpackageloaded{scrkbase}
@@ -7979,11 +7979,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
-%\changes{v3.1}{2021/11/22}{reset counters}
-%\changes{v3.1}{2021/11/05}{compatibility fix for \pkg{csquotes}
+%\changes{v3.0a}{2021/11/22}{reset counters}
+%\changes{v3.0a}{2021/11/05}{compatibility fix for \pkg{csquotes}
 %                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
-%\changes{v3.1}{2021/11/27}{set penalties to zero and vfuzz to max
+%\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
 %                           (reported by \contributor florian <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
 % We set various penalties to zero to allow linebreaking, and don't
@@ -8118,7 +8118,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@group}
-%\changes{v3.1}{2021/11/20}{rescan grouped material to allow \texttt{verbatim} etc.
+%\changes{v3.0a}{2021/11/20}{rescan grouped material to allow \texttt{verbatim} etc.
 %               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
 %               ^^A private mail, 2021/11/18
 %               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
@@ -13997,7 +13997,7 @@ end
 }
 %    \end{macrocode}
 % Apply or revert patches.
-%\changes{v3.1}{2021/11/29}{allow \cmd\microtypesetup\texttt{\{(no)patch\quotechar=all\}}}
+%\changes{v3.0a}{2021/11/29}{allow \cmd\microtypesetup\texttt{\{(no)patch\quotechar=all\}}}
 %    \begin{macrocode}
 \define@key{MTX}{patch}[all]{%
   \def\@tempa{#1}%
@@ -14967,7 +14967,7 @@ end
 \DeclareMicrotypeAlias{NewCM10-Book.otf}   {New Computer Modern}
 \DeclareMicrotypeAlias{NewCM10-Regular.otf}{New Computer Modern}
 %    \end{macrocode}
-%\changes{v3.1}{2021/11/09}{declare <CMU> Serif as an alias of New Computer Modern}
+%\changes{v3.0a}{2021/11/09}{declare <CMU> Serif as an alias of New Computer Modern}
 % <CMU> Serif can use the settings from New Computer Modern too.
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{CMU Serif}          {New Computer Modern}

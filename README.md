@@ -4,7 +4,7 @@ The `microtype` package
 
 **Subliminal refinements towards typographical perfection**
 
-  (v3.1 -- 2021/99/99)
+  (v3.0a -- 2021/12/02)
 
 
 Overview
@@ -57,7 +57,8 @@ To install the package, use one of the following methods
   e.g., `TEXMF/tex/latex/microtype/`.
 
 - To use the latest development version, clone the github repository at
-  `https://github.com/schlcht/microtype` and run `make`.
+  `https://github.com/schlcht/microtype` and run `make`
+  (or just `pdflatex microtype.ins` to generate the run files).
 
 
 License
