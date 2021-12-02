@@ -6460,6 +6460,28 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@redefined@patches}
+%\begin{macro}{\MT@redefine@patch}
+% We also provide an easier way of redefining patches, which
+% would otherwise be a bit tricky because of the timing (patches
+% are defined \emph{and} executed <ABD>).
+%\changes{v3.1}{2021/12/01}{facilitate redefinition of patches}
+%    \begin{macrocode}
+\let\MT@redefined@patches\@empty
+\def\MT@redefine@patch#1#2#3{%
+  \g@addto@macro\MT@redefined@patches{%
+    \MT@def@n{MT@patch@@#1}{#2}%
+    \MT@def@n{MT@patch@undo@@#1}{#3}%
+  }%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+% Both macros are only allowed in the preamble.
+%    \begin{macrocode}
+\@onlypreamble\MT@define@patch
+\@onlypreamble\MT@redefine@patch
+%    \end{macrocode}
 %\begin{macro}{\MT@append@patch}
 %\begin{macro}{\MT@patch@patch}
 % Wrappers around \pkg{etoolbox} commands.
@@ -6653,6 +6675,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
            {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
            {}}}%
   }{}%
+%    \end{macrocode}
+% Finally, execute any redefinitions.
+%    \begin{macrocode}
+  \MT@redefined@patches
 }}
 %    \end{macrocode}
 %\end{description}
@@ -19550,7 +19576,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12313}
+% \CheckSum{12327}
 %
 % \Finale
 %
