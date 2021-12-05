@@ -71,6 +71,7 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   microtype-show.sty test-microtype.tex
 SOURCE    = $(ALLDTX) $(INS) $(README)
 GENERATED = $(UNPACKED) $(COMPILED)
+AUXFILES  = microtype-doc.sty microtype-gind.ist
 
 CTAN_FILES = $(SOURCE) $(COMPILED)
 
@@ -112,9 +113,9 @@ DO_MAKEINDEX_CODE = \
    echo "Creating code index"
 
 all:     $(GENERATED)
-doc:     make-doc-sty $(COMPILED) make-normal-sty
-userdoc: make-doc-sty $(DOC)      make-normal-sty
-unpack:  docstrip.cfg $(UNPACKED)
+doc:     $(COMPILED)
+userdoc: $(DOC)
+unpack:  $(UNPACKED)
 ctan:    $(CTAN_ZIP)
 tds:     $(TDS_ZIP)
 world:   all ctan
@@ -131,6 +132,7 @@ make-doc-sty: $(INS) $(DTX) docstrip.cfg
 	@sed -i '' '/microtype-doc/s/^%//'  $<
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
 	@touch make-doc-sty
+	@rm -f make-normal-sty
 
 # undo
 make-normal-sty: $(INS) $(DTX) docstrip.cfg
@@ -139,8 +141,12 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@sed -i '' '/microtype-doc/s/^\\/%\\/'  $<
 	@sed -i '' '/microtype-gind/s/^\\/%\\/' $<
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
-	@touch make-doc-sty
 	@touch make-normal-sty
+	@rm -f make-doc-sty
+
+$(AUXFILES): $(INS) $(DTX) docstrip.cfg
+	@echo "Creating sty"
+	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
 
 RERUN_STR = 'Rerun to get \|pdfTeX warning (dest)'
 
@@ -170,18 +176,18 @@ done
 done
 endef
 
-$(DOC): $(DTX) $(NAME).ind
+$(DOC): $(AUXFILES) $(DTX) $(NAME).ind
 	@if `grep $(RERUN_STR) $(NAME).log > /dev/null` ; then \
 		echo "Re-compiling user documentation" ; \
 		$(DO_PDFLATEX_DOC) ; \
 	fi
 
-$(CODEDOC): $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
+$(CODEDOC): make-doc-sty $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@echo "Compiling code documentation (including Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	$(rerun-check)
 
-$(UTFDOC): $(UTFDTX) $(NAMEC).tmp
+$(UTFDOC): $(AUXFILES) $(UTFDTX) $(NAMEC).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
 	@if `grep $(RERUN_STR) $(NAMEU).log > /dev/null` ; then \
@@ -189,7 +195,7 @@ $(UTFDOC): $(UTFDTX) $(NAMEC).tmp
 		$(DO_LUALATEX) ; \
 	fi
 
-$(NAME).idx: $(DTX)
+$(NAME).idx: $(AUXFILES) $(DTX)
 	@echo "Compiling user documentation (idx)"
 	@$(DO_PDFLATEX_DOC)
 
@@ -200,7 +206,7 @@ $(NAME)-stamp: $(NAME).idx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
-$(NAMEC).idx $(NAMEC).glo: $(DTX)
+$(NAMEC).idx $(NAMEC).glo: $(AUXFILES) $(DTX)
 	@echo "Compiling code documentation (idx,glo)"
 	@$(DO_PDFLATEX_CODE)
 
@@ -213,7 +219,7 @@ $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $
 
 # microtype-code.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
-$(NAMEC).tmp:
+$(NAMEC).tmp: $(AUXFILES)
 	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	@if `grep $(RERUN_STR) $(NAMEC).log > /dev/null` ; then \
@@ -224,7 +230,7 @@ $(NAMEC).tmp:
 
 $(UNPACKED): $(INS) $(DTX) $(UTFDTX) docstrip.cfg
 	@echo "Extracting package"
-	@pdflatex $^ $(REDIRECT)
+	@pdflatex $< $(REDIRECT)
 	@if test ! -f $@ ; then \
 		echo "!! $@ not created!" ; \
 		false ; \
@@ -253,7 +259,7 @@ define run-sty-install
 endef
 
 $(TDS_ZIP): TEXMFROOT=./tmp-texmf
-$(TDS_ZIP): $(ALL_FILES)
+$(TDS_ZIP): make-normal-sty $(ALL_FILES)
 	@echo "Making TDS-ready archive $@."
 	@$(RM) -- $@
 	$(run-install)
@@ -289,7 +295,7 @@ manifest: $(SOURCE)
 	@if grep '\-\-'`date -v-1y +%Y` $(SOURCE); then echo "!!!! Copyright strings not up to date !!!!" ; fi
 
 mostlyclean:
-	@$(RM) -- *.log *.aux *.toc *.idx *.cdx *.ind *.ilg *.glo *.gls *.glg *.lot *.out *.synctex* *.tmp *.pl *.mtx \
+	@$(RM) -- *.log *.aux *.toc *.idx *.cdx *.ind *.ilg *.glo *.gls *.glg *.lof *.lot *.out *.synctex* *.tmp *.pl *.mtx \
 		docstrip.cfg $(UTFDOC) microtype-doc.sty microtype-gind.ist make-*-sty *-stamp
 
 clean: mostlyclean
