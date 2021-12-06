@@ -17,6 +17,16 @@
 \makeatother
 \begin{document}
 \catcode`<=13
+
+\def\mytitle{% issue #3
+\begin{center}{title\par}
+\end{center}}
+\mytitle
+
+\begin{abstract} % issue #4
+	Test
+\end{abstract}
+
 \leftprotrusion{\sffamily--abc\par def--}
 
 \rightprotrusion{\sffamily--abc\par def--}
@@ -57,11 +67,6 @@ Test. Test. Test. Test. Test. Test. Test. Test.
 \leftprotrusion\verb|--|
 
 \leftprotrusion{\begin{tabular}{ll}ab&bc\\de&x\end{tabular}}
-
-\def\mytitle{% issue #3
-\begin{center}{title\par}
-\end{center}}
-\mytitle
 
 \leftprotrusion {--
 \begin{verbatim}
