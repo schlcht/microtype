@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/12/02 v3.0a
+  [2021/99/99 v3.1
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -1342,7 +1342,7 @@
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously \texttt{draft}) option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\changes{v3.0}{2021/09/28}{rename option \texttt{draft} option to \opt{disable}
+%\changes{v3.0}{2021/09/28}{rename option \texttt{draft} to \opt{disable}
 %               (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                ^^A private mail, 2018/07/04
 %\Describe{Option}{disable}{true,!false,ifdraft}
@@ -3255,9 +3255,10 @@
 %  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
 %  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
 % `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
-%  \contributor Liang-Bo Wang     <@\at @>   ^^A https://github.com/ccwang002
+%  \contributor Liang-Bo Wang     <@\at @>,  ^^A https://github.com/ccwang002
+%  \contributor MisterFiLou       <@\at @>   ^^A https://github.com/MisterFiLou
 % and
-%  \contributor MisterFiLou       <@\at @>.  ^^A https://github.com/MisterFiLou
+%  \contributor Akira Yokosawa    <@\at @>.  ^^A https://github.com/akiyks
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3407,6 +3408,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0a}{2021/12/02}
 %
 %\Version{3.0}{2021/10/31}
 %  \item Possibility of automatical protrusion based on difference of character widths
@@ -3805,7 +3808,7 @@
 %^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
-%\DoNotIndex{\activatequoting,\deactivatequoting,\percentsign}               ^^A babel/spanish,galician,mexican
+%\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
@@ -7949,17 +7952,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
-% This macro no longer needs to be \cmd\long\ as we're providing
-% the argument wrapped in a rescanned toks.
+%\changes{v3.1}{2021/12/05}{make \cmd\long\ again
+%                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
+% We're providing the argument wrapped in a rescanned toks,
+% but it still needs to be \cmd\long\ in certain cases
+% (\eg, for \cmd\maketitle).
 %    \begin{macrocode}
-\def\MT@prot@l#1{%
+\long\def\MT@prot@l#1{%
   \MT@get@prot{#1}{left}%
   #1%
 }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
-% But \cs{rightprotrusion} must be \cmd\long.
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
 % so the counterpart cannot be defined symmetrically.
 %\changes{v3.0}{2021/05/15}{new command}
@@ -7986,6 +7991,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
 %                           (reported by \contributor florian <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
+%\changes{v3.1}{2021/12/05}{unconditionally \cmd\leavevmode}
 % We set various penalties to zero to allow linebreaking, and don't
 % bother if the split box is overfull (but shouldn't we? -- after all,
 % that's how the penalties bug was discovered~\dots).
@@ -8023,11 +8029,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
     \MT@ckpt
   \endgroup
+  \leavevmode
   \ifhbox\MT@tempbox
 %    \def\@tempa{#1}%
     \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
     \expandafter\ifdim\@tempdima=\z@ \else
-      \leavevmode
       \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % FIXME
         :\MessageBreak
         \the\@tempdima \on@line}%
@@ -8128,6 +8134,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % |\verb|, |verbatim| or |lstlistings| material: before reading
 % the argument, make the backslash a letter to prevent spaces
 % from being inserted after commands, and have line breaks preserved.
+%\changes{v3.1}{2021/12/05}{add \cmd\makeatletter\
+%                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
 % The \nonetex\ version will fail in lots of cases.
 %    \begin{macrocode}
 \def\MT@prot@group{%
@@ -8139,6 +8147,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@group@@{%
     \catcode`\\=0
     \catcode`\^^M=10
+    \makeatletter
     {\expandafter\MT@prot@l\expandafter
       {\expandafter\scantokens\expandafter{\the\MT@toks\noexpand}}}%
   \endgroup}
@@ -19593,7 +19602,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12335}
+% \CheckSum{12337}
 %
 % \Finale
 %

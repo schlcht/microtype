@@ -4,7 +4,7 @@
 \fi
 \usepackage[verbose]{microtype}
 \usepackage{csquotes}
-\usepackage{listings,verbatim,fancyvrb}
+\usepackage{listings,verbatim,fancyvrb,hyperref}
 \MakeAutoQuote{“}{”}
 {\catcode`<=13
  \gdef<#1>{\textls{#1}}}
@@ -57,6 +57,11 @@ Test. Test. Test. Test. Test. Test. Test. Test.
 \leftprotrusion\verb|--|
 
 \leftprotrusion{\begin{tabular}{ll}ab&bc\\de&x\end{tabular}}
+
+\def\mytitle{% issue #3
+\begin{center}{title\par}
+\end{center}}
+\mytitle
 
 \leftprotrusion {--
 \begin{verbatim}
