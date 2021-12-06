@@ -805,7 +805,8 @@
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\githuburl{https://github.com/schlcht/microtype}
-\def\githubissue#1{ [issue~\href{\githuburl/issues/#1}{\##1}]}
+\DeclareRobustCommand\githubissue[1]{\let\maybe@comma\@empty
+  [issue~\@for\@ISSUE:=#1\do{\maybe@comma\href{\githuburl/issues/\@ISSUE}{\#\@ISSUE}\let\maybe@comma,}]}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -3153,7 +3154,8 @@
 %
 % Additionally, the following people have reported bugs, made suggestions or
 % helped otherwise (in chronological order, quotes indicate
-%    \href{https://tex.stackexchange.com/users/}{TeX.SX} user names):\linebreak
+%    \href{https://tex.stackexchange.com/users/}{TeX.SX} and/or
+%    \href{https://github.com/}{GitHub} user names):
 %  \contributor Tom Kink          <kink\at hia.rwth-aachen.de>,
 %  \contributor Herb Schulz       <herbs\at wideopenwest.com>,
 %  \contributor Michael Hoppe     <mh\at michael-hoppe.de>,
@@ -3256,9 +3258,10 @@
 %  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
 % `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
 %  \contributor Liang-Bo Wang     <@\at @>,  ^^A https://github.com/ccwang002
-%  \contributor MisterFiLou       <@\at @>   ^^A https://github.com/MisterFiLou
+% `\contributor MisterFiLou       <@\at @>', ^^A https://github.com/MisterFiLou
+%  \contributor Akira Yokosawa    <@\at @>   ^^A https://github.com/akiyks
 % and
-%  \contributor Akira Yokosawa    <@\at @>.  ^^A https://github.com/akiyks
+% `\contributor theufman          <@\at @>'. ^^A https://github.com/theufman
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -7986,7 +7989,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
 %\changes{v3.0a}{2021/11/22}{reset counters}
 %\changes{v3.0a}{2021/11/05}{compatibility fix for \pkg{csquotes}
-%                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
+%                           (reported by \contributor Gustavo Barros <@\at @>) \githubissue{1}}
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
 %\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
 %                           (reported by \contributor florian <@\at @>)}
@@ -8135,7 +8138,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % the argument, make the backslash a letter to prevent spaces
 % from being inserted after commands, and have line breaks preserved.
 %\changes{v3.1}{2021/12/05}{add \cmd\makeatletter\
-%                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
+%                           (reported by \contributor Akira Yokosawa <@\at @>
+%                                    and \contributor theufman <@\at @>) \githubissue{3,4}}
 % The \nonetex\ version will fail in lots of cases.
 %    \begin{macrocode}
 \def\MT@prot@group{%
