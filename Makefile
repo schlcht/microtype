@@ -176,7 +176,7 @@ done
 done
 endef
 
-$(DOC): $(AUXFILES) $(DTX) $(NAME).ind
+$(DOC): make-doc-sty $(DTX) $(NAME).ind
 	@if `grep $(RERUN_STR) $(NAME).log > /dev/null` ; then \
 		echo "Re-compiling user documentation" ; \
 		$(DO_PDFLATEX_DOC) ; \
@@ -187,7 +187,7 @@ $(CODEDOC): make-doc-sty $(DTX) $(UTFDOC) $(NAMEC).gls $(NAMEC).ind
 	@$(DO_PDFLATEX_CODE)
 	$(rerun-check)
 
-$(UTFDOC): $(AUXFILES) $(UTFDTX) $(NAMEC).tmp
+$(UTFDOC): make-doc-sty $(UTFDTX) $(NAMEC).tmp
 	@echo "Compiling Unicode documentation"
 	@$(DO_LUALATEX)
 	@if `grep $(RERUN_STR) $(NAMEU).log > /dev/null` ; then \
@@ -195,7 +195,7 @@ $(UTFDOC): $(AUXFILES) $(UTFDTX) $(NAMEC).tmp
 		$(DO_LUALATEX) ; \
 	fi
 
-$(NAME).idx: $(AUXFILES) $(DTX)
+$(NAME).idx: $(DTX)
 	@echo "Compiling user documentation (idx)"
 	@$(DO_PDFLATEX_DOC)
 
@@ -206,7 +206,7 @@ $(NAME)-stamp: $(NAME).idx
 	@shasum $^ > $@2
 	@if cmp -s $@2 $@; then rm $@2; else mv -f $@2 $@; fi
 
-$(NAMEC).idx $(NAMEC).glo: $(AUXFILES) $(DTX)
+$(NAMEC).idx $(NAMEC).glo: $(DTX)
 	@echo "Compiling code documentation (idx,glo)"
 	@$(DO_PDFLATEX_CODE)
 
@@ -219,7 +219,7 @@ $(NAMEC)-stamp: $(NAME).glo $(NAMEC).glo $(NAMEU).glo $(NAME).idx $(NAMEC).idx $
 
 # microtype-code.tmp is used to communicate counters
 # from microtype.dtx (code) to microtype-utf.dtx
-$(NAMEC).tmp: $(AUXFILES)
+$(NAMEC).tmp:
 	@echo "Compiling code documentation (for Unicode part)"
 	@$(DO_PDFLATEX_CODE)
 	@if `grep $(RERUN_STR) $(NAMEC).log > /dev/null` ; then \
