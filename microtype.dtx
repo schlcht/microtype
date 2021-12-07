@@ -392,7 +392,7 @@
 %<*!docsty>
 \ifcodedoc
 \usepackage{tikz,pgfcalendar}
-\usetikzlibrary{calc}
+\usetikzlibrary{calc,shapes.geometric}
 \newcounter{MThistitem}
 \def\MThistlastnode{n-0}
 \pgfmathsetmacro{\MThistfirstyear}{2004} % v1.0 2004/09/11
@@ -416,7 +416,7 @@
 \def\MT@doversion#1#2{%
   \ifnum\pdfmatch{\MThist@last([a-z])}{#1}=1
     \MThist@majorfalse
-    \edef\MThist@current{(\expandafter\strip@prefix\pdflastmatch1)}%
+    \edef\MThist@current{\expandafter\strip@prefix\pdflastmatch1 }%
 %    \draw [fill=theshade] (n-\theMThistitem.north west) rectangle (n-\theMThistitem.south east);
   \else
     \MThist@majortrue
@@ -432,7 +432,7 @@
     \ifnum\theMThistitem>1
       \draw (n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)-(\MThistnodesep pt,0)$);
       \draw (n-\MThistlastmajor.south west) -- ($(n-\theMThistitem.south east)-(\MThistnodesep pt,0)$);
-      \draw [->]($(n-\theMThistitem.north west)-(\dimexpr-0.2pt+\dimexpr\MThistnodesep pt-\MThistnodewidth pt\relax/2\relax,0)$)  -- (n-\theMThistitem.south west);
+%      \draw [->]($(n-\theMThistitem.north west)-(\dimexpr-0.2pt+\dimexpr\MThistnodesep pt-\MThistnodewidth pt\relax/2\relax,0)$)  -- (n-\theMThistitem.south west);
       \edef\MThistlastmajor{\theMThistitem}%
     \fi
   \fi
@@ -466,7 +466,7 @@
           \ifMThist@major
             \tikzset{fill=theshade,rectangle,text width=\MThistnodewidth,inner sep=1pt}
           \else
-          \tikzset{fill=theshade,circle,draw,text width=\MThistnodewidth*3/5,font=\fontsize{3.5}{6}\selectfont,inner sep=0pt}
+          \tikzset{xshift=-.6pt,fill=theshade,diamond,very thin,draw,text width=\MThistnodewidth*1/4,shape aspect=1.25,font=\fontsize{3.5}{6}\selectfont,inner sep=0pt}
           \fi
         }]
         \MThistprepare
