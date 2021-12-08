@@ -806,7 +806,9 @@
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\githuburl{https://github.com/schlcht/microtype}
 \DeclareRobustCommand\githubissue[1]{\let\maybe@comma\@empty
-  [issue~\@for\@ISSUE:=#1\do{\maybe@comma\href{\githuburl/issues/\@ISSUE}{\#\@ISSUE}\let\maybe@comma,}]}
+  [issue\maybe@plural#1,\@nil~\@for\@ISSUE:=#1\do{%
+    \maybe@comma\href{\githuburl/issues/\@ISSUE}{\#\@ISSUE}\let\maybe@comma,}]}
+\def\maybe@plural#1,#2\@nil{\ifx\relax#2\else s\fi}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
