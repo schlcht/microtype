@@ -6307,6 +6307,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                                  ^^A private mail, 2005/09/10
 %\changes{v2.3}{2007/11/11}{disable \cs{microtypecontext} in \pkg{hyperref}'s \cmd\pdfstringdef}
 % \pkg{hyperref} doesn't work with plain \TeX, so in that case we don't bother.
+%\changes{v3.1}{2021/12/09}{disable patches for \pkg{tex4ht}}
 %    \begin{macrocode}
   \MT@if@false
 %</package>
@@ -6325,7 +6326,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }%
 %<plain>  }\relax
 %<*package>
-  \MT@with@package@T{tex4ht}\MT@if@true
+  \MT@with@package@T{tex4ht}{%
+    \def\MT@apply@patch#1{\MT@info{Not applying patch `#1' (for tex4ht)}}%
+    \def\MT@undo@patch#1{\MT@info{Not undoing patch `#1' (for tex4ht)}}%
+    \MT@if@true
+  }%
   \MT@with@package@T{mathastext}\MT@if@true
   \ifMT@if@\g@addto@macro\MT@setupfont@hook\MT@restore@p@h\fi
 %    \end{macrocode}
@@ -19609,7 +19614,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12337}
+% \CheckSum{12343}
 %
 % \Finale
 %
