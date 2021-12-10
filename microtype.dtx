@@ -8042,11 +8042,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \endgroup
   \leavevmode
   \ifhbox\MT@tempbox
-%    \def\@tempa{#1}%
     \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
     \expandafter\ifdim\@tempdima=\z@ \else
-      \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % FIXME
-        :\MessageBreak
+      \MT@vinfo{|<< adding #2 margin kern for `#1':\MessageBreak
         \the\@tempdima \on@line}%
       \kern\@tempdima
     \fi
@@ -8141,29 +8139,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
 %\begin{macro}{\MT@prot@group@}
 %\begin{macro}{\MT@prot@group@@}
-% If we have a group, we need to rescan in order to allow, \eg,
-% |\verb|, |verbatim| or |lstlistings| material: before reading
-% the argument, make the backslash a letter to prevent spaces
-% from being inserted after commands, and have line breaks preserved.
-%\changes{v3.1}{2021/12/05}{add \cmd\makeatletter\
+% If we have a group, we inject \cs{MT@prot@get@firstchar} at the
+% beginning again and don't bother about the rest. This still allows,
+% \eg, |\verb|, |verbatim| or |lstlistings| material.
+%\changes{v3.1}{2021/12/05}{don't rescan anymore
 %                           (reported by \contributor Akira Yokosawa <@\at @>
 %                                    and \contributor theufman <@\at @>) \githubissue{3,4}}
-% The \nonetex\ version will fail in lots of cases.
 %    \begin{macrocode}
-\def\MT@prot@group{%
-  \begingroup
-    \catcode`\\=11
-    \obeylines
-    \MT@prot@group@}
-\def\MT@prot@group@{\afterassignment\MT@prot@group@@ \MT@toks}
-\def\MT@prot@group@@{%
-    \catcode`\\=0
-    \catcode`\^^M=10
-    \makeatletter
-    {\expandafter\MT@prot@l\expandafter
-      {\expandafter\scantokens\expandafter{\the\MT@toks\noexpand}}}%
-  \endgroup}
-^^Q\def\MT@prot@group#1{\MT@prot@l{#1}}
+\def\MT@prot@group#{\bgroup\afterassignment\MT@prot@get@firstchar\let\MT@temp= }
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -19614,7 +19597,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12343}
+% \CheckSum{12313}
 %
 % \Finale
 %
