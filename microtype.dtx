@@ -8137,8 +8137,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
 %               ^^A private mail, 2021/11/18
 %               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
-%\begin{macro}{\MT@prot@group@}
-%\begin{macro}{\MT@prot@group@@}
 % If we have a group, we inject \cs{MT@prot@get@firstchar} at the
 % beginning again and don't bother about the rest. This still allows,
 % \eg, |\verb|, |verbatim| or |lstlistings| material.
@@ -8148,8 +8146,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@prot@group#{\bgroup\afterassignment\MT@prot@get@firstchar\let\MT@temp= }
 %    \end{macrocode}
-%\end{macro}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@firstchar}
 %\begin{macro}{\MT@prot@get@nextchar}
