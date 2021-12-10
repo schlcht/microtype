@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/99/99 v3.1
+  [2021/12/10 v3.0b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.0a",
-%<luafile>    date         = "2021/12/02",
+%<luafile>    version      = "3.0b",
+%<luafile>    date         = "2021/12/10",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -6307,7 +6307,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                                  ^^A private mail, 2005/09/10
 %\changes{v2.3}{2007/11/11}{disable \cs{microtypecontext} in \pkg{hyperref}'s \cmd\pdfstringdef}
 % \pkg{hyperref} doesn't work with plain \TeX, so in that case we don't bother.
-%\changes{v3.1}{2021/12/09}{disable patches for \pkg{tex4ht}}
+%\changes{v3.0b}{2021/12/09}{disable patches for \pkg{tex4ht}}
 %    \begin{macrocode}
   \MT@if@false
 %</package>
@@ -7963,7 +7963,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
-%\changes{v3.1}{2021/12/05}{make \cmd\long\ again
+%\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
 %                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
 % This probably doesn't need to be \cmd\long\ any longer.
 %    \begin{macrocode}
@@ -8000,7 +8000,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
 %                           (reported by \contributor florian <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
-%\changes{v3.1}{2021/12/05}{unconditionally \cmd\leavevmode}
+%\changes{v3.0b}{2021/12/05}{unconditionally \cmd\leavevmode}
 % We set various penalties to zero to allow linebreaking, and don't
 % bother if the split box is overfull (but shouldn't we? -- after all,
 % that's how the penalties bug was discovered~\dots).
@@ -8138,7 +8138,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % If we have a group, we inject \cs{MT@prot@get@firstchar} at the
 % beginning again and don't bother about the rest. This still allows,
 % \eg, |\verb|, |verbatim| or |lstlistings| material.
-%\changes{v3.1}{2021/12/05}{don't rescan anymore
+%\changes{v3.0b}{2021/12/05}{don't rescan anymore
 %                           (reported by \contributor Akira Yokosawa <@\at @>
 %                                    and \contributor theufman <@\at @>) \githubissue{3,4}}
 %    \begin{macrocode}
