@@ -4,6 +4,7 @@ SHELL = /bin/sh
 .SUFFIXES:
 
 # path
+# (adapt to your needs)
 ARCH     := x86_64-darwinlegacy
 COMPAT   := $(shell which tlmgr | sed 's/.*\/\(.*\)\/bin\/.*/\1/')
 ifeq ($(shell expr $(COMPAT) \< 2021 ),1)
@@ -71,7 +72,6 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   microtype-show.sty test-microtype.tex
 SOURCE    = $(ALLDTX) $(INS) $(README)
 GENERATED = $(UNPACKED) $(COMPILED)
-AUXFILES  = microtype-doc.sty microtype-gind.ist
 
 CTAN_FILES = $(SOURCE) $(COMPILED)
 
@@ -143,10 +143,6 @@ make-normal-sty: $(INS) $(DTX) docstrip.cfg
 	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
 	@touch make-normal-sty
 	@rm -f make-doc-sty
-
-$(AUXFILES): $(INS) $(DTX) docstrip.cfg
-	@echo "Creating sty"
-	@pdflatex --interaction=nonstopmode $< $(REDIRECT)
 
 RERUN_STR = 'Rerun to get \|pdfTeX warning (dest)'
 

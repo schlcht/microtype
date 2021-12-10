@@ -7965,9 +7965,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@l}
 %\changes{v3.1}{2021/12/05}{make \cmd\long\ again
 %                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
-% We're providing the argument wrapped in a rescanned toks,
-% but it still needs to be \cmd\long\ in certain cases
-% (\eg, for \cmd\maketitle).
+% This probably doesn't need to be \cmd\long\ any longer.
 %    \begin{macrocode}
 \long\def\MT@prot@l#1{%
   \MT@get@prot{#1}{left}%
