@@ -94,14 +94,14 @@ CTAN_ZIP = $(NAME).zip
 TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
-DO_PDFLATEX_DOC  = pdflatex --interaction=nonstopmode $(DTX) $(REDIRECT)
-DO_PDFLATEX_CODE = pdflatex --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT) || \
+DO_PDFLATEX_DOC  = pdflatex$(DEV) --interaction=nonstopmode $(DTX) $(REDIRECT)
+DO_PDFLATEX_CODE = pdflatex$(DEV) --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT) || \
    if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
       if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
          false ; \
       fi ; \
    fi
-DO_LUALATEX      = lualatex --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
+DO_LUALATEX      = lualatex$(DEV) --interaction=nonstopmode $(UTFDTX) $(REDIRECT)
 DO_MAKEINDEX_DOC  = \
    makeindex -s microtype-gind.ist -t $(NAME).ilg -o $(NAME).ind $(NAME).idx $(REDIRECT) 2>&1 && \
    echo "Creating user index"
@@ -304,6 +304,7 @@ test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.aux
 	@$(RM) $(TESTDIR)/*.pdf
 	@$(RM) $(TESTDIR)/*.tmp
+	@$(RM) $(TESTDIR)/*.out
 	@$(RM) $(TESTDIR)/*.4ct
 	@$(RM) $(TESTDIR)/*.4tc
 	@$(RM) $(TESTDIR)/*.dvi
