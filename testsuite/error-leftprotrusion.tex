@@ -4,7 +4,7 @@
 \fi
 \usepackage[verbose]{microtype}
 \usepackage{csquotes}
-\usepackage{listings,verbatim,fancyvrb}
+\usepackage{listings,verbatim,fancyvrb,hyperref}
 \MakeAutoQuote{“}{”}
 {\catcode`<=13
  \gdef<#1>{\textls{#1}}}
@@ -17,6 +17,16 @@
 \makeatother
 \begin{document}
 \catcode`<=13
+
+\def\mytitle{% issue #3
+\begin{center}{title\par}
+\end{center}}
+\mytitle
+
+\begin{abstract} % issue #4
+	Test
+\end{abstract}
+
 \leftprotrusion{\sffamily--abc\par def--}
 
 \rightprotrusion{\sffamily--abc\par def--}

@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/12/02 v3.0a
+  [2021/12/10 v3.0b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.0a",
-%<luafile>    date         = "2021/12/02",
+%<luafile>    version      = "3.0b",
+%<luafile>    date         = "2021/12/10",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -546,6 +546,7 @@
 \def\GeneralChanges#1{\edef\generalname{\if*#1 General\else#1\fi}}% mind the space!
 \DeclareRobustCommand\key[1]{\textcolor{thered}{\ttfamily#1}}
 \DeclareRobustCommand\pkg[1]{{\PackageFont#1}\@bsphack\CatIndex{#1}{package}\@esphack}
+\DeclareRobustCommand\cls[1]{{\PackageFont#1}\@bsphack\CatIndex{#1}{class}\@esphack}
 \DeclareRobustCommand\opt[1]{{\ttfamily#1}\@bsphack\CatIndex{#1}{option}\@esphack}
 \DeclareRobustCommand\file[1]{{\ttfamily#1}}
 \def\RequiresSep{ \textbar\ }
@@ -805,7 +806,10 @@
 \DeclareRobustCommand\texlive{\TeX~Live\CatIndeX{\TeX~Live}{TeXLive}{distribution}}
 \DeclareRobustCommand\miktex{MiK\TeX\CatIndeX{MiK\TeX}{MiKTeX}{distribution}}
 \def\githuburl{https://github.com/schlcht/microtype}
-\def\githubissue#1{ [issue~\href{\githuburl/issues/#1}{\##1}]}
+\DeclareRobustCommand\githubissue[1]{\let\maybe@comma\@empty
+  [issue\maybe@plural#1,\@nil~\@for\@ISSUE:=#1\do{%
+    \maybe@comma\href{\githuburl/issues/\@ISSUE}{\#\@ISSUE}\let\maybe@comma,}]}
+\def\maybe@plural#1,#2\@nil{\ifx\relax#2\else s\fi}
 \def\microtype{{\PackageFont microtype}}
 \def\letterspace{\pkg{letterspace}}
 \def\fontdim{\cmd\fontdimen\,}
@@ -1342,7 +1346,7 @@
 %\changes{v2.0}{2006/11/28}{add remark about `\opt{disable}' (previously \texttt{draft}) option disabling \microtype\
 %               (noted by \contributor Michalis Miatidis <miatidis\at informatik.rwth-aachen.de>)}
 %                                                                    ^^A private mail, 2006/11/26
-%\changes{v3.0}{2021/09/28}{rename option \texttt{draft} option to \opt{disable}
+%\changes{v3.0}{2021/09/28}{rename option \texttt{draft} to \opt{disable}
 %               (insistently requested by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                ^^A private mail, 2018/07/04
 %\Describe{Option}{disable}{true,!false,ifdraft}
@@ -2318,7 +2322,7 @@
 %      & <OT1>, <T1>, <T5>, <LY1>, <TS1>
 %      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
 % <EB> Garamond\footnote{Alias: Adobe Garamond (|pad|, |padx|, |padj|)}
-%      & <OT1>, <T1>, <LY1>, <TS1>
+%      & <OT1>, <T1>, <LY1>, <LGR>, <TS1>
 %      & n, it, sc, si \\
 % <URW> Garamond (|ugm|)\footnote{Aliases: \pkg{mathdesign}/<URW> Garamond (|mdugm|), \pkg{garamondx} (|zgmx|, |zgmj|)}
 %      & <OT1>, <T1>, <TS1>
@@ -2491,7 +2495,7 @@
 %     6 = { ,400}, 7 = { ,500}, 8 = { ,400}, 9 = { ,400}, 0 = { ,400} }
 %\end{verbatim}
 % and have the context changed in the footnote marker command. This command
-% differs among the various classes; for the base classes, \eg, \pkg{article},
+% differs among the various classes; for the base classes, \eg, \cls{article},
 % it would be:
 %\begin{verbatim}
 %\newcommand*\new@makefnmark{\hbox{\@textsuperscript{\normalfont
@@ -2500,7 +2504,7 @@
 %   \leavevmode \ifhmode\edef\@x@sf{\the\spacefactor}\nobreak\fi
 %   \new@makefnmark \ifhmode\spacefactor\@x@sf\fi \relax}
 %\end{verbatim}
-% For the \pkg{memoir} class, you would additionally have to disable
+% For the \cls{memoir} class, you would additionally have to disable
 % auto-detection of multiple footnotes, which prevents protrusion:
 %\begin{verbatim}
 %\renewcommand*\@makefnmark{\hbox{\@textsuperscript{\normalfont
@@ -2710,15 +2714,15 @@
 %              slightly shifted to the right.
 %              This patch also affects environments such as |quote| or |flushleft|, which are
 %              implemented in \LaTeX\ as lists with an implicit empty item.
-%              \MTsupp{standard classes, \pkg{beamer}, \pkg{simplecv}}
+%              \MTsupp{standard classes, \cls{beamer}, \cls{simplecv}}
 % \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
-%              \MTsupp{standard classes, \pkg{memoir}}
+%              \MTsupp{standard classes, \cls{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (only visible when
 %              the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{standard classes, \pkg{memoir}, <\pkg{KOMA}> classes, \pkg{hyperref}}
+%              \MTsupp{standard classes, \cls{memoir}, <\cls{KOMA}> classes, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side.
-%              \MTsupp{standard classes, \pkg{amsmath}, \pkg{IEEEtran}}
+%              \MTsupp{standard classes, \pkg{amsmath}, \cls{IEEEtran}}
 %\endlist\endgroup
 %
 %\enlargethispage{\baselineskip} ^^A layout
@@ -3153,7 +3157,8 @@
 %
 % Additionally, the following people have reported bugs, made suggestions or
 % helped otherwise (in chronological order, quotes indicate
-%    \href{https://tex.stackexchange.com/users/}{TeX.SX} user names):\linebreak
+%    \href{https://tex.stackexchange.com/users/}{TeX.SX} and/or
+%    \href{https://github.com/}{GitHub} user names):
 %  \contributor Tom Kink          <kink\at hia.rwth-aachen.de>,
 %  \contributor Herb Schulz       <herbs\at wideopenwest.com>,
 %  \contributor Michael Hoppe     <mh\at michael-hoppe.de>,
@@ -3255,9 +3260,11 @@
 %  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
 %  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
 % `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
-%  \contributor Liang-Bo Wang     <@\at @>   ^^A https://github.com/ccwang002
+%  \contributor Liang-Bo Wang     <@\at @>,  ^^A https://github.com/ccwang002
+% `\contributor MisterFiLou       <@\at @>', ^^A https://github.com/MisterFiLou
+%  \contributor Akira Yokosawa    <@\at @>   ^^A https://github.com/akiyks
 % and
-%  \contributor MisterFiLou       <@\at @>.  ^^A https://github.com/MisterFiLou
+% `\contributor theufman          <@\at @>'. ^^A https://github.com/theufman
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3407,6 +3414,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0a}{2021/12/02}
 %
 %\Version{3.0}{2021/10/31}
 %  \item Possibility of automatical protrusion based on difference of character widths
@@ -3805,7 +3814,7 @@
 %^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
-%\DoNotIndex{\activatequoting,\deactivatequoting,\percentsign}               ^^A babel/spanish,galician,mexican
+%\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\@disablequotes}                                                ^^A csquotes
@@ -5968,10 +5977,10 @@ microtype.do_font = do_font
     Disabling `\MT@MT', since it wouldn't work}%
   \MT@clear@options\endinput}\relax
 %    \end{macrocode}
-% The \pkg{minimal} class doesn't define any size commands other than
+% The \cls{minimal} class doesn't define any size commands other than
 % \cmd\normalsize, which will result in lots of warnings. Therefore we
 % issue a warning about the warnings.
-%\changes{v2.7}{2016/05/18}{warning with \pkg{minimal} class}
+%\changes{v2.7}{2016/05/18}{warning with \cls{minimal} class}
 %    \begin{macrocode}
 \@ifclassloaded{minimal}{%
   \MT@warning@nl{Detected the `minimal' class.\MessageBreak
@@ -5982,7 +5991,7 @@ microtype.do_font = do_font
 %\begin{macro}{\MT@setup@}
 %\changes{v1.9a}{2005/11/21}{defer setup until the end of the preamble}
 %\changes{v1.9e}{2006/07/06}{empty \cs{MT@setup@} after use
-%                            (compatibility with the \pkg{combine} class)}
+%                            (compatibility with the \cls{combine} class)}
 %\changes{v2.3e}{2009/08/31}{make space-unaware
 %                            (requested by \contributor Marcin Borkowski <mbork\at atos.wmid.amu.edu.pl>)}
 %                               ^^A private mail, 2009/08/31
@@ -6261,7 +6270,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % We can clean up \cs{MT@setupfont@hook} now.
 %\changes{v2.6}{2014/03/17}{redefine \cs{MT@setupfont@hook} globally
-%                           for problem with \pkg{tikzposter}
+%                           for problem with \cls{tikzposter}
 %                           (reported by \contributor Sam Mason <sam\at samason.me.uk>)}
 %                           ^^A https://tex.stackexchange.com/questions/165846/
 %    \begin{macrocode}
@@ -6298,6 +6307,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                                                  ^^A private mail, 2005/09/10
 %\changes{v2.3}{2007/11/11}{disable \cs{microtypecontext} in \pkg{hyperref}'s \cmd\pdfstringdef}
 % \pkg{hyperref} doesn't work with plain \TeX, so in that case we don't bother.
+%\changes{v3.0b}{2021/12/09}{disable patches for \pkg{tex4ht}}
 %    \begin{macrocode}
   \MT@if@false
 %</package>
@@ -6316,7 +6326,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }%
 %<plain>  }\relax
 %<*package>
-  \MT@with@package@T{tex4ht}\MT@if@true
+  \MT@with@package@T{tex4ht}{%
+    \def\MT@apply@patch#1{\MT@info{Not applying patch `#1' (for tex4ht)}}%
+    \def\MT@undo@patch#1{\MT@info{Not undoing patch `#1' (for tex4ht)}}%
+    \MT@if@true
+  }%
   \MT@with@package@T{mathastext}\MT@if@true
   \ifMT@if@\g@addto@macro\MT@setupfont@hook\MT@restore@p@h\fi
 %    \end{macrocode}
@@ -6577,13 +6591,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@append@patch\@item\leftprotrusion
     \MT@patch@patch\@item{\everypar{}}{\everypar{\leftprotrusion}}%
 %    \end{macrocode}
-% \item \pkg{beamer} patches it too
+% \item \cls{beamer} patches it too
 %    \begin{macrocode}
     \@ifclassloaded{beamer}
       {\MT@append@patch\beamer@@callorigitem\leftprotrusion
        \MT@patch@patch\beamer@callorigitem{\ignorespaces}{\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
-% \item the \pkg{simplecv} class
+% \item the \cls{simplecv} class
 %    \begin{macrocode}
       {\@ifclassloaded{simplecv}
         {\MT@append@patch\@topic@item\leftprotrusion}
@@ -6598,7 +6612,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \MT@append@patch\numberline\leftprotrusion
 %    \end{macrocode}
 % \begin{itemize}
-%   \item for the \pkg{memoir} class we also fix the extra leader problem~\dots
+%   \item for the \cls{memoir} class we also fix the extra leader problem~\dots
 %    \begin{macrocode}
     \@ifclassloaded{memoir}
       {\MT@append@patch\booknumberline\leftprotrusion
@@ -6617,13 +6631,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {}%
   }{}%
 %    \end{macrocode}
-% \item for the <\pkg{KOMA}> classes (which load the \pkg{tocbasic} package)
+% \item for the <\cls{KOMA}> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on; this will
 %       re-introduce the risk of getting an extra leader dot, but I
 %       currently don't see how to easily add \cmd\noprotrusion.
 %       Therefore, I'll skip this patch for now, saving the joy of wading
 %       through |scr| files for later, all the while waiting for somebody
-%       who would understand <\pkg{KOMA}> better than me.
+%       who would understand <\cls{KOMA}> better than me.
 %\todo{fix KOMA patch (add \cmd\noprotrusion)}
 %    \begin{macrocode}
 %    \@ifpackageloaded{tocbasic}
@@ -6643,7 +6657,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       on \cmd\tagform@, so we have to make it use the original definition.
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
-%\changes{v3.0a}{2021/11/22}{protrusion patch \texttt{eqnum} for \pkg{IEEEtran}}
+%\changes{v3.0a}{2021/11/22}{protrusion patch \texttt{eqnum} for \cls{IEEEtran}}
 %    \begin{macrocode}
   \MT@define@patch{eqnum}{%
     \@ifclassloaded{IEEEtran}
@@ -6674,8 +6688,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
-%   \item so do the <\pkg{KOMA}> classes (which load \pkg{scrkbase})
-%\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\pkg{KOMA}> classes
+%   \item so do the <\cls{KOMA}> classes (which load \pkg{scrkbase})
+%\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
       {\@ifpackageloaded{scrkbase}
@@ -6685,7 +6699,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
         {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
 %    \end{macrocode}
-%   \item \pkg{memoir} additionally allows footnotes in the margins
+%   \item \cls{memoir} additionally allows footnotes in the margins
 %    \begin{macrocode}
          \@ifclassloaded{memoir}
            {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
@@ -6707,7 +6721,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\subsection{Font setup}\label{sub:font-setup}
 %
 %\changes{v1.6}{2005/01/19}{load a font if none is selected}
-% We need a font (the \pkg{minimal} class doesn't load one).
+% We need a font (the \cls{minimal} class doesn't load one).
 %    \begin{macrocode}
 %<package>\expandafter\ifx\the\font\nullfont\normalfont\fi
 %    \end{macrocode}
@@ -7949,17 +7963,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
-% This macro no longer needs to be \cmd\long\ as we're providing
-% the argument wrapped in a rescanned toks.
+%\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
+%                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
+% This probably doesn't need to be \cmd\long\ any longer.
 %    \begin{macrocode}
-\def\MT@prot@l#1{%
+\long\def\MT@prot@l#1{%
   \MT@get@prot{#1}{left}%
   #1%
 }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
-% But \cs{rightprotrusion} must be \cmd\long.
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
 % so the counterpart cannot be defined symmetrically.
 %\changes{v3.0}{2021/05/15}{new command}
@@ -7981,11 +7995,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
 %\changes{v3.0a}{2021/11/22}{reset counters}
 %\changes{v3.0a}{2021/11/05}{compatibility fix for \pkg{csquotes}
-%                           (reported by \contributor Gustavo Barros <@\at @>)\githubissue{1}}
+%                           (reported by \contributor Gustavo Barros <@\at @>) \githubissue{1}}
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
 %\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
 %                           (reported by \contributor florian <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
+%\changes{v3.0b}{2021/12/05}{unconditionally \cmd\leavevmode}
 % We set various penalties to zero to allow linebreaking, and don't
 % bother if the split box is overfull (but shouldn't we? -- after all,
 % that's how the penalties bug was discovered~\dots).
@@ -8023,13 +8038,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
     \MT@ckpt
   \endgroup
+  \leavevmode
   \ifhbox\MT@tempbox
-%    \def\@tempa{#1}%
     \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
     \expandafter\ifdim\@tempdima=\z@ \else
-      \leavevmode
-      \MT@vinfo{|<< adding #2 margin kern% for `\@tempa' % FIXME
-        :\MessageBreak
+      \MT@vinfo{|<< adding #2 margin kern for `#1':\MessageBreak
         \the\@tempdima \on@line}%
       \kern\@tempdima
     \fi
@@ -8122,30 +8135,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
 %               ^^A private mail, 2021/11/18
 %               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
-%\begin{macro}{\MT@prot@group@}
-%\begin{macro}{\MT@prot@group@@}
-% If we have a group, we need to rescan in order to allow, \eg,
-% |\verb|, |verbatim| or |lstlistings| material: before reading
-% the argument, make the backslash a letter to prevent spaces
-% from being inserted after commands, and have line breaks preserved.
-% The \nonetex\ version will fail in lots of cases.
+% If we have a group, we inject \cs{MT@prot@get@firstchar} at the
+% beginning again and don't bother about the rest. This still allows,
+% \eg, |\verb|, |verbatim| or |lstlistings| material.
+%\changes{v3.0b}{2021/12/05}{don't rescan anymore
+%                           (reported by \contributor Akira Yokosawa <@\at @>
+%                                    and \contributor theufman <@\at @>) \githubissue{3,4}}
 %    \begin{macrocode}
-\def\MT@prot@group{%
-  \begingroup
-    \catcode`\\=11
-    \obeylines
-    \MT@prot@group@}
-\def\MT@prot@group@{\afterassignment\MT@prot@group@@ \MT@toks}
-\def\MT@prot@group@@{%
-    \catcode`\\=0
-    \catcode`\^^M=10
-    {\expandafter\MT@prot@l\expandafter
-      {\expandafter\scantokens\expandafter{\the\MT@toks\noexpand}}}%
-  \endgroup}
-^^Q\def\MT@prot@group#1{\MT@prot@l{#1}}
+\def\MT@prot@group#{\bgroup\afterassignment\MT@prot@get@firstchar\let\MT@temp= }
 %    \end{macrocode}
-%\end{macro}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@firstchar}
 %\begin{macro}{\MT@prot@get@nextchar}
@@ -11024,8 +11022,8 @@ end
 % have been loaded before \microtype\ and were loading fonts, \eg,
 % \pkg{jurabib}, \pkg{ledmac}, \pkg{pifont} (loaded by \pkg{hyperref}),
 % \pkg{tipa}, and probably many more. Furthermore, we had to include a hack for
-% the \pkg{IEEEtran} class which loads all fonts in the class file itself (to
-% fine tune inter-word spacing), and the \pkg{memoir} class, too. To cut this
+% the \cls{IEEEtran} class which loads all fonts in the class file itself (to
+% fine tune inter-word spacing), and the \cls{memoir} class, too. To cut this
 % short: it seemed to get out of hand, and I decided that it would be better to
 % use \cmd\pickup@font\ and decide for ourselves whether we've already seen
 % that font. I hope the overhead isn't too large.
@@ -11814,7 +11812,7 @@ end
 %\changes{v1.2}{2004/09/26}{hijack \cmd\set@fontsize\ instead of \cmd\@setfontsize}
 % We redefine \cmd\set@fontsize\ instead of \cmd\@setfontsize\ because some classes
 % might define the size selection commands by simply using \cmd\fontsize\
-% (\eg, the \pkg{a0poster} class).
+% (\eg, the \cls{a0poster} class).
 %\changes{v2.3b}{2008/03/07}{grouping}
 %    \begin{macrocode}
 \def\MT@get@size@@{%
@@ -11823,9 +11821,9 @@ end
     \@tempa\@nil
 }
 %    \end{macrocode}
-% The \pkg{svjour3} class defines the size commands using conditionals;
+% The \cls{svjour3} class defines the size commands using conditionals;
 % using \etex\ primitives, we close any leftovers here.
-%\changes{v2.8a}{2020/12/10}{compatibility with \pkg{svjour3}
+%\changes{v2.8a}{2020/12/10}{compatibility with \cls{svjour3}
 %                            (reported by \contributor Ekkehart Schlicht <ekkehart.schlicht\at gmail.com> (no relation!!))}
 %                            ^^A https://groups.google.com/g/de.comp.text.tex/c/46sJ1jFRq-I
 %                            ^^A MID: <9aa52497-19b5-4ca7-a668-c076cec4ceadn@googlegroups.com>, 2020/11/09
@@ -14736,7 +14734,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 % Finally, execute the setup macro at the end of the preamble, and empty it
-% (the \pkg{combine} class calls it repeatedly).
+% (the \cls{combine} class calls it repeatedly).
 %\changes{v2.3d}{2009/02/05}{move setup to the very end
 %                            (for \contributor Colin Rourke <gt\at msp.warwick.ac.uk>)}
 %                                                       ^^A private mail, 2009/02/03
@@ -19593,7 +19591,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12335}
+% \CheckSum{12313}
 %
 % \Finale
 %
