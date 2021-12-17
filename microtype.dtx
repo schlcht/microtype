@@ -2586,7 +2586,8 @@
 %\medskip
 %\Describe{Macro}{\lslig}{ligature}
 % Since the commands \cs{textls} and \cs{lsstyle} will also evaluate the
-% `\texttt{no ligatures}' key for the respective font, you usually need not worry
+% `\texttt{no ligatures}' key for the respective font (cf.
+% section~\ref{sub:tracking}), you usually need not worry
 % about protecting or breaking ligatures with most fonts. However, in certain
 % situations, there may be a conflict of ligatures beginning with the same
 % letter, where some of them should be inhibited, while others should not. For
@@ -2604,7 +2605,7 @@
 % (namely, `\textls{\def\!#1{\textcolor{thegreen}{\lslig{#1}}}^^A
 %                   \def\?#1{\textcolor{thered}{#1}}^^A
 %  \textfrak{Au\!{s:}\?{si}\!{ch}t\!{s:}lo\?{si}gkeit}}',
-%  with ligatures here shown in green, inhibited ligatures in red).
+%  with ligatures here highlighted in green, inhibited ligatures in red).
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
 %\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
@@ -2663,7 +2664,8 @@
 %   ^^A Otherwise, it won't work at all
 %
 %
-%\section{Being pedantic about protrusion}\label{sec:pedantic}
+%\section[Being pedantic about protrusion]
+%        {Being pedantic about protrusion \requires{\etex}}\label{sec:pedantic}
 %
 % Protrusion works well in running paragraphs, but may also be desirable
 % in situations where \TeX, in contrast to human eyes, would not see a margin,^^A
@@ -2713,9 +2715,9 @@
 %              line above -- are neatly aligned; without the patch, the first A would be
 %              slightly shifted to the right.
 %              This patch also affects environments such as |quote| or |flushleft|, which are
-%              implemented in \LaTeX\ as lists with an implicit empty item.
+%              implemented in \LaTeX\ as lists starting with an implicit empty item.
 %              \MTsupp{standard classes, \cls{beamer}, \cls{simplecv}}
-% \item[toc]   Adds protrusion at the left margin of sectioning titles in the Table of Contents
+% \item[toc]   Adds protrusion at the left margins of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
 %              \MTsupp{standard classes, \cls{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (only visible when
@@ -2741,8 +2743,9 @@
 %
 %\medskip\noindent
 %\leavevmode\llap{\itshape\color{thegrey}Help wanted!\hskip\marginparsep}^^A
-%\leftprotrusion These pedantic protrusion patches are work-in-progress. I suspect many use cases
-% where they either do not work as advertised, or worse, where they may even lead to errors.
+%\leftprotrusion These pedantic protrusion patches are still work-in-progress.
+% I suspect many use cases where they either do not work as advertised,
+% or worse, where they may even lead to errors.
 % Also, I am aware that there are myriads of classes and packages out there that
 % modify internal commands in their own ways, possibly rendering the patches useless.
 % Finally, there will certainly be many more situations where protrusion would be appropriate.
@@ -2750,7 +2753,7 @@
 % so I welcome any suggestions and problem reports you may have.
 %
 %
-%\section{Creating configurations and contributing}\label{sec:contrib} ^^A [also referencd in microtype.ins]
+%\section{Creating configurations and contributing}\label{sec:contrib} ^^A [also referenced in microtype.ins]
 %
 % I would also be glad to include configuration files for more fonts. Preparing such
 % configurations is quite a time-consuming task and requires a lot of patience.
@@ -3149,8 +3152,9 @@
 % original meanings of all activated characters, thus allowing for these
 % characters to be used in the configuration files.
 %  \contributor Peter Wilson <herries.press\at earthlink.net>
-% kindly provided a hook in his \pkg{ledmac}/\pkg{ledpar} packages, so that
-% critical editions can finally also benefit from character protrusion.
+% kindly provided a hook in his \pkg{ledmac}/\pkg{ledpar} packages
+% (inherited by their successors \pkg{reledmac}\slash\pkg{reledpar}),
+% so that critical editions can also benefit from character protrusion.
 % Likewise,
 %  \contributor Donald Arseneau <asnd\at triumf.ca>
 % patched his \pkg{shapepar} package to accommodate protrusion.
@@ -3772,8 +3776,7 @@
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
-%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,
-%  \scantokens,\unexpanded}
+%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,\unexpanded}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
 %\DoNotIndex{\pdfannot,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}

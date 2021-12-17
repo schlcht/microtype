@@ -58,7 +58,7 @@ To install the package, use one of the following methods
 
 - To use the latest development version, clone the github repository at
   `https://github.com/schlcht/microtype` and run `make`
-  (or just `pdflatex microtype.ins` to generate the run files).
+  (or just `latex microtype.ins` to generate the run files).
 
 
 License
