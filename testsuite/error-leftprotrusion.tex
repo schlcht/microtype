@@ -27,9 +27,13 @@
 	Test
 \end{abstract}
 
+% the following cases will not be protruded
 \leftprotrusion{\sffamily--abc\par def--}
 
 \rightprotrusion{\sffamily--abc\par def--}
+
+\def\xxx{\sffamily--abc\par def--}
+\leftprotrusion\xxx % issue #6
 
 \begin{itemize}
   \item --- some words (wrong output with xetex)\newline --- a new line

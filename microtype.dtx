@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2021/12/10 v3.0b
+  [2022/00/00 v3.1
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3266,9 +3266,10 @@
 % `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
 %  \contributor Liang-Bo Wang     <@\at @>,  ^^A https://github.com/ccwang002
 % `\contributor MisterFiLou       <@\at @>', ^^A https://github.com/MisterFiLou
-%  \contributor Akira Yokosawa    <@\at @>   ^^A https://github.com/akiyks
+%  \contributor Akira Yokosawa    <@\at @>,  ^^A https://github.com/akiyks
+% `\contributor theufman          <@\at @>'  ^^A https://github.com/theufman
 % and
-% `\contributor theufman          <@\at @>'. ^^A https://github.com/theufman
+% `\contributor frafl             <@\at @>'. ^^A https://github.com/frafl
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3418,6 +3419,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0b}{2021/12/10}
 %
 %\VersionDate{3.0a}{2021/12/02}
 %
@@ -8098,17 +8101,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@iffirstcmd}
-% Test for the first command.
+% Test whether the first token in \cs{MT@prot@next} (once expanded) is the
+% command \meta{\#1}. Since \cs{MT@prot@next} may also be user-defined (or
+% whatever), we have to use our own, \cmd\long\ version of \cmd\@car.
+%\changes{v3.1}{2021/12/17}{use \cmd\long\ variant of \cmd\@car\
+%                           (reported by \contributor frafl <@\at @>) \githubissue{6}}
 %    \begin{macrocode}
 \def\MT@prot@iffirstcmd#1{%
-  \ifx\relax#1\relax\expandafter\@secondoftwo\else
-    \MT@exp@two@c\ifx\@car\MT@prot@next\relax\@empty\@nil#1%
+  \ifx\relax#1\expandafter\@secondoftwo\else
+    \MT@exp@two@c\ifx\MT@car\MT@prot@next\relax\@nil#1%
       \expandafter\expandafter\expandafter\@firstoftwo
     \else
       \expandafter\expandafter\expandafter\@secondoftwo
     \fi
   \fi
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@car}
+% A long car.
+%    \begin{macrocode}
+\long\def\MT@car#1#2\@nil{#1}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@iflicrcmd}
@@ -8141,6 +8154,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % If we have a group, we inject \cs{MT@prot@get@firstchar} at the
 % beginning again and don't bother about the rest. This still allows,
 % \eg, |\verb|, |verbatim| or |lstlistings| material.
+% The downside of being this cautious is that we'll miss lots of cases.
 %\changes{v3.0b}{2021/12/05}{don't rescan anymore
 %                           (reported by \contributor Akira Yokosawa <@\at @>
 %                                    and \contributor theufman <@\at @>) \githubissue{3,4}}
@@ -19594,7 +19608,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12313}
+% \CheckSum{12315}
 %
 % \Finale
 %
