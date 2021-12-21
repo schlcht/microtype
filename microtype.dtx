@@ -389,8 +389,8 @@
       \ignorespaces \makeatletter \scan@allowedfalse}%
   \def\subitem{\par\hangindent 15pt}%
   \def\subsubitem{\subitem\hspace*{7.5pt}}}
-% change history
-% original idea by Tom Bombadil (https://tex.stackexchange.com/a/61251/7674);
+% Change history
+% based on an original idea by Tom Bombadil (https://tex.stackexchange.com/a/61251/7674),
 % but don't look too closely at the messy rest, or you'll lose all your tikz skills
 %<*!docsty>
 \ifcodedoc
@@ -404,9 +404,9 @@
 \pgfmathsetmacro{\MThistvsep}{1.75}
 \pgfmathsetmacro{\MThisthshift}{3}
 \def\MThistprepare{%
-  \pgfmathsetmacro{\MThistnodesep}{(\textwidth+\MThisthshift cm+2pt)/(\theMThistitem/2+1)}% why the extra 2pt? I have no idea...
+  \pgfmathsetmacro{\MThistnodesep}{(\textwidth+\MThisthshift cm+2pt)/(\theMThistitem/2+1)}% why the extra 2pt? I have no idea... probably because all this only pretends to be automatic...!
   \pgfmathsetmacro{\MThistnodewidth}{\MThistnodesep*3/4}
-  \pgfmathsetmacro{\MThistxshift}{(\MThistnodesep-\MThistnodewidth)/4}
+  \pgfmathsetmacro{\MThistxshift}{1.4pt}
   \let\MThistcurrnodesep\MThistnodesep
   \setcounter{MThistitem}{0}
   \node[inner sep=0pt] (n-0) at (-\MThisthshift,\MThistvsep) {}; }
@@ -418,10 +418,8 @@
   \else
     \gpreto\MThistshow{\MT@doversion{#1}{#2}{1}}%
     \addtocounter{MThistitem}{2}%
-  \fi
-}
-\expandafter\newif\csname ifMThist@major\endcsname
-\MThist@majortrue
+  \fi}
+\def\MThist@ifmajor{1}
 \def\MThistlastmajor{1}
 \def\MT@doversion#1#2#3{%
   \stepcounter{MThistitem}%
@@ -430,17 +428,17 @@
     \ifnum\pdfmatch{([a-z])}{#1}=1
       \edef\MThist@current{\expandafter\strip@prefix\pdflastmatch1 }%
     \fi
-    \ifMThist@major \def\MThist@xshift{-\MThistxshift}\fi
-    \MThist@majorfalse
+    \ifnum\MThist@ifmajor>0 \def\MThist@xshift{-\MThistxshift}\fi
+    \def\MThist@ifmajor{0}%
   \else
     \def\MThist@current{#1}%
-    \ifMThist@major\else \def\MThist@xshift{\MThistxshift}\fi
-    \MThist@majortrue
+    \ifnum\MThist@ifmajor<1 \def\MThist@xshift{\MThistxshift}\fi
+    \def\MThist@ifmajor{1}%
   \fi
   \node[right=\MThistcurrnodesep,xshift=\MThist@xshift,outer sep=0pt,align=center,major]
         (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{\MThist@current\strut}};
   \pgfmathsetmacro{\MThistcurrnodesep}{\MThistnodesep/#3}%
-  \ifMThist@major
+  \ifnum\MThist@ifmajor>0
     \ifnum\theMThistitem>1
       \draw (n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)-(\MThistcurrnodesep pt,0)$);
       \draw (n-\MThistlastmajor.south west) -- ($(n-\theMThistitem.south east)-(\MThistcurrnodesep pt,0)$);
@@ -453,7 +451,7 @@
   \advance\@tempcnta-\@tempcntb
   \pgfmathsetmacro{\MTDate}{\MTYear-\MThistfirstyear+\@tempcnta/365}
   \expandafter\edef\csname MThistnodetime\theMThistitem\endcsname{\MTDate}
-  \expandafter\edef\csname MThistnodethickness\theMThistitem\endcsname{\ifMThist@major\else very \fi thin}
+  \expandafter\edef\csname MThistnodethickness\theMThistitem\endcsname{\ifnum\MThist@ifmajor<1 very \fi thin}
   \edef\MThistlastnode{n-\theMThistitem}}
 \def\MThist@splitdate#1/#2/#3\relax{\def\MTYear{#1}\def\MTMonth{#2}\def\MTDay{#3}}
 \def\MThisttimeline{%
@@ -475,16 +473,18 @@
     \rlap{%
       \begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont,
         major/.code={%
-          \ifMThist@major
+          \ifnum\MThist@ifmajor>0
             \tikzset{fill=theshade,text width=\MThistnodewidth,inner sep=1pt}
           \else
-            \tikzset{color=theshade,line width=2pt,draw,fill=white,text width=\MThistnodewidth/2,font=\fontsize{4}{6}\selectfont,inner sep=0pt}
+            \tikzset{color=theshade,line width=1.6pt,draw,fill=white,text width=\MThistnodewidth/2,
+                     font=\fontsize{4}{6}\selectfont,inner sep=0.4pt}
           \fi
         }]
         \MThistprepare
         \MThistshow
         \MThisttimeline
-        \ifMThist@major\def\@tempa{0,0}\def\@tempb{0,0}\else\def\@tempa{1pt,1pt}\def\@tempb{1pt,-1pt}\fi
+        % borders for the last major version
+        \ifnum\MThist@ifmajor>0 \def\@tempa{0,0}\def\@tempb{0,0}\else\def\@tempa{1pt,1pt}\def\@tempb{1pt,-1pt}\fi
         \draw (n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)+(\@tempa)$);
         \draw (n-\MThistlastmajor.south west) -- ($(n-\theMThistitem.south east)+(\@tempb)$);
     \end{tikzpicture}}}}
