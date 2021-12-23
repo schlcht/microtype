@@ -2745,7 +2745,11 @@
 %\DescribeMacro{\noprotrusion}
 % is a command from \LaTeX\ proper, so it's just mentioned apropos.
 % When added to the beginning or end of a line, protrusion at the respective
-% margin will be prevented.
+% margin will be prevented.\linebreak
+%\DescribeMacro{\noprotrusionifhmode}
+% While the latter command will always leave |vmode| first (which may in
+% some situations result in unwanted vertical space), this variant only
+% prevents protrusion if already in |hmode|.
 %
 %\medskip\noindent
 % The \microtype\ package defines a number of patches in order to get protrusion
@@ -2774,8 +2778,7 @@
 %              \MTsupp{standard classes, \pkg{amsmath}, \cls{IEEEtran}}
 %\endlist\endgroup
 %
-%\enlargethispage{\baselineskip} ^^A layout
-%\noindent
+%\medskip\noindent
 % By default, all of the above patches will be applied. Should this not be desired,
 % or in case you are running into problems, you may prevent or undo the patches through
 % the \textcolor{thered}{\opt{patch}} and \textcolor{thered}{\opt{nopatch}} options,
@@ -3031,7 +3034,6 @@
 % possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
 % exist on your \TeX\ system.
 %
-%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %! pdfTeX error (font expansion): auto expansion is only possible with scalable fonts.
@@ -3121,7 +3123,6 @@
 % \file{pdflatex.ini} (2.5 or newer).
 %
 %  \item
-%\pagebreak ^^A layout
 %\begin{verbatim}
 %pdfTeX warning (font expansion): font should be expanded before its first use
 %\end{verbatim}
@@ -3314,9 +3315,10 @@
 %  \contributor Liang-Bo Wang     <@\at @>,  ^^A https://github.com/ccwang002
 % `\contributor MisterFiLou       <@\at @>', ^^A https://github.com/MisterFiLou
 %  \contributor Akira Yokosawa    <@\at @>,  ^^A https://github.com/akiyks
-% `\contributor theufman          <@\at @>'  ^^A https://github.com/theufman
+% `\contributor theufman          <@\at @>', ^^A https://github.com/theufman
+% `\contributor frafl             <@\at @>'  ^^A https://github.com/frafl
 % and
-% `\contributor frafl             <@\at @>'. ^^A https://github.com/frafl
+%  \contributor Joel Coffman      <@\at @>.  ^^A https://github.com/joel-coffman
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -7993,6 +7995,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@ifdefined@c@TF\noprotrusion\relax{
   \DeclareRobustCommand\noprotrusion{\leavevmode\kern-\p@\kern\p@}
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\noprotrusionifhmode}
+%\changes{v3.1}{2021/12/22}{new command}
+% Same, but only if we're already in hmode.
+%    \begin{macrocode}
+\DeclareRobustCommand\noprotrusionifhmode{\relax\ifhmode\kern-\p@\kern\p@\fi}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@tempbox}
@@ -19655,7 +19664,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12315}
+% \CheckSum{12324}
 %
 % \Finale
 %
