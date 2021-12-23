@@ -395,7 +395,7 @@
 %<*!docsty>
 \ifcodedoc
 \usepackage{tikz,pgfcalendar}
-\usetikzlibrary{calc}
+\usetikzlibrary{calc,arrows.meta}
 \newcounter{MThistitem}
 \def\MThistlastnode{n-0}
 \pgfmathsetmacro{\MThistfirstyear}{2004} % v1.0 2004/09/11
@@ -435,7 +435,7 @@
     \ifnum\MThist@ifmajor<1 \def\MThist@xshift{\MThistxshift}\fi
     \def\MThist@ifmajor{1}%
   \fi
-  \node[right=\MThistcurrnodesep,xshift=\MThist@xshift,outer sep=0pt,align=center,major]
+  \node[right=\MThistcurrnodesep,xshift=\MThist@xshift,outer sep=0pt,align=center,nodemajor]
         (n-\theMThistitem) at (\MThistlastnode.west) {\hyperref[sub:changes:#1]{\MThist@current\strut}};
   \pgfmathsetmacro{\MThistcurrnodesep}{\MThistnodesep/#3}%
   \ifnum\MThist@ifmajor>0
@@ -451,7 +451,7 @@
   \advance\@tempcnta-\@tempcntb
   \pgfmathsetmacro{\MTDate}{\MTYear-\MThistfirstyear+\@tempcnta/365}
   \expandafter\edef\csname MThistnodetime\theMThistitem\endcsname{\MTDate}
-  \expandafter\edef\csname MThistnodethickness\theMThistitem\endcsname{\ifnum\MThist@ifmajor<1 very \fi thin}
+  \expandafter\edef\csname MThist@ifmajor\theMThistitem\endcsname{\MThist@ifmajor}
   \edef\MThistlastnode{n-\theMThistitem}}
 \def\MThist@splitdate#1/#2/#3\relax{\def\MTYear{#1}\def\MTMonth{#2}\def\MTDay{#3}}
 \def\MThisttimeline{%
@@ -459,7 +459,7 @@
   \pgfmathsetmacro{\MThistxposition}{\MT@tempdim/28.452755}
   \foreach \x in {1,...,\theMThistitem}{
     \pgfmathsetmacro{\MThisttimeposition}{\MThistxposition/(\MThistlastyear-\MThistfirstyear)*\csname MThistnodetime\x \endcsname}
-    \draw[\csname MThistnodethickness\x\endcsname,rounded corners=3pt]
+    \draw[rounded corners=3pt,arrowmajor]
          (\MThisttimeposition,0) -- (\MThisttimeposition,0.5) -- ($(n-\x.south)-(0,0.5)$) -- (n-\x.south); }
   \draw[very thick,-latex] (0,0) -- ($(\MThistlastnode.east)-(0,\MThistvsep)+(1,0)$);
   \foreach \x in {0,...,\MThistyears}{
@@ -468,16 +468,21 @@
     \draw (label-\x.north) -- ++ (0,0.2); }}
 \def\PrintHistory{%
   \InputIfFileExists{microtype-hist.tmp}{\let\VersionDate\MThist@versiondate\@firstofone}\@gobble
-   {\hypersetup{linkcolor=thered}%
+  {\hypersetup{linkcolor=thered}%
     \hspace{-\MThisthshift cm}%
     \rlap{%
       \begin{tikzpicture}[color=thegrey,font=\fontsize{4.5}{6}\selectfont,
-        major/.code={%
+        nodemajor/.code={%
           \ifnum\MThist@ifmajor>0
             \tikzset{fill=theshade,text width=\MThistnodewidth,inner sep=1pt}
           \else
             \tikzset{color=theshade,line width=1.6pt,draw,fill=white,text width=\MThistnodewidth/2,
                      font=\fontsize{4}{6}\selectfont,inner sep=0.4pt}
+          \fi
+        },
+        arrowmajor/.code={%
+          \expandafter\ifnum\csname MThist@ifmajor\x\endcsname=0
+            \tikzset{-{|[sep=-1pt,width=\MThistnodewidth/2-.8pt]},very thin}
           \fi
         }]
         \MThistprepare
