@@ -395,7 +395,7 @@
 %<*!docsty>
 \ifcodedoc
 \usepackage{tikz,pgfcalendar}
-\usetikzlibrary{calc,arrows.meta}
+\usetikzlibrary{calc}
 \newcounter{MThistitem}
 \def\MThistlastnode{n-0}
 \pgfmathsetmacro{\MThistfirstyear}{2004} % v1.0 2004/09/11
@@ -444,6 +444,9 @@
       \draw (n-\MThistlastmajor.south west) -- ($(n-\theMThistitem.south east)-(\MThistcurrnodesep pt,0)$);
       \edef\MThistlastmajor{\theMThistitem}%
     \fi
+  \else
+    \draw [very thin] ($(n-\theMThistitem.north west)+(.8pt,-.9pt)$) -- ($(n-\theMThistitem.north east)-( .8pt,.9pt)$);
+    \draw [very thin] ($(n-\theMThistitem.south west)+(.8pt, .9pt)$) -- ($(n-\theMThistitem.south east)+(-.8pt,.9pt)$);
   \fi
   \MThist@splitdate#2\relax
   \pgfcalendardatetojulian{\MTYear-\MTMonth-\MTDay}{\@tempcnta}
@@ -482,14 +485,14 @@
         },
         arrowmajor/.code={%
           \expandafter\ifnum\csname MThist@ifmajor\x\endcsname=0
-            \tikzset{-{|[sep=-1pt,width=\MThistnodewidth/2-.8pt]},very thin}
+            \tikzset{shorten >=-.8pt,very thin}
           \fi
         }]
         \MThistprepare
         \MThistshow
         \MThisttimeline
         % borders for the last major version
-        \ifnum\MThist@ifmajor>0 \def\@tempa{0,0}\def\@tempb{0,0}\else\def\@tempa{1pt,1pt}\def\@tempb{1pt,-1pt}\fi
+        \ifnum\MThist@ifmajor>0 \def\@tempa{0,0}\def\@tempb{0,0}\else\def\@tempa{.8pt,.6pt}\def\@tempb{.8pt,-.6pt}\fi
         \draw (n-\MThistlastmajor.north west) -- ($(n-\theMThistitem.north east)+(\@tempa)$);
         \draw (n-\MThistlastmajor.south west) -- ($(n-\theMThistitem.south east)+(\@tempb)$);
     \end{tikzpicture}}}}
@@ -2749,7 +2752,7 @@
 %\DescribeMacro{\noprotrusionifhmode}
 % While the latter command will always leave |vmode| first (which may in
 % some situations result in unwanted vertical space), this variant only
-% prevents protrusion if already in |hmode|.
+% prevents protrusion if already in horizontal mode.
 %
 %\medskip\noindent
 % The \microtype\ package defines a number of patches in order to get protrusion
@@ -4959,14 +4962,20 @@
 ^^X\RequirePackage{etoolbox}
 %    \end{macrocode}
 %\begin{macro}{\MT@toks}
-% We need a token register.
+% We need a token register,
 %\changes{v1.9}{2005/09/28}{use instead of \cmd\toks@}
 %    \begin{macrocode}
 \newtoks\MT@toks
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@tempbox}
+% our own box,
+%    \begin{macrocode}
+\newbox\MT@tempbox
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\ifMT@if@}
-% A scratch if.
+% and a scratch if.
 %    \begin{macrocode}
 \newif\ifMT@if@
 %    \end{macrocode}
@@ -8004,11 +8013,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \DeclareRobustCommand\noprotrusionifhmode{\relax\ifhmode\kern-\p@\kern\p@\fi}
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@tempbox}
-%    \begin{macrocode}
-\newbox\MT@tempbox
-%    \end{macrocode}
-%\end{macro}
 %\begin{macro}{\leftprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
 % This command may be used to add protrusion on the left hand side.
@@ -8036,33 +8040,31 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
+%\changes{v3.0}{2021/05/15}{new command}
+%\begin{macro}{\MT@prot@r}
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
 % so the counterpart cannot be defined symmetrically.
-%\changes{v3.0}{2021/05/15}{new command}
 %    \begin{macrocode}
 \DeclareRobustCommand\rightprotrusion{\MT@prot@r}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@r}
-%    \begin{macrocode}
 \long\def\MT@prot@r#1{%
   {#1}%
   \MT@get@prot{#1}{right}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@get@prot}
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
-%\changes{v3.0a}{2021/11/22}{reset counters}
+%\changes{v3.0a}{2021/11/22}{reset counters}^^A
 %\changes{v3.0a}{2021/11/05}{compatibility fix for \pkg{csquotes}
-%                           (reported by \contributor Gustavo Barros <@\at @>) \githubissue{1}}
+%                           (reported by \contributor Gustavo Barros <@\at @>) \githubissue{1}}^^A
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
 %\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
-%                           (reported by \contributor florian <@\at @>)}
+%                           (reported by \contributor florian <@\at @>)}^^A
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
-%\changes{v3.0b}{2021/12/05}{unconditionally \cmd\leavevmode}
+%\changes{v3.0b}{2021/12/05}{unconditionally \cmd\leavevmode}^^A
 % We set various penalties to zero to allow linebreaking, and don't
 % bother if the split box is overfull (but shouldn't we? -- after all,
 % that's how the penalties bug was discovered~\dots).
