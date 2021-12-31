@@ -2777,7 +2777,12 @@
 % \item[footnote] Protrusion for the first line of footnote text (only visible when
 %              the footnote text is set in block paragraphs, like in this document).
 %              \MTsupp{standard classes, \cls{memoir}, <\cls{KOMA}> classes, \pkg{hyperref}}
-% \item[eqnum] Protrusion for equation numbers on either side.
+% \item[eqnum] Protrusion for equation numbers on either side. If you are using the
+%              interface provided by \pkg{mathtools}, insert the relevant commands
+%              yourself, \eg:
+%\begin{verbatim}
+%\newtagform{mytag}[\textbf]{\leftprotrusion{(}}{\rightprotrusion{)}}
+%\end{verbatim}^^A
 %              \MTsupp{standard classes, \pkg{amsmath}, \cls{IEEEtran}}
 %\endlist\endgroup
 %
@@ -3319,9 +3324,10 @@
 % `\contributor MisterFiLou       <@\at @>', ^^A https://github.com/MisterFiLou
 %  \contributor Akira Yokosawa    <@\at @>,  ^^A https://github.com/akiyks
 % `\contributor theufman          <@\at @>', ^^A https://github.com/theufman
-% `\contributor frafl             <@\at @>'  ^^A https://github.com/frafl
+% `\contributor frafl             <@\at @>', ^^A https://github.com/frafl
+%  \contributor Joel Coffman      <@\at @>   ^^A https://github.com/joel-coffman
 % and
-%  \contributor Joel Coffman      <@\at @>.  ^^A https://github.com/joel-coffman
+% `\contributor user182849        <@\at @>'. ^^A https://tex.stackexchange.com/users/182849/user182849
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -6717,11 +6723,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \item (a patch for \pkg{titletoc} would also be worthwhile~\dots)
 %\todo{patch for \pkg{titletoc}}
 % \end{itemize}
-% \item [|eqnum|] equation numbers (with or without \pkg{amsmath}). \cmd\eqref\ relies
-%       on \cmd\tagform@, so we have to make it use the original definition.
+% \item [|eqnum|] equation numbers
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %\changes{v3.0a}{2021/11/22}{protrusion patch \texttt{eqnum} for \cls{IEEEtran}}
+% \begin{itemize}
+%  \item \pkg{IEEEtran}
 %    \begin{macrocode}
   \MT@define@patch{eqnum}{%
     \@ifclassloaded{IEEEtran}
@@ -6730,17 +6737,41 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\theIEEEsubequationdis{(}{\leftprotrusion{(}}%
        \MT@patch@patch\theIEEEsubequationdis{)}{\rightprotrusion{)}}}%
       {}%
+%    \end{macrocode}
+%  \item \cmd\eqref\ relies on \cmd\tagform@, so we have to have it
+%        use the original definition.
+%    \begin{macrocode}
     \@ifpackageloaded{amsmath}
       {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
-       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}}
+       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}%
+%    \end{macrocode}
+%   \item If the user has altered the tags' appearance via \pkg{mathtools}'s \cmd\newtagform\
+%         interface, our patch won't have any effect. We don't issue a warning
+%         because \verb/\(left|right)protrusion/ might have been specified appropriately
+%         in \cmd\newtagform. We could also patch the latter command (or, to be more
+%         precise, |\MT_define_tagform:nwnn|), but the timing is a bit tricky, so
+%         for now info it is.
+%\todo{patch for \pkg{mathtools}'s \cmd\newtagform}
+%\changes{v3.1}{2021/12/30}{info that protrusion patch \texttt{eqnum} may not be effective with \pkg{mathtools}
+%                           (reported by \contributor user182849 <@\at @>)}
+%                           ^^A https://tex.stackexchange.com/questions/628090/usetagform-incompatible-with-microtype/
+%    \begin{macrocode}
+       \MT@with@package@T{mathtools}{%
+         \ifMT@patch@ok\else \MT@patch@oktrue
+           \MT@info@nl{The `eqnum' patch may not be effective because you are\MessageBreak
+               using the mathtools package. Make sure to insert\MessageBreak
+               `\@backslashchar leftprotrusion' and `\@backslashchar rightprotrusion' as\MessageBreak
+               appropriate in mathtools's `\@backslashchar newtagform' command}%
+         \fi}}
       {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
        \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
   }{}%
 %    \end{macrocode}
+% \end{itemize}
 % \item [|footnote|] footnote text (only visible with block paragraphs)
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
-%\begin{itemize}
+% \begin{itemize}
 %   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
@@ -6770,7 +6801,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
            {}}}%
   }{}%
 %    \end{macrocode}
-%\end{itemize}
+% \end{itemize}
 % Finally, execute any redefinitions.
 %    \begin{macrocode}
   \MT@redefined@patches
@@ -7042,7 +7073,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<pdf->      \pdffontsize\MT@font
 %<lua->      \MT@requires@luatex4{\pdffeedback fontsize}{\pdffontsize}\MT@font
 %<xe->      \MT@size pt
-    \MT@info{Fixing zero \string\fontdimen 6 for font `\MT@@font'\MessageBreak
+    \MT@info{Fixing zero \@backslashchar fontdimen 6 for font `\MT@@font'\MessageBreak
              (new value: \the\fontdimen6\MT@font)}%
 %<pdf->    \MT@requires@pdftex8\relax{\MT@glet@nc{\MT@@font-fake6}\@empty}%
   \fi
@@ -12266,7 +12297,7 @@ end
 \renewcommand*\DisableLigatures[2][]{%
   \MT@error{Disabling ligatures of a font is only possible\MessageBreak
     with pdftex version 1.30 or newer.\MessageBreak
-    Ignoring \string\DisableLigatures}{%
+    Ignoring \@backslashchar DisableLigatures}{%
 %<pdf->    Upgrade
 %<xe->    Use
     pdftex.}%
@@ -13871,8 +13902,8 @@ end
 % is now officially deprecated.
 %    \begin{macrocode}
 \MT@ifdefined@c@T\MicroType@Hook{\MT@error{%
-  Command \string\MicroType@Hook\space is deprecated.\MessageBreak
-  Use \string\Microtype@Hook\space instead}
+  Command \@backslashchar MicroType@Hook is deprecated.\MessageBreak
+  Use \@backslashchar Microtype@Hook instead}
   {You might want to inform the font package authors.}\MicroType@Hook}
 \MT@ifdefined@c@T\Microtype@Hook\Microtype@Hook
 %    \end{macrocode}
@@ -14565,9 +14596,9 @@ end
         \ifnum\sfcode`\. > 1500
           \MT@ifstreq\MT@sp@context{nonfrench}\relax{%
             \MT@warning@nl{%
-              \string\nonfrenchspacing\space is active. Adjustment of\MessageBreak
+              \@backslashchar nonfrenchspacing is active. Adjustment of\MessageBreak
               interword spacing will disable it. You might want\MessageBreak
-              to add `\@backslashchar\MT@MT context{spacing=nonfrench}'\MessageBreak
+              to add `\@backslashchar microtypecontext{spacing=nonfrench}'\MessageBreak
               to your preamble}%
           }%
         \fi
@@ -19666,7 +19697,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12324}
+% \CheckSum{12327}
 %
 % \Finale
 %
