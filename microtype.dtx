@@ -617,7 +617,8 @@
     \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
     \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
     \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
-    \textls,\lsstyle,\lslig,\leftprotrusion,\rightprotrusion,\Microtype@Hook},
+    \textls,\lsstyle,\lslig,\leftprotrusion,\rightprotrusion,\noprotrusionifhmode,
+    \Microtype@Hook},
   keywordstyle=[0]\color{thegreen},
   keywords=[1]{protrusion,expansion,activate,DVIoutput,disable,verbose,
     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
@@ -2750,9 +2751,9 @@
 % When added to the beginning or end of a line, protrusion at the respective
 % margin will be prevented.\linebreak
 %\DescribeMacro{\noprotrusionifhmode}
-% While the latter command will always leave |vmode| first (which may in
-% some situations result in unwanted vertical space), this variant only
-% prevents protrusion if already in horizontal mode.
+% While the latter command will always leave vertical mode first
+% (which in some situations may result in unwanted vertical space),
+% this variant prevents protrusion only if already in horizontal mode.
 %
 %\medskip\noindent
 % The \microtype\ package defines a number of patches in order to get protrusion
@@ -2774,13 +2775,13 @@
 % \item[toc]   Adds protrusion at the left margins of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
 %              \MTsupp{standard classes, \cls{memoir}}
-% \item[footnote] Protrusion for the first line of footnote text (only visible when
-%              the footnote text is set in block paragraphs, like in this document).
+% \item[footnote] Protrusion for the first line of footnote text (visible in particular
+%              when the footnote text is set in block paragraphs, like in this document).
 %              \MTsupp{standard classes, \cls{memoir}, <\cls{KOMA}> classes, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side. If you are using the
 %              interface provided by \pkg{mathtools}, insert the relevant commands
 %              yourself, \eg:
-%\begin{verbatim}
+%\begin{verbatim}[belowskip=-\smallskipamount]
 %\newtagform{mytag}[\textbf]{\leftprotrusion{(}}{\rightprotrusion{)}}
 %\end{verbatim}^^A
 %              \MTsupp{standard classes, \pkg{amsmath}, \cls{IEEEtran}}
@@ -19671,12 +19672,11 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 % \appendix
 % \AppendixSettings
 % \GeneralChanges{Documentation}
-%
 %\changes{v2.5}{2013/02/23}{include \file{microtype-logo.dtx} and \file{microtype-lssample.dtx}}
 % \InputIfFileExists{microtype-logo.dtx}\relax\relax
 % \InputIfFileExists{microtype-lssample.dtx}\relax\relax
-%
 % \PrintChanges
+% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %
 % ^^A -------------------------------------------------------------------------
 %\makeatother
@@ -19700,8 +19700,6 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 % \CheckSum{12327}
 %
 % \Finale
-%
-% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %
 \endinput
 %
