@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/00/00 v3.1
+  [2022/99/99 v3.1
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3326,9 +3326,10 @@
 %  \contributor Akira Yokosawa    <@\at @>,  ^^A https://github.com/akiyks
 % `\contributor theufman          <@\at @>', ^^A https://github.com/theufman
 % `\contributor frafl             <@\at @>', ^^A https://github.com/frafl
-%  \contributor Joel Coffman      <@\at @>   ^^A https://github.com/joel-coffman
+%  \contributor Joel Coffman      <@\at @>,  ^^A https://github.com/joel-coffman
+% `\contributor user182849        <@\at @>'  ^^A https://tex.stackexchange.com/users/182849/user182849
 % and
-% `\contributor user182849        <@\at @>'. ^^A https://tex.stackexchange.com/users/182849/user182849
+% `\contributor NightShade        <@\at @>'. ^^A https://tex.stackexchange.com/users/260836/nightshade
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3882,7 +3883,7 @@
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
-%\DoNotIndex{\@disablequotes}                                                ^^A csquotes
+%\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
 %\DoNotIndex{\ifHy@hyperfootnotes,\pdfstringdefDisableCommands,\pdfstringdefWarn} ^^A hyperref
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
@@ -6363,7 +6364,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{csquotes}{%
     \@ifpackagelater{csquotes}{2005/05/11}{%
       \g@addto@macro\MT@setupfont@hook\@disablequotes
-      \g@addto@macro\MT@prot@hook\@disablequotes
+      ^^X\apptocmd\csq@bqgroup{\let\MT@csq@eqgroup\csq@eqgroup}\relax\relax
     }{%
       \MT@warning@nl{%
         Should you receive warnings about unknown slot\MessageBreak
@@ -8103,9 +8104,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@ckpt}
 % We also reset the counters and disable writing to auxiliary files.
 %\begin{macro}{\MT@prot@hook}
-% Furthermore, we have a hook for compatibility fixes.
+%\begin{macro}{\MT@csq@eqgroup}
+% Furthermore, we have a hook for compatibility fixes (not used at the moment),
+%\changes{v3.1}{2022/01/06}{compatibility for \pkg{csquotes}, again
+%                           (reported by \contributor NightShade <@\at @>)}
+%                           ^^A https://tex.stackexchange.com/questions/629068/microtype-quotation-marks-in-itemize-not-aligned-properly-at-begin-of-an-item
+% and a command for \pkg{csquotes}'s grouping (because we actually typeset
+% the quote character, instead of disabling quotes altogether (as we suggested
+% for \githubissue{1}, which was wrong)).
 %    \begin{macrocode}
 \let\MT@prot@hook\@empty
+\let\MT@csq@eqgroup\relax
 \long\def\MT@get@prot#1#2{%
   \begingroup
     \def\@elt##1{\global\value{##1}\the\value{##1}\relax}%
@@ -8121,7 +8130,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \interlinepenalty\z@
       \@newlistfalse
       \MT@prot@hook
-      \noindent #1}%
+      \noindent #1\MT@csq@eqgroup}%
     \vbadness=\@M
     \splittopskip=\z@
     \vfuzz=\maxdimen
@@ -8145,6 +8154,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -8301,11 +8311,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
                     \MT@prot@iffirstcmd\UTFviii@four@octets{%
                       \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
                     }{%
-                      \MT@prot@iflicrcmd{T1}{%
-                        \MT@prot@iflicrcmd{TU}{%
-                          \MT@prot@iflicrcmd{LY1}{%
-                            \MT@prot@iflicrcmd{OT1}{%
-                              \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+%    \end{macrocode}
+% (this is for \pkg{csquotes})
+%    \begin{macrocode}
+                      \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
+                        \MT@prot@iflicrcmd{T1}{%
+                          \MT@prot@iflicrcmd{TU}{%
+                            \MT@prot@iflicrcmd{LY1}{%
+                              \MT@prot@iflicrcmd{OT1}{%
+                                \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+                              }%
                             }%
                           }%
                         }%
@@ -19676,7 +19691,6 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 % \InputIfFileExists{microtype-logo.dtx}\relax\relax
 % \InputIfFileExists{microtype-lssample.dtx}\relax\relax
 % \PrintChanges
-% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %
 % ^^A -------------------------------------------------------------------------
 %\makeatother
@@ -19697,9 +19711,11 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12327}
+% \CheckSum{12340}
 %
 % \Finale
+%
+% \InputIfFileExists{lppl.tex}\LPPLSettings\relax
 %
 \endinput
 %

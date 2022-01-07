@@ -6,6 +6,7 @@
 \usepackage{csquotes}
 \usepackage{listings,verbatim,fancyvrb,hyperref}
 \MakeAutoQuote{“}{”}
+\MakeOuterQuote{"}
 {\catcode`<=13
  \gdef<#1>{\textls{#1}}}
 \makeatletter
@@ -32,7 +33,7 @@
 
 \rightprotrusion{\sffamily--abc\par def--}
 
-\def\xxx{\sffamily--abc\par def--}
+\def\xxx{--abc\par def--}
 \leftprotrusion\xxx % issue #6
 
 \begin{itemize}
@@ -44,6 +45,7 @@
   \item {---} some words\newline {---} a new line
   \item {\textemdash} some words\newline {\textemdash} a new line
   \item “quote”
+  \item "quote"
   \item <ABC> def
 \microtypesetup{nopatch=item}
   \item --- some words (without patch)\newline --- a new line
