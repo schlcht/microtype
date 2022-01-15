@@ -80,8 +80,9 @@
 %
 %<*driver|docsty>
 %<*driver>
-\documentclass[10pt,a4paper]{ltxdoc}
 \makeatletter
+\AddToHook{package/doc/before}{\pkgcls@targetdate=1 \def\pkgcls@targetlabel{v2}}
+\documentclass[10pt,a4paper]{ltxdoc}
 %</driver>
 % Compiling microtype.dtx with the command line option
 % --jobname=microtype-code

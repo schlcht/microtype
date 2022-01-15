@@ -36,11 +36,12 @@
 %<TU-basic>  {mt-TU-basic.cfg}[2021/06/22 v1.1 microtype config. file: fonts with basic glyph set (RS)]
 %<TU-empty>  {mt-TU-empty.cfg}[2021/06/22 v1.1 microtype config. file: fonts with nonstandard glyph set (RS)]
 %<*driver>
+\makeatletter
+\AddToHook{package/doc/before}{\pkgcls@targetdate=1 \def\pkgcls@targetlabel{v2}}
 \documentclass[10pt,a4paper]{ltxdoc}
 \usepackage{fontspec}
 \usepackage{luatexbase}
 \RequireLuaModule{luainputenc}
-\makeatletter
 % microtype-doc.sty is 8-bit, and the following is a hack
 \luatexbase@directlua{luatexbase.add_to_callback('process_input_buffer', luainputenc.fake_utf_read, 'luainputenc.fake_utf_read')}
 \usepackage{microtype-doc}
