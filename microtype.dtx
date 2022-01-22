@@ -6776,7 +6776,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|footnote|] footnote text (only visible with block paragraphs)
-%\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}
+%\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}^^A
+%\changes{v3.1}{2022/01/21}{protrusion patch \texttt{footnote}: also for minipages}^^A
 % \begin{itemize}
 %   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
@@ -6787,24 +6788,31 @@ time will almost certainly lead to undesired results. Have your choice!}%
         {\ifHy@hyperfootnotes\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
         \@secondoftwo
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-       \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}}
-%    \end{macrocode}
-%   \item so do the <\cls{KOMA}> classes (which load \pkg{scrkbase})
-%\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
-%                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
-%    \begin{macrocode}
-      {\@ifpackageloaded{scrkbase}
-        {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}
-%    \end{macrocode}
-%   \item  base classes
-%    \begin{macrocode}
-        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@mpfootnotetext
+           {{\expandafter\hyper@@anchor\expandafter
+               {\Hy@footnote@currentHref}{\relax}}\ignorespaces}
+           {{\expandafter\hyper@@anchor\expandafter
+               {\Hy@footnote@currentHref}{\relax}}\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
 %   \item \cls{memoir} additionally allows footnotes in the margins
 %    \begin{macrocode}
-         \@ifclassloaded{memoir}
-           {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
-           {}}}%
+      {\@ifclassloaded{memoir}
+         {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}%
+          \MT@patch@patch\@mpfootnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+         {\MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+%    \end{macrocode}
+%   \item the <\cls{KOMA}> classes (which load \pkg{scrkbase})
+%\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
+%                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
+%    \begin{macrocode}
+          \@ifpackageloaded{scrkbase}
+             {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
+%    \end{macrocode}
+%   \item the base classes
+%    \begin{macrocode}
+             {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
@@ -19750,7 +19758,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12356}
+% \CheckSum{12386}
 %
 % \Finale
 %
