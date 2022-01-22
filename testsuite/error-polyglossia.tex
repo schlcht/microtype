@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{polyglossia}
+\usepackage[babel,verbose]{microtype}
+\DeclareMicrotypeBabelHook
+  {french,spanish}
+  {protrusion=more}
+\SetProtrusion[factor=3000,context=more,load=T1-default,name=poly]{encoding=*}{}
+\setmainlanguage{english}
+\setotherlanguage{spanish}
+\setotherlanguage[autospacing]{french}
+\textwidth=8cm
+\begin{document}
+
+If you are familiar with the babel package, you will note that polyglossia’s language naming slightly differs. Whereas babel has a unique name for each language variety (e.g., american and british), polyglossia differentiates language varieties via language options (e.g., english, variant=american).
+
+\foreignlanguage{spanish}{%
+If you are familiar with the babel package, you will note that polyglossia’s language naming slightly differs. Whereas babel has a unique name for each language variety (e.g., american and british), polyglossia differentiates language varieties via language options (e.g., english, variant=american).\par}
+
+\begin{french}
+If you are familiar with the babel package: you will note that polyglossia’s language naming slightly differs. Whereas babel has a unique name for each language variety (e.g., american and british), polyglossia differentiates language varieties via language options (e.g., english, variant=american).\par
+\end{french}
+
+\end{document}

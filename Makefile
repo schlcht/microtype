@@ -95,7 +95,7 @@ TDS_ZIP  = $(NAME).tds.zip
 ZIPS     = $(CTAN_ZIP) $(TDS_ZIP)
 
 DO_PDFLATEX_DOC  = pdflatex$(DEV) --interaction=nonstopmode $(DTX) $(REDIRECT)
-DO_PDFLATEX_CODE = pdflatex$(DEV) --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT) && \
+DO_PDFLATEX_CODE = pdflatex$(DEV) --jobname=$(NAMEC) --interaction=nonstopmode $(DTX) $(REDIRECT) || \
    if ! grep -i '* Checksum passed *' $(NAMEC).log > /dev/null ; then \
       if grep 'has no checksum\|Checksum not passed' $(NAMEC).log ; then \
          false ; \

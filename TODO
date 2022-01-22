@@ -1,7 +1,6 @@
 * protrusion patch footnote: add mpfootnotetext
 * make microtype-show work with xetex
 * different md* (etc.) for different fonts
-* what about polyglossia?
 * check contexts in lua again -> contexts
 * guard against expanding context? -:
 \newcommand{\@ifexpanding}{\let\@ifexpanding@\@ifexpanding@\@secondoftwo}

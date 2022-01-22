@@ -1424,7 +1424,8 @@
 %\medskip
 %\Describe{Option}{babel}{true,!false}
 % Loading the package with the \opt{babel} option will adjust the typesetting
-% according to the respective selected language. Read section~\ref{sec:context}
+% according to the respective selected language. This also works with the
+% \pkg{polyglossia} package. Read section~\ref{sec:context}
 % for further information.
 %
 %\medskip
@@ -2588,7 +2589,7 @@
 %
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeBabelHook}
-%                {list of \pkg{babel} languages,context list}
+%                {list of \pkg{babel}/\pkg{polyglossia} languages,context list}
 % Naturally, \microtype\ does not know about the typographic specialties of
 % every language. This command is a means of teaching it how to adjust the
 % context when a particular language is selected. The main configuration file
@@ -2997,7 +2998,7 @@
 %        the settings will only work reliably if you specify the |inputenc| key.
 %\changes{v2.3a}{2008/02/25}{add hint about \pkg{babel} having to be loaded first}
 %  \item When loading the package with the \opt{babel} option, you must load
-%        the \pkg{babel} package before \microtype.
+%        the \pkg{babel} or \pkg{polyglossia} package before \microtype.
 %\changes{v2.5}{2012/09/11}{add hint about \luatex\ compatibility}
 %  \item Before this package was fully compatible with \luatex, the following
 %        method of enabling expansion and protrusion with the \cite{fontspec}
@@ -3882,6 +3883,7 @@
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
+%\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
@@ -14806,7 +14808,7 @@ end
 }
 %    \end{macrocode}
 %\end{macro}
-% We patch the language switching commands to enable language-dependent setup.
+% We patch \pkg{babel}'s language switching commands to enable language-dependent setup.
 %    \begin{macrocode}
 \MT@addto@setup{%
   \ifMT@babel
@@ -14852,9 +14854,26 @@ end
 % In case \pkg{babel} was loaded before \microtype:
 %    \begin{macrocode}
       \MT@set@babel@context\languagename
+%    \end{macrocode}
+% The \pkg{polyglossia} package has a useful hook.
+%\changes{v3.1}{2022/01/21}{make \opt{babel} option work with \pkg{polyglossia}}
+% Unfortunately, compatibility with \pkg{polyglossia} is less useful in itself,
+% as only \luatex\ allows working on font copies, and currently doesn't provide
+% the kerning or spacing feature. But who knows, maybe somebody would want more
+% protrusion in French\dots
+%    \begin{macrocode}
     }{%
-      \MT@warning@nl{You did not load the babel package.\MessageBreak
-        The `babel' option won't have any effect}%
+      \@ifpackageloaded{polyglossia}{%
+        \MT@info@nl{Registering with polyglossia's language switching hook}%
+        \gappto\polyglossia@language@switched{%
+          \MT@set@babel@context{\languagename}%
+        }%
+        \MT@set@babel@context\languagename
+      }{%
+        \MT@warning@nl{%
+          You did not load the babel or the polyglossia package.\MessageBreak
+          The `babel' option won't have any effect}%
+      }%
     }%
   \fi
 }
@@ -19731,7 +19750,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12348}
+% \CheckSum{12356}
 %
 % \Finale
 %
