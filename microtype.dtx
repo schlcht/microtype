@@ -617,8 +617,8 @@
     \DeclareMicrotypeSetDefault,\SetProtrusion,\SetExpansion,\SetTracking,
     \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
     \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
-    \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,
-    \textls,\lsstyle,\lslig,\leftprotrusion,\rightprotrusion,\noprotrusionifhmode,
+    \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,\textls,\lsstyle,\lslig,
+    \leftprotrusion,\rightprotrusion,\noprotrusion,\noprotrusionifhmode,
     \Microtype@Hook},
   keywordstyle=[0]\color{thegreen},
   keywords=[1]{protrusion,expansion,activate,DVIoutput,disable,verbose,
@@ -3860,13 +3860,13 @@
 %  \@currname,\@defaultunits,\@elt,\@empty,\@eqnnum,\@expandtwoargs,\@fileswfalse,
 %  \@firstofone,\@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,
 %  \@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
-%  \@let@token,\@m,\@M,\@makeother,\@minus,\@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,
-%  \@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,\@removeelement,
-%  \@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
-%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
-%  \check@icr,\cl@@ckpt,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
-%  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
-%  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
+%  \@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,\@nameuse,\@ne,\@newlistfalse,
+%  \@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,
+%  \@removeelement,\@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,
+%  \@tempcntb,\@tempdima,\@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
+%  \@xobeysp,\check@icr,\cl@@ckpt,\color@begingroup,\color@endgroup,\g@addto@macro,
+%  \hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,
+%  \p@,\set@display@protect,\strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
@@ -4056,6 +4056,8 @@
 \newcommand*\textmicrotypecontext[2]{#2}
 \newcommand\leftprotrusion[1]{#1}
 \newcommand\rightprotrusion[1]{#1}
+\providecommand*\noprotrusion{}
+\newcommand*\noprotrusionifhmode{}
 \@ifpackageloaded{letterspace}{\let\MT@textls\relax}{%
 %</package>
 \newcommand*\lsstyle{}
@@ -19758,7 +19760,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12386}
+% \CheckSum{12390}
 %
 % \Finale
 %
