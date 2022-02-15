@@ -3837,7 +3837,8 @@
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
-%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,\unexpanded}
+%  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,\protected,
+%  \unexpanded}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
 %\DoNotIndex{\pdfannot,\pdfmatch,\pdfoutput,\pdfstrcmp,
 %  \pdftexrevision,\pdftexversion}
@@ -3848,7 +3849,7 @@
 %\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
 %^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}                ^^A xetex
-%\DoNotIndex{\directlua,\glet,\luatexversion}
+%\DoNotIndex{\directlua,\glet,\luatexversion,\pdfextension,\pdffeedback}
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
@@ -4224,6 +4225,8 @@
 % requires a viewer for <PDF> version 1.5 (you could use |/Text| if you're
 % using an older <PDF> viewer).
 %    \begin{macrocode}
+\ifx\directlua\@undefined \else
+  \protected\def\pdfannot{\pdfextension annot }\fi
 \def\MT@show@pdfannot#1{%
   \ifnum\tracingmicrotypeinpdf<#1 \else
     \iftracingmicrotypeinpdfall\leavevmode\fi
@@ -19756,7 +19759,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12390}
+% \CheckSum{12399}
 %
 % \Finale
 %
