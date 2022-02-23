@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/99/99 v3.1
+  [2022/02/22 v3.0c
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.0b",
-%<luafile>    date         = "2021/12/10",
+%<luafile>    version      = "3.0c",
+%<luafile>    date         = "2022/02/22",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -658,7 +658,8 @@
              {\ifcodedoc User manual\else Implementation\fi}}
 %</!docsty>
   \externaldocument{microtype\ifcodedoc\else-code\fi}
-  \PassOptionsToPackage{nodvi}{totpages} % remove annoying log output
+  \let\r@TotPages\relax                  % suppress multiply defined warning
+  \PassOptionsToPackage{nodvi}{totpages} % and annoying log output
   \usepackage{hyperxmp}                  % (hyperxmp loads totpages)
   \usepackage{attachfile}
   \usepackage{pdfpages}
@@ -3320,6 +3321,7 @@
 % `\contributor tnull             <@\at @>', ^^A https://tex.stackexchange.com/users/91987/tnull
 % `\contributor azur              <@\at @>', ^^A https://tex.stackexchange.com/users/216369/azur
 % `\contributor Safron            <@\at @>', ^^A https://tex.stackexchange.com/users/149123/safron
+%  \contributor Joseph Wright     <@\at @>,  ^^A https://tex.stackexchange.com/users/73/joseph-wright
 %  \contributor Gustavo Barros    <@\at @>,  ^^A https://tex.stackexchange.com/users/105447/gusbrs
 %  \contributor Torsten Schuetze  <torsten.schuetze\at gmx.net>,
 % `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
@@ -6759,7 +6761,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         precise, |\MT_define_tagform:nwnn|), but the timing is a bit tricky, so
 %         for now info it is.
 %\todo{patch for \pkg{mathtools}'s \cmd\newtagform}
-%\changes{v3.1}{2021/12/30}{info that protrusion patch \texttt{eqnum} may not be effective with \pkg{mathtools}
+%\changes{v3.0c}{2021/12/30}{info that protrusion patch \texttt{eqnum} may not be effective with \pkg{mathtools}
 %                           (reported by \contributor user182849 <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/628090/usetagform-incompatible-with-microtype/
 %    \begin{macrocode}
@@ -6778,7 +6780,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \end{itemize}
 % \item [|footnote|] footnote text (only visible with block paragraphs)
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}^^A
-%\changes{v3.1}{2022/01/21}{protrusion patch \texttt{footnote}: also for minipages}^^A
+%\changes{v3.0c}{2022/01/21}{protrusion patch \texttt{footnote}: also for minipages}^^A
 % \begin{itemize}
 %   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
@@ -8053,7 +8055,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\noprotrusionifhmode}
-%\changes{v3.1}{2021/12/22}{new command}
+%\changes{v3.0c}{2021/12/22}{new command}
 % Same, but only if we're already in hmode.
 %    \begin{macrocode}
 \DeclareRobustCommand\noprotrusionifhmode{\relax\ifhmode\kern-\p@\kern\p@\fi}
@@ -8080,7 +8082,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@l}
 %\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
 %                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
-%\changes{v3.1}{2022/01/14}{next try at removing \cmd\long}
+%\changes{v3.0c}{2022/01/14}{next try at removing \cmd\long}
 % This probably doesn't need to be \cmd\long\ any longer.
 %    \begin{macrocode}
 \def\MT@prot@l#1{%
@@ -8092,7 +8094,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\rightprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
 %\begin{macro}{\MT@prot@r}
-%\changes{v3.1}{2022/01/14}{no longer \cmd\long}
+%\changes{v3.0c}{2022/01/14}{no longer \cmd\long}
 % Unfortunately, there's no way to retrieve anything that's already been typeset,
 % so the counterpart cannot be defined symmetrically.
 %    \begin{macrocode}
@@ -8124,14 +8126,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@hook}
 % Furthermore, we have a hook for compatibility fixes (not used at the moment),
 %\begin{macro}{\MT@csq@eqgroup}
-%\changes{v3.1}{2022/01/06}{compatibility for \pkg{csquotes}, again
+%\changes{v3.0c}{2022/01/06}{compatibility for \pkg{csquotes}, again
 %                           (reported by \contributor NightShade <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/629068/microtype-quotation-marks-in-itemize-not-aligned-properly-at-begin-of-an-item
 % and a command for \pkg{csquotes}'s grouping (because we actually typeset
 % the quote character, instead of disabling quotes altogether (as we suggested
 % for \githubissue{1}, which was wrong)).
 %\begin{macro}{\MT@noindent}
-%\changes{v3.1}{2022/01/14}{use \cmd\RawNoindent, if available \githubissue{8}}
+%\changes{v3.0c}{2022/01/14}{use \cmd\RawNoindent, if available \githubissue{8}}
 % Finally, \LaTeX's new paragraph hooks require special attention, as they're
 % (currently?) unable to distinguish between real typesetting and trial runs.
 % In our case, fortunately, we really don't want to trigger the hooks.
@@ -8210,7 +8212,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@ifmacro@@}
 % Test whether \meta{\#1} is a macro or an active character
 % that does not take an argument.
-% (inspired by Joseph Wright). ^^A https://tex.stackexchange.com/a/331696/
+% (inspired by \contributor Joseph Wright <@\at @>). ^^A https://tex.stackexchange.com/a/331696/
 % Only works with \etex.
 %    \begin{macrocode}
 ^^X\def\MT@prot@ifmacro{%
@@ -8235,7 +8237,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Test whether the first token in \cs{MT@prot@next} (once expanded) is the
 % command \meta{\#1}. Since \cs{MT@prot@next} may also be user-defined (or
 % whatever), we have to use our own, \cmd\long\ version of \cmd\@car.
-%\changes{v3.1}{2021/12/17}{use \cmd\long\ variant of \cmd\@car\
+%\changes{v3.0c}{2021/12/17}{use \cmd\long\ variant of \cmd\@car\
 %                           (reported by \contributor frafl <@\at @>) \githubissue{6}}
 %    \begin{macrocode}
 \def\MT@prot@iffirstcmd#1{%
@@ -14865,7 +14867,7 @@ end
       \MT@set@babel@context\languagename
 %    \end{macrocode}
 % The \pkg{polyglossia} package has a useful hook.
-%\changes{v3.1}{2022/01/21}{make \opt{babel} option work with \pkg{polyglossia}}
+%\changes{v3.0c}{2022/01/21}{make \opt{babel} option work with \pkg{polyglossia}}
 % Unfortunately, compatibility with \pkg{polyglossia} is less useful in itself,
 % as only \luatex\ allows working on font copies, and currently doesn't provide
 % the kerning or spacing feature. But who knows, maybe somebody would want more
