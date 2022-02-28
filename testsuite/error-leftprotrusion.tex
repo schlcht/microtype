@@ -35,6 +35,7 @@
 
 \def\xxx{--abc\par def--}
 \leftprotrusion\xxx % issue #6
+
 \rightprotrusion\xxx
 
 \begin{itemize}
@@ -47,6 +48,7 @@
   \item {\textemdash} some words\newline {\textemdash} a new line
   \item “quote”
   \item "quote"
+  \item \bgroup "quote"\egroup % issue #10
   \item <ABC> def
 \microtypesetup{nopatch=item}
   \item --- some words (without patch)\newline --- a new line

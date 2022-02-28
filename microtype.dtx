@@ -3331,9 +3331,10 @@
 % `\contributor theufman          <@\at @>', ^^A https://github.com/theufman
 % `\contributor frafl             <@\at @>', ^^A https://github.com/frafl
 %  \contributor Joel Coffman      <@\at @>,  ^^A https://github.com/joel-coffman
-% `\contributor user182849        <@\at @>'  ^^A https://tex.stackexchange.com/users/182849/user182849
+% `\contributor user182849        <@\at @>', ^^A https://tex.stackexchange.com/users/182849/user182849
+% `\contributor NightShade        <@\at @>'  ^^A https://tex.stackexchange.com/users/260836/nightshade
 % and
-% `\contributor NightShade        <@\at @>'. ^^A https://tex.stackexchange.com/users/260836/nightshade
+%  \contributor Nelson Lago       <@\at @>.  ^^A https://github.com/urrameu
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -8291,8 +8292,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0b}{2021/12/05}{don't rescan anymore
 %                           (reported by \contributor Akira Yokosawa <@\at @>
 %                                    and \contributor theufman <@\at @>) \githubissue{3,4}}
+%\changes{v3.0d}{2022/02/26}{no brace delimiting
+%                           (reported by \contributor Nelson Lago <@\at @>) \githubissue{10}}
 %    \begin{macrocode}
-\def\MT@prot@group#{\bgroup\afterassignment\MT@prot@get@firstchar\let\MT@temp= }
+\def\MT@prot@group{\bgroup\afterassignment\MT@prot@get@firstchar\let\MT@temp= }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@firstchar}
