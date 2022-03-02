@@ -9325,11 +9325,18 @@ microtype.add_ls = add_ls
 %\changes{v2.3}{2007/11/03}{redone: extract outer kerns from current letterspacing
 %                           amount}
 % For Fraktur fonts, some ligatures shouldn't be broken up. This command will
-% temporarily select the base font and insert the correct kerning.
+% temporarily select the base font (making sure to really select the current font)
+%\changes{v3.0d}{2022/03/01}{define \cmd\font@name\
+%                            (reported by \contributor Ulrike Fischer <fischer\at troubleshooting-tex.de>)
+%                            \githubissue{12}}
+% and insert the correct kerning.
 %    \begin{macrocode}
 \DeclareRobustCommand\lslig[1]{%
   {\MT@ifdefined@c@TF\MT@curr@ls{%
      \escapechar\m@ne
+%<plain>    \MT@requires@latex2{%
+     \xdef\font@name{\csname\curr@fontshape/\f@size\endcsname}%
+%<plain>    }\relax%
      \MT@get@ls@basefont
      \MT@outer@kern=\dimexpr\MT@curr@ls sp * \fontdimen6\font@name/2000\relax
      \kern\MT@outer@kern
@@ -9356,7 +9363,7 @@ microtype.add_ls = add_ls
     \MT@exp@two@c\MT@glet\MT@ls@basefont\font@name
   \else
 %<debug>\MT@dinfo@nl{1}{... fixing base font}%
-    \MT@exp@two@c\let\font@name\MT@ls@basefont
+    \MT@set@lsbasefont
   \fi
 }
 %    \end{macrocode}
@@ -19764,7 +19771,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12399}
+% \CheckSum{12404}
 %
 % \Finale
 %

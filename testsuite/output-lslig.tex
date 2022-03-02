@@ -1,0 +1,9 @@
+% issue #12
+\documentclass{article}
+\usepackage[activate=false]{microtype}
+\begin{document}
+\makeatletter
+\textls{a\lslig{ff}e {\sffamily sans} a\lslig{ff\typeout{\meaning\font@name}}e}
+\end{document}
+
+grep '^macro:->OT1/cmr/m/n/10'
