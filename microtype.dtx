@@ -3332,9 +3332,10 @@
 % `\contributor frafl             <@\at @>', ^^A https://github.com/frafl
 %  \contributor Joel Coffman      <@\at @>,  ^^A https://github.com/joel-coffman
 % `\contributor user182849        <@\at @>', ^^A https://tex.stackexchange.com/users/182849/user182849
-% `\contributor NightShade        <@\at @>'  ^^A https://tex.stackexchange.com/users/260836/nightshade
+% `\contributor NightShade        <@\at @>', ^^A https://tex.stackexchange.com/users/260836/nightshade
+%  \contributor Nelson Lago       <@\at @>   ^^A https://github.com/urrameu
 % and
-%  \contributor Nelson Lago       <@\at @>.  ^^A https://github.com/urrameu
+%  \contributor Brian Dunn        <@\at @>.  ^^A https://github.com/bdtc
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3857,22 +3858,22 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@elt,\@empty,\@eqnnum,\@expandtwoargs,\@fileswfalse,
-%  \@firstofone,\@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,
-%  \@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
+%  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
+%  \@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,
+%  \@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
 %  \@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,\@nameuse,\@ne,\@newlistfalse,
 %  \@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,
 %  \@removeelement,\@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,
 %  \@tempcntb,\@tempdima,\@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
-%  \@xobeysp,\check@icr,\cl@@ckpt,\color@begingroup,\color@endgroup,\g@addto@macro,
-%  \hmode@bgroup,\m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,
-%  \p@,\set@display@protect,\strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
+%  \@xobeysp,\check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,
+%  \m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
+%  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
 %  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\quad,\raggedright,
 %  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\tracingnone,\usefont,
-%  \value,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
 %  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
 %  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,
 %  \ProcessOptions,\RawNoindent,\RequirePackage,\@@enc@update,\UnicodeEncodingName}
@@ -8111,10 +8112,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Typeset the text inside a box and get the left and right margin kerns.
 % We add an extra \cmd\vbox\ in case we're inside a |tabular|.
 % \cmd\@newlistfalse\ is meant to make \cmd\\ work in |centering| etc.
-%\changes{v3.0a}{2021/11/22}{reset counters}^^A
 %\changes{v3.0a}{2021/11/05}{compatibility fix for \pkg{csquotes}
 %                           (reported by \contributor Gustavo Barros <@\at @>) \githubissue{1}}^^A
 %                            ^^A https://tex.stackexchange.com/questions/621440/microtype-csquotes-autoquote-and-itemize-interaction
+%\changes{v3.0a}{2021/11/22}{reset counters}^^A
 %\changes{v3.0a}{2021/11/27}{set penalties to zero and vfuzz to max
 %                           (reported by \contributor florian <@\at @>)}^^A
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
@@ -8122,8 +8123,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We set various penalties to zero to allow linebreaking, and don't
 % bother if the split box is overfull (but shouldn't we? -- after all,
 % that's how the penalties bug was discovered~\dots).
-%\begin{macro}{\MT@ckpt}
-% We also reset the counters and disable writing to auxiliary files.
+%\changes{v3.0d}{2022/03/03}{no longer reset counters
+%                           (reported by \contributor Brian Dunn <@\at @>) \githubissue{14}}
+% (We no longer reset counters etc., since we don't typeset groups anymore.)
 %\begin{macro}{\MT@prot@hook}
 % Furthermore, we have a hook for compatibility fixes (not used at the moment),
 %\begin{macro}{\MT@csq@eqgroup}
@@ -8150,10 +8152,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \fi
 \def\MT@get@prot#1#2{%
   \begingroup
-    \def\@elt##1{\global\value{##1}\the\value{##1}\relax}%
-    \edef\MT@ckpt{\cl@@ckpt}%
-    \let\@elt\relax
-    \@fileswfalse
     \setbox\MT@tempbox\vbox{%
       \everypar{}%
       \parfillskip=\z@skip
@@ -8174,7 +8172,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \global\setbox\MT@tempbox=\lastbox
       \fi
     }%
-    \MT@ckpt
   \endgroup
   \leavevmode
   \ifhbox\MT@tempbox
@@ -8187,7 +8184,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -19771,7 +19767,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12404}
+% \CheckSum{12389}
 %
 % \Finale
 %
