@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/02/22 v3.0c
+  [2022/03/14 v3.0d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.0c",
-%<luafile>    date         = "2022/02/22",
+%<luafile>    version      = "3.0d",
+%<luafile>    date         = "2022/03/14",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -1382,7 +1382,6 @@
 % See section~\ref{sub:expansion} for a more detailed discussion.
 %
 %
-%\pagebreak ^^A layout
 %\subsection[Tracking]
 %           {Tracking \requires{\pdftex~1.40,\luatex~0.62}}
 %           \label{sub:options-tracking}
@@ -1556,6 +1555,7 @@
 % words, this is equivalent to specifying \emph{all} possible values for that
 % attribute.
 % Therefore, the predefined set `|alltext|', which is declared as:
+%\enlargethispage{\baselineskip} ^^A layout
 %\begin{verbatim}
 %\DeclareMicrotypeSet{alltext}
 %   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU} }
@@ -3121,6 +3121,7 @@
 %! TeX capacity exceeded, sorry [maximum internal font number (font_max)=<2000>].
 %\end{verbatim}
 % Memory parameter `|font_max|' too small.
+%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %! TeX capacity exceeded, sorry [PDF memory size (pdf_mem_size)=<65536>].
@@ -3481,6 +3482,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0c}{2022/02/22}
 %
 %\VersionDate{3.0b}{2021/12/10}
 %
@@ -3858,9 +3861,9 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@empty,\@eqnnum,\@expandtwoargs,\@firstofone,
-%  \@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,\@ifl@t@r,
-%  \@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
+%  \@currname,\@defaultunits,\@empty,\@@enc@update,\@eqnnum,\@expandtwoargs,
+%  \@firstofone,\@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,
+%  \@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
 %  \@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,\@nameuse,\@ne,\@newlistfalse,
 %  \@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,
 %  \@removeelement,\@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,
@@ -3871,12 +3874,12 @@
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
-%  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\quad,\raggedright,
-%  \renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,\tracingnone,\usefont,
-%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
-%  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
-%  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,
-%  \ProcessOptions,\RawNoindent,\RequirePackage,\@@enc@update,\UnicodeEncodingName}
+%  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\providecommand,
+%  \quad,\raggedright,\renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,
+%  \tracingnone,\usefont,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,
+%  \CurrentOption,\DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,
+%  \InputIfFileExists,\MessageBreak,\PackageError,\PackageInfo,\PackageWarning,
+%  \PassOptionsToPackage,\ProcessOptions,\RawNoindent,\RequirePackage,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -3888,7 +3891,8 @@
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
-%\DoNotIndex{\ifHy@hyperfootnotes,\pdfstringdefDisableCommands,\pdfstringdefWarn} ^^A hyperref
+%\DoNotIndex{\ifHy@hyperfootnotes,\hyper@@anchor,\Hy@footnote@currentHref,
+%  \pdfstringdefDisableCommands,\pdfstringdefWarn}                           ^^A hyperref
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
@@ -3905,7 +3909,7 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
-%\DoNotIndex{\apptocmd,\patchcmd}                                            ^^A etoolbox
+%\DoNotIndex{\apptocmd,\gappto,\patchcmd}                                    ^^A etoolbox
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem}                     ^^A beamer
 %\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
 %\DoNotIndex{\@topic@item}                                                   ^^A simplecv
@@ -5561,8 +5565,10 @@ microtype.if_dimen = if_dimen
 %<*pdf-|xe->
 %<pdf->\MT@requires@pdftex5{
 \def\MT@ifstreq#1#2{%
-%<pdf->  \ifnum\pdfstrcmp{#1}{#2}=\z@
-%<xe->  \ifnum\strcmp{#1}{#2}=\z@
+  \ifnum
+%<pdf->      \pdfstrcmp
+%<xe->      \strcmp
+      {#1}{#2}=\z@
     \expandafter\@firstoftwo
   \else
     \expandafter\@secondoftwo
@@ -19767,7 +19773,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12389}
+% \CheckSum{12387}
 %
 % \Finale
 %
