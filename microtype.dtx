@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/03/14 v3.0d
+  [2022/12/32 v3.0e
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3334,9 +3334,10 @@
 %  \contributor Joel Coffman      <@\at @>,  ^^A https://github.com/joel-coffman
 % `\contributor user182849        <@\at @>', ^^A https://tex.stackexchange.com/users/182849/user182849
 % `\contributor NightShade        <@\at @>', ^^A https://tex.stackexchange.com/users/260836/nightshade
-%  \contributor Nelson Lago       <@\at @>   ^^A https://github.com/urrameu
+%  \contributor Nelson Lago       <@\at @>,  ^^A https://github.com/urrameu
+%  \contributor Brian Dunn        <@\at @>   ^^A https://github.com/bdtc
 % and
-%  \contributor Brian Dunn        <@\at @>.  ^^A https://github.com/bdtc
+%  \contributor Ralf Steinle      <rasteinle\at web.de>.
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3482,6 +3483,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0d}{2022/03/14}
 %
 %\VersionDate{3.0c}{2022/02/22}
 %
@@ -6379,7 +6382,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{csquotes}{%
     \@ifpackagelater{csquotes}{2005/05/11}{%
       \g@addto@macro\MT@setupfont@hook\@disablequotes
-      ^^X\apptocmd\csq@bqgroup{\let\MT@csq@eqgroup\csq@eqgroup}\relax\relax
+%    \end{macrocode}
+%\changes{v3.0e}{2022/04/05}{disable \pkg{csquotes}'s grouping control for \cs{leftprotrusion}
+%                            (reported by \contributor Ralf Steinle <rasteinle\at web.de>)}
+%                            ^^A https://www.listserv.dfn.de/sympa/arc/tex-d-l/2022-04/msg00010.html
+% For \cs{leftprotrusion}, we disable \pkg{csquotes}'s tracking
+% of group level and type, because we'll probably be typesetting
+% the opening quotes only.
+%    \begin{macrocode}
+      \g@addto@macro\MT@prot@hook{%
+        \def\csq@bqgroup{\begingroup\leavevmode
+          \let\MT@csq@eqgroup\endgroup}%
+        \let\csq@eqgroup\endgroup}%
     }{%
       \MT@warning@nl{%
         Should you receive warnings about unknown slot\MessageBreak
@@ -8134,21 +8148,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (reported by \contributor Brian Dunn <@\at @>) \githubissue{14}}
 % (We no longer reset counters etc., since we don't typeset groups anymore.)
 %\begin{macro}{\MT@prot@hook}
-% Furthermore, we have a hook for compatibility fixes (not used at the moment),
+% Furthermore, we have a hook for compatibility fixes (currently used for \pkg{csquotes} only),
 %\begin{macro}{\MT@csq@eqgroup}
 %\changes{v3.0c}{2022/01/06}{compatibility for \pkg{csquotes}, again
 %                           (reported by \contributor NightShade <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/629068/microtype-quotation-marks-in-itemize-not-aligned-properly-at-begin-of-an-item
-% and a command for \pkg{csquotes}'s grouping (because we actually typeset
+% and a dedicated command to end \pkg{csquotes}'s group (because we actually typeset
 % the quote character, instead of disabling quotes altogether (as we suggested
 % for \githubissue{1}, which was wrong)).
+%\changes{v3.0e}{2022/04/05}{add \cmd\relax\ (for \pkg{csquotes})}
+% Compatibility with \pkg{csquotes} is also the reason for the extra \cmd\relax\ after \meta{\#1}.
 %\begin{macro}{\MT@noindent}
 %\changes{v3.0c}{2022/01/14}{use \cmd\RawNoindent, if available \githubissue{8}}
 % Finally, \LaTeX's new paragraph hooks require special attention, as they're
 % (currently?) unable to distinguish between real typesetting and trial runs.
 % In our case, fortunately, we really don't want to trigger the hooks.
-% Also, we don't need a \cmd\RawParEnd\ at the end (as suggested in \file{ltpara}),
-% I think, as none of our commands are \cmd\long\ anymore.
+% Also, as far as I can tell, we don't need a \cmd\RawParEnd\ at the end
+% (as suggested in \file{ltpara}), because none of our commands are \cmd\long\ anymore.
 %    \begin{macrocode}
 \let\MT@prot@hook\@empty
 \let\MT@csq@eqgroup\relax
@@ -8166,7 +8182,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \interlinepenalty\z@
       \@newlistfalse
       \MT@prot@hook
-      \MT@noindent #1\MT@csq@eqgroup}%
+      \MT@noindent #1\relax\MT@csq@eqgroup}%
     \vbadness=\@M
     \splittopskip=\z@
     \vfuzz=\maxdimen
@@ -8309,7 +8325,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@first@char}
-% If next char is |{|, treat what follows as an argument, else continue until
+% If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
 %    \begin{macrocode}
 \def\MT@prot@get@first@char{%
@@ -8335,28 +8351,36 @@ time will almost certainly lead to undesired results. Have your choice!}%
               \def\MT@temp*{\MT@prot@addtoken@first}%
             }{%
 %    \end{macrocode}
-% \dots~or a command/active char whose first command is one of the below.
+% \dots~\pkg{csquotes}'s \cmd\enquote\ command (this is just a
+% quick shot), ^^A FIXME: in particular, it doesn't account for the starred version; also, what about \foreignquote etc.?
 %    \begin{macrocode}
-              \def\MT@temp*{}%
-              \MT@prot@ifmacro{%
-                \MT@prot@iffirstcmd\UTFviii@two@octets{%
-                  \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
-                }{%
-                  \MT@prot@iffirstcmd\UTFviii@three@octets{%
-                    \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
+              \MT@prot@ifx\enquote{%
+                \def\MT@temp*##1{\MT@prot@l{##1}}%
+              }{%
+%    \end{macrocode}
+% \dots~or a command/active char whose first command is one of the following.
+%    \begin{macrocode}
+                \def\MT@temp*{}%
+                \MT@prot@ifmacro{%
+                  \MT@prot@iffirstcmd\UTFviii@two@octets{%
+                    \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
                   }{%
-                    \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                      \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                    \MT@prot@iffirstcmd\UTFviii@three@octets{%
+                      \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
                     }{%
+                      \MT@prot@iffirstcmd\UTFviii@four@octets{%
+                        \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                      }{%
 %    \end{macrocode}
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
-                      \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
-                        \MT@prot@iflicrcmd{T1}{%
-                          \MT@prot@iflicrcmd{TU}{%
-                            \MT@prot@iflicrcmd{LY1}{%
-                              \MT@prot@iflicrcmd{OT1}{%
-                                \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+                        \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
+                          \MT@prot@iflicrcmd{T1}{%
+                            \MT@prot@iflicrcmd{TU}{%
+                              \MT@prot@iflicrcmd{LY1}{%
+                                \MT@prot@iflicrcmd{OT1}{%
+                                  \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+                                }%
                               }%
                             }%
                           }%
@@ -19772,7 +19796,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12384}
+% \CheckSum{12395}
 %
 % \Finale
 %
