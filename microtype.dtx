@@ -4980,6 +4980,7 @@
 \RequirePackage{keyval}[1997/11/10]
 %<*package>
 ^^X\RequirePackage{etoolbox}
+\providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
 %    \end{macrocode}
 %\begin{macro}{\MT@toks}
 % We need a token register,
@@ -5187,7 +5188,7 @@
 %\changes{v2.7}{2017/02/08}{drop \pkg{luatexbase} with recent \LaTeX}
 % we load the \pkg{luatexbase} package.
 %    \begin{macrocode}
-%<lua->\@ifl@t@r\fmtversion{2016/01/01}\relax{\RequirePackage{luatexbase}}
+%<lua->\IfFormatAtLeastTF{2016/01/01}\relax{\RequirePackage{luatexbase}}
 %    \end{macrocode}
 % We load \pkg{luaotfload}, because some of its functions are
 % required in \file{microtype.lua}. This eliminates the need for the user to
@@ -5197,7 +5198,7 @@
 %\changes{v3.0}{2021/03/21}{\letterspace\ loads \file{microtype.lua}}
 % Since 2017/01/01, it is already loaded in the format.
 %    \begin{macrocode}
-%<lua->\@ifl@t@r\fmtversion{2017/01/01}\relax{\RequirePackage{luaotfload}}
+%<lua->\IfFormatAtLeastTF{2017/01/01}\relax{\RequirePackage{luaotfload}}
 %<letterspace>\MT@pdf@or@lua\relax{
 %<letterspace>\ifx\newluafunction\@undefined \input ltluatex \fi
 %<lua-|letterspace>\MT@lua{require("microtype")}
@@ -6232,7 +6233,7 @@ microtype.do_font = do_font
 % We need the correct value of the former for configuration commands
 % inside the preamble (to get the default families right).
 %    \begin{macrocode}
-\@ifl@t@r\fmtversion{2020/10/01}
+\IfFormatAtLeastTF{2020/10/01}
   {\IfFormatAtLeastTF{2021/11/15}
     {\AddToHook{package/fontspec/after}{\MT@fontspectrue}}
     {\AddToHook{package/after/fontspec}{\MT@fontspectrue}}}\relax
@@ -8151,11 +8152,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \let\MT@prot@hook\@empty
 \let\MT@csq@eqgroup\relax
-\ifx\RawNoindent\@undefined
-  \let\MT@noindent\noindent
-\else
-  \let\MT@noindent\RawNoindent
-\fi
+\IfFormatAtLeastTF{2021/11/15}
+  {\let\MT@noindent\RawNoindent}
+  {\let\MT@noindent\noindent}
 \def\MT@get@prot#1#2{%
   \begingroup
     \setbox\MT@tempbox\vbox{%
@@ -19773,7 +19772,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12387}
+% \CheckSum{12384}
 %
 % \Finale
 %
