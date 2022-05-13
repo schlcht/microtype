@@ -3894,8 +3894,8 @@
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
-%\DoNotIndex{\ifHy@hyperfootnotes,\hyper@@anchor,\Hy@footnote@currentHref,
-%  \pdfstringdefDisableCommands,\pdfstringdefWarn}                           ^^A hyperref
+%\DoNotIndex{\ifHy@hyperfootnotes,\ifHy@implicit,\hyper@@anchor,
+%  \Hy@footnote@currentHref,\pdfstringdefDisableCommands,\pdfstringdefWarn}  ^^A hyperref
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
@@ -6805,13 +6805,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}^^A
 %\changes{v3.0c}{2022/01/21}{protrusion patch \texttt{footnote}: also for minipages}^^A
 % \begin{itemize}
-%   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|)
+%   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|
+%         and |implicit=true|)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
+%\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} if \pkg{hyperref}
+%                            has been loaded with option \texttt{implicit!=false}}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
     \@ifpackageloaded{hyperref}
-        {\ifHy@hyperfootnotes\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
+        {\ifHy@implicit
+           \ifHy@hyperfootnotes
+             \expandafter\expandafter\expandafter\@firstoftwo
+           \else
+             \expandafter\expandafter\expandafter\@secondoftwo
+           \fi
+         \else
+           \expandafter\@secondoftwo
+         \fi}
         \@secondoftwo
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
@@ -19796,7 +19807,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12395}
+% \CheckSum{12404}
 %
 % \Finale
 %
