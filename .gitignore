@@ -32,6 +32,8 @@ microtype-gind.ist
 *.ps
 *.1
 *.1R
+*.nav
+*.snm
 
 *.mtx
 *.pl

@@ -312,6 +312,9 @@ test: testerrors testunknown testoutput
 #	@$(RM) $(TESTDIR)/*.1
 #	@$(RM) $(TESTDIR)/*.1R
 	@$(RM) $(TESTDIR)/*.pgf
+	@$(RM) $(TESTDIR)/*.toc
+	@$(RM) $(TESTDIR)/*.nav
+	@$(RM) $(TESTDIR)/*.snm
 
 testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 	@echo "* Errors:"
