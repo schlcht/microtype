@@ -2780,7 +2780,7 @@
 %              \MTsupp{standard classes, \cls{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (visible in particular
 %              when the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{standard classes, \cls{memoir}, <\cls{KOMA}> classes, \pkg{hyperref}}
+%              \MTsupp{standard classes, \cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side. If you are using the
 %              interface provided by \pkg{mathtools}, insert the relevant commands
 %              yourself, \eg:
@@ -3913,7 +3913,8 @@
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
 %\DoNotIndex{\apptocmd,\gappto,\patchcmd}                                    ^^A etoolbox
-%\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem}                     ^^A beamer
+%\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem,
+%  \beamer@framefootnotetext}                                                ^^A beamer
 %\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
 %\DoNotIndex{\@topic@item}                                                   ^^A simplecv
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
@@ -6836,20 +6837,29 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \item \cls{memoir} additionally allows footnotes in the margins
 %    \begin{macrocode}
       {\@ifclassloaded{memoir}
-         {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}%
-          \MT@patch@patch\@mpfootnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
-         {\MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+        {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}%
+         \MT@patch@patch\@mpfootnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+%    \end{macrocode}
+%   \item \cls{beamer} has it its own way, of course
+%\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} with \cls{beamer}}
+%    \begin{macrocode}
+        {\@ifclassloaded{beamer}
+          {\MT@exp@cs\MT@patch@patch{beamerx@\string\beamer@framefootnotetext}
+               {\ignorespaces}{\ignorespaces\leftprotrusion}%
+           \MT@exp@cs\MT@patch@patch{beamerx@\string\@mpfootnotetext}
+               {\ignorespaces}{\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
 %   \item the <\cls{KOMA}> classes (which load \pkg{scrkbase})
 %\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
 %    \begin{macrocode}
-          \@ifpackageloaded{scrkbase}
-             {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
+          {\@ifpackageloaded{scrkbase}
+            {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
 %    \end{macrocode}
 %   \item the base classes
 %    \begin{macrocode}
-             {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}%
+            {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
+           \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
@@ -19807,7 +19817,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12404}
+% \CheckSum{12419}
 %
 % \Finale
 %
