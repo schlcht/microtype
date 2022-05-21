@@ -3897,8 +3897,9 @@
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
-%\DoNotIndex{\ifHy@hyperfootnotes,\ifHy@implicit,\hyper@@anchor,
-%  \Hy@footnote@currentHref,\pdfstringdefDisableCommands,\pdfstringdefWarn}  ^^A hyperref
+%\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
+% \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
+% \pdfstringdefWarn}                                                         ^^A hyperref
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
@@ -6815,24 +6816,25 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}^^A
 %\changes{v3.0c}{2022/01/21}{protrusion patch \texttt{footnote}: also for minipages}^^A
 % \begin{itemize}
-%   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|
-%         and |implicit=true|)
+%   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|,
+%         |implicit=true| and \cmd\hyper@nopatch@footnote\ is undefined)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
 %\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} if \pkg{hyperref}
 %                            has been loaded with option \texttt{implicit!=false}}
+%\changes{v3.0e}{2022/05/21}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
+%                            if \cmd\hyper@nopatch@footnote\ is defined}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
     \@ifpackageloaded{hyperref}
-        {\ifHy@implicit
+        {\MT@if@false
+         \ifHy@implicit
            \ifHy@hyperfootnotes
-             \expandafter\expandafter\expandafter\@firstoftwo
-           \else
-             \expandafter\expandafter\expandafter\@secondoftwo
+             \MT@ifdefined@c@TF\hyper@nopatch@footnote\relax
+               \MT@if@true
            \fi
-         \else
-           \expandafter\@secondoftwo
-         \fi}
+         \fi
+         \ifMT@if@\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
         \@secondoftwo
       {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
