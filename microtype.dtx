@@ -6773,13 +6773,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\theIEEEsubequationdis{)}{\rightprotrusion{)}}}%
       {}%
 %    \end{macrocode}
-%  \item \cmd\eqref\ relies on \cmd\tagform@, so we have to have it
+%  \item \cmd\eqref\ (\pkg{amsmath}) relies on \cmd\tagform@, so we have to have it
 %        use the original definition.
 %    \begin{macrocode}
     \@ifpackageloaded{amsmath}
       {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
-       \MT@patch@patch\eqref{\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}%
+%    \end{macrocode}
+% The command has been made robust in 2022.
+%\changes{v3.0e}{2022/05/21}{protrusion patch \texttt{eqnum}: adjust to robustness of \cmd\eqref}
+%    \begin{macrocode}
+       \MT@ifdefined@n@TF{eqref }
+         {\MT@exp@cs\MT@patch@patch{eqref }}{\MT@patch@patch\eqref}
+           {\tagform@}{\@nameuse{MT@patch@saved@\string\tagform@}}%
 %    \end{macrocode}
 %   \item If the user has altered the tags' appearance via \pkg{mathtools}'s \cmd\newtagform\
 %         interface, our patch won't have any effect. We don't issue a warning
@@ -19842,7 +19848,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12448}
+% \CheckSum{12451}
 %
 % \Finale
 %
