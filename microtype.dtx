@@ -3335,9 +3335,10 @@
 % `\contributor user182849        <@\at @>', ^^A https://tex.stackexchange.com/users/182849/user182849
 % `\contributor NightShade        <@\at @>', ^^A https://tex.stackexchange.com/users/260836/nightshade
 %  \contributor Nelson Lago       <@\at @>,  ^^A https://github.com/urrameu
-%  \contributor Brian Dunn        <@\at @>   ^^A https://github.com/bdtc
+%  \contributor Brian Dunn        <@\at @>,  ^^A https://github.com/bdtc
+%  \contributor Ralf Steinle      <rasteinle\at web.de>
 % and
-%  \contributor Ralf Steinle      <rasteinle\at web.de>.
+%  \contributor Denis Bitouz\'e   <@\at @>.  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3839,11 +3840,11 @@
 %  \endinput,\escapechar,\everypar,\expandafter,\fi,\futurelet,\gdef,\global,
 %  \hbadness,\hbox,\hfill,\hrule,\hsize,\hskip,\if,\ifcase,\ifcat,\ifdim,\iffalse,\ifhbox,
 %  \ifhmode,\ifmmode,\ifnum,\iftrue,\ifvbox,\ifx,\ignorespaces,\immediate,\input,
-%  \inputlineno,\interlinepenalty,\jobname,\kern,\lastbox,\lastkern,\lastskip,\leaders,
-%  \let,\long,\lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,\noindent,
-%  \number,\or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,\splittopskip,
-%  \string,\the,\tolerance,\unhbox,\unkern,\unskip,\unvbox,\uppercase,\vbadness,\vbox,
-%  \vfuzz,\vrule,\vsplit,\wd,\widowpenalty,\write,\xdef}
+%  \inputlineno,\interlinepenalty,\jobname,\kern,\lastbox,\lastkern,\lastskip,\lccode,
+%  \leaders,\let,\long,\lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,
+%  \noindent,\number,\or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,
+%  \splittopskip,\string,\the,\tolerance,\unhbox,\unkern,\unskip,\unvbox,\uppercase,
+%  \vbadness,\vbox,\vfuzz,\vrule,\vsplit,\wd,\widowpenalty,\write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
@@ -10850,6 +10851,28 @@ end
 %    \begin{macrocode}
       \MT@ifdefined@c@T\PrerenderUnicode
         {\PrerenderUnicode{\@tempa}\let\unicode@charfilter\@firstofone}%
+%    \end{macrocode}
+% If a char has been made active by \pkg{listings}'s \cmd\lstMakeShortInline,
+%\changes{v3.0e}{2022/05/21}{fix for \pkg{listings}'s \cmd\lstMakeShortInline\
+%                            (reported by \contributor Denis Bitouz\'e <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/644665/lstmakeshortinline-fails-with-some-characters-when-luatex-ja-and-microtype-are
+% we need to retrieve the original meaning, or else make sure that we're
+% seeing a non-active char.
+%    \begin{macrocode}
+      \MT@with@package@T{listings}{%
+        \MT@ifdefined@n@T{lst@ShortInlineOldCatcode\string#1}{%
+          \catcode`#1=\csname lst@ShortInlineOldCatcode\string#1\endcsname\relax
+          \ifnum\catcode`#1=\active
+            \begingroup
+              \catcode`\~\active \lccode`\~`#1%
+              \lowercase{\endgroup
+                \expandafter\let\expandafter~%
+                  \csname lst@ShortInlineOldMeaning\string#1\endcsname}%
+          \else
+            \def\@tempa{#1}%
+          \fi
+        }%
+      }%
 %    \end{macrocode}
 % The \cmd\expandafter\ hocus-pocus should please \pkg{newunicodechar}.
 %\changes{v2.7a}{2017/11/25}{compatibility with \pkg{newunicodechar}
@@ -19817,7 +19840,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12419}
+% \CheckSum{12448}
 %
 % \Finale
 %
