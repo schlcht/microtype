@@ -10882,6 +10882,26 @@ end
         }%
       }%
 %    \end{macrocode}
+% Same for \cmd\MakeShortVerb\ from \pkg{doc}/\pkg{shortvrb}.
+%\changes{v3.0e}{2022/05/22}{fix for \pkg{doc}/\pkg{shortvrb}'s \cmd\MakeShortVerb}
+%    \begin{macrocode}
+      \MT@if@false
+      \MT@with@package@T{doc}\MT@if@true
+      \MT@with@package@T{shortvrb}\MT@if@true
+      \ifMT@if@\expandafter\@firstofone\else\expandafter\@gobble\fi{%
+        \MT@ifdefined@n@T{cc\string#1}{%
+          \catcode`#1=\csname cc\string#1\endcsname\relax
+          \ifnum\catcode`#1=\active
+            \begingroup
+              \catcode`\~\active \lccode`\~`#1%
+              \lowercase{\endgroup
+                \MT@let@cn~{ac\string#1}}%
+          \else
+            \def\@tempa{#1}%
+          \fi
+        }%
+      }%
+%    \end{macrocode}
 % The \cmd\expandafter\ hocus-pocus should please \pkg{newunicodechar}.
 %\changes{v2.7a}{2017/11/25}{compatibility with \pkg{newunicodechar}
 %                            (reported by \contributor Nils Anders Danielsson <nad\at cse.gu.se>)}
