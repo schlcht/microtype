@@ -3853,12 +3853,11 @@
 %  \dimexpr,\eTeXversion,\ifcsname,\ifdefined,\lastnodetype,\numexpr,\protected,
 %  \unexpanded}
 %^^A\DoNotIndex{\fontcharwd,\iffontchar}                                     ^^A e-tex
-%\DoNotIndex{\pdfannot,\pdfmatch,\pdfoutput,\pdfstrcmp,
-%  \pdftexrevision,\pdftexversion}
+%\DoNotIndex{\pdfannot,\pdfmatch,\pdfstrcmp,\pdftexrevision,\pdftexversion}
 %^^A\DoNotIndex{\(ef,lp,rp,kn(ac,bc),(kn,sh,st)bs)code,\(left,right)marginkern,
 %^^A  \tagcode,\letterspacefont,\pdfcopyfont,\pdffontexpand,\pdfnoligatures,
 %^^A  \pdfprotrudechars,\pdfadjust(interwordglue,spacing),\pdf(ap,pre)pendkern,
-%^^A  \pdftracingfonts}                                                      ^^A pdftex
+%^^A  \pdfoutput,\pdftracingfonts}                                           ^^A pdftex
 %\DoNotIndex{\XeTeXversion,\XeTeXrevision,\strcmp}
 %^^A\DoNotIndex{\XeTeXcharglyph,\XeTeXfonttype,\XeTeXglyph,\XeTeXglyphindex,
 %^^A  \XeTeXglyphname,\XeTeXlastfontchar,\XeTeXprotrudechars}                ^^A xetex
@@ -7228,7 +7227,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \csname ifMT@\csname MT@abbr@#1\endcsname\endcsname
 %    \end{macrocode}
 % Begin with setting micro-typography to true for this font. The
-% \cs{MT@checklist@...} tests will set it to false if the property is not in
+% |\MT@checklist@...| tests will set it to false if the property is not in
 % the list. The first non-empty list that does not contain a match will stop us
 % (except for |font|).
 %    \begin{macrocode}
@@ -8994,7 +8993,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*pdf->
   \MT@requires@pdftex8\@firstofone{%
     \MT@ifdefined@n@TF{\MT@@font-fake6}{%
-      \expandafter\ifx\csname\MT@@font-fake6\endcsname\@empty
+      \MT@exp@cs\ifx{\MT@@font-fake6}\@empty
         \MT@warning@nl{%
           Font `\MT@@font' does not specify its\MessageBreak
           \@backslashchar fontdimen 6 (width of an `em')! Therefore,\MessageBreak
@@ -10876,8 +10875,7 @@ end
             \begingroup
               \catcode`\~\active \lccode`\~`#1%
               \lowercase{\endgroup
-                \expandafter\let\expandafter~%
-                  \csname lst@ShortInlineOldMeaning\string#1\endcsname}%
+                \MT@let@cn~{lst@ShortInlineOldMeaning\string#1}}%
           \else
             \def\@tempa{#1}%
           \fi
@@ -10963,8 +10961,7 @@ end
 \def\MT@is@opt@char#1\iffontchar#2\char#3\else#4\fi\relax{%
   \MT@ifempty{#1}{%
     \iffontchar#2%
-      \expandafter\chardef
-        \csname\MT@encoding\MT@detokenize@c\@tempa\endcsname=#3\relax
+      \MT@exp@cs\chardef{\MT@encoding\MT@detokenize@c\@tempa}=#3\relax
     \fi
   }\relax
 }
@@ -11124,7 +11121,7 @@ end
 %    \end{macrocode}
 %\end{macro}
 % [What about math? Well, for a moment the following looked like a solution, with
-% \cs{mt@is@mathchar} defined accordingly, analogous to \cs{MT@is@char} above,
+% \cmd\mt@is@mathchar\ defined accordingly, analogous to \cs{MT@is@char} above,
 % to pick up the last two tokens (the \cmd\meaning\ of a \cmd\mathchardef'ed
 % command expands to its hexadecimal notation):
 %\begin{verbatim}
@@ -11891,7 +11888,7 @@ end
 %\changes{v2.7a}{2017/11/17}{test whether \cmd{\...default} is defined}
 %    \begin{macrocode}
     \MT@ifdefined@n@TF{\@tempa default}%
-      {\edef\MT@val{\expandafter\noexpand\csname \@tempa default\endcsname}}%
+      {\edef\MT@val{\MT@exp@cs\noexpand{\@tempa default}}}%
       {\MT@warning{`\@backslashchar\@tempa default' is not a defined command.\MessageBreak
                    Ignoring `#1 = {\@tempa*}' in font set\MessageBreak`\MT@curr@set@name'}%
        \let\MT@val\@empty}%
@@ -14628,7 +14625,7 @@ end
 %    \begin{macrocode}
     \MT@ifdefined@n@TF{showhyphens }{%
       \def\MT@temp##1##2{%
-        \expandafter\CheckCommand\csname showhyphens \endcsname[1]{##1}%
+        \MT@exp@cs\CheckCommand{showhyphens }[1]{##1}%
         \DeclareRobustCommand\showhyphens[1]{##2}}%
     }{%
       \def\MT@temp##1##2{%
@@ -19850,7 +19847,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12451}
+% \CheckSum{12439}
 %
 % \Finale
 %
