@@ -2394,7 +2394,7 @@
 %      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
 % Times (|ptm|, |ptmx|, |ptmj|)\footnote{Aliases: \pkg{txfonts} (|txr|),
 %                                        \pkg{qfonts}/QuasiTimes, \TeX\ Gyre Termes (|qtm|),
-%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}}
+%                                        \pkg{newtx}, \pkg{tempora}, \pkg{step}, \pkg{stix}/\pkg{stix2}/\pkg{stickstoo}}
 %      & <OT1>, <OT4>, <T1>, <LY1>, <QX>, (<TS1>)\fnref{fn:t1-incmpl}
 %      & n, it, (sl)\fnref{fn:t1-itsl}, sc \\
 % Computer Modern math (|cmsy|, |cmm|)\footnote{Aliases: Latin Modern (|lmsy|, |lmm|), \pkg{mlmodern} (|mlmsy|, |mlmm|)}
@@ -15314,9 +15314,9 @@ end
 % The \pkg{newtx} package, a replacement for \pkg{txfonts}.
 %\changes{v2.7}{2017/02/25}{declare aliases for \pkg{newtx}}
 %    \begin{macrocode}
-\DeclareMicrotypeAlias{ntxlf}{ptmx}        % newtxtext
-\DeclareMicrotypeAlias{ntxosf}{ptmj}       %    "
-\DeclareMicrotypeAlias{ntxtlf}{ptmx}       %    "
+\DeclareMicrotypeAlias{ntxlf}  {ptmx}      % newtxtext
+\DeclareMicrotypeAlias{ntxtlf} {ptmx}      %    "
+\DeclareMicrotypeAlias{ntxosf} {ptmj}      %    "
 \DeclareMicrotypeAlias{ntxtosf}{ptmj}      %    "
 %    \end{macrocode}
 % The \pkg{tempora} package.
@@ -15331,12 +15331,17 @@ end
 \DeclareMicrotypeAlias{STEP-TLF} {ptmx}    % step
 \DeclareMicrotypeAlias{STEP-TOsF}{ptmj}    %   "
 %    \end{macrocode}
-% The \pkg{stix} and \pkg{stix2} packages (the latter has departed a bit from being
-% a Times clone, but still seems close enough).
+% The \pkg{stix}, \pkg{stix2} and \pkg{stickstoo} packages (the latter two have departed a bit from being
+% a Times clone, but still seem close enough).
 %\changes{v2.8}{2020/05/31}{declare aliases for \pkg{stix} and \pkg{stix2} fonts}
+%\changes{v3.0e}{2022/05/23}{declare aliases for \pkg{stickstoo} fonts}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{stix} {ptm}         % stix
 \DeclareMicrotypeAlias{stix2}{ptm}         % stix2
+\DeclareMicrotypeAlias{SticksTooText-LF}  {ptmx}
+\DeclareMicrotypeAlias{SticksTooText-TLF} {ptmx}
+\DeclareMicrotypeAlias{SticksTooText-OsF} {ptmj}
+\DeclareMicrotypeAlias{SticksTooText-TOsF}{ptmj}
 %    \end{macrocode}
 %\todo{check Times variants}
 % More Times variants, to be checked: |pns|, |mns| (TimesNewRomanPS); |mnt|
@@ -19883,7 +19888,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12487}
+% \CheckSum{12491}
 %
 % \Finale
 %
