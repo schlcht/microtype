@@ -8358,6 +8358,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@get@first@char}
 % If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
+%\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %    \begin{macrocode}
 \def\MT@prot@get@first@char{%
   \MT@prot@ifcat\bgroup{%
@@ -8369,48 +8370,52 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@prot@ifx\relax{%
         \def\MT@temp*##1{\MT@prot@get@firstchar}%
       }{%
-        \MT@prot@ifx\@sptoken{%
-          \def\MT@temp* {\MT@prot@get@firstchar}%
+        \MT@prot@ifx\@empty{%
+          \def\MT@temp*##1{\MT@prot@get@firstchar}%
         }{%
+          \MT@prot@ifx\@sptoken{%
+            \def\MT@temp* {\MT@prot@get@firstchar}%
+          }{%
 %    \end{macrocode}
 % But only add it if it's a letter or a character, \dots
 %    \begin{macrocode}
-          \MT@prot@ifcat{a}{%
-            \def\MT@temp*{\MT@prot@addtoken@first}%
-          }{%
-            \MT@prot@ifcat{!}{%
+            \MT@prot@ifcat{a}{%
               \def\MT@temp*{\MT@prot@addtoken@first}%
             }{%
+              \MT@prot@ifcat{!}{%
+                \def\MT@temp*{\MT@prot@addtoken@first}%
+              }{%
 %    \end{macrocode}
 % \dots~\pkg{csquotes}'s \cmd\enquote\ command (this is just a
 % quick shot), ^^A FIXME: in particular, it doesn't account for the starred version; also, what about \foreignquote etc.?
 %    \begin{macrocode}
-              \MT@prot@ifx\enquote{%
-                \def\MT@temp*##1{\MT@prot@l{##1}}%
-              }{%
+                \MT@prot@ifx\enquote{%
+                  \def\MT@temp*##1{\MT@prot@l{##1}}%
+                }{%
 %    \end{macrocode}
 % \dots~or a command/active char whose first command is one of the following.
 %    \begin{macrocode}
-                \def\MT@temp*{}%
-                \MT@prot@ifmacro{%
-                  \MT@prot@iffirstcmd\UTFviii@two@octets{%
-                    \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
-                  }{%
-                    \MT@prot@iffirstcmd\UTFviii@three@octets{%
-                      \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
+                  \def\MT@temp*{}%
+                  \MT@prot@ifmacro{%
+                    \MT@prot@iffirstcmd\UTFviii@two@octets{%
+                      \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
                     }{%
-                      \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                        \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                      \MT@prot@iffirstcmd\UTFviii@three@octets{%
+                        \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
                       }{%
+                        \MT@prot@iffirstcmd\UTFviii@four@octets{%
+                          \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                        }{%
 %    \end{macrocode}
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
-                        \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
-                          \MT@prot@iflicrcmd{T1}{%
-                            \MT@prot@iflicrcmd{TU}{%
-                              \MT@prot@iflicrcmd{LY1}{%
-                                \MT@prot@iflicrcmd{OT1}{%
-                                  \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+                          \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
+                            \MT@prot@iflicrcmd{T1}{%
+                              \MT@prot@iflicrcmd{TU}{%
+                                \MT@prot@iflicrcmd{LY1}{%
+                                  \MT@prot@iflicrcmd{OT1}{%
+                                    \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
+                                  }%
                                 }%
                               }%
                             }%
@@ -19888,7 +19893,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12491}
+% \CheckSum{12496}
 %
 % \Finale
 %
