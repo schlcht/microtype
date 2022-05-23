@@ -3496,12 +3496,12 @@
 %\VersionDate{3.0a}{2021/12/02}
 %
 %\Version{3.0}{2021/10/31}
+%  \item New option \opt{disable}, replacing the |draft| option; deprecate option |final|
+%        \refsection{\ref{sub:options-misc}}
 %  \item Possibility of automatical protrusion based on difference of character widths
 %        \refsection{\ref{sub:inheritance}}
 %  \item New commands \cs{leftprotrusion} and \cs{rightprotrusion};
 %        various patches to get protrusion right \refsection{\ref{sec:pedantic}}
-%  \item New option \opt{disable}, replacing the |draft| option; deprecate option |final|
-%        \refsection{\ref{sub:options-misc}}
 %  \item New package \pkg{microtype-show} for visual debugging of protrusion settings
 %        \refsection{\ref{sec:contrib}}
 %  \item Protrusion settings for New Computer Modern (OpenType)
@@ -3574,32 +3574,32 @@
 %\VersionDate{2.3a}{2008/02/29}
 %
 %\Version{2.3}{2007/12/23}
+%  \item New option `\opt{verbose}|=silent|' to turn all warnings into mere messages
+%        \refsection{\ref{sub:options-misc}}
 %  \item New key `|outer kerning|' for \cs{SetTracking} to customise outer kerning
 %        \refsection{\ref{sub:tracking}}
 %  \item Adjust protrusion settings for tracking even if protrusion is not enabled
-%  \item New option `\opt{verbose}|=silent|' to turn all warnings into mere messages
-%        \refsection{\ref{sub:options-misc}}
 %  \item The \letterspace\ package also works with \pkg{eplain} or \pkg{miniltx}
 %        \refsection{\ref{sec:lettersp}}
 %
 %\Version{2.2}{2007/07/14}
 %  \item Improvements to tracking/letterspacing: retain kerning (\pdftex\ $\geq$ 1.40.4);
 %        automatically adjust protrusion settings
+%  \item Possibility to expand a font with different parameters (\pdftex\ $\geq$ 1.40.4)
+%    ^^A ; new option `\opt{copyfonts}'
+%        \refsection{\ref{sub:expansion}}
 %  \item New key `|no ligatures|' for \cs{SetTracking} to disable selected or
 %        all ligatures (\pdftex\ $\geq$ 1.40.4)
 %        \refsection{\ref{sub:tracking}}
 %  \item New keys `|spacing|' and `|outer spacing|' for \cs{SetTracking} to
 %        customise interword spacing
 %        \refsection{\ref{sub:tracking}}
-%  \item Possibility to expand a font with different parameters (\pdftex\ $\geq$ 1.40.4)
-%    ^^A ; new option `\opt{copyfonts}'
-%        \refsection{\ref{sub:expansion}}
-%  \item New optional argument for \cs{DisableLigatures} to disable selected ligatures
-%        \refsection{\ref{sec:disable-ligatures}}
 %  \item New command \cs{DeclareMicrotypeVariants} to specify variant suffixes
 %        \refsection{\ref{sub:config-file}}
 %  \item New command \cs{textmicrotypecontext} as a wrapper for \cs{microtypecontext}
 %        \refsection{\ref{sec:context}}
+%  \item New optional argument for \cs{DisableLigatures} to disable selected ligatures
+%        \refsection{\ref{sec:disable-ligatures}}
 %  \item Protrusion settings for Bitstream Letter Gothic
 %^^A  \item Basic support for \luatex\ (if generated with the |lua| option)
 %
@@ -3655,12 +3655,12 @@
 %  \item Protrusion settings for <T5> encoded Charter
 %
 %\Version{1.9}{2005/10/28}
-%  \item New command \cs{DisableLigatures} to disable ligatures
-%        (\pdftex\ $\geq$ 1.30)
-%        \refsection{\ref{sec:disable-ligatures}}
 %  \item New command \cs{microtypecontext} to change the configuration context;
 %        new key `|context|' for the configuration commands
 %        \refsection{\ref{sec:context}}
+%  \item New command \cs{DisableLigatures} to disable ligatures
+%        (\pdftex\ $\geq$ 1.30)
+%        \refsection{\ref{sec:disable-ligatures}}
 %  \item New key `|font|' to add single fonts to the font sets
 %        \refsection{\ref{sec:font-sets}}
 %  \item New key `|preset|' to set all characters to the specified value before
@@ -3673,16 +3673,16 @@
 %\Version{1.8}{2005/06/23}
 %^^A  \item If font substitution has occurred, the settings for the substitute will
 %^^A        be used instead of those for the selected font
-%  \item New command \cs{DeclareMicrotypeSetDefault} to declare the default font sets
-%        \refsection{\ref{sec:font-sets}}
 %  \item New option `\opt{config}' to load a different configuration file
 %        \refsection{\ref{sub:options-misc}}
+%  \item New command \cs{DeclareMicrotypeSetDefault} to declare the default font sets
+%        \refsection{\ref{sec:font-sets}}
 %  \item New option `\opt{unit}' to measure protrusion factors relative to a
 %        dimension instead of the character width
 %        \refsection{\ref{sub:protrusion}}
 %  \item Renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}
 %  \item Protrusion settings for <AMS> math fonts
-%  \item Protrusion settings for Times in <LY1> encoding completed
+%^^A  \item Protrusion settings for Times in <LY1> encoding completed
 %  \item The `|allmath|' font set also includes <U> encoding
 %^^A  \item 8-bit characters in the configuration finally work as advertised,
 %^^A        even if made active by the \pkg{csquotes} package
@@ -3705,12 +3705,12 @@
 %\VersionDate{1.6a}{2005/02/02}
 %
 %\Version{1.6}{2005/01/24}
-%  \item New option `\opt{factor}' to influence protrusion resp. expansion of
-%        all characters of a font or font set
-%        \refsection{\ref{sub:options-protrusion}, \ref{sec:fine-tuning}}
 %  \item When \pdftex\ is too old to expand fonts automatically, expansion
 %        has to be enabled explicitly, automatic expansion will be disabled
 %        \refsection{\ref{sub:options-microtype}}
+%  \item New option `\opt{factor}' to influence protrusion resp. expansion of
+%        all characters of a font or font set
+%        \refsection{\ref{sub:options-protrusion}, \ref{sec:fine-tuning}}
 %^^A  \item Protrusion settings of digits improved
 %  \item Use \etex\ extensions, if available
 %
@@ -3747,17 +3747,17 @@
 %  \item New font sets: `|allmath|' and `|basicmath|'
 %        \refsection{\ref{sec:font-sets}, table~\ref{tab:predefined-font-sets}}
 %  \item Protrusion settings for Computer Modern Roman math symbols
-%  \item Protrusion settings for <TS1> encoding completed for Computer Modern
-%        Roman and Adobe Garamond
+%^^A  \item Protrusion settings for <TS1> encoding completed for Computer Modern
+%^^A        Roman and Adobe Garamond
 %^^A  \item If an alias font name is specified, it will be used as an alternative,
 %^^A        not as a replacement \refsection{\ref{sub:config-file}}
 %
 %\Version{1.1}{2004/09/21}
-%  \item Protrusion settings for Adobe Minion
 %  \item New command: \cs{DeclareCharacterInheritance}
 %        \refsection{\ref{sub:inheritance}}
 %  \item Characters may also be specified as octal or hexadecimal numbers
 %        \refsection{\ref{sec:fine-tuning}}
+%  \item Protrusion settings for Adobe Minion
 %^^A  \item Configuration file names in lowercase [\ref{sub:config-file}]
 %
 %\Version{1.0}{2004/09/11}
