@@ -10860,47 +10860,7 @@ end
 %    \begin{macrocode}
       \MT@ifdefined@c@T\PrerenderUnicode
         {\PrerenderUnicode{\@tempa}\let\unicode@charfilter\@firstofone}%
-%    \end{macrocode}
-% If a char has been made active by \pkg{listings}'s \cmd\lstMakeShortInline,
-%\changes{v3.0e}{2022/05/21}{fix for \pkg{listings}'s \cmd\lstMakeShortInline\
-%                            (reported by \contributor Denis Bitouz\'e <@\at @>)}
-%                            ^^A https://tex.stackexchange.com/questions/644665/lstmakeshortinline-fails-with-some-characters-when-luatex-ja-and-microtype-are
-% we need to retrieve the original meaning, or else make sure that we're
-% seeing a non-active char.
-%    \begin{macrocode}
-      \MT@with@package@T{listings}{%
-        \MT@ifdefined@n@T{lst@ShortInlineOldCatcode\string#1}{%
-          \catcode`#1=\csname lst@ShortInlineOldCatcode\string#1\endcsname\relax
-          \ifnum\catcode`#1=\active
-            \begingroup
-              \catcode`\~\active \lccode`\~`#1%
-              \lowercase{\endgroup
-                \MT@let@cn~{lst@ShortInlineOldMeaning\string#1}}%
-          \else
-            \def\@tempa{#1}%
-          \fi
-        }%
-      }%
-%    \end{macrocode}
-% Same for \cmd\MakeShortVerb\ from \pkg{doc}/\pkg{shortvrb}.
-%\changes{v3.0e}{2022/05/22}{fix for \pkg{doc}/\pkg{shortvrb}'s \cmd\MakeShortVerb}
-%    \begin{macrocode}
-      \MT@if@false
-      \MT@with@package@T{doc}\MT@if@true
-      \MT@with@package@T{shortvrb}\MT@if@true
-      \ifMT@if@\expandafter\@firstofone\else\expandafter\@gobble\fi{%
-        \MT@ifdefined@n@T{cc\string#1}{%
-          \catcode`#1=\csname cc\string#1\endcsname\relax
-          \ifnum\catcode`#1=\active
-            \begingroup
-              \catcode`\~\active \lccode`\~`#1%
-              \lowercase{\endgroup
-                \MT@let@cn~{ac\string#1}}%
-          \else
-            \def\@tempa{#1}%
-          \fi
-        }%
-      }%
+      \MT@is@active@hook{#1}%
 %    \end{macrocode}
 % The \cmd\expandafter\ hocus-pocus should please \pkg{newunicodechar}.
 %\changes{v2.7a}{2017/11/25}{compatibility with \pkg{newunicodechar}
@@ -10919,6 +10879,62 @@ end
     \x
   \fi
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@is@active@hook}
+%\changes{v3.0e}{2022/05/22}{hook for active chars}
+% Test for these packages only once (requires \pkg{etoolbox}).
+%    \begin{macrocode}
+\let\MT@is@active@hook\@gobble
+^^Q\@gobble
+{\catcode`\#=12
+\MT@addto@setup{%
+%    \end{macrocode}
+% If a char has been made active by \pkg{listings}'s \cmd\lstMakeShortInline,
+%\changes{v3.0e}{2022/05/21}{fix for \pkg{listings}'s \cmd\lstMakeShortInline\
+%                            (reported by \contributor Denis Bitouz\'e <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/644665/lstmakeshortinline-fails-with-some-characters-when-luatex-ja-and-microtype-are
+% we need to retrieve the original meaning, or else make sure that we're
+% seeing a non-active char.
+%    \begin{macrocode}
+  \MT@with@package@T{listings}{%
+    \apptocmd\MT@is@active@hook{%
+      \MT@ifdefined@n@T{lst@ShortInlineOldCatcode\string#1}{%
+        \catcode`#1=\csname lst@ShortInlineOldCatcode\string#1\endcsname\relax
+        \ifnum\catcode`#1=\active
+          \begingroup
+            \catcode`\~\active \lccode`\~`#1%
+            \lowercase{\endgroup
+              \MT@let@cn~{lst@ShortInlineOldMeaning\string#1}}%
+        \else
+          \def\@tempa{#1}%
+        \fi
+      }%
+    }{}{}%
+  }%
+%    \end{macrocode}
+% Same for \cmd\MakeShortVerb\ of \pkg{doc}/\pkg{shortvrb}.
+%\changes{v3.0e}{2022/05/22}{fix for \pkg{doc}/\pkg{shortvrb}'s \cmd\MakeShortVerb}
+%    \begin{macrocode}
+  \MT@if@false
+  \MT@with@package@T{doc}\MT@if@true
+  \MT@with@package@T{shortvrb}\MT@if@true
+  \ifMT@if@\expandafter\@firstofone\else\expandafter\@gobble\fi{%
+    \apptocmd\MT@is@active@hook{%
+      \MT@ifdefined@n@T{cc\string#1}{%
+        \catcode`#1=\csname cc\string#1\endcsname\relax
+        \ifnum\catcode`#1=\active
+          \begingroup
+            \catcode`\~\active \lccode`\~`#1%
+            \lowercase{\endgroup
+              \MT@let@cn~{ac\string#1}}%
+        \else
+          \def\@tempa{#1}%
+        \fi
+      }%
+    }{}{}%
+  }%
+}}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@undefined@char}
@@ -19867,7 +19883,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12439}
+% \CheckSum{12487}
 %
 % \Finale
 %
