@@ -1405,7 +1405,7 @@
 % If the \opt{disable} option is passed to the package, all
 % micro-typographic extensions will be disabled, which may lead to different
 % line, and hence even page, breaks. This option replaces the |draft| option
-% from older versions, which could be inherited from the class options;
+% from earlier versions, which could be inherited from the class options;
 % to restore the previous behaviour, you may pass the value |ifdraft|:
 % in this case, the \opt{disable} option will be set to |true| if and only if
 % the document class has been loaded with the |draft| option.
@@ -6819,8 +6819,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         |implicit=true| and \cmd\hyper@nopatch@footnote\ is undefined)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
 %                           (reported by \contributor Liang-Bo Wang <@\at @>) \githubissue{2}}
-%\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} if \pkg{hyperref}
-%                            has been loaded with option \texttt{implicit!=false}}
+%\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
+%                            with option \texttt{implicit!=false}}
 %\changes{v3.0e}{2022/05/21}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
 %                            if \cmd\hyper@nopatch@footnote\ is defined}
 %    \begin{macrocode}
@@ -10918,7 +10918,7 @@ end
     }{}{}%
   }%
 %    \end{macrocode}
-% Same for \cmd\MakeShortVerb\ of \pkg{doc}/\pkg{shortvrb}.
+% Same for \cmd\MakeShortVerb\ of \pkg{doc}/\pkg{shortvrb} (and implicitly \cls{memoir}).
 %\changes{v3.0e}{2022/05/22}{fix for \pkg{doc}/\pkg{shortvrb}'s \cmd\MakeShortVerb}
 %    \begin{macrocode}
   \MT@if@false
@@ -10953,7 +10953,7 @@ end
 % Instead of simply expanding |\|\meta{command}, we construct the command
 % |\|\meta{encoding}|\|\meta{command} and see whether its meaning is
 % \cmd\char|"|\meta{hex number}, which is the case for everything that has
-% been defined with \cmd\DeclareTextSymbol in the encoding definition files.
+% been defined with \cmd\DeclareTextSymbol\ in the encoding definition files.
 %\changes{v2.0}{2006/09/15}{made even more robust}
 %    \begin{macrocode}
 \def\MT@is@symbol{%
