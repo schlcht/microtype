@@ -3866,15 +3866,16 @@
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
 %\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@empty,\@@enc@update,\@eqnnum,\@expandtwoargs,
-%  \@firstofone,\@firstoftwo,\@footnotetext,\@gobble,\@gobbletwo,\@ifclassloaded,
-%  \@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,\@ifundefined,\@item,
-%  \@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,\@nameuse,\@ne,\@newlistfalse,
-%  \@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,\@pkgextension,\@plus,\@ptionlist,
-%  \@removeelement,\@secondoftwo,\@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,
-%  \@tempcntb,\@tempdima,\@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,
-%  \@xobeysp,\check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,
-%  \m@ne,\maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
+%  \@currname,\@defaultunits,\@elt,\@empty,\@@enc@update,\@eqnnum,\@expandtwoargs,
+%  \@firstofone,\@firstoftwo,\@fontenc@load@list,\@footnotetext,\@gobble,\@gobbletwo,
+%  \@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,
+%  \@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,
+%  \@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,
+%  \@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,\@spaces,\@sptoken,
+%  \@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,\@typeset@protect,
+%  \@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,\check@icr,
+%  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
+%  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
 %  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
@@ -8323,8 +8324,34 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \else
       \def\MT@temp*##1{\MT@prot@l{##1}}%
     \fi
-    \@gobble
-  }\@firstofone
+    \MT@tlist@break
+  }\relax
+}
+%</package>
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@enc@list}
+%\changes{v3.0e}{2022/06/09}{new macro: no more guesswork about encodings}
+% The list of all looaded font encodings. For \LaTeX\ formats older than
+% 2020/02/11 (before \cmd\@fontenc@load@list\ was introduced), we don't
+% bother doing any guesswork (like \pkg{babel} used to do). Also, we
+% don't consider the older <EU1>/<EU2> encodings.
+%    \begin{macrocode}
+%<pdf-|lua-|xe->\def\MT@enc@list
+%<pdf->  {{T1}{OT1}}
+%<lua-|xe->  {{TU}}
+%<*package>
+\MT@addto@setup{%
+  \ifx\@fontenc@load@list\@undefined \else
+    \def\@elt#1{,#1,}%
+    \edef\@tempa{\@fontenc@load@list}%
+    \MT@map@clist@c\@tempa{%
+      \MT@ifempty{#1}\relax{%
+        \MT@in@tlist{#1}\MT@enc@list
+        \ifMT@inlist@\else\edef\MT@enc@list{\MT@enc@list{#1}}\fi
+      }%
+    }%
+  \fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8410,15 +8437,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
                           \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
-                            \MT@prot@iflicrcmd{T1}{%
-                              \MT@prot@iflicrcmd{TU}{%
-                                \MT@prot@iflicrcmd{LY1}{%
-                                  \MT@prot@iflicrcmd{OT1}{%
-                                    \MT@prot@iflicrcmd{T2A}\relax % should we add more encodings?
-                                  }%
-                                }%
-                              }%
-                            }%
+                            \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
                           }%
                         }%
                       }%
@@ -19893,7 +19912,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12496}
+% \CheckSum{12518}
 %
 % \Finale
 %
