@@ -6389,8 +6389,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \g@addto@macro\MT@setupfont@hook\@disablequotes
 %    \end{macrocode}
 %\changes{v3.0e}{2022/04/05}{disable \pkg{csquotes}'s grouping control for \cs{leftprotrusion}
-%                            (reported by \contributor Ralf Steinle <rasteinle\at web.de>)}
+%                            (reported by \contributor Ralf Steinle <rasteinle\at web.de>
+%                            and \contributor Denis Bitouz\'e <@\at @>)}
 %                            ^^A https://www.listserv.dfn.de/sympa/arc/tex-d-l/2022-04/msg00010.html
+%                            ^^A also: https://tex.stackexchange.com/questions/647223/
 % For \cs{leftprotrusion}, we disable \pkg{csquotes}'s tracking
 % of group level and type, because we'll probably be typesetting
 % the opening quotes only.
@@ -8332,7 +8334,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@enc@list}
 %\changes{v3.0e}{2022/06/09}{new macro: no more guesswork about encodings}
-% The list of all looaded font encodings. For \LaTeX\ formats older than
+% The list of all loaded font encodings. For \LaTeX\ formats older than
 % 2020/02/11 (before \cmd\@fontenc@load@list\ was introduced), we don't
 % bother doing any guesswork (like \pkg{babel} used to do). Also, we
 % don't consider the older <EU1>/<EU2> encodings.
@@ -8382,71 +8384,90 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@prot@check}
+%\begin{macro}{\MT@prot@check@}
+%    \begin{macrocode}
+\def\MT@prot@check#1{\MT@prot@check@#1}
+\def\MT@prot@check@#1#2{%
+  \ifx\MT@prot@next#2%
+    \csname MT@prot@check@#1\endcsname{#2}%
+    \expandafter\MT@tlist@break
+  \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@I}
+% This is for commands to be ignored.
+%    \begin{macrocode}
+\def\MT@prot@check@I#1{%
+  \def\MT@temp*##1{\MT@prot@get@firstchar}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@cmds}
+%\changes{v3.0e}{2022/06/09}{new macro: make commands configurable}
+%\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
+%    \begin{macrocode}
+\def\MT@prot@check@cmds{%
+  {I\ignorespaces}{I\relax}{I\@empty}%
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@get@first@char}
 % If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
-%\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %    \begin{macrocode}
 \def\MT@prot@get@first@char{%
+  \let\MT@temp\relax
   \MT@prot@ifcat\bgroup{%
     \def\MT@temp*{\MT@prot@group}%
   }{%
-    \MT@prot@ifx\ignorespaces{%
-      \def\MT@temp*##1{\MT@prot@get@firstchar}%
-    }{%
-      \MT@prot@ifx\relax{%
-        \def\MT@temp*##1{\MT@prot@get@firstchar}%
-      }{%
-        \MT@prot@ifx\@empty{%
-          \def\MT@temp*##1{\MT@prot@get@firstchar}%
-        }{%
-          \MT@prot@ifx\@sptoken{%
-            \def\MT@temp* {\MT@prot@get@firstchar}%
-          }{%
 %    \end{macrocode}
 % But only add it if it's a letter or a character, \dots
 %    \begin{macrocode}
-            \MT@prot@ifcat{a}{%
-              \def\MT@temp*{\MT@prot@addtoken@first}%
-            }{%
-              \MT@prot@ifcat{!}{%
-                \def\MT@temp*{\MT@prot@addtoken@first}%
-              }{%
+    \MT@prot@ifcat{a}{%
+      \def\MT@temp*{\MT@prot@addtoken@first}%
+    }{%
+      \MT@prot@ifcat{!}{%
+        \def\MT@temp*{\MT@prot@addtoken@first}%
+      }{%
 %    \end{macrocode}
-% \dots~\pkg{csquotes}'s \cmd\enquote\ command (this is just a
-% quick shot), ^^A FIXME: in particular, it doesn't account for the starred version; also, what about \foreignquote etc.?
+% a space character,\dots
 %    \begin{macrocode}
-                \MT@prot@ifx\enquote{%
-                  \def\MT@temp*##1{\MT@prot@l{##1}}%
-                }{%
+        \MT@prot@ifx\@sptoken{%
+          \def\MT@temp* {\MT@prot@get@firstchar}%
+        }{%
+%    \end{macrocode}
+% ignored commands,\dots
+%    \begin{macrocode}
+          \MT@map@tlist@c\MT@prot@check@cmds\MT@prot@check
+          \ifx\MT@temp\relax
 %    \end{macrocode}
 % \dots~or a command/active char whose first command is one of the following.
 %    \begin{macrocode}
-                  \def\MT@temp*{}%
-                  \MT@prot@ifmacro{%
-                    \MT@prot@iffirstcmd\UTFviii@two@octets{%
-                      \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
-                    }{%
-                      \MT@prot@iffirstcmd\UTFviii@three@octets{%
-                        \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
-                      }{%
-                        \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                          \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
-                        }{%
+            \def\MT@temp*{}%
+            \MT@prot@ifmacro{%
+              \MT@prot@iffirstcmd\UTFviii@two@octets{%
+                \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+              }{%
+                \MT@prot@iffirstcmd\UTFviii@three@octets{%
+                  \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
+                }{%
+                  \MT@prot@iffirstcmd\UTFviii@four@octets{%
+                    \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                  }{%
 %    \end{macrocode}
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
-                          \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
-                            \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
-                          }%
-                        }%
-                      }%
+                    \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
+                      \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
                     }%
                   }%
                 }%
               }%
             }%
-          }%
+          \fi
         }%
       }%
     }%
@@ -19912,7 +19933,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12518}
+% \CheckSum{12530}
 %
 % \Finale
 %
