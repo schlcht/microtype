@@ -8118,6 +8118,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \DeclareRobustCommand\noprotrusionifhmode{\relax\ifhmode\kern-\p@\kern\p@\fi}
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\ifMT@prot@}
 %\begin{macro}{\leftprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
 % This command may be used to add protrusion on the left hand side.
@@ -8132,9 +8133,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
+  \MT@prot@false
   \MT@prot@get@firstchar
 }
+\newif\ifMT@prot@
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
 %\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
@@ -8268,8 +8272,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % As we're using \pkg{etoolbox} here, this only works with \etex.
 %    \begin{macrocode}
 ^^X\def\MT@prot@ifmacro@{%
-^^X  \ifdefmacro\MT@prot@next{\ifdefparam\MT@prot@next\@gobble\@firstofone}\@gobble
-^^X}
+^^X  \ifdefmacro\MT@prot@next{\ifdefparam\MT@prot@next\@gobble\@firstofone}\@gobble}
 ^^Q\let\MT@prot@ifmacro\@gobble
 %    \end{macrocode}
 %\end{macro}
@@ -8379,7 +8382,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@check#1{\MT@prot@check@#1}
 \def\MT@prot@check@#1#2{%
   \ifx\MT@prot@next#2%
+    \MT@prot@true
     \csname MT@prot@check@#1\endcsname{#2}%
+    \let\MT@prot@ifmacro\@gobble
     \expandafter\MT@tlist@break
   \fi
 }
@@ -8406,9 +8411,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@get@first@char}
 % If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
+%\changes{v3.0e}{2022/06/15}{don't gobble previously captured content}
 %    \begin{macrocode}
 \def\MT@prot@get@first@char{%
-  \let\MT@temp\relax
+  \def\MT@temp*{\ifMT@prot@\MT@prot@l{\the\MT@toks}\fi}%
   \MT@prot@ifcat\bgroup{%
     \def\MT@temp*{\MT@prot@group}%
   }{%
@@ -8435,21 +8441,20 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % \dots~or a command/active char whose first command is one of the following.
 %    \begin{macrocode}
-          \def\MT@temp*{}%
           \MT@prot@ifmacro{%
             \MT@prot@iffirstcmd\UTFviii@two@octets{%
-              \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+              \def\MT@temp*##1##2{\MT@prot@l{\the\MT@toks##1##2}}%
             }{%
               \MT@prot@iffirstcmd\UTFviii@three@octets{%
-                \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
+                \def\MT@temp*##1##2##3{\MT@prot@l{\the\MT@toks##1##2##3}}%
               }{%
                 \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                  \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
+                  \def\MT@temp*##1##2##3##4{\MT@prot@l{\the\MT@toks##1##2##3##4}}%
                 }{%
 %    \end{macrocode}
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
-                  \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
+                  \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}}{%
                     \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
                   }%
                 }%
