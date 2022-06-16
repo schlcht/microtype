@@ -3877,12 +3877,14 @@
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
-%  \active,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,\footnotesize,
-%  \leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\medskip,\newbox,\newcommand,
+%  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
+%  \footnotesize,\huge,\Huge,\itshape,\large,\Large,\LARGE,\leavevmode,\llap,
+%  \makeatletter,\makebox,\mathrm,\mbox,\mdseries,\medskip,\newbox,\newcommand,
 %  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
 %  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\providecommand,
-%  \quad,\raggedright,\renewcommand,\scalebox,\space,\strut,\textwidth,\texttt,\tiny,
-%  \tracingnone,\usefont,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,
+%  \quad,\raggedright,\renewcommand,\rmfamily,\scalebox,\sffamily,\scriptsize,\scshape,
+%  \slshape,\small,\space,\strut,\textwidth,\texttt,\tiny,\tracingnone,\ttfamily,
+%  \upshape,\usefont,\tiny,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,
 %  \CurrentOption,\DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,
 %  \InputIfFileExists,\MessageBreak,\PackageError,\PackageInfo,\PackageWarning,
 %  \PassOptionsToPackage,\ProcessOptions,\RawNoindent,\RequirePackage,\UnicodeEncodingName}
@@ -3916,6 +3918,7 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
+%\DoNotIndex{\frakfamily,\swabfamily,\gothfamily}                            ^^A yfonts
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem,
 %  \beamer@framefootnotetext}                                                ^^A beamer
@@ -6784,7 +6787,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
 %    \end{macrocode}
 % The command has been made robust in 2022.
-%\changes{v3.0e}{2022/05/21}{protrusion patch \texttt{eqnum}: adjust to robustness of \cmd\eqref}
+%\changes{v3.0e}{2022/05/21}{protrusion patch \texttt{eqnum}: adjust to robustness of \cmd\eqref\
+%                            (\LaTeX\ 2022-06-01)}
 %    \begin{macrocode}
        \MT@ifdefined@n@TF{eqref }
          {\MT@exp@cs\MT@patch@patch{eqref }}{\MT@patch@patch\eqref}
@@ -8239,6 +8243,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@vinfo{|<< adding #2 margin kern for `#1':\MessageBreak
         \the\@tempdima \on@line}%
       \kern\@tempdima
+%<debug>%\vbox to0pt{\vss\llap{\fbox{\kern\@tempdima\kern-\fboxsep
+%<debug>%                         \unhbox\MT@tempbox\kern-\fboxsep}\hskip\marginparsep}}%
     \fi
   \fi
 }
@@ -8428,7 +8434,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
-% This is the list of commands to be added to the toks.
+% Here's the list of commands to be added to our toks.
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
@@ -19964,7 +19970,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12574}
+% \CheckSum{12588}
 %
 % \Finale
 %
