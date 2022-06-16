@@ -8314,9 +8314,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \expandafter\expandafter\expandafter\@tempa
       \expandafter\MT@getthird\MT@prot@next\relax\@nil
     \MT@exp@two@c\ifx\@car\@tempa\relax\@nil\@text@composite
-      \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+      \def\MT@temp*##1##2{\MT@prot@l{\the\MT@toks##1##2}}%
     \else
-      \def\MT@temp*##1{\MT@prot@l{##1}}%
+      \def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}%
     \fi
     \MT@tlist@break
   }\relax
@@ -8378,12 +8378,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@prot@check}
 %\begin{macro}{\MT@prot@check@}
+% We map through a list of commands that should be copied into the toks.
 %    \begin{macrocode}
 \def\MT@prot@check#1{\MT@prot@check@#1}
 \def\MT@prot@check@#1#2{%
   \ifx\MT@prot@next#2%
     \MT@prot@true
-    \csname MT@prot@check@#1\endcsname{#2}%
+    \csname MT@prot@check@#1\endcsname
     \let\MT@prot@ifmacro\@gobble
     \expandafter\MT@tlist@break
   \fi
@@ -8392,19 +8393,53 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@check@I}
-% This is for commands to be ignored.
+% This is for commands to be \textbf{I}gnored.
 %    \begin{macrocode}
-\def\MT@prot@check@I#1{%
+\def\MT@prot@check@I{%
   \def\MT@temp*##1{\MT@prot@get@firstchar}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@check@S}
+% Add a \textbf{S}ingle command (without an argument).
+%    \begin{macrocode}
+\def\MT@prot@check@S{%
+  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks##1}\MT@prot@get@firstchar}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@X}
+% Add a command with \textbf{O}ne argument.
+%    \begin{macrocode}
+\def\MT@prot@check@O{%
+  \def\MT@temp*##1##2{\MT@toks\expandafter{\the\MT@toks##1{##2}}\MT@prot@get@firstchar}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@T}
+% Add a command with \textbf{T}wo arguments.
+%    \begin{macrocode}
+\def\MT@prot@check@T{%
+  \def\MT@temp*##1##2##3{\MT@toks\expandafter{\the\MT@toks##1{##2}{##3}}\MT@prot@get@firstchar}%
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@check@cmds}
-%\changes{v3.0e}{2022/06/09}{new macro: make commands configurable}
+%\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
+%\changes{v3.0e}{2022/06/15}{add standard font selection commands}
+% This is the list of commands to be added to the toks.
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
+  {S\rmfamily}{S\sffamily}{S\ttfamily}{S\mdseries}{S\bfseries}%
+  {S\upshape}{S\slshape}{S\itshape}{S\scshape}%
+% {S\frakfamily}{S\swabfamily}{S\gothfamily}%
+  {S\normalfont}{S\selectfont}%
+  {S\tiny}{S\scriptsize}{S\footnotesize}{S\small}{S\normalsize}%
+  {S\large}{S\Large}{S\LARGE}{S\huge}{S\Huge}%
+  {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}
+  {T\fontsize}
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8428,13 +8463,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \def\MT@temp*{\MT@prot@addtoken@first}%
       }{%
 %    \end{macrocode}
-% a space character,\dots
+% a space character, \dots
 %    \begin{macrocode}
         \MT@prot@ifx\@sptoken{%
           \def\MT@temp* {\MT@prot@get@firstchar}%
         }{%
 %    \end{macrocode}
-% ignored commands,\dots
+% commands, \dots
 %    \begin{macrocode}
           \let\MT@prot@ifmacro\MT@prot@ifmacro@
           \MT@map@tlist@c\MT@prot@check@cmds\MT@prot@check
@@ -8455,6 +8490,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
                   \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}}{%
+%    \end{macrocode}
+% or, finally,  a <LICR> command.
+%    \begin{macrocode}
                     \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
                   }%
                 }%
@@ -8469,6 +8507,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@addtoken@first}
+% Begin filling toks.
+%    \begin{macrocode}
+\def\MT@prot@addtoken@first#1{%
+  \MT@toks\expandafter{\the\MT@toks#1}%
+  \MT@prot@get@nextchar
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@ifx}
 % Continue if letter or other.
 %    \begin{macrocode}
@@ -8480,15 +8527,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
   }%
   \MT@temp*%
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@addtoken@first}
-% Begin filling toks.
-%    \begin{macrocode}
-\def\MT@prot@addtoken@first#1{%
-  \MT@toks\expandafter{\the\MT@toks#1}%
-  \MT@prot@get@nextchar
 }
 %</package>
 %    \end{macrocode}
@@ -19926,7 +19964,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12503}
+% \CheckSum{12574}
 %
 % \Finale
 %
