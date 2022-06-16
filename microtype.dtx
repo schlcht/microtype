@@ -3916,7 +3916,7 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
-%\DoNotIndex{\apptocmd,\gappto,\patchcmd}                                    ^^A etoolbox
+%\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem,
 %  \beamer@framefootnotetext}                                                ^^A beamer
 %\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
@@ -8261,28 +8261,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@prot@ifmacro}
 %\begin{macro}{\MT@prot@ifmacro@}
-%\begin{macro}{\MT@prot@ifmacro@@}
 % Test whether \meta{\#1} is a macro or an active character
 % that does not take an argument.
-% (inspired by \contributor Joseph Wright <@\at @>). ^^A https://tex.stackexchange.com/a/331696/
-% Only works with \etex.
+%^^A (inspired by \contributor Joseph Wright <@\at @>). ^^A https://tex.stackexchange.com/a/331696/
+%\changes{v3.0e}{2022/06/15}{use \pkg{etoolbox} facilities}
+% As we're using \pkg{etoolbox} here, this only works with \etex.
 %    \begin{macrocode}
-^^X\def\MT@prot@ifmacro{%
-^^X  \expandafter\MT@prot@ifmacro@\meaning\MT@prot@next\@nil
+^^X\def\MT@prot@ifmacro@{%
+^^X  \ifdefmacro\MT@prot@next{\ifdefparam\MT@prot@next\@gobble\@firstofone}\@gobble
 ^^X}
-^^X\edef\MT@prot@ifmacro@#1\@nil{%
-^^X  \noexpand\MT@prot@ifmacro@@#1{}{}\detokenize{macro:->}\noexpand\@nil
-^^X}
-^^X\edef\MT@temp{%
-^^X  \def\noexpand\MT@prot@ifmacro@@##1\detokenize{macro:->}##2\noexpand\@nil{%
-^^X    \noexpand\ifx\relax##1\relax
-^^X    \unexpanded{\expandafter\@firstofone\else\expandafter\@gobble\fi}%
-^^X  }%
-^^X}
-^^X\MT@temp
 ^^Q\let\MT@prot@ifmacro\@gobble
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@iffirstcmd}
@@ -8441,33 +8430,32 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % ignored commands,\dots
 %    \begin{macrocode}
+          \let\MT@prot@ifmacro\MT@prot@ifmacro@
           \MT@map@tlist@c\MT@prot@check@cmds\MT@prot@check
-          \ifx\MT@temp\relax
 %    \end{macrocode}
 % \dots~or a command/active char whose first command is one of the following.
 %    \begin{macrocode}
-            \def\MT@temp*{}%
-            \MT@prot@ifmacro{%
-              \MT@prot@iffirstcmd\UTFviii@two@octets{%
-                \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+          \def\MT@temp*{}%
+          \MT@prot@ifmacro{%
+            \MT@prot@iffirstcmd\UTFviii@two@octets{%
+              \def\MT@temp*##1##2{\MT@prot@l{##1##2}}%
+            }{%
+              \MT@prot@iffirstcmd\UTFviii@three@octets{%
+                \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
               }{%
-                \MT@prot@iffirstcmd\UTFviii@three@octets{%
-                  \def\MT@temp*##1##2##3{\MT@prot@l{##1##2##3}}%
+                \MT@prot@iffirstcmd\UTFviii@four@octets{%
+                  \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
                 }{%
-                  \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                    \def\MT@temp*##1##2##3##4{\MT@prot@l{##1##2##3##4}}%
-                  }{%
 %    \end{macrocode}
 % (this is for \pkg{csquotes})
 %    \begin{macrocode}
-                    \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
-                      \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
-                    }%
+                  \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{##1}}}{%
+                    \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
                   }%
                 }%
               }%
             }%
-          \fi
+          }%
         }%
       }%
     }%
@@ -19933,7 +19921,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12530}
+% \CheckSum{12503}
 %
 % \Finale
 %
