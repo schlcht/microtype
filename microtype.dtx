@@ -8482,7 +8482,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Begin filling toks.
 %    \begin{macrocode}
 \def\MT@prot@addtoken@first#1{%
-  \edef\MT@temp{\MT@toks={\the\MT@toks\noexpand#1}}\MT@temp
+  \MT@toks\expandafter{\the\MT@toks#1}%
   \MT@prot@get@nextchar
 }
 %</package>
@@ -8495,7 +8495,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*pdf-|lua-|xe->
 \def\MT@prot@addtoken@next#1{%
-  \edef\MT@temp{\MT@toks={\the\MT@toks\noexpand#1}}\MT@temp
+  \MT@toks\expandafter{\the\MT@toks#1}%
   \setbox\MT@tempbox\hbox{\the\MT@toks
 %<pdf-|xe->    \relax
 %<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
