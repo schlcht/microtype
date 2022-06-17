@@ -6788,7 +6788,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % The command has been made robust in 2022.
 %\changes{v3.0e}{2022/05/21}{protrusion patch \texttt{eqnum}: adjust to robustness of \cmd\eqref\
-%                            (\LaTeX\ 2022-06-01)}
+%                            (\LaTeX\ 2022-06-01), cf. \githubissue{19}}
 %    \begin{macrocode}
        \MT@ifdefined@n@TF{eqref }
          {\MT@exp@cs\MT@patch@patch{eqref }}{\MT@patch@patch\eqref}
@@ -8183,6 +8183,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (reported by \contributor florian <@\at @>)}^^A
 %                            ^^A https://tex.stackexchange.com/questions/624171/overfull-vbox-in-list-of-figures-since-miktex-update
 %\changes{v3.0b}{2021/12/05}{unconditionally \cmd\leavevmode}^^A
+%\changes{v3.0e}{2022/06/16}{revert \cmd\leavevmode}^^A
 % We set various penalties to zero to allow linebreaking, and don't
 % bother if the split box is overfull (but shouldn't we? -- after all,
 % that's how the penalties bug was discovered~\dots).
@@ -8236,10 +8237,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \fi
     }%
   \endgroup
-  \leavevmode
   \ifhbox\MT@tempbox
     \@tempdima=\@nameuse{#2marginkern}\MT@tempbox\relax
     \expandafter\ifdim\@tempdima=\z@ \else
+      \leavevmode
       \MT@vinfo{|<< adding #2 margin kern for `#1':\MessageBreak
         \the\@tempdima \on@line}%
       \kern\@tempdima
@@ -8448,8 +8449,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {S\normalfont}{S\selectfont}%
   {S\tiny}{S\scriptsize}{S\footnotesize}{S\small}{S\normalsize}%
   {S\large}{S\Large}{S\LARGE}{S\huge}{S\Huge}%
-  {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}
-  {T\fontsize}
+  {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}%
+  {T\fontsize}%
 }
 %    \end{macrocode}
 %\end{macro}
