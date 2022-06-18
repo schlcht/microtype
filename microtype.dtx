@@ -8244,8 +8244,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@vinfo{|<< adding #2 margin kern for `#1':\MessageBreak
         \the\@tempdima \on@line}%
       \kern\@tempdima
-%<debug>%\vbox to0pt{\vss\llap{\fbox{\kern\@tempdima\kern-\fboxsep
-%<debug>%                         \unhbox\MT@tempbox\kern-\fboxsep}\hskip\marginparsep}}%
+%<debug>%\vbox to0pt{\vss\llap{\fbox{%
+%<debug>%      \MT@ifstreq{#2}{left}{\kern\@tempdima}\relax
+%<debug>%      \kern-\fboxsep\unhbox\MT@tempbox\kern-\fboxsep
+%<debug>%      \MT@ifstreq{#2}{right}{\kern\@tempdima}\relax}\hskip\marginparsep}}%
     \fi
   \fi
 }
