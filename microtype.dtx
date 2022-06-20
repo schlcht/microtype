@@ -8447,7 +8447,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {I\ignorespaces}{I\relax}{I\@empty}%
   {S\rmfamily}{S\sffamily}{S\ttfamily}{S\mdseries}{S\bfseries}%
   {S\upshape}{S\slshape}{S\itshape}{S\scshape}%
-% {S\frakfamily}{S\swabfamily}{S\gothfamily}%
   {S\normalfont}{S\selectfont}%
   {S\tiny}{S\scriptsize}{S\footnotesize}{S\small}{S\normalsize}%
   {S\large}{S\Large}{S\LARGE}{S\huge}{S\Huge}%
@@ -8456,6 +8455,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%    \begin{macrocode}
+% If \pkg{yfonts} is loaded, we add the relevant commands (those that
+% don't take an argument).
+\MT@addto@setup{%
+  \MT@with@package@T{yfonts}
+    {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
+}
+%    \end{macrocode}
 %\begin{macro}{\MT@prot@get@first@group}
 % If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
@@ -19984,7 +19991,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12599}
+% \CheckSum{12610}
 %
 % \Finale
 %
