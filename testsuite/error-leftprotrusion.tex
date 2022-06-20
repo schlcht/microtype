@@ -1,6 +1,8 @@
 \documentclass{article}
 \ifx\pdfprotrudechars\undefined
   \usepackage{fontspec}
+\else
+  \usepackage[T1]{fontenc}
 \fi
 \usepackage[verbose]{microtype}
 \usepackage{csquotes}
@@ -28,11 +30,11 @@
 	Test
 \end{abstract}
 
-% the following cases will not be protruded
 \leftprotrusion{\sffamily--abc\par def--}
 
 \rightprotrusion{\sffamily--abc def--}
 
+% the following cases will not be protruded
 \def\xxx{--abc\par def--}
 \leftprotrusion\xxx % issue #6
 
