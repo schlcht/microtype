@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/12/32 v3.0e
+  [2022/06/20 v3.0e
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.0d",
-%<luafile>    date         = "2022/03/14",
+%<luafile>    version      = "3.0e",
+%<luafile>    date         = "2022/06/20",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -81,8 +81,7 @@
 %<*driver|docsty>
 %<*driver>
 \makeatletter
-\AddToHook{package/doc/before}{\pkgcls@targetdate=1 \def\pkgcls@targetlabel{v2}}
-\documentclass[10pt,a4paper]{ltxdoc}
+\documentclass[10pt,a4paper,doc2]{ltxdoc}
 %</driver>
 % Compiling microtype.dtx with the command line option
 % --jobname=microtype-code
@@ -3433,7 +3432,7 @@
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \LaTeX3 Project, \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %   \emph{The \pkg{luaotfload} package},
-%   18~March 2022.
+%   15~June 2022.
 %   (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -8442,6 +8441,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 % Here's the list of commands to be added to our toks.
+% We'll postpone the handling of commands whose argument would have
+% to be processed (\eg, \cmd\textrm).
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
@@ -8455,9 +8456,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
-%    \begin{macrocode}
-% If \pkg{yfonts} is loaded, we add the relevant commands (those that
+% If \pkg{yfonts} is loaded, we add the relevant commands (again, those that
 % don't take an argument).
+%    \begin{macrocode}
 \MT@addto@setup{%
   \MT@with@package@T{yfonts}
     {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
@@ -19991,7 +19992,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12610}
+% \CheckSum{12609}
 %
 % \Finale
 %

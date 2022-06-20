@@ -4,7 +4,7 @@ The `microtype` package
 
 **Subliminal refinements towards typographical perfection**
 
-  (v3.0d -- 2022/03/14)
+  (v3.0e -- 2022/06/20)
 
 
 Overview
