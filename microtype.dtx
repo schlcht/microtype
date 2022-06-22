@@ -3864,11 +3864,11 @@
 %^^A\DoNotIndex{\adjustspacing,\copyfont,\expandglyphsinfont,
 %^^A  \ignoreligaturesinfont,\outputmode,\protrudechars,\tracingfonts}       ^^A luatex
 %\DoNotIndex{\eplain,\usepkg@pkg}                                            ^^A eplain
-%\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@classoptionslist,\@currext,
-%  \@currname,\@defaultunits,\@elt,\@empty,\@@enc@update,\@eqnnum,\@expandtwoargs,
-%  \@firstofone,\@firstoftwo,\@fontenc@load@list,\@footnotetext,\@gobble,\@gobbletwo,
-%  \@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,\@ifstar,
-%  \@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,
+%\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@changed@cmd,\@classoptionslist,
+%  \@current@cmd,\@currext,\@currname,\@defaultunits,\@empty,\@@enc@update,
+%  \@eqnnum,\@expandtwoargs,\@firstofone,\@firstoftwo,\@footnotetext,\@gobble,
+%  \@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,
+%  \@ifstar,\@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,
 %  \@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,
 %  \@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,\@spaces,\@sptoken,
 %  \@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,\@typeset@protect,
@@ -8310,15 +8310,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@iflicrcmd}
+%\changes{v3.0f}{2022/06/22}{no need to know about encodings}
 % Fun with <LICR>:
-% Test if the first command of the third command of the first command
-% is \cmd\@text@composite, in which case also grab the next token,
+% If we have an encoding command, test if the first command of the third command
+% (\eg, |\T1\"|) is \cmd\@text@composite, in which case also grab the next token,
 % otherwise it should be a text command.
 %    \begin{macrocode}
 \def\MT@getthird#1#2#3#4\@nil{#3}
-\def\MT@prot@iflicrcmd#1{%
-  \MT@exp@cs\MT@prot@iffirstcmd{#1-cmd}{%
-    \expandafter\expandafter\expandafter\let
+\def\MT@prot@iflicrcmd{%
+  \MT@prot@iffirstcmd\@current@cmd\@secondoftwo\@firstofone
+    {\MT@prot@iffirstcmd\@changed@cmd\@firstofone\@gobble}%
+  {\expandafter\expandafter\expandafter\let
       \expandafter\expandafter\expandafter\@tempa
       \expandafter\MT@getthird\MT@prot@next\relax\@nil
     \MT@exp@two@c\ifx\@car\@tempa\relax\@nil\@text@composite
@@ -8326,34 +8328,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \else
       \def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}%
     \fi
-    \MT@tlist@break
-  }\relax
-}
-%</package>
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@enc@list}
-%\changes{v3.0e}{2022/06/09}{new macro: no more guesswork about encodings}
-% The list of all loaded font encodings. For \LaTeX\ formats older than
-% 2020/02/11 (before \cmd\@fontenc@load@list\ was introduced), we don't
-% bother doing any guesswork (like \pkg{babel} used to do). Also, we
-% don't consider the older <EU1>/<EU2> encodings.
-%    \begin{macrocode}
-%<pdf-|lua-|xe->\def\MT@enc@list
-%<pdf->  {{T1}{OT1}}
-%<lua-|xe->  {{TU}}
-%<*package>
-\MT@addto@setup{%
-  \ifx\@fontenc@load@list\@undefined \else
-    \def\@elt#1{,#1,}%
-    \edef\@tempa{\@fontenc@load@list}%
-    \MT@map@clist@c\@tempa{%
-      \MT@ifempty{#1}\relax{%
-        \MT@in@tlist{#1}\MT@enc@list
-        \ifMT@inlist@\else\edef\MT@enc@list{\MT@enc@list{#1}}\fi
-      }%
-    }%
-  \fi
+  }%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8503,7 +8478,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         \let\MT@prot@ifmacro\MT@prot@ifmacro@
         \MT@map@tlist@c\MT@prot@check@cmds\MT@prot@check
 %    \end{macrocode}
-% \dots~or a command/active char whose first command is one of the following.
+% \dots~or a command/active char whose first command is one of the following:
 %    \begin{macrocode}
         \MT@prot@ifmacro{%
           \MT@prot@iffirstcmd\UTFviii@two@octets{%
@@ -8522,7 +8497,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % or, finally,  a <LICR> command.
 %    \begin{macrocode}
-                  \MT@map@tlist@c\MT@enc@list\MT@prot@iflicrcmd
+                  \MT@prot@iflicrcmd
                 }%
               }%
             }%
@@ -19992,7 +19967,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12609}
+% \CheckSum{12586}
 %
 % \Finale
 %
