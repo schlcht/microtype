@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/06/20 v3.0e
+  [2022/12/32 v3.0f
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3485,6 +3485,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0e}{2022/06/20}
 %
 %\VersionDate{3.0d}{2022/03/14}
 %
@@ -8417,7 +8419,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
-%\changes{v3.0f}{2022/06/22}{add new NFSS commands}
 % Here's the list of commands to be added to our toks.
 % We'll postpone the handling of commands whose argument would have
 % to be processed (\eg, \cmd\textrm).
@@ -8435,22 +8436,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {T\fontsize}%
 }
 %    \end{macrocode}
-%\end{macro}
 % \LaTeX\ 2020/02/02 introduced some more commands.
+%\changes{v3.0f}{2022/06/22}{add new NFSS commands}
 %    \begin{macrocode}
-\MT@addto@setup{%
-  \IfFormatAtLeastTF{2020/02/02}
-    {\g@addto@macro\MT@prot@check@cmds{%
-      {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
-      {O\fontseriesforce}{O\fontshapeforce}}}{}
+\IfFormatAtLeastTF{2020/02/02}
+  {\g@addto@macro\MT@prot@check@cmds{%
+    {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
+    {O\fontseriesforce}{O\fontshapeforce}}}{}
 %    \end{macrocode}
 % If \pkg{yfonts} is loaded, we add the relevant commands (again, those that
 % don't take an argument).
 %    \begin{macrocode}
+\MT@addto@setup{%
   \MT@with@package@T{yfonts}
     {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
 }
 %    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@get@first@group}
 % If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
