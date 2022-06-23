@@ -27,7 +27,7 @@
 \ProvidesFile
 %</!EBGaramond>
 %<*driver>
-    {\jobname.dtx}[2022/06/20 v3.0e]
+    {\jobname.dtx}[2022/06/23 v3.0f]
 %</driver>
 %<CharisSIL>  {mt-CharisSIL.cfg}[2017/07/07 v1.1 microtype config. file: Charis SIL (RS)]
 %<LatinModernRoman>  {mt-LatinModernRoman.cfg}[2021/02/21 v1.1 microtype config. file: Latin Modern Roman (RS)]
@@ -37,8 +37,7 @@
 %<TU-empty>  {mt-TU-empty.cfg}[2021/06/22 v1.1 microtype config. file: fonts with nonstandard glyph set (RS)]
 %<*driver>
 \makeatletter
-\AddToHook{package/doc/before}{\pkgcls@targetdate=1 \def\pkgcls@targetlabel{v2}}
-\documentclass[10pt,a4paper]{ltxdoc}
+\documentclass[10pt,a4paper,doc2]{ltxdoc}
 \usepackage{fontspec}
 \usepackage{luatexbase}
 \RequireLuaModule{luainputenc}
