@@ -3337,9 +3337,10 @@
 % `\contributor NightShade        <@\at @>', ^^A https://tex.stackexchange.com/users/260836/nightshade
 %  \contributor Nelson Lago       <@\at @>,  ^^A https://github.com/urrameu
 %  \contributor Brian Dunn        <@\at @>,  ^^A https://github.com/bdtc
-%  \contributor Ralf Steinle      <rasteinle\at web.de>
+%  \contributor Ralf Steinle      <rasteinle\at web.de>,
+%  \contributor Denis Bitouz\'e   <@\at @>   ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
 % and
-%  \contributor Denis Bitouz\'e   <@\at @>.  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
+%  \contributor Christophe Dervieux <@\at @>. ^^A https://github.com/cderv
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -8313,7 +8314,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@iflicrcmd}
-%\changes{v3.0f}{2022/06/22}{no need to know about encodings}
+%\changes{v3.0f}{2022/06/22}{no need to know about encodings
+%                            (also fixes \githubissue{20}, reported by
+%                             \contributor Christophe Dervieux <@\at @>)}
 % Fun with <LICR>:
 % If we have an encoding command, test if the first command of the third command
 % (\eg, |\T1\"|) is \cmd\@text@composite, in which case also grab the next token,
@@ -8444,7 +8447,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
     {O\fontseriesforce}{O\fontshapeforce}}}{}
 %    \end{macrocode}
-% If \pkg{yfonts} is loaded, we add the relevant commands (again, those that
+% If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
 % don't take an argument).
 %    \begin{macrocode}
 \MT@addto@setup{%
