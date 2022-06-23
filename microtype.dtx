@@ -3877,16 +3877,17 @@
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
 %  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
-%  \footnotesize,\huge,\Huge,\itshape,\large,\Large,\LARGE,\leavevmode,\llap,
-%  \makeatletter,\makebox,\mathrm,\mbox,\mdseries,\medskip,\newbox,\newcommand,
-%  \newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,\nonfrenchspacing,
-%  \normalbaselineskip,\normalsize,\numberline,\obeylines,\par,\parbox,\providecommand,
-%  \quad,\raggedright,\renewcommand,\rmfamily,\scalebox,\sffamily,\scriptsize,\scshape,
-%  \slshape,\small,\space,\strut,\textwidth,\texttt,\tiny,\tracingnone,\ttfamily,
-%  \upshape,\usefont,\tiny,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,
-%  \CurrentOption,\DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,
-%  \InputIfFileExists,\MessageBreak,\PackageError,\PackageInfo,\PackageWarning,
-%  \PassOptionsToPackage,\ProcessOptions,\RawNoindent,\RequirePackage,\UnicodeEncodingName}
+%  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
+%  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\mdseries,\medskip,
+%  \newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,
+%  \nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,\obeylines,
+%  \par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,\scalebox,
+%  \sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
+%  \textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,\usefont,\tiny,
+%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareOption,
+%  \DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,\MessageBreak,
+%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
+%  \RawNoindent,\RequirePackage,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -8416,6 +8417,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
+%\changes{v3.0f}{2022/06/22}{add new NFSS commands}
 % Here's the list of commands to be added to our toks.
 % We'll postpone the handling of commands whose argument would have
 % to be processed (\eg, \cmd\textrm).
@@ -8434,10 +8436,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+% \LaTeX\ 2020/02/02 introduced some more commands.
+%    \begin{macrocode}
+\MT@addto@setup{%
+  \IfFormatAtLeastTF{2020/02/02}
+    {\g@addto@macro\MT@prot@check@cmds{%
+      {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
+      {O\fontseriesforce}{O\fontshapeforce}}}{}
+%    \end{macrocode}
 % If \pkg{yfonts} is loaded, we add the relevant commands (again, those that
 % don't take an argument).
 %    \begin{macrocode}
-\MT@addto@setup{%
   \MT@with@package@T{yfonts}
     {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
 }
@@ -19970,7 +19979,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12589}
+% \CheckSum{12598}
 %
 % \Finale
 %
