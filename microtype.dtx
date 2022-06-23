@@ -8415,6 +8415,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
+%\changes{v3.0f}{2022/06/22}{add \microtype's commands}
 % Here's the list of commands to be added to our toks.
 % We'll postpone the handling of commands whose argument would have
 % to be processed (\eg, \cmd\textrm).
@@ -8424,9 +8425,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {S\rmfamily}{S\sffamily}{S\ttfamily}{S\mdseries}{S\bfseries}%
   {S\upshape}{S\slshape}{S\itshape}{S\scshape}%
   {S\normalfont}{S\selectfont}%
+  {S\lsstyle}%
   {S\tiny}{S\scriptsize}{S\footnotesize}{S\small}{S\normalsize}%
   {S\large}{S\Large}{S\LARGE}{S\huge}{S\Huge}%
   {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}%
+  {O\microtypesetup}{O\microtypecontext}%
   {T\fontsize}%
 }
 %    \end{macrocode}
@@ -19967,7 +19970,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12586}
+% \CheckSum{12589}
 %
 % \Finale
 %
