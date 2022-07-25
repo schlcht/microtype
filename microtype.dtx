@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/06/23 v3.0f
+  [2022/12/32 v3.0g
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3486,6 +3486,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.0f}{2022/06/23}
 %
 %\VersionDate{3.0e}{2022/06/20}
 %
@@ -11596,6 +11598,7 @@ end
 %</package>
 }
 %<plain>}\relax
+%</package|letterspace>
 %<*package>
 %    \end{macrocode}
 %\end{macro}
@@ -11641,6 +11644,7 @@ end
     \expandafter\MT@rem@from@clist\MT@font\MT@font@list
   \fi
 }
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -11648,9 +11652,18 @@ end
 %
 % Here are the variants for context-sensitive setup.
 %\begin{macro}{\MT@active@features}
-% The activated features are stored in this command.
+% The activated features are stored in a command.
+%\changes{v3.0g}{2022/07/24}{always activate contexts for tracking}
+% We always allow contexts for tracking, because \cmd\textls\ may
+% be used without activating the feature.
 %    \begin{macrocode}
-\let\MT@active@features\@empty
+%<*pdf-|lua-|xe->
+%<pdf->\MT@requires@pdftex6
+%<lua->\MT@requires@luatex3
+%<pdf-|lua->  {\def\MT@active@features{,tr}}{%
+  \let\MT@active@features\@empty
+%<pdf-|lua->  }
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@check@font@cx}
@@ -11661,6 +11674,7 @@ end
 % This should be more efficient than book-keeping the fonts in lists associated
 % with the combination of contexts, as we've done it before.
 %    \begin{macrocode}
+%<*package>
 \def\MT@check@font@cx{%
   \MT@if@true
   \MT@map@clist@c\MT@active@features{%
@@ -12515,7 +12529,6 @@ end
   \fi
 }
 %</package>
-%</package|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -14797,7 +14810,6 @@ end
 %<lua->\MT@requires@luatex3{%
   \def\MT@setup@tracking{%
     \ifMT@tracking
-      \edef\MT@active@features{\MT@active@features,tr}%
       \MT@info@nl{Tracking enabled}%
       \MT@check@active@set{tr}%
 %    \end{macrocode}
@@ -19979,7 +19991,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12597}
+% \CheckSum{12598}
 %
 % \Finale
 %
