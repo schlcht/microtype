@@ -7142,8 +7142,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % won't work, and we could skip the settings (for example, the \pkg{dsfont}
 % fonts don't specify this dimension; this is probably a bug -- the \pkg{fourier}
 % and \pkg{newpx}/\pkg{newtx} packages have been fixed in the meantime).
-% However, we can fix it ourselves -- only tracking still doesn't work (it seems
-% that \cmd\letterspacefont\ uses the \fontdim6 from the original font).
+% However, we can fix it ourselves (and since \pdftex\ 1.40.23, this also works
+% for \cmd\letterspacefont). ^^A https://mailman.ntg.nl/pipermail/ntg-pdftex/2021-June/004335.html
 % \xetex\ doesn't provide an equivalent to \cmd\pdffontsize, so we use the
 % nominal size instead.
 %    \begin{macrocode}
@@ -8125,7 +8125,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \DeclareRobustCommand\noprotrusionifhmode{\relax\ifhmode\kern-\p@\kern\p@\fi}
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\ifMT@prot@}
 %\begin{macro}{\leftprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
 % This command may be used to add protrusion on the left hand side.
@@ -8140,12 +8139,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
-  \MT@prot@false
   \MT@prot@get@firstgroup
 }
-\newif\ifMT@prot@
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@l}
 %\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
@@ -8376,7 +8372,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@check#1{\MT@prot@check@#1}
 \def\MT@prot@check@#1#2{%
   \ifx\MT@prot@next#2%
-    \MT@prot@true
     \csname MT@prot@check@#1\endcsname
     \let\MT@prot@ifmacro\@gobble
     \expandafter\MT@tlist@break
@@ -8476,7 +8471,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We add a letter or other character, \dots
 %    \begin{macrocode}
 \def\MT@prot@get@first@token{%
-  \def\MT@temp*{\ifMT@prot@\MT@prot@l{\the\MT@toks}\fi}%
+  \def\MT@temp*{\MT@exp@one@n\MT@ifempty{\the\MT@toks}\relax{\MT@prot@l{\the\MT@toks}}}%
   \MT@prot@ifcat{a}{%
     \def\MT@temp*{\MT@prot@addtoken@first}%
   }{%
@@ -19984,7 +19979,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12598}
+% \CheckSum{12597}
 %
 % \Finale
 %
