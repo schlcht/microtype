@@ -3933,7 +3933,7 @@
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
 %  \cftsubsubsectionafterpnum,\cfttableafterpnum}                            ^^A memoir
-%\DoNotIndex{\setuptoc,\unsettoc,\scr@saved@footnotetext}                    ^^A koma (tocbasic)
+%\DoNotIndex{\KOMAClassName,\setuptoc,\unsettoc,\scr@saved@footnotetext}     ^^A koma (tocbasic)
 %\DoNotIndex{\theequationdis,\theIEEEsubequationdis}                         ^^A IEEEtran
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
@@ -6871,11 +6871,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
            \MT@exp@cs\MT@patch@patch{beamerx@\string\@mpfootnotetext}
                {\ignorespaces}{\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
-%   \item the <\cls{KOMA}> classes (which load \pkg{scrkbase})
+%   \item the <\cls{KOMA}> classes
 %\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
+%\changes{v3.0g}{2022/08/03}{fix test for <\cls{KOMA}> classes}
 %    \begin{macrocode}
-          {\@ifpackageloaded{scrkbase}
+          {\MT@ifdefined@c@TF\KOMAClassName
             {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
 %    \end{macrocode}
 %   \item the base classes
@@ -19991,7 +19992,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12598}
+% \CheckSum{12599}
 %
 % \Finale
 %
