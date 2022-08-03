@@ -2639,8 +2639,8 @@
 %\medskip
 %\Describe{Macro}{\lslig}{ligature}
 % Since the commands \cs{textls} and \cs{lsstyle} will also evaluate the
-% `\texttt{no ligatures}' key for the respective font (cf.
-% section~\ref{sub:tracking}), you usually need not worry
+% `\texttt{no ligatures}' key for the respective font (as well as all other
+% options mentioned in section~\ref{sub:tracking}), you usually need not worry
 % about protecting or breaking ligatures with most fonts. However, in certain
 % situations, there may be a conflict of ligatures beginning with the same
 % letter, where some of them should be inhibited, while others should not. For
@@ -2648,17 +2648,17 @@
 % `ck', `tz' and `sz'~(`\textfrak{sz}') should never be broken up; you also usually
 % see the `st'~(`\textfrak{st}') ligature in letterspaced text. Furthermore, at
 % least the \pkg{yfonts} package realises the short~s~(`\textfrak{s:}') as the
-% ligature~`|s:|'. On the other hand, the `ct'~ligature and the other `long~s'
+% pseudo-ligature~`|s:|'. On the other hand, the `ct'~ligature and the other `long~s'
 % ligatures often found in Fraktur fonts should be suppressed. There are two
 % ways of solving this problem: either don't disable the `|s|' and/or `|c|'
 % ligatures and break those that need to be broken up by inserting
-% `|{\kern0pt}|' or \pkg{babel}'s \verb="|= shortcut; or disable them and
+% `|{\kern0pt}|' or \pkg{babel}'s~\verb="|= shortcut; or disable them and
 % protect those ligatures that need to be protected by enclosing them in the
 % \cs{lslig} command. So, the following two solutions have the same result
 % (namely, `\textls{\def\!#1{\textcolor{thegreen}{\lslig{#1}}}^^A
 %                   \def\?#1{\textcolor{thered}{#1}}^^A
 %  \textfrak{Au\!{s:}\?{si}\!{ch}t\!{s:}lo\?{si}gkeit}}',
-%  with ligatures here highlighted in green, inhibited ligatures in red).
+%  with ligatures here highlighted in green, inhibited ligatures in red):
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
 %\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
@@ -8437,7 +8437,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 % \LaTeX\ 2020/02/02 introduced some more commands.
-%\changes{v3.0f}{2022/06/22}{add new NFSS commands}
+%\changes{v3.0f}{2022/06/22}{add new <NFSS> commands}
 %    \begin{macrocode}
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
