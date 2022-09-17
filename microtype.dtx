@@ -3060,6 +3060,22 @@
 % entries.
 %
 %  \item
+%\begin{verbatim}[deletekeywords={[1]{patch}}]
+%Package microtype Warning: Unable to apply patch `<eqnum>' on input line <29>.
+%\end{verbatim}
+%\changes{v3.0g}{2021/09/15}{add hint about protrusion patch warnings}
+% As described in chapter~\ref{sec:pedantic} above, \microtype\ patches a number
+% of commands to enable protrusion in certain situations. If you receive a warning
+% like the above, you should first make sure (as always) that the package is up to date.
+% If it is, consider filing a \href{\githuburl/issues}{bug report}.
+% Until a fix is available, or if you are, for whatever reason, unable or unwilling
+% to update, the easiest solution to get rid of the warning is to disable the
+% problematic patch with the \opt{nopatch} option, \eg:
+%\begin{verbatim}[style=microtype]
+%\microtypesetup{nopatch={eqnum}}
+%\end{verbatim}
+%
+%  \item
 %\begin{verbatim}
 %Package microtype Warning: Unknown slot number of character
 %(microtype)                `<\k A>'
@@ -3122,7 +3138,6 @@
 %! TeX capacity exceeded, sorry [maximum internal font number (font_max)=<2000>].
 %\end{verbatim}
 % Memory parameter `|font_max|' too small.
-%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %! TeX capacity exceeded, sorry [PDF memory size (pdf_mem_size)=<65536>].
@@ -6874,7 +6889,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \item the <\cls{KOMA}> classes
 %\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
-%\changes{v3.0g}{2022/08/03}{fix test for <\cls{KOMA}> classes}
+%\changes{v3.0g}{2022/08/03}{fix test for <\cls{KOMA}> classes in protrusion patch \texttt{footnote}}
 %    \begin{macrocode}
           {\MT@ifdefined@c@TF\KOMAClassName
             {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
@@ -8009,10 +8024,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@set@pr@prefixes}
 %\begin{macro}{\MT@set@pr@prefixes@}
-% Add |charwidth(inheriting char)-charwidth(base char)| to either left or
-% right side or half the amount to both sides. For \xetex, we may have to
-% translate to glyph numbers because \cmd\fontcharwd\ doesn't have the nice
-% feature of understanding the `|U|' or `|/|' prefixes.
+% Add |charwidth(|\meta{inheriting char}|)-charwidth(|\meta{base char}|)|
+% to either left or right side or half the amount to both sides.
+% For \xetex, we may have to translate to glyph numbers because
+% \cmd\fontcharwd\ doesn't have the nice feature of understanding the
+% `|U|' or `|/|' prefixes.
 %    \begin{macrocode}
 %<*pdf-|lua-|xe-|show>
 %<pdf-|lua-|xe->\def\MT@set@pr@prefixes#1{\MT@set@pr@prefixes@#1}
