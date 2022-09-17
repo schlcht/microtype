@@ -3037,29 +3037,6 @@
 %\begin{itemize}
 %\lstset{style=message}
 %  \item
-%\begin{verbatim}
-%! Font csnameendcsname=<cmr10+20 at 10.0pt> not loadable: Metric (TFM) file not found.
-%\end{verbatim}
-%\changes{v1.9a}{2005/11/15}{add explanation for error message in <DVI> mode}
-% This error message will occur if you are trying to employ font expansion
-% while creating <DVI> output. Remember that \emph{automatic} font expansion
-% only works when running \pdftex\ or \luatex\ in <PDF> mode. Although expansion is also
-% possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
-% exist on your \TeX\ system.
-%
-%  \item
-%\begin{verbatim}
-%! pdfTeX error (font expansion): auto expansion is only possible with scalable fonts.
-%\end{verbatim}
-%\changes{v2.2}{2007/06/13}{add hint about error message with \pdftex\ 1.40}
-% Automatic font expansion has been improved in \pdftex\ 1.40, in that it now
-% not only works with Type\,1 fonts but also with TrueType, OpenType and even
-% non-embedded fonts. The above error message indicates either that you are
-% trying to apply expansion to a bitmap~(|pk|) font, which is still not
-% possible, or that the font isn't found at all, \eg, because of missing map
-% entries.
-%
-%  \item
 %\begin{verbatim}[deletekeywords={[1]{patch}}]
 %Package microtype Warning: Unable to apply patch `<eqnum>' on input line <29>.
 %\end{verbatim}
@@ -3100,6 +3077,28 @@
 %
 %  \item
 %\begin{verbatim}
+%! Font csnameendcsname=<cmr10+20 at 10.0pt> not loadable: Metric (TFM) file not found.
+%\end{verbatim}
+%\changes{v1.9a}{2005/11/15}{add explanation for error message in <DVI> mode}
+% This error message will occur if you are trying to employ font expansion
+% while creating <DVI> output. Remember that \emph{automatic} font expansion
+% only works when running \pdftex\ or \luatex\ in <PDF> mode. Although expansion is also
+% possible in <DVI> mode with \pdftex, it requires that all instances of the expanded fonts
+% exist on your \TeX\ system.
+%
+%  \item
+%\begin{verbatim}
+%! pdfTeX error (font expansion): auto expansion is only possible with scalable fonts.
+%\end{verbatim}
+%\changes{v2.2}{2007/06/13}{add hint about error message with \pdftex\ 1.40}
+% Beginning with \pdftex\ 1.40, font expansion not only works with Type\,1 fonts
+% but also with TrueType, OpenType and even non-embedded fonts.
+% The above error message indicates either that you are trying to apply expansion to
+% a bitmap~(|pk|) font, which is still not possible, or that the font isn't found
+% at all, \eg, because of missing map entries.
+%
+%  \item
+%\begin{verbatim}
 %Warning: pdflatex: font <ptmr8r> cannot be expanded (not an included Type1 font)
 %\end{verbatim}
 %\changes{v2.0}{2006/12/13}{qualify hints about expansion error messages with
@@ -3115,6 +3114,7 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
+%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %Warning: pdflatex (file <ecrm1000+20>): Font <ecrm1000+20 at 1200> not found
