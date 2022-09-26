@@ -6583,7 +6583,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \newif\ifMT@patch@ok
 \def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
 \def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
-\def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined. Cannot apply it}}
+\def\MT@patch@undef#1{\MT@warning{Patch `#1' undefined.\MessageBreak Cannot apply it}}
 \def\MT@patch@info@undo#1{\MT@info{Reverting patch `#1'}}
 %    \end{macrocode}
 %\end{macro}
@@ -6596,12 +6596,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Define a patch and add it to the list of patches.
 % The third argument may contain more revert commands, but will
 % mostly be empty.
+%\changes{v3.0g}{2022/09/26}{define patches globally}
+%\changes{v3.0g}{2022/09/26}{check if patch defined}
 %    \begin{macrocode}
 \let\MT@patches@def\@gobble
 \def\MT@define@patch#1#2#3{%
-  \g@addto@macro\MT@patches@def{,#1}%
-  \MT@def@n{MT@patch@@#1}{#2}%
-  \MT@def@n{MT@patch@undo@@#1}{#3}%
+  \MT@ifdefined@n@TF{MT@patch@@#1}{%
+    \MT@warning{Patch `#1' already defined.\MessageBreak Cannot define it}%
+  }{%
+    \g@addto@macro\MT@patches@def{,#1}%
+    \MT@gdef@n{MT@patch@@#1}{#2}%
+    \MT@gdef@n{MT@patch@undo@@#1}{#3}%
+  }%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -6616,8 +6622,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \let\MT@redefined@patches\@empty
 \def\MT@redefine@patch#1#2#3{%
   \g@addto@macro\MT@redefined@patches{%
-    \MT@def@n{MT@patch@@#1}{#2}%
-    \MT@def@n{MT@patch@undo@@#1}{#3}%
+    \MT@ifdefined@n@TF{MT@patch@@#1}{%
+      \MT@gdef@n{MT@patch@@#1}{#2}%
+      \MT@gdef@n{MT@patch@undo@@#1}{#3}%
+    }{%
+      \MT@warning{Patch `#1' undefined.\MessageBreak Cannot redefine it}%
+    }%
   }%
 }
 %    \end{macrocode}
@@ -20008,7 +20018,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12599}
+% \CheckSum{12606}
 %
 % \Finale
 %
