@@ -2759,8 +2759,8 @@
 %
 %\medskip\noindent
 % The \microtype\ package defines a number of patches in order to get protrusion
-% right (with dedicated patches for the classes and packages indicated in
-% parentheses; they may still work with other classes or packages):
+% right (indicated in parentheses are dedicated patches for classes and packages
+% beyond the standard ones; they may still work with other classes or packages):
 %\begingroup
 %\list{}{\labelwidth=3em \itemindent\z@ \leftmargin=\labelwidth
 %     \def\makelabel#1{\hskip\labelsep\texttt{#1}\hss}}
@@ -2773,20 +2773,22 @@
 %              slightly shifted to the right.
 %              This patch also affects environments such as |quote| or |flushleft|, which are
 %              implemented in \LaTeX\ as lists starting with an implicit empty item.
-%              \MTsupp{standard classes, \cls{beamer}, \cls{simplecv}}
+%              \MTsupp{\cls{beamer}, \cls{simplecv}}
 % \item[toc]   Adds protrusion at the left margins of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
-%              \MTsupp{standard classes, \cls{memoir}}
+%              \MTsupp{\cls{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (visible in particular
 %              when the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{standard classes, \cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{hyperref}}
+%              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{hyperref}}
 % \item[eqnum] Protrusion for equation numbers on either side. If you are using the
 %              interface provided by \pkg{mathtools}, insert the relevant commands
 %              yourself, \eg:
 %\begin{verbatim}[belowskip=-\smallskipamount]
 %\newtagform{mytag}[\textbf]{\leftprotrusion{(}}{\rightprotrusion{)}}
 %\end{verbatim}^^A
-%              \MTsupp{standard classes, \pkg{amsmath}, \cls{IEEEtran}}
+%              \MTsupp{\pkg{amsmath}, \cls{IEEEtran}}
+% \item[verbatim] Disables protrusion and expansion in verbatim environments.
+%              \MTsupp{\pkg{alltt}}
 %\endlist\endgroup
 %
 %\medskip\noindent
@@ -2924,6 +2926,7 @@
 %\end{verbatim}
 %\fi
 %
+%\iffalse
 %\changes{v1.9}{2005/07/10}{add hint about \texttt{verbatim} environment}
 %\todo{option to patch \texttt{verbatim}?} ^^A for Karl
 %\paragraph{You might want to disable protrusion in \texttt{verbatim} environments.}
@@ -2949,6 +2952,7 @@
 % If you are using the \pkg{fancyvrb} or the \pkg{listings} package, this is
 % not necessary, since their implementation of the corresponding environments
 % will inhibit protrusion anyway.
+%\fi
 %
 %\changes{v1.9e}{2006/07/10}{add hint about unknown encodings}
 %\paragraph{Settings for Greek/Thai/Armenian etc. encodings are not yet included.}
@@ -3114,7 +3118,6 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
-%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %Warning: pdflatex (file <ecrm1000+20>): Font <ecrm1000+20 at 1200> not found
@@ -3436,7 +3439,7 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX\ Project Team, \emph{\LaTeXe\ font selection},
-%   March 2021.
+%   December 2021.
 %   (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
@@ -3448,7 +3451,7 @@
 % \bibitem[\pkg{luaotfload}]{luaotfload}
 %   \LaTeX3 Project, \'Elie Roux, Khaled Hosny, Philipp Gesang, Ulrike Fischer, Marcel Kr\"uger,
 %   \emph{The \pkg{luaotfload} package},
-%   15~June 2022.
+%   3~October 2022.
 %   (\ctanpkgurl{luaotfload})
 %
 % \bibitem[\pkg{pdfcprot}]{pdfcprot}
@@ -3895,7 +3898,7 @@
 %  \@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,\check@icr,
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
-%  \strip@prefix,\strip@pt,\@text@composite,\tw@,\z@,\z@skip,\zap@space,
+%  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
 %  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
 %  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\mdseries,\medskip,
@@ -3913,12 +3916,16 @@
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
 %^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
+%\DoNotIndex{\alltt}                                                         ^^A alltt
+%\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
 %\DoNotIndex{\foreign@language,\languagename,\select@language,\shorthandoff} ^^A babel
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
-%\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
+%\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem,
+%  \beamer@framefootnotetext}                                                ^^A beamer
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
+%\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
 % \pdfstringdefWarn}                                                         ^^A hyperref
@@ -3934,16 +3941,13 @@
 %\DoNotIndex{\newluafunction}                                                ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
+%\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
+%\DoNotIndex{\@topic@item}                                                   ^^A simplecv
 %\DoNotIndex{\SOUL@,\SOUL@doword,\soulregister}                              ^^A soul
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
 %\DoNotIndex{\frakfamily,\swabfamily,\gothfamily}                            ^^A yfonts
-%\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
-%\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem,
-%  \beamer@framefootnotetext}                                                ^^A beamer
-%\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
-%\DoNotIndex{\@topic@item}                                                   ^^A simplecv
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
@@ -6911,6 +6915,28 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
+% \item [|verbatim|] disable all microtypographic extensions in
+%                    verbatim blocks. (This could have been a nice opportunity
+%                    to use the new \LaTeX\ hook management, however, the hook
+%                    here is executed too early -- namely, before the |\par| in
+%                    \cmd\@verbatim, which could result in spilling the
+%                    microtypographic settings to the preceding paragraph -- so
+%                    we're resorting to patching, again.
+%\changes{v3.0g}{2022/09/29}{new protrusion patch \texttt{verbatim}}
+%   \begin{itemize}
+%      \item Appending to \cmd\@verbatim\ works for, at least, the standard
+%            classes, \pkg{verbatim} (and \cls{memoir}); the implementations
+%            in \pkg{fancvrb} and \pkg{listings} don't allow protrusion anyway.
+%    \begin{macrocode}
+  \MT@define@patch{verbatim}{%
+    \MT@append@patch\@verbatim{\microtypesetup{activate=false}}%
+%    \end{macrocode}
+%      \item package \pkg{alltt}
+%    \begin{macrocode}
+    \MT@with@package@T{alltt}{\MT@append@patch\alltt{\microtypesetup{activate=false}}}%
+  }{}
+%    \end{macrocode}
+%   \end{itemize}
 % Finally, execute any redefinitions.
 %    \begin{macrocode}
   \MT@redefined@patches
@@ -20018,7 +20044,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12606}
+% \CheckSum{12614}
 %
 % \Finale
 %
