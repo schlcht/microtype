@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2022/12/32 v3.0g
+  [2022/12/32 v3.1
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3044,7 +3044,7 @@
 %\begin{verbatim}[deletekeywords={[1]{patch}}]
 %Package microtype Warning: Unable to apply patch `<eqnum>' on input line <29>.
 %\end{verbatim}
-%\changes{v3.0g}{2021/09/15}{add hint about protrusion patch warnings}
+%\changes{v3.1}{2021/09/15}{add hint about protrusion patch warnings}
 % As described in chapter~\ref{sec:pedantic} above, \microtype\ patches a number
 % of commands to enable protrusion in certain situations. If you receive a warning
 % like the above, you should first make sure (as always) that the package is up to date.
@@ -3503,7 +3503,9 @@
 %
 %\begin{History}
 %
-%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item New protrusion patch |verbatim| to switch off protrusion
+%        and expansion in |verbatim| environments \refsection{\ref{sec:pedantic}}
 %
 %\VersionDate{3.0f}{2022/06/23}
 %
@@ -6600,8 +6602,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Define a patch and add it to the list of patches.
 % The third argument may contain more revert commands, but will
 % mostly be empty.
-%\changes{v3.0g}{2022/09/26}{define patches globally}
-%\changes{v3.0g}{2022/09/26}{check if patch defined}
+%\changes{v3.1}{2022/09/26}{define patches globally}
+%\changes{v3.1}{2022/09/26}{check if patch defined}
 %    \begin{macrocode}
 \let\MT@patches@def\@gobble
 \def\MT@define@patch#1#2#3{%
@@ -6903,7 +6905,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \item the <\cls{KOMA}> classes
 %\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
-%\changes{v3.0g}{2022/08/03}{fix test for <\cls{KOMA}> classes in protrusion patch \texttt{footnote}}
+%\changes{v3.1}{2022/08/03}{fix test for <\cls{KOMA}> classes in protrusion patch \texttt{footnote}}
 %    \begin{macrocode}
           {\MT@ifdefined@c@TF\KOMAClassName
             {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
@@ -6922,7 +6924,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                    \cmd\@verbatim, which could result in spilling the
 %                    microtypographic settings to the preceding paragraph -- so
 %                    we're resorting to patching, again.
-%\changes{v3.0g}{2022/09/29}{new protrusion patch \texttt{verbatim}}
+%\changes{v3.1}{2022/09/29}{new protrusion patch \texttt{verbatim}}
 %   \begin{itemize}
 %      \item Appending to \cmd\@verbatim\ works for, at least, the standard
 %            classes, \pkg{verbatim} (and \cls{memoir}); the implementations
@@ -11706,7 +11708,7 @@ end
 % Here are the variants for context-sensitive setup.
 %\begin{macro}{\MT@active@features}
 % The activated features are stored in a command.
-%\changes{v3.0g}{2022/07/24}{always activate contexts for tracking}
+%\changes{v3.1}{2022/07/24}{always activate contexts for tracking}
 % We always allow contexts for tracking, because \cmd\textls\ may
 % be used without activating the feature.
 %    \begin{macrocode}
