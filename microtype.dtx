@@ -343,7 +343,7 @@
   \ifcodedoc
   Numbers in upright shape refer to the \textit{page} where the corresponding entry
   is described (bold face) resp. occurs.
-  Numbers in italics refer to the \textit{code line} where the corresponding entry
+  Numbers in italic shape refer to the \textit{code line} where the corresponding entry
   is defined (underlined) resp. used.
   Numbers prefixed with `U' refer to the User manual.
   \fi
@@ -3046,7 +3046,7 @@
 %\end{verbatim}
 %\changes{v3.1}{2021/09/15}{add hint about protrusion patch warnings}
 % As described in chapter~\ref{sec:pedantic} above, \microtype\ patches a number
-% of commands to enable protrusion in certain situations. If you receive a warning
+% of commands to enable or disable protrusion in certain situations. If you receive a warning
 % like the above, you should first make sure (as always) that the package is up to date.
 % If it is, consider filing a \href{\githuburl/issues}{bug report}.
 % Until a fix is available, or if you are, for whatever reason, unable or unwilling
@@ -3356,9 +3356,10 @@
 %  \contributor Nelson Lago       <@\at @>,  ^^A https://github.com/urrameu
 %  \contributor Brian Dunn        <@\at @>,  ^^A https://github.com/bdtc
 %  \contributor Ralf Steinle      <rasteinle\at web.de>,
-%  \contributor Denis Bitouz\'e   <@\at @>   ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
+%  \contributor Denis Bitouz\'e   <@\at @>,  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
+%  \contributor Christophe Dervieux <@\at @> ^^A https://github.com/cderv
 % and
-%  \contributor Christophe Dervieux <@\at @>. ^^A https://github.com/cderv
+%  \contributor Shen Zhou Hong    <@\at @>.  ^^A https://github.com/ShenZhouHong
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3870,7 +3871,7 @@
 %  \leaders,\let,\long,\lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,
 %  \noindent,\number,\or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,
 %  \splittopskip,\string,\the,\tolerance,\unhbox,\unkern,\unskip,\unvbox,\uppercase,
-%  \vbadness,\vbox,\vfuzz,\vrule,\vsplit,\wd,\widowpenalty,\write,\xdef}
+%  \vbadness,\vbox,\vfuzz,\vrule,\vsplit,\vss,\wd,\widowpenalty,\write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
@@ -3903,11 +3904,11 @@
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
 %  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
-%  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\mathrm,\mbox,\mdseries,\medskip,
-%  \newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,\nobreak,
-%  \nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,\obeylines,
-%  \par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,\scalebox,
-%  \sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
+%  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\marginparsep,\mathrm,\mbox,\mdseries,
+%  \medskip,\newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,
+%  \nobreak,\nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,
+%  \obeylines,\par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,
+%  \scalebox,\sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
 %  \textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,\usefont,\tiny,
 %  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareOption,
 %  \DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,\MessageBreak,
@@ -3926,7 +3927,8 @@
 %  \beamer@framefootnotetext}                                                ^^A beamer
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
-%\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes}               ^^A csquotes
+%\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes,\enquote}      ^^A csquotes
+%\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
@@ -3940,6 +3942,7 @@
 %\DoNotIndex{\define@key,\KV@@sp@def,\setkeys}                               ^^A keyval
 %\DoNotIndex{\l@dunhbox@line}                                                ^^A ((r)e)ledmac,((r)e)ledpar
 %\DoNotIndex{\lst@ProcessLetter}                                             ^^A listings
+%\DoNotIndex{\cs,\marg,\oarg,\parg}                                          ^^A ltxdoc
 %\DoNotIndex{\newluafunction}                                                ^^A luatexbase
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
@@ -8469,6 +8472,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@check@E}
+%\changes{v3.1}{2022/11/29}{new macro: take care of commands that enclose their argument}
+% This is for commands that \textbf{E}nclose their argument in something, \eg, in braces,
+% and which we trial-typeset without any contents.
+%    \begin{macrocode}
+\def\MT@prot@check@E{%
+  \def\MT@temp*##1{\MT@prot@l{##1}}%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@e}
+% Same for starred commands (the main candidate here is \pkg{csquotes}'s \cmd\enquote).
+%    \begin{macrocode}
+\def\MT@prot@check@e{%
+  \def\MT@temp*##1{\@ifstar{\MT@prot@l{##1*}}{\MT@prot@l{##1}}}%
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@check@cmds}
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
@@ -8497,14 +8518,34 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
-    {O\fontseriesforce}{O\fontshapeforce}}}{}
+    {O\fontseriesforce}{O\fontshapeforce}}}\relax
+%    \end{macrocode}
+% The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
+% Unfortunately, the \cmd\cmd\ command doesn't work.
+%\changes{v3.1}{2022/12/04}{add \cls{ltxdoc} and \pkg{doc} abbreviations}
+%    \begin{macrocode}
+\@ifclassloaded{ltxdoc}
+  {\g@addto@macro\MT@prot@check@cmds{{E\enquote}{E\marg}{E\oarg}{E\parg}{E\cs}}}\relax
+\MT@addto@setup{%
+  \MT@with@package@T{doc}
+    {\g@addto@macro\MT@prot@check@cmds{{E\meta}}}%
 %    \end{macrocode}
 % If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
 % don't take an argument).
 %    \begin{macrocode}
-\MT@addto@setup{%
   \MT@with@package@T{yfonts}
     {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
+%    \end{macrocode}
+% \pkg{csquotes}'s \cmd\enquote\ command.
+% It would take precedence over the one provided by \cls{ltxdoc}.
+%\changes{v3.1}{2022/11/29}{support for \pkg{csquotes}'s \cmd\enquote\ command
+%                           (reported by \contributor Shen Zhou Hong <@\at @>)
+%                           \githubissue{25}}
+%    \begin{macrocode}
+  \MT@with@package@T{csquotes}
+    {\@ifclassloaded{ltxdoc}
+      {\patchcmd\MT@prot@check@cmds{E\enquote}{e\enquote}\relax\relax}
+      {\g@addto@macro\MT@prot@check@cmds{{e\enquote}}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8560,11 +8601,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
                 \def\MT@temp*##1##2##3##4{\MT@prot@l{\the\MT@toks##1##2##3##4}}%
               }{%
 %    \end{macrocode}
-% (this is for \pkg{csquotes})
+% (this is for chars made active by \pkg{csquotes}, via \cmd\MakeAutoQuote\ or
+% \cmd\MakeOuterQuote)
 %    \begin{macrocode}
                 \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}}{%
 %    \end{macrocode}
-% or, finally,  a <LICR> command.
+% or, finally, a <LICR> command.
 %    \begin{macrocode}
                   \MT@prot@iflicrcmd
                 }%
@@ -20046,7 +20088,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12614}
+% \CheckSum{12651}
 %
 % \Finale
 %
