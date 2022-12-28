@@ -3927,7 +3927,9 @@
 %  \beamer@framefootnotetext}                                                ^^A beamer
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
-%\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes,\enquote}      ^^A csquotes
+%\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes,\enquote,
+%  \foreignquote,\foreigntextquote,\hyphenquote,\hyphentextquote,
+%  \textquote}                                                               ^^A csquotes
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
@@ -8490,6 +8492,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@check@F}
+%\changes{v3.1}{2022/12/26}{new macro: for commands that enclose their second argument}
+%\begin{macro}{\MT@prot@check@F@}
+% \pkg{csquotes} provides a couple of commands for quotations in \textbf{F}oreign
+% languages, whose first argument (the language) we also have to evaluate before
+% trial typesetting.
+%    \begin{macrocode}
+\def\MT@prot@check@F{%
+  \def\MT@temp*##1{\@ifstar{\MT@prot@check@F@{##1*}}{\MT@prot@check@F@{##1}}}}
+\def\MT@prot@check@F@#1#2{\MT@prot@l{#1{#2}}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\begin{macro}{\MT@prot@check@cmds}
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
@@ -8538,14 +8553,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
-%\changes{v3.1}{2022/11/29}{support for \pkg{csquotes}'s \cmd\enquote\ command
+%\changes{v3.1}{2022/11/29}{support for \pkg{csquotes}'s commands
 %                           (reported by \contributor Shen Zhou Hong <@\at @>)
 %                           \githubissue{25}}
 %    \begin{macrocode}
   \MT@with@package@T{csquotes}
     {\@ifclassloaded{ltxdoc}
       {\patchcmd\MT@prot@check@cmds{E\enquote}{e\enquote}\relax\relax}
-      {\g@addto@macro\MT@prot@check@cmds{{e\enquote}}}}%
+      {\g@addto@macro\MT@prot@check@cmds{{e\enquote}}}%
+     \g@addto@macro\MT@prot@check@cmds{{e\textquote}%
+       {F\foreignquote}{F\hyphenquote}{F\foreigntextquote}{F\hyphentextquote}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -20088,7 +20105,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12651}
+% \CheckSum{12668}
 %
 % \Finale
 %
