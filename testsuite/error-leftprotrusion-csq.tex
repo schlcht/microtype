@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage[french,german,english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\SetProtrusion{font = *}{
+  \textquotedblleft  = {1000,},
+  \textquoteleft     = {1000,},
+  \guillemotleft     = {1000,},
+  \quotedblbase      = {1000,},
+  \quotesinglbase    = {1000,},
+  \textemdash = {-1000,}
+}
+\SetProtrusion{font = */sf*/*/*/*}{
+  \textemdash = {1000,}
+}
+\usepackage{biblatex}
+\usepackage[autostyle]{csquotes}
+\MakeAutoQuote{«}{»}
+\MakeOuterQuote{+}
+\MakeForeignQuote{french}{‚}{‘}
+\parindent=0pt
+\setlength\labelsep{-.2em}
+\def\labelitemi{|}
+\def\test#1{\item#1{abc}}
+\begin{document}
+
+\begin{itemize}
+\item M
+\test\enquote
+\test{\enquote*}
+\item ‚abc‘
+  \selectlanguage{german}
+\item\enquote{abc\item \enquote{ABC}}
+\item«abc»
+\item+abc+
+  \selectlanguage{french}
+\test\enquote
+\test\textquote
+\test{\textquote[punct]}
+\test{\textquote*[\cite{citekey}][punct]}
+  \selectlanguage{english}
+\test{\foreignquote{french}}
+\test{\foreignquote*{french}}
+\test{\hyphenquote{german}}
+\test{\hyphenquote*{german}}
+\test{\foreigntextquote{french}}
+\test{\hyphentextquote*{german}}
+\item\textcquote{citekey}{abcD}
+\item\textcquote[pre][post]{citekey}[punct]{abcF}!
+\item\textcquote*[pre][post]{citekey}[punct]{abcF}!
+\item\foreigntextcquote{french}[pre][post]{citekey}[punct]{abcG}
+\item\foreigntextcquote*{french}[pre][post]{citekey}[punct]{abcG}
+\item\blockquote{Some longer text}
+\item M
+\end{itemize}
+M\par
+\blockquote{Some longer text}
+\blockquote{Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text. Some longer text.}
+\end{document}
+

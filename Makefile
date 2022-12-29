@@ -316,6 +316,8 @@ test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.nav
 	@$(RM) $(TESTDIR)/*.snm
 	@$(RM) $(TESTDIR)/*.hd
+	@$(RM) $(TESTDIR)/*.bcf
+	@$(RM) $(TESTDIR)/*.run.xml
 
 testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 	@echo "* Errors:"
