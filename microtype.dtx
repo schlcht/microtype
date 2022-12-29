@@ -3902,12 +3902,17 @@
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
+%  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
 %  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\marginparsep,\mathrm,\mbox,\mdseries,
 %  \medskip,\newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,
 %  \nobreak,\nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,
 %  \obeylines,\par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,
 %  \scalebox,\sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
+%  \textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,\usefont,\tiny,
+%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareOption,
+%  \DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,\MessageBreak,
+%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
 %  \RawNoindent,\RequirePackage,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
@@ -3949,6 +3954,7 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
+%\DoNotIndex{\frakfamily,\swabfamily,\gothfamily}                            ^^A yfonts
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
@@ -8535,6 +8541,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
 % Here's the list of commands to be added to our toks.
+% We'll postpone the handling of commands whose argument would have
+% to be processed (\eg, \cmd\textrm).
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
@@ -8555,6 +8563,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
+    {O\fontseriesforce}{O\fontshapeforce}}}\relax
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -8566,8 +8575,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{doc}
     {\g@addto@macro\MT@prot@check@cmds{{E\meta}}}%
 %    \end{macrocode}
+% If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
+% don't take an argument).
 %    \begin{macrocode}
   \MT@with@package@T{yfonts}
+    {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
@@ -20126,7 +20138,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12714}
+% \CheckSum{12699}
 %
 % \Finale
 %
