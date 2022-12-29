@@ -8508,9 +8508,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % languages (lowercase, because it may be starred), whose first argument (the language)
 % we also have to evaluate before trial typesetting.
 %    \begin{macrocode}
-\def\MT@prot@check@F{%
-  \def\MT@temp*##1{\@ifstar{\MT@prot@check@F@{##1*}}{\MT@prot@check@F@{##1}}}}
-\def\MT@prot@check@F@#1#2{\MT@prot@l{#1{#2}}}
+\def\MT@prot@check@f{%
+  \def\MT@temp*##1{\@ifstar{\MT@prot@check@f@{##1*}}{\MT@prot@check@f@{##1}}}}
+\def\MT@prot@check@f@#1#2{\MT@prot@l{#1{#2}}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
