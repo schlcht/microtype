@@ -3902,17 +3902,12 @@
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
-%  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
 %  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\marginparsep,\mathrm,\mbox,\mdseries,
 %  \medskip,\newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,
 %  \nobreak,\nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,
 %  \obeylines,\par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,
 %  \scalebox,\sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
-%  \textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,\usefont,\tiny,
-%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareOption,
-%  \DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,\MessageBreak,
-%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
 %  \RawNoindent,\RequirePackage,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
@@ -3954,7 +3949,6 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
-%\DoNotIndex{\frakfamily,\swabfamily,\gothfamily}                            ^^A yfonts
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
@@ -8428,13 +8422,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@check}
+%\changes{v3.1}{2022/12/17}{allow replacement command}
 %\begin{macro}{\MT@prot@check@}
 % We map through a list of commands that should be copied into the toks.
+% \meta{\#3} will be \cmd\relax\ by default, but can also indicate
+% a replacement command.
 %    \begin{macrocode}
-\def\MT@prot@check#1{\MT@prot@check@#1}
-\def\MT@prot@check@#1#2{%
+\def\MT@prot@check#1{\MT@prot@check@#1\relax\@nil}
+\def\MT@prot@check@#1#2#3\@nil{%
   \ifx\MT@prot@next#2%
-    \csname MT@prot@check@#1\endcsname
+    \csname MT@prot@check@#1\endcsname #3%
     \let\MT@prot@ifmacro\@gobble
     \expandafter\MT@tlist@break
   \fi
@@ -8444,6 +8441,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@prot@check@I}
 % This is for commands to be \textbf{I}gnored.
+% (Beware that the following nomenclature is rather arcane.)
 %    \begin{macrocode}
 \def\MT@prot@check@I{%
   \def\MT@temp*##1{\MT@prot@get@firsttoken}%
@@ -8485,6 +8483,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@check@e}
+%\changes{v3.1}{2022/11/29}{new macro: take care of starred commands that enclose their argument}
 % Same for starred commands (the main candidate here is \pkg{csquotes}'s \cmd\enquote).
 %    \begin{macrocode}
 \def\MT@prot@check@e{%
@@ -8492,16 +8491,41 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@prot@check@F}
+%\begin{macro}{\MT@prot@check@eX}
+%\changes{v3.1}{2022/12/28}{new macro: replace enclosing commands}
+% Here we replace the `integrated interface' (\pkg{csquotes}) with the regular one.
+%    \begin{macrocode}
+\def\MT@prot@check@eX#1{%
+  \def\MT@temp*##1{\@ifstar
+    {\MT@get@prot{#1*}{left}##1*}
+    {\MT@get@prot{#1}{left}##1}}}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@f}
 %\changes{v3.1}{2022/12/26}{new macro: for commands that enclose their second argument}
-%\begin{macro}{\MT@prot@check@F@}
-% \pkg{csquotes} provides a couple of commands for quotations in \textbf{F}oreign
-% languages, whose first argument (the language) we also have to evaluate before
-% trial typesetting.
+%\begin{macro}{\MT@prot@check@f@}
+% \pkg{csquotes} provides a couple of commands for quotations in \textbf{f}oreign
+% languages (lowercase, because it may be starred), whose first argument (the language)
+% we also have to evaluate before trial typesetting.
 %    \begin{macrocode}
 \def\MT@prot@check@F{%
   \def\MT@temp*##1{\@ifstar{\MT@prot@check@F@{##1*}}{\MT@prot@check@F@{##1}}}}
 \def\MT@prot@check@F@#1#2{\MT@prot@l{#1{#2}}}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@fX}
+%\changes{v3.1}{2022/12/28}{new macro: replace language-switching enclosing commands}
+%\begin{macro}{\MT@prot@check@fX@}
+% Another macro for \pkg{csquotes} commands: replace integrated language-switching
+% commands with their regular variants.
+%    \begin{macrocode}
+\def\MT@prot@check@fX#1{%
+  \def\MT@temp*##1{\@ifstar
+    {\def\MT@temp{##1*}\MT@prot@check@fX@{#1*}}
+    {\def\MT@temp{##1}\MT@prot@check@fX@{#1}}}}
+\def\MT@prot@check@fX@#1#2{%
+  \MT@get@prot{#1{#2}}{left}\MT@temp{#2}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -8511,8 +8535,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
 % Here's the list of commands to be added to our toks.
-% We'll postpone the handling of commands whose argument would have
-% to be processed (\eg, \cmd\textrm).
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
@@ -8533,7 +8555,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
-    {O\fontseriesforce}{O\fontshapeforce}}}\relax
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -8545,15 +8566,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{doc}
     {\g@addto@macro\MT@prot@check@cmds{{E\meta}}}%
 %    \end{macrocode}
-% If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
-% don't take an argument).
 %    \begin{macrocode}
   \MT@with@package@T{yfonts}
-    {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
-%\changes{v3.1}{2022/11/29}{support for \pkg{csquotes}'s commands
+%\changes{v3.1}{2022/11/29}{add \pkg{csquotes}'s commands
 %                           (reported by \contributor Shen Zhou Hong <@\at @>)
 %                           \githubissue{25}}
 %    \begin{macrocode}
@@ -8562,7 +8580,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\patchcmd\MT@prot@check@cmds{E\enquote}{e\enquote}\relax\relax}
       {\g@addto@macro\MT@prot@check@cmds{{e\enquote}}}%
      \g@addto@macro\MT@prot@check@cmds{{e\textquote}%
-       {F\foreignquote}{F\hyphenquote}{F\foreigntextquote}{F\hyphentextquote}}}%
+       {F\foreignquote}{F\hyphenquote}{F\foreigntextquote}{F\hyphentextquote}%
+       {{eX}\textcquote\textquote}%
+       {{fX}\foreigntextcquote\foreigntextquote}%
+       {{fX}\hyphentextcquote\hyphentextquote}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -20105,7 +20126,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12668}
+% \CheckSum{12714}
 %
 % \Finale
 %
