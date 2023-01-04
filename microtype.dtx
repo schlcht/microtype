@@ -3357,9 +3357,10 @@
 %  \contributor Brian Dunn        <@\at @>,  ^^A https://github.com/bdtc
 %  \contributor Ralf Steinle      <rasteinle\at web.de>,
 %  \contributor Denis Bitouz\'e   <@\at @>,  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
-%  \contributor Christophe Dervieux <@\at @> ^^A https://github.com/cderv
+%  \contributor Christophe Dervieux <@\at @>, ^^A https://github.com/cderv
+%  \contributor Shen Zhou Hong    <@\at @>   ^^A https://github.com/ShenZhouHong
 % and
-%  \contributor Shen Zhou Hong    <@\at @>.  ^^A https://github.com/ShenZhouHong
+%  \contributor David Purton      <@\at @>.  ^^A https://github.com/dcpurton
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3929,7 +3930,7 @@
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes,
 %  \enquote,\foreignquote,\foreigntextquote,\foreigntextcquote,
-%  \hyphenquote,\hyphentextquote,\hyphentextcquote,\textquote}               ^^A csquotes
+%  \hyphenquote,\hyphentextquote,\hyphentextcquote,\textquote,\textcquote}   ^^A csquotes
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
@@ -6910,7 +6911,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \item the <\cls{KOMA}> classes
 %\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
 %                           (reported by \contributor MisterFiLou <@\at @>) \githubissue{2}}
-%\changes{v3.1}{2022/08/03}{fix test for <\cls{KOMA}> classes in protrusion patch \texttt{footnote}}
+%\changes{v3.1}{2022/08/03}{fix test for <\cls{KOMA}> classes in protrusion patch \texttt{footnote}
+%                           (also reported by \contributor David Purton <@\at @>) \githubissue{26}}
 %    \begin{macrocode}
           {\MT@ifdefined@c@TF\KOMAClassName
             {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
@@ -8254,7 +8256,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@hook}
 % Furthermore, we have a hook for compatibility fixes (currently used for \pkg{csquotes} only),
 %\begin{macro}{\MT@csq@eqgroup}
-%\changes{v3.0c}{2022/01/06}{compatibility for \pkg{csquotes}, again
+%\changes{v3.0c}{2022/01/06}{compatibility with \pkg{csquotes}, again
 %                           (reported by \contributor NightShade <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/629068/microtype-quotation-marks-in-itemize-not-aligned-properly-at-begin-of-an-item
 % and a dedicated command to end \pkg{csquotes}'s group (because we actually typeset
@@ -8445,15 +8447,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+% Beware that the following nomenclature is rather arcane.
+%\begin{itemize}
+%  \item
 %\begin{macro}{\MT@prot@check@I}
 % This is for commands to be \textbf{I}gnored.
-% (Beware that the following nomenclature is rather arcane.)
 %    \begin{macrocode}
 \def\MT@prot@check@I{%
   \def\MT@temp*##1{\MT@prot@get@firsttoken}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@S}
 % Add a \textbf{S}ingle command (without an argument).
 %    \begin{macrocode}
@@ -8462,6 +8467,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@X}
 % Add a command with \textbf{O}ne argument.
 %    \begin{macrocode}
@@ -8470,6 +8476,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@T}
 % Add a command with \textbf{T}wo arguments.
 %    \begin{macrocode}
@@ -8478,6 +8485,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@E}
 %\changes{v3.1}{2022/11/29}{new macro: take care of commands that enclose their argument}
 % This is for commands that \textbf{E}nclose their argument in something, \eg, in braces,
@@ -8488,6 +8496,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@e}
 %\changes{v3.1}{2022/11/29}{new macro: take care of starred commands that enclose their argument}
 % Same for starred commands (the main candidate here is \pkg{csquotes}'s \cmd\enquote).
@@ -8497,6 +8506,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@eX}
 %\changes{v3.1}{2022/12/28}{new macro: replace enclosing commands}
 % Here we replace the `integrated interface' (\pkg{csquotes}) with the regular one.
@@ -8507,6 +8517,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {\MT@get@prot{#1}{left}##1}}}
 %    \end{macrocode}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@f}
 %\changes{v3.1}{2022/12/26}{new macro: for commands that enclose their second argument}
 %\begin{macro}{\MT@prot@check@f@}
@@ -8520,6 +8531,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%  \item
 %\begin{macro}{\MT@prot@check@fX}
 %\changes{v3.1}{2022/12/28}{new macro: replace language-switching enclosing commands}
 %\begin{macro}{\MT@prot@check@fX@}
@@ -8535,12 +8547,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\end{itemize}
 %\begin{macro}{\MT@prot@check@cmds}
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
-% Here's the list of commands to be added to our toks.
+% And here's the list of commands that we can deal with.
 % We'll postpone the handling of commands whose argument would have
 % to be processed (\eg, \cmd\textrm).
 %    \begin{macrocode}
