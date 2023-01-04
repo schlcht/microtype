@@ -3902,17 +3902,18 @@
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
-%  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
+%  \active,\bfseries,\documentclass,\dotfill,\em,\emph,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
 %  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\marginparsep,\mathrm,\mbox,\mdseries,
 %  \medskip,\newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,
 %  \nobreak,\nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,
 %  \obeylines,\par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,
 %  \scalebox,\sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
-%  \textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,\usefont,\tiny,
-%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareOption,
-%  \DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,\MessageBreak,
-%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
+%  \textbf,\textit,\textmd,\textnormal,\textrm,\textsc,\textsf,\textsl,\textssc,\textsw,
+%  \textulc,\textup,\textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,
+%  \usefont,\tiny,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
+%  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
 %  \RawNoindent,\RequirePackage,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
@@ -3954,7 +3955,7 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
-%\DoNotIndex{\frakfamily,\swabfamily,\gothfamily}                            ^^A yfonts
+%\DoNotIndex{\frakfamily,\gothfamily,\swabfamily,\textfrak,\textgoth,\textswab}^^A yfonts
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
@@ -8535,6 +8536,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@prot@check@R}
+%\changes{v3.1}{2022/12/17}{new macro: take care of font switching commands}
+% Here we \textbf{R}eplace a font switch command that takes an argument
+% with its declarative form (\eg, |\textrm| $\mapsto$ |\rmfamily|).
+%    \begin{macrocode}
+\def\MT@prot@check@R#1{%
+  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks#1}\MT@prot@addgroup}%
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@check@cmds}
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
@@ -8555,6 +8566,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}%
   {O\microtypesetup}{O\microtypecontext}%
   {T\fontsize}%
+  {R\textrm\rmfamily}{R\textsf\sffamily}{R\texttt\ttfamily}%
+  {R\textnormal\normalfont}%
+  {R\textbf\bfseries}{R\textmd\mdseries}%
+  {R\textit\itshape}{R\textsl\slshape}{R\textsc\scshape}{R\textup\upshape}%
+  {R\emph\em}%
 }
 %    \end{macrocode}
 % \LaTeX\ 2020/02/02 introduced some more commands.
@@ -8563,7 +8579,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
-    {O\fontseriesforce}{O\fontshapeforce}}}\relax
+    {O\fontseriesforce}{O\fontshapeforce}%
+    {R\textulc\ulcshape}{R\textsw\swshape}{R\textssc\sscshape}}}\relax
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -8575,11 +8592,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{doc}
     {\g@addto@macro\MT@prot@check@cmds{{E\meta}}}%
 %    \end{macrocode}
-% If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
-% don't take an argument).
+% If \pkg{yfonts} is loaded, we add the relevant commands.
 %    \begin{macrocode}
   \MT@with@package@T{yfonts}
-    {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
+    {\g@addto@macro\MT@prot@check@cmds{%
+      {S\frakfamily}{S\swabfamily}{S\gothfamily}%
+      {R\textfrak\frakfamily}{R\textswab\swabfamily}{R\textgoth\gothfamily}}}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
@@ -20138,7 +20156,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12699}
+% \CheckSum{12742}
 %
 % \Finale
 %
