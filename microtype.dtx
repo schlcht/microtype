@@ -3871,8 +3871,9 @@
 %  \inputlineno,\interlinepenalty,\jobname,\kern,\lastbox,\lastkern,\lastskip,\lccode,
 %  \leaders,\let,\long,\lowercase,\maxdimen,\meaning,\multiply,\newlinechar,\noexpand,
 %  \noindent,\number,\or,\parfillskip,\pretolerance,\relax,\setbox,\showboxdepth,
-%  \splittopskip,\string,\the,\tolerance,\unhbox,\unkern,\unskip,\unvbox,\uppercase,
-%  \vbadness,\vbox,\vfuzz,\vrule,\vsplit,\vss,\wd,\widowpenalty,\write,\xdef}
+%  \splittopskip,\string,\the,\tolerance,\tracingmacros,\unhbox,\unkern,\unskip,
+%  \unvbox,\uppercase,\vbadness,\vbox,\vfuzz,\vrule,\vsplit,\vss,\wd,\widowpenalty,
+%  \write,\xdef}
 %^^A\DoNotIndex{\font,\fontdimen,\fontname,\nullfont,\sfcode,\spacefactor,
 %^^A  \spaceskip,\xspaceskip}                                                ^^A tex
 %\DoNotIndex{\currentgrouplevel,\currentgrouptype,\currentiflevel,\detokenize,
@@ -6407,10 +6408,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@glet\MT@setupfont@hook\@empty
 %    \end{macrocode}
 % \microtype\ is so so loquacious~\dots\
-% Sometimes you just want to silence it when debugging a document.
+% Sometimes you just want to silence it when debugging a document.\footnote{
+%   Cf. \url{https://www.youtube.com/watch?v=7FQLnggVgDE&t=38m24s}}
+%   \index{Mittelbach=\textit  {Frank Mittelbach} (contributor)|hyperpage}
 %    \begin{macrocode}
-  %\gdef\MT@setupfont@hook{\tracingnone
-  %  \MT@info{Silently doing my `magic' (Mittelbach) for font\MessageBreak\MT@@font}}%
+ %\gdef\MT@setupfont@hook{\ifnum\tracingmacros>\z@\tracingnone
+ %  \MT@info{->Silently doing my `magic' (Mittelbach) for font\MessageBreak->\MT@@font}\fi}%
   \MT@if@false
   \MT@with@babel@and@T{spanish} \MT@if@true
   \MT@with@babel@and@T{galician}\MT@if@true
@@ -20151,7 +20154,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12699}
+% \CheckSum{12703}
 %
 % \Finale
 %
