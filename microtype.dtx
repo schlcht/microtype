@@ -3904,7 +3904,7 @@
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
-%  \active,\bfseries,\documentclass,\dotfill,\fbox,\fboxrule,\fboxsep,\fmtversion,
+%  \active,\bfseries,\documentclass,\dotfill,\em,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
 %  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\marginparsep,\mathrm,\mbox,\mdseries,
 %  \medskip,\newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,
@@ -8556,6 +8556,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/13}{ignore \cmd\@empty}
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
+%\changes{v3.1}{2023/01/07}{add \cmd\em}
 % And here's the list of commands that we can deal with.
 % We'll postpone the handling of commands whose argument would have
 % to be processed (\eg, \cmd\textrm).
@@ -8563,7 +8564,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
   {S\rmfamily}{S\sffamily}{S\ttfamily}{S\mdseries}{S\bfseries}%
-  {S\upshape}{S\slshape}{S\itshape}{S\scshape}%
+  {S\upshape}{S\itshape}{S\slshape}{S\scshape}{S\em}%
   {S\normalfont}{S\selectfont}%
   {S\lsstyle}%
   {S\tiny}{S\scriptsize}{S\footnotesize}{S\small}{S\normalsize}%
@@ -20154,7 +20155,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12703}
+% \CheckSum{12704}
 %
 % \Finale
 %
