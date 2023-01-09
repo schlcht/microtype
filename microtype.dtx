@@ -8574,13 +8574,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {T\fontsize}%
 }
 %    \end{macrocode}
-% \LaTeX\ 2020/02/02 introduced some more commands.
+% \LaTeX\ 2020/02/02 introduced some more commands
 %\changes{v3.0f}{2022/06/22}{add new <NFSS> commands}
+% (adopted from \pkg{fontaxes}).
+%\changes{v3.1}{2023/01/08}{add \pkg{fontaxes} commands}
 %    \begin{macrocode}
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
-    {O\fontseriesforce}{O\fontshapeforce}}}\relax
+    {O\fontseriesforce}{O\fontshapeforce}}}
+  {\MT@addto@setup{\MT@with@package@T{fontaxes}
+    {\g@addto@macro\MT@prot@check@cmds{%
+      {S\swshape}{S\ulcshape}{S\sscshape}}}}}
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -20155,7 +20160,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12704}
+% \CheckSum{12710}
 %
 % \Finale
 %
