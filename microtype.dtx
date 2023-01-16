@@ -3934,6 +3934,8 @@
 %  \hyphenquote,\hyphentextquote,\hyphentextcquote,\textquote,\textcquote}   ^^A csquotes
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
+%\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
+%  \fontfigurealignment,\fontbasefamily,\figureversion}                      ^^A fontaxes
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
 % \pdfstringdefWarn}                                                         ^^A hyperref
@@ -8576,7 +8578,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 % \LaTeX\ 2020/02/02 introduced some more commands
 %\changes{v3.0f}{2022/06/22}{add new <NFSS> commands}
-% (adopted from \pkg{fontaxes}).
+% (adopted from \pkg{fontaxes}~\dots
 %\changes{v3.1}{2023/01/08}{add \pkg{fontaxes} commands}
 %    \begin{macrocode}
 \IfFormatAtLeastTF{2020/02/02}
@@ -8585,7 +8587,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {O\fontseriesforce}{O\fontshapeforce}}}
   {\MT@addto@setup{\MT@with@package@T{fontaxes}
     {\g@addto@macro\MT@prot@check@cmds{%
-      {S\swshape}{S\ulcshape}{S\sscshape}}}}}
+      {S\swshape}{S\ulcshape}{S\sscshape}%
+%    \end{macrocode}
+% \dots~which provides even more).
+%    \begin{macrocode}
+      {S\txfigures}{S\lnfigures}{S\tbfigures}{S\prfigures}%
+      {O\fontfigurestyle}{O\fontfigurealignment}{O\fontbasefamily}%
+      {O\figureversion}}}}}
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -20160,7 +20168,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12710}
+% \CheckSum{12718}
 %
 % \Finale
 %
