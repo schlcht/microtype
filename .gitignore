@@ -15,6 +15,7 @@ microtype-gind.ist
 
 # auxiliary files
 *.aux
+*.bcf
 *.cdx
 *.glo
 *.gls
@@ -26,15 +27,17 @@ microtype-gind.ist
 *.lof
 *.log
 *.lot
+*.nav
 *.out
+*.run.xml
+*.snm
 *.tmp
 *.toc
 *.dvi
 *.ps
 *.1
 *.1R
-*.nav
-*.snm
+*.swp
 
 *.mtx
 *.pl
