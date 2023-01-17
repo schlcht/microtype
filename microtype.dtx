@@ -3950,6 +3950,13 @@
 %\DoNotIndex{\lst@ProcessLetter}                                             ^^A listings
 %\DoNotIndex{\cs,\marg,\oarg,\parg}                                          ^^A ltxdoc
 %\DoNotIndex{\newluafunction}                                                ^^A luatexbase
+%\DoNotIndex{\tistyle,\ltstyle,\ofstyle,\altstyle,\regstyle,\embossstyle,
+% \ornamentalstyle,\qtstyle,\shstyle,\tmstyle,\tvstyle,\swashstyle,
+% \lnstyle,\osstyle,\instyle,\sustyle,\lstyle,\ostyle,\pstyle,\tstyle,
+% \plstyle,\postyle,\tlstyle,\tostyle,\scolshape,\olshape,\sishape,\ushape,
+% \scushape,\uishape,\rishape,\dfshape,\swstyle,\nwwidth,\cdwidth,\ecwidth,
+% \ucwidth,\etwidth,\epwidth,\exwidth,\uxwidth,\regwidth,\mbweight,\dbweight,
+% \sbweight,\ebweight,\ubweight,\lgweight,\elweight,\ulweight}               ^^A nfssext-cfr
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
@@ -8604,6 +8611,25 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \MT@addto@setup{%
   \MT@with@package@T{doc}
     {\g@addto@macro\MT@prot@check@cmds{{E\meta}}}%
+%    \end{macrocode}
+% The \pkg{nfssext-cfr} package (an extension of the \pkg{nfssext} package,
+% which is part of Philipp Lehman's \pkg{fontinstallationguide} but was never
+% publicised separately as far as I can tell) adds many more commands on top
+% of the <NFSS>.
+%\changes{v3.1}{2023/01/16}{add \pkg{nfssext-cfr} commands}
+%    \begin{macrocode}
+  \MT@with@package@T{nfssext-cfr}
+    {\g@addto@macro\MT@prot@check@cmds{%
+      {S\tistyle}{S\ltstyle}{S\ofstyle}{S\altstyle}{S\regstyle}{S\embossstyle}%
+      {S\ornamentalstyle}{S\qtstyle}{S\shstyle}{S\tmstyle}{S\tvstyle}{S\swashstyle}%
+      {S\lnstyle}{S\osstyle}{S\instyle}{S\sustyle}{S\lstyle}{S\ostyle}%
+      {S\pstyle}{S\tstyle}{S\plstyle}{S\postyle}{S\tlstyle}{S\tostyle}%
+      {S\scolshape}{S\olshape}{S\sishape}{S\ushape}{S\scushape}%
+      {S\uishape}{S\rishape}{S\dfshape}{S\swshape}{S\swstyle}%
+      {S\nwwidth}{S\cdwidth}{S\ecwidth}{S\ucwidth}%
+      {S\etwidth}{S\epwidth}{S\exwidth}{S\uxwidth}{S\regwidth}%
+      {S\mbweight}{S\dbweight}{S\sbweight}{S\ebweight}%
+      {S\ubweight}{S\lgweight}{S\elweight}{S\ulweight}}}
 %    \end{macrocode}
 % If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
 % don't take an argument).
@@ -20168,7 +20194,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12718}
+% \CheckSum{12772}
 %
 % \Finale
 %
