@@ -10387,6 +10387,7 @@ end
 %                           font family has already been loaded}
 % Micro-typographic settings may be written into a file |mt-|\meta{font family}|.cfg|.
 %\changes{v1.8}{2005/04/16}{no longer wrap names in commands}
+%\changes{v3.1}{2023/02/13}{simplify}
 %\begin{macro}{\MT@file@list}
 % We must also record whether we've already loaded the file.
 %    \begin{macrocode}
@@ -10406,23 +10407,20 @@ end
     \MT@begin@catcodes
       \let\MT@begin@catcodes\relax
       \let\MT@end@catcodes\relax
+      \MT@xadd\MT@file@list{#1,}%
       \InputIfFileExists{mt-#1.cfg}{%
         \edef\MT@curr@file{mt-#1.cfg}%
         \MT@vinfo{... Loading configuration file \MT@curr@file}%
-        \MT@xadd\MT@file@list{#1,}%
       }{%
         \MT@get@basefamily#1\@empty\@empty\@empty\@nil
         \MT@exp@one@n\MT@in@clist\@tempa\MT@file@list
-        \ifMT@inlist@
-          \MT@xadd\MT@file@list{#1,}%
-        \else
+        \ifMT@inlist@ \else
           \InputIfFileExists{mt-\@tempa.cfg}{%
             \edef\MT@curr@file{mt-\@tempa.cfg}%
             \MT@vinfo{... Loading configuration file \MT@curr@file}%
-            \MT@xadd\MT@file@list{\@tempa,#1,}%
+            \MT@xadd\MT@file@list{\@tempa,}%
           }{%
             \MT@vinfo{... No configuration file mt-#1.cfg}%
-            \MT@xadd\MT@file@list{#1,}%
           }%
         \fi
       }%
@@ -20196,7 +20194,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12775}
+% \CheckSum{12771}
 %
 % \Finale
 %
