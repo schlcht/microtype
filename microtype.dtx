@@ -2928,7 +2928,6 @@
 %
 %\iffalse
 %\changes{v1.9}{2005/07/10}{add hint about \texttt{verbatim} environment}
-%\todo{option to patch \texttt{verbatim}?} ^^A for Karl
 %\paragraph{You might want to disable protrusion in \texttt{verbatim} environments.}
 % As you know by now, \microtype\ will by default activate character protrusion
 % for all fonts contained in the font set `|alltext|'. This also includes the
@@ -3441,7 +3440,7 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX\ Project Team, \emph{\LaTeXe\ font selection},
-%   December 2021.
+%   August 2022.
 %   (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
@@ -3462,13 +3461,9 @@
 %   (\ctanpkgurl{pdfcprot})
 %
 % \bibitem[\pkg{soul}]{soul}
-%   Melchior Franz, \emph{The \pkg{soul} package},
-%   17 November 2003.
+%   [Melchior Franz,] Heiko Oberdiek, \emph{The \pkg{soul} package},
+%   18 February 2023.
 %   (\ctanpkgurl{soul}).
-%\changes{v2.3a}{2008/01/06}{mention \pkg{soulutf8}}
-%   See also Heiko Oberdiek's extension of this package,
-%   \pkg{soulutf8}, which adds Unicode support.
-%   (\ctanpkgurl{soulutf8})
 %
 %\end{thebibliography}
 %
@@ -6940,9 +6935,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                    verbatim blocks. (This could have been a nice opportunity
 %                    to use the new \LaTeX\ hook management, however, the hook
 %                    here is executed too early -- namely, before the |\par| in
-%                    \cmd\@verbatim, which could result in spilling the
+%                    \cmd\@verbatim, which may result in spilling the
 %                    microtypographic settings to the preceding paragraph -- so
-%                    we're resorting to patching, again.
+%                    we're resorting to patching, again.)
 %\changes{v3.1}{2022/09/29}{new protrusion patch \texttt{verbatim}}
 %   \begin{itemize}
 %      \item Appending to \cmd\@verbatim\ works for, at least, the standard
@@ -6958,13 +6953,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }{}
 %    \end{macrocode}
 %   \end{itemize}
+%\end{description}
 % Finally, execute any redefinitions.
 %    \begin{macrocode}
   \MT@redefined@patches
 }}
-%    \end{macrocode}
-%\end{description}
-%    \begin{macrocode}
 %</package>
 %</package|letterspace>
 %    \end{macrocode}
