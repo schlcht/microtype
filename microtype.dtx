@@ -616,7 +616,8 @@
     \DeclareMicrotypeSetDefault,\SetProtrusion,\SetExpansion,\SetTracking,
     \SetExtraKerning,\SetExtraSpacing,\DisableLigatures,\DeclareCharacterInheritance,
     \DeclareMicrotypeVariants,\DeclareMicrotypeAlias,\DeclareMicrotypeBabelHook,
-    \LoadMicrotypeFile,\microtypecontext,\textmicrotypecontext,\textls,\lsstyle,\lslig,
+    \LoadMicrotypeFile,\DeclareMicrotypeFilePrefix,\microtypecontext,\textmicrotypecontext,
+    \textls,\lsstyle,\lslig,
     \leftprotrusion,\rightprotrusion,\noprotrusion,\noprotrusionifhmode,
     \Microtype@Hook},
   keywordstyle=[0]\color{thegreen},
@@ -2506,6 +2507,12 @@
 %     section~\ref{sub:hook}.}
 % This command will load the file `|mt-|\meta{font name}|.cfg|'.
 %
+%\medskip
+%\Describe{Macro}{\DeclareMicrotypeFilePrefix}{prefix}
+% Or, in fact, it will load the file `\meta{prefix}|-|\meta{file name}|.cfg|'.
+% The \meta{prefix} may be changed, which, however, you should only do
+% if you have your own set of configuration files that you want to be
+% loaded \emph{instead of} the ones provided with the package.
 %
 %\section{Context-sensitive setup}\label{sec:context}
 %
@@ -2780,6 +2787,8 @@
 % \item[footnote] Protrusion for the first line of footnote text (visible in particular
 %              when the footnote text is set in block paragraphs, like in this document).
 %              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{hyperref}}
+% \item[verbatim] Disables protrusion and expansion in verbatim environments.
+%              \MTsupp{\pkg{alltt}}
 % \item[eqnum] Protrusion for equation numbers on either side. If you are using the
 %              interface provided by \pkg{mathtools}, insert the relevant commands
 %              yourself, \eg:
@@ -2787,8 +2796,6 @@
 %\newtagform{mytag}[\textbf]{\leftprotrusion{(}}{\rightprotrusion{)}}
 %\end{verbatim}^^A
 %              \MTsupp{\pkg{amsmath}, \cls{IEEEtran}}
-% \item[verbatim] Disables protrusion and expansion in verbatim environments.
-%              \MTsupp{\pkg{alltt}}
 %\endlist\endgroup
 %
 %\medskip\noindent
@@ -3357,9 +3364,10 @@
 %  \contributor Ralf Steinle      <rasteinle\at web.de>,
 %  \contributor Denis Bitouz\'e   <@\at @>,  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
 %  \contributor Christophe Dervieux <@\at @>, ^^A https://github.com/cderv
-%  \contributor Shen Zhou Hong    <@\at @>   ^^A https://github.com/ShenZhouHong
+%  \contributor Shen Zhou Hong    <@\at @>,  ^^A https://github.com/ShenZhouHong
+%  \contributor David Purton      <@\at @>   ^^A https://github.com/dcpurton
 % and
-%  \contributor David Purton      <@\at @>.  ^^A https://github.com/dcpurton
+% `\contributor rallg             <@\at @>'. ^^A https://github.com/rallg
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3501,6 +3509,8 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item New command \cs{DeclareMicrotypeFilePrefix} to change the prefix of the
+%        configuration files \refsection{\ref{sub:config-file}}
 %  \item New protrusion patch |verbatim| to switch off protrusion
 %        and expansion in |verbatim| environments \refsection{\ref{sec:pedantic}}
 %
@@ -3971,7 +3981,7 @@
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
 %  \MT@show@pdfannot,\iftracingmicrotypeinpdfall,\tracingmicrotypeinpdfalltrue,
 %  \tracingmicrotypeinpdfallfalse,\DeclareMicroTypeAlias,\DeclareMicroTypeSet,
-%  \LoadMicroTypeFile,\UseMicroTypeSet,\MicroType@Hook}                      ^^A microtype
+%  \LoadMicroTypeFile,\DeclareMicrotypeFilePrefix,\UseMicroTypeSet,\MicroType@Hook}^^A microtype
 %
 % ^^A -------------------------------------------------------------------------
 %
@@ -4103,6 +4113,7 @@
 \newcommand*\DeclareMicrotypeVariants[1]{}
 \newcommand*\DeclareMicrotypeAlias[2]{}
 \newcommand*\LoadMicrotypeFile[1]{}
+\newcommand*\DeclareMicrotypeFilePrefix[1]{}
 \newcommand*\DeclareMicrotypeBabelHook[2]{}
 \newcommand*\microtypesetup[1]{}
 \newcommand*\microtypecontext[1]{}
@@ -4136,6 +4147,7 @@
 \@onlypreamble\DisableLigatures
 \@onlypreamble\DeclareMicrotypeVariants
 \@onlypreamble\DeclareMicrotypeBabelHook
+\@onlypreamble\DeclareMicrotypeFilePrefix
 %    \end{macrocode}
 % Don't load \letterspace.
 %    \begin{macrocode}
@@ -10401,19 +10413,19 @@ end
       \let\MT@begin@catcodes\relax
       \let\MT@end@catcodes\relax
       \MT@xadd\MT@file@list{#1,}%
-      \InputIfFileExists{mt-#1.cfg}{%
-        \edef\MT@curr@file{mt-#1.cfg}%
+      \InputIfFileExists{\MT@cfg@prefix-#1.cfg}{%
+        \edef\MT@curr@file{\MT@cfg@prefix-#1.cfg}%
         \MT@vinfo{... Loading configuration file \MT@curr@file}%
       }{%
         \MT@get@basefamily#1\@empty\@empty\@empty\@nil
         \MT@exp@one@n\MT@in@clist\@tempa\MT@file@list
         \ifMT@inlist@ \else
-          \InputIfFileExists{mt-\@tempa.cfg}{%
-            \edef\MT@curr@file{mt-\@tempa.cfg}%
+          \InputIfFileExists{\MT@cfg@prefix-\@tempa.cfg}{%
+            \edef\MT@curr@file{\MT@cfg@prefix-\@tempa.cfg}%
             \MT@vinfo{... Loading configuration file \MT@curr@file}%
             \MT@xadd\MT@file@list{\@tempa,}%
           }{%
-            \MT@vinfo{... No configuration file mt-#1.cfg}%
+            \MT@vinfo{... No configuration file \MT@cfg@prefix-#1.cfg}%
           }%
         \fi
       }%
@@ -12698,6 +12710,9 @@ end
 }
 %    \end{macrocode}
 %\end{macro}
+%
+%\subsubsection{Configuration file management}
+%
 %\begin{macro}{\LoadMicrotypeFile}
 %\changes{v1.7}{2005/03/22}{new command (suggested by
 %               \contributor Andreas B\"uhmann <andreas.buehmann\at web.de>)}
@@ -12710,22 +12725,35 @@ end
   \@onelevel@sanitize\@tempa
   \MT@exp@one@n\MT@in@clist\@tempa\MT@file@list
   \ifMT@inlist@
-    \MT@vinfo{... Configuration file mt-\@tempa.cfg already loaded}%
+    \MT@vinfo{... Configuration file \MT@cfg@prefix-\@tempa.cfg already loaded}%
   \else
     \MT@xadd\MT@file@list{\@tempa,}%
     \MT@begin@catcodes
-    \InputIfFileExists{mt-\@tempa.cfg}{%
-      \edef\MT@curr@file{mt-\@tempa.cfg}%
+    \InputIfFileExists{\MT@cfg@prefix-\@tempa.cfg}{%
+      \edef\MT@curr@file{\MT@cfg@prefix-\@tempa.cfg}%
       \MT@vinfo{... Loading configuration file \MT@curr@file}%
     }{%
-      \MT@warning{Configuration file mt-\@tempa.cfg\MessageBreak
+      \MT@warning{Configuration file \MT@cfg@prefix-\@tempa.cfg\MessageBreak
                   does not exist}%
     }%
     \MT@end@catcodes
   \fi
 }
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@cfg@prefix}
+%\begin{macro}{\DeclareMicrotypeFilePrefix}
+%\changes{v3.1}{2023/03/01}{new command (suggested by
+%               \contributor rallg <@\at @>) \githubissue{28}}
+% The configuration files' prefix may be customised.
+%    \begin{macrocode}
+\def\MT@cfg@prefix{mt}
+\def\DeclareMicrotypeFilePrefix#1{%
+  \def\MT@cfg@prefix{#1}%
+}
 %</package>
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %
 %\subsubsection{Disabling ligatures}
@@ -20187,7 +20215,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12771}
+% \CheckSum{12790}
 %
 % \Finale
 %
