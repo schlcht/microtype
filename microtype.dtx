@@ -3937,8 +3937,8 @@
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
-%  \fontfigurealignment,\fontbasefamily,\figureversion,\textsw,\textssc,
-%  \textulc,\textfigures,\liningfigures,\tabularfigures,\proportionalfigures}^^A fontaxes
+%  \fontfigurealignment,\fontbasefamily,\figureversion,\textfigures,
+%  \liningfigures,\tabularfigures,\proportionalfigures}                      ^^A fontaxes
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
 % \pdfstringdefWarn}                                                         ^^A hyperref
@@ -3959,7 +3959,13 @@
 % \plstyle,\postyle,\tlstyle,\tostyle,\scolshape,\olshape,\sishape,\ushape,
 % \scushape,\uishape,\rishape,\dfshape,\swstyle,\nwwidth,\cdwidth,\ecwidth,
 % \ucwidth,\etwidth,\epwidth,\exwidth,\uxwidth,\regwidth,\mbweight,\dbweight,
-% \sbweight,\ebweight,\ubweight,\lgweight,\elweight,\ulweight}               ^^A nfssext-cfr
+% \sbweight,\ebweight,\ubweight,\lgweight,\elweight,\ulweight,
+% \textti,\textlt,\textof,\textalt,\textreg,\emboss,\textorn,\ornament,
+% \textqt,\textsh,\texttm,\texttv,\textswash,\textln,\textos,\textin,\textsu,
+% \textl,\texto,\textp,\textt,\textpl,\textpo,\texttl,\textto,\textol,\textsi,
+% \textu,\textscu,\textui,\textri,\textdf,\textnw,\textcd,\textec,\textuc,
+% \textet,\textep,\textex,\textux,\textrw,\textmb,\textdb,\textsb,\texteb,
+% \textub,\textlg,\textel,\textul}                                           ^^A nfssext-cfr
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
@@ -8561,31 +8567,31 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %  \item
-%\begin{macro}{\MT@prot@check@f}
+%\begin{macro}{\MT@prot@check@l}
 %\changes{v3.1}{2022/12/26}{new macro: for commands that enclose their second argument}
-%\begin{macro}{\MT@prot@check@f@}
-% \pkg{csquotes} provides a couple of commands for quotations in \textbf{f}oreign
-% languages (lowercase, because it may be starred), whose first argument (the language)
+%\begin{macro}{\MT@prot@check@l@}
+% \pkg{csquotes} provides a couple of commands for quotations in foreign
+% languages (lowercase, because it may be starred), whose first argument (the \textbf{l}anguage)
 % we also have to evaluate before trial typesetting.
 %    \begin{macrocode}
-\def\MT@prot@check@f{%
-  \def\MT@temp*##1{\@ifstar{\MT@prot@check@f@{##1*}}{\MT@prot@check@f@{##1}}}}
-\def\MT@prot@check@f@#1#2{\MT@prot@l{#1{#2}}}
+\def\MT@prot@check@l{%
+  \def\MT@temp*##1{\@ifstar{\MT@prot@check@l@{##1*}}{\MT@prot@check@l@{##1}}}}
+\def\MT@prot@check@l@#1#2{\MT@prot@l{#1{#2}}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %  \item
-%\begin{macro}{\MT@prot@check@fX}
+%\begin{macro}{\MT@prot@check@lX}
 %\changes{v3.1}{2022/12/28}{new macro: replace language-switching enclosing commands}
-%\begin{macro}{\MT@prot@check@fX@}
+%\begin{macro}{\MT@prot@check@lX@}
 % Another macro for \pkg{csquotes} commands: replace integrated language-switching
 % commands with their regular variants.
 %    \begin{macrocode}
-\def\MT@prot@check@fX#1{%
+\def\MT@prot@check@lX#1{%
   \def\MT@temp*##1{\@ifstar
-    {\def\MT@temp{##1*}\MT@prot@check@fX@{#1*}}
-    {\def\MT@temp{##1}\MT@prot@check@fX@{#1}}}}
-\def\MT@prot@check@fX@#1#2{%
+    {\def\MT@temp{##1*}\MT@prot@check@lX@{#1*}}
+    {\def\MT@temp{##1}\MT@prot@check@lX@{#1}}}}
+\def\MT@prot@check@lX@#1#2{%
   \MT@get@prot{#1{#2}}{left}\MT@temp{#2}}
 %    \end{macrocode}
 %\end{macro}
@@ -8638,7 +8644,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {F\MakeUppercase}{F\MakeLowercase}%
 }
 %    \end{macrocode}
-% \LaTeX\ 2020/02/02 introduced some more commands
+% \LaTeX\ 2020/02/02 introduced some more text commands
 %\changes{v3.0f}{2022/06/22}{add new <NFSS> commands}
 % (adopted from \pkg{fontaxes}, which provides some more, see below).
 %\changes{v3.1}{2023/01/08}{add \pkg{fontaxes} commands}
@@ -8646,11 +8652,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
-    {O\fontseriesforce}{O\fontshapeforce}%
-    {F\textulc}{F\textsw}{F\textssc}}}
-  {\MT@addto@setup{\MT@with@package@T{fontaxes}
-    {\g@addto@macro\MT@prot@check@cmds{%
-      {S\swshape}{S\ulcshape}{S\sscshape}}}}}
+    {F\textulc}{F\textsw}{F\textssc}%
+    {O\fontseriesforce}{O\fontshapeforce}}}
+  \relax
 \IfFormatAtLeastTF{2022/11/01}
   {\g@addto@macro\MT@prot@check@cmds{{F\MakeTitlecase}}}\relax
 %    \end{macrocode}
@@ -8672,7 +8676,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {O\fontfigurestyle}{O\fontfigurealignment}{O\fontbasefamily}%
       {O\figureversion}%
       {F\textsw}{F\textssc}{F\textulc}%
-      {F\textfigures}{F\liningfigures}{F\tabularfigures}{F\proportionalfigures}}}%
+      {F\textfigures}{F\liningfigures}{F\tabularfigures}{F\proportionalfigures}}%
+      \IfFormatAtLeastTF{2020/02/02}\relax
+        {\g@addto@macro\MT@prot@check@cmds{%
+          {S\swshape}{S\ulcshape}{S\sscshape}%
+          {F\textulc}{F\textsw}{F\textssc}}}}
 %    \end{macrocode}
 % The \pkg{nfssext-cfr} package (an extension of the \pkg{nfssext} package,
 % which is part of Philipp Lehman's \pkg{fontinstallationguide} but was never
@@ -8687,11 +8695,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {S\lnstyle}{S\osstyle}{S\instyle}{S\sustyle}{S\lstyle}{S\ostyle}%
       {S\pstyle}{S\tstyle}{S\plstyle}{S\postyle}{S\tlstyle}{S\tostyle}%
       {S\scolshape}{S\olshape}{S\sishape}{S\ushape}{S\scushape}%
-      {S\uishape}{S\rishape}{S\dfshape}{S\swshape}{S\swstyle}%
+      {S\uishape}{S\rishape}{S\dfshape}{S\swstyle}%
       {S\nwwidth}{S\cdwidth}{S\ecwidth}{S\ucwidth}%
       {S\etwidth}{S\epwidth}{S\exwidth}{S\uxwidth}{S\regwidth}%
       {S\mbweight}{S\dbweight}{S\sbweight}{S\ebweight}%
-      {S\ubweight}{S\lgweight}{S\elweight}{S\ulweight}}}
+      {S\ubweight}{S\lgweight}{S\elweight}{S\ulweight}%
+      {F\textti}{F\textlt}{F\textof}{F\textalt}{F\textreg}{F\emboss}%
+      {F\textorn}{O\ornament}{F\textqt}{F\textsh}{F\texttm}{F\texttv}{F\textswash}%
+      {F\textln}{F\textos}{F\textin}{F\textsu}{F\textl}{F\texto}%
+      {F\textp}{F\textt}{F\textpl}{F\textpo}{F\texttl}{F\textto}%
+      {F\textol}{F\textsi}{F\textu}{F\textscu}%
+      {F\textui}{F\textri}{F\textdf}%
+      {F\textnw}{F\textcd}{F\textec}{F\textuc}%
+      {F\textet}{F\textep}{F\textex}{F\textux}{F\textrw}%
+      {F\textmb}{F\textdb}{F\textsb}{F\texteb}%
+      {F\textub}{F\textlg}{F\textel}{F\textul}}%
+      \IfFormatAtLeastTF{2020/02/02}\relax
+        {\g@addto@macro\MT@prot@check@cmds{{S\swshape}{F\textsw}}}}
 %    \end{macrocode}
 % If \pkg{yfonts} is loaded, we add the relevant commands.
 %    \begin{macrocode}
@@ -8711,10 +8731,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\patchcmd\MT@prot@check@cmds{E\enquote}{e\enquote}\relax\relax}
       {\g@addto@macro\MT@prot@check@cmds{{e\enquote}}}%
      \g@addto@macro\MT@prot@check@cmds{{e\textquote}%
-       {f\foreignquote}{f\hyphenquote}{f\foreigntextquote}{f\hyphentextquote}%
+       {l\foreignquote}{l\hyphenquote}{l\foreigntextquote}{l\hyphentextquote}%
        {{eX}\textcquote\textquote}%
-       {{fX}\foreigntextcquote\foreigntextquote}%
-       {{fX}\hyphentextcquote\hyphentextquote}}}%
+       {{lX}\foreigntextcquote\foreigntextquote}%
+       {{lX}\hyphentextcquote\hyphentextquote}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8738,7 +8758,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@get@first@group@tc{%
   \MT@prot@ifcat\bgroup{%
     \def\MT@temp*##1##2\MT@nil{\MT@ifempty{##1}\relax
-          {\bgroup\MT@prot@get@firstgroup@tc##1\MT@nil\egroup}}%
+          {{\MT@prot@get@firstgroup@tc##1\MT@nil}}}%
   }{%
     \def\MT@temp*{\MT@prot@get@first@token}%
   }%
@@ -20280,7 +20300,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12818}
+% \CheckSum{12947}
 %
 % \Finale
 %
