@@ -3915,8 +3915,9 @@
 %  \textulc,\textup,\textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,
 %  \usefont,\tiny,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
 %  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
-%  \MessageBreak,\PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
-%  \RawNoindent,\RequirePackage,\UnicodeEncodingName}
+%  \MakeLowercase,\MakeUppercase,\MakeTitlecase,\MessageBreak,\PackageError,\PackageInfo,
+%  \PackageWarning,\PassOptionsToPackage,\ProcessOptions,\RawNoindent,\RequirePackage,
+%  \UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -3936,7 +3937,8 @@
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
-%  \fontfigurealignment,\fontbasefamily,\figureversion}                      ^^A fontaxes
+%  \fontfigurealignment,\fontbasefamily,\figureversion,\textsw,\textssc,
+%  \textulc,\textfigures,\liningfigures,\tabularfigures,\proportionalfigures}^^A fontaxes
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
 % \pdfstringdefWarn}                                                         ^^A hyperref
@@ -8650,7 +8652,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {\g@addto@macro\MT@prot@check@cmds{%
       {S\swshape}{S\ulcshape}{S\sscshape}}}}}
 \IfFormatAtLeastTF{2022/11/01}
-  {\g@addto@macro\MT@prot@check@cmds{{F\MakeTitleCase}}}\relax
+  {\g@addto@macro\MT@prot@check@cmds{{F\MakeTitlecase}}}\relax
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -8668,7 +8670,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {\g@addto@macro\MT@prot@check@cmds{%
       {S\txfigures}{S\lnfigures}{S\tbfigures}{S\prfigures}%
       {O\fontfigurestyle}{O\fontfigurealignment}{O\fontbasefamily}%
-      {O\figureversion}}}%
+      {O\figureversion}%
+      {F\textsw}{F\textssc}{F\textulc}%
+      {F\textfigures}{F\liningfigures}{F\tabularfigures}{F\proportionalfigures}}}%
 %    \end{macrocode}
 % The \pkg{nfssext-cfr} package (an extension of the \pkg{nfssext} package,
 % which is part of Philipp Lehman's \pkg{fontinstallationguide} but was never
