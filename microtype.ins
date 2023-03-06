@@ -121,7 +121,7 @@ and microtype-show.sty.
 \usedir{tex/latex/microtype}
 \let\MetaPrefix\DoubleperCent
 \let\DEBUG\empty
-\def\DEBUG{,debug}
+%\def\DEBUG{,debug}
 
 \generate{
     \makefile{microtype.sty}{package\DEBUG}
@@ -168,9 +168,9 @@ and microtype-show.sty.
 
 %% package for the extra documentation
 %% (microtype-utf.dtx, microtype-logo.dtx, microtype-lssample.dtx):
-\generate{\makefile{microtype-doc.sty}{docsty}}
+%\generate{\makefile{microtype-doc.sty}{docsty}}
 %% makeindex style
-\generate{\makefile{microtype-gind.ist}{docist}}
+%\generate{\makefile{microtype-gind.ist}{docist}}
 
 \def\MetaPrefix{--}
 \generate{
