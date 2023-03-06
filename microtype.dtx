@@ -724,7 +724,8 @@
   \def\mailtoRS{\href % some PDF viewers don't like spaces:
     {mailto:Robert\%20Schlicht\%3cw.m.l@gmx.net\%3e?subject=[microtype\%20\fileversion]}
     {\texttt{w.m.l@gmx.net}}}
-  % the samples in the introduction, utilising nested optional content groups (aka. layers):
+  % the samples in the introduction, utilising nested optional content groups (aka. layers)
+  % (nowadays, I would be using one of the ocg packages, but none of them existed back then (2005)):
   \ifnum\pdftexversion<140 \else
     \def\mt@layer#1#2{\pdfliteral page{/OC/#1 BDC}#2\pdfliteral page{EMC}}
     \ifx\mt@objects\@undefined\let\mt@objects\@empty\fi
@@ -2512,7 +2513,7 @@
 % Or, in fact, it will load the file `\meta{prefix}|-|\meta{file name}|.cfg|'.
 % The \meta{prefix} may be changed, which, however, you should only do
 % if you have your own set of configuration files that you want to be
-% loaded \emph{instead of} the ones provided with the package.
+% loaded \emph{instead of} any of those provided with the package.
 %
 %\section{Context-sensitive setup}\label{sec:context}
 %
@@ -3047,22 +3048,6 @@
 %\begin{itemize}
 %\lstset{style=message}
 %  \item
-%\begin{verbatim}[deletekeywords={[1]{patch}}]
-%Package microtype Warning: Unable to apply patch `<eqnum>' on input line <29>.
-%\end{verbatim}
-%\changes{v3.1}{2021/09/15}{add hint about protrusion patch warnings}
-% As described in chapter~\ref{sec:pedantic} above, \microtype\ patches a number
-% of commands to enable or disable protrusion in certain situations. If you receive a warning
-% like the above, you should first make sure (as always) that the package is up to date.
-% If it is, consider filing a \href{\githuburl/issues}{bug report}.
-% Until a fix is available, or if you are, for whatever reason, unable or unwilling
-% to update, the easiest solution to get rid of the warning is to disable the
-% problematic patch with the \opt{nopatch} option, \eg:
-%\begin{verbatim}[style=microtype]
-%\microtypesetup{nopatch={eqnum}}
-%\end{verbatim}
-%
-%  \item
 %\begin{verbatim}
 %Package microtype Warning: Unknown slot number of character
 %(microtype)                `<\k A>'
@@ -3086,6 +3071,22 @@
 % inheritance and protrusion settings specific to the font in question.
 %
 %  \item
+%\begin{verbatim}[deletekeywords={[1]{patch}}]
+%Package microtype Warning: Unable to apply patch `<eqnum>' on input line <29>.
+%\end{verbatim}
+%\changes{v3.1}{2021/09/15}{add hint about protrusion patch warnings}
+% As described in chapter~\ref{sec:pedantic} above, \microtype\ tries to patch a number
+% of commands to enable or disable protrusion in certain situations. If you receive a warning
+% like the above, you should first make sure (as always) that the package is up to date.
+% If it is, consider filing a \href{\githuburl/issues}{bug report}.
+% Until a fix is available, or if you are, for whatever reason, unable or unwilling
+% to update, the easiest solution to get rid of the warning is to disable the
+% problematic patch with the \opt{nopatch} option, \eg:
+%\begin{verbatim}[style=microtype]
+%\microtypesetup{nopatch={eqnum}}
+%\end{verbatim}
+%
+%%  \item
 %\begin{verbatim}
 %! Font csnameendcsname=<cmr10+20 at 10.0pt> not loadable: Metric (TFM) file not found.
 %\end{verbatim}
@@ -8197,6 +8198,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%
+%\subsubsection{Protrusion commands}\label{ssub:setup-protcmd}
+%
 %\begin{macro}{\noprotrusion}
 %\changes{v3.0}{2021/05/15}{provide command for older \LaTeX\ versions}
 % This command may be used to inhibit protrusion on either side. It's part
@@ -8318,7 +8322,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0c}{2022/01/14}{use \cmd\RawNoindent, if available \githubissue{8}}
 % Finally, \LaTeX's new paragraph hooks require special attention, as they're
 % (currently?) unable to distinguish between real typesetting and trial runs.
-% In our case, fortunately, we really don't want to trigger the hooks.
+% In our case, fortunately, we really don't want to trigger the hooks.\footnote{
+%   Well, in some cases we do, but this indeed `needs further analysis'
+%   (cf. \url{https://github.com/latex3/latex2e/issues/880}).}
+%\todo{fix use of \cmd\RawNoindent}
 % Also, as far as I can tell, we don't need a \cmd\RawParEnd\ at the end
 % (as suggested in \file{ltpara}), because none of our commands are \cmd\long\ anymore.
 %    \begin{macrocode}
@@ -8576,8 +8583,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.1}{2022/12/26}{new macro: for commands that enclose their second argument}
 %\begin{macro}{\MT@prot@check@l@}
 % \pkg{csquotes} provides a couple of commands for quotations in foreign
-% languages (lowercase, because it may be starred), whose first argument (the \textbf{l}anguage)
-% we also have to evaluate before trial typesetting.
+% \textbf{l}anguages (lowercase, because it may be starred), whose first argument
+% (the language) we also have to evaluate before trial typesetting.
 %    \begin{macrocode}
 \def\MT@prot@check@l{%
   \def\MT@temp*##1{\@ifstar{\MT@prot@check@l@{##1*}}{\MT@prot@check@l@{##1}}}}
@@ -20369,6 +20376,7 @@ lualatex microtype-utf.dtx
 #        - Latin Modern Roman (OpenType)
 #        - Charis SIL (OpenType)
 #        - EB Garamond (OpenType)
+#        - New Computer Modern (OpenType)
 #        - TeX Gyre Pagella (OpenType) ]
 #  (8) To create the code index and history run
 makeindex -r -s microtype-gind.ist -t microtype-code.ilg -o microtype-code.ind microtype.idx microtype-code.idx
