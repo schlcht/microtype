@@ -8426,8 +8426,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0d}{2022/02/26}{no brace delimiting
 %                           (reported by \contributor Nelson Lago <@\at @>) \githubissue{10}}
 %\changes{v3.0e}{2022/06/16}{only add group if very first token}
+%\changes{v3.1}{2023/03/06}{allow nested groups}
 %    \begin{macrocode}
-\def\MT@prot@addgroup{\bgroup\afterassignment\MT@prot@get@firsttoken\let\MT@temp= }
+\def\MT@prot@addgroup{\bgroup\afterassignment\MT@prot@get@firstgroup\let\MT@temp= }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@firstgroup}
@@ -8467,7 +8468,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % This is for commands to be \textbf{I}gnored.
 %    \begin{macrocode}
 \def\MT@prot@check@I{%
-  \def\MT@temp*##1{\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1{\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8476,7 +8477,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add a \textbf{S}ingle command (without an argument).
 %    \begin{macrocode}
 \def\MT@prot@check@S{%
-  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks##1}\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks##1}\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8485,7 +8486,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add a command with \textbf{O}ne argument.
 %    \begin{macrocode}
 \def\MT@prot@check@O{%
-  \def\MT@temp*##1##2{\MT@toks\expandafter{\the\MT@toks##1{##2}}\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1##2{\MT@toks\expandafter{\the\MT@toks##1{##2}}\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8494,7 +8495,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add a command with \textbf{T}wo arguments.
 %    \begin{macrocode}
 \def\MT@prot@check@T{%
-  \def\MT@temp*##1##2##3{\MT@toks\expandafter{\the\MT@toks##1{##2}{##3}}\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1##2##3{\MT@toks\expandafter{\the\MT@toks##1{##2}{##3}}\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8706,7 +8707,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % a space character, \dots
 %    \begin{macrocode}
       \MT@prot@ifx\@sptoken{%
-        \def\MT@temp* {\MT@prot@get@firsttoken}%
+        \def\MT@temp* {\MT@prot@get@firstgroup}%
       }{%
 %    \end{macrocode}
 % commands, \dots
