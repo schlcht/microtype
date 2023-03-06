@@ -8216,21 +8216,45 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
+  \MT@prot@toks{}%
+  \let\MT@prot@l\MT@prot@l@
+  \let\MT@maybe@textcmd\@firstofone
   \MT@prot@get@firstgroup
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@prot@l}
+%\begin{macro}{\MT@prot@l@}
 %\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
 %                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
 %\changes{v3.0c}{2022/01/14}{next try at removing \cmd\long}
 % This probably doesn't need to be \cmd\long\ any longer.
 %    \begin{macrocode}
-\def\MT@prot@l#1{%
+\def\MT@prot@l@#1{%
   \MT@get@prot{#1}{left}%
   #1%
 }
 %    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@toks}
+%\begin{macro}{\MT@prot@l@tc}
+%\changes{v3.1}{2023/03/06}{new macro: for text commands}
+%\begin{macro}{\MT@gobble@to@nil}
+% If \cs{leftprotrusion} is followed by a text command,
+% we trial-typeset only the first glyph, then actually typeset
+% the whole argument, which we've saved in \cs{MT@prot@toks},
+% and finally gobble anything that might still be left in the
+% input stream (see \cs{MT@prot@check@F} below).
+%    \begin{macrocode}
+\newtoks\MT@prot@toks
+\def\MT@prot@l@tc#1{%
+  \MT@get@prot{\MT@maybe@textcmd{#1}}{left}%
+  \the\MT@prot@toks
+  \MT@gobble@to@nil
+}
+\def\MT@gobble@to@nil#1\MT@nil{}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
@@ -8416,7 +8440,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
 %               ^^A private mail, 2021/11/18
 %               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
-% If we have a group, we inject \cs{MT@prot@get@firsttoken} at the
+% If we have a group, we inject \cs{MT@prot@get@firstgroup} again at the
 % beginning and don't bother about the rest. This still allows,
 % \eg, |\verb|, |verbatim| or |lstlistings| material.
 % The downside of being this cautious is that we'll miss lots of cases.
@@ -8426,20 +8450,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0d}{2022/02/26}{no brace delimiting
 %                           (reported by \contributor Nelson Lago <@\at @>) \githubissue{10}}
 %\changes{v3.0e}{2022/06/16}{only add group if very first token}
-%\changes{v3.1}{2023/03/06}{allow nested groups}
+%\changes{v3.1}{2023/03/06}{allow multiple groups}
 %    \begin{macrocode}
 \def\MT@prot@addgroup{\bgroup\afterassignment\MT@prot@get@firstgroup\let\MT@temp= }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@firstgroup}
+%\begin{macro}{\MT@prot@get@firstgroup@tc}
 %\begin{macro}{\MT@prot@get@firsttoken}
 %\begin{macro}{\MT@prot@get@nexttoken}
 % Scan token by token.
 %    \begin{macrocode}
 \def\MT@prot@get@firstgroup{\futurelet\MT@prot@next\MT@prot@get@first@group}
+\def\MT@prot@get@firstgroup@tc{\futurelet\MT@prot@next\MT@prot@get@first@group@tc}
 \def\MT@prot@get@firsttoken{\futurelet\MT@prot@next\MT@prot@get@first@token}
 \def\MT@prot@get@nexttoken{\futurelet\MT@prot@next\MT@prot@get@next@token}
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -8562,13 +8589,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %  \item
-%\begin{macro}{\MT@prot@check@R}
-%\changes{v3.1}{2022/12/17}{new macro: take care of font switching commands}
-% Here we \textbf{R}eplace a font switch command that takes an argument
-% with its declarative form (\eg, |\textrm| $\mapsto$ |\rmfamily|).
+%\begin{macro}{\MT@prot@check@F}
+%\changes{v3.1}{2022/03/06}{new macro: take care of text commands}
+% Here we deal with \textbf{F}ont switching commands (\ie, text commands,
+% which take an argument).
+% We (a) remember the text command, (b) save the full text,
+% and then (c) continue inspecting the contents of the argument.
+% Nested text commands still don't work.
 %    \begin{macrocode}
-\def\MT@prot@check@R#1{%
-  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks#1}\MT@prot@addgroup}%
+\def\MT@prot@check@F{%
+  \ifx\MT@prot@l\MT@prot@l@tc
+    \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
+  \else
+    \let\MT@prot@l\MT@prot@l@tc
+    \def\MT@temp*##1##2{%
+      \let\MT@maybe@textcmd##1%
+      \MT@prot@toks{##1{##2}}%
+      \MT@prot@get@firstgroup@tc##2\MT@nil}%
+  \fi
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8592,11 +8630,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}%
   {O\microtypesetup}{O\microtypecontext}%
   {T\fontsize}%
-  {R\textrm\rmfamily}{R\textsf\sffamily}{R\texttt\ttfamily}%
-  {R\textnormal\normalfont}%
-  {R\textbf\bfseries}{R\textmd\mdseries}%
-  {R\textit\itshape}{R\textsl\slshape}{R\textsc\scshape}{R\textup\upshape}%
-  {R\emph\em}%
+  {F\textrm}{F\textsf}{F\texttt}{F\textnormal}%
+  {F\textbf}{F\textmd}{F\textit}{F\textsl}{F\textsc}{F\textup}{F\emph}%
 }
 %    \end{macrocode}
 % \LaTeX\ 2020/02/02 introduced some more commands
@@ -8608,7 +8643,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
     {O\fontseriesforce}{O\fontshapeforce}%
-    {R\textulc\ulcshape}{R\textsw\swshape}{R\textssc\sscshape}}}
+    {F\textulc}{F\textsw}{F\textssc}}}
   {\MT@addto@setup{\MT@with@package@T{fontaxes}
     {\g@addto@macro\MT@prot@check@cmds{%
       {S\swshape}{S\ulcshape}{S\sscshape}}}}}
@@ -8655,7 +8690,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@with@package@T{yfonts}
     {\g@addto@macro\MT@prot@check@cmds{%
       {S\frakfamily}{S\swabfamily}{S\gothfamily}%
-      {R\textfrak\frakfamily}{R\textswab\swabfamily}{R\textgoth\gothfamily}}}%
+      {F\textfrak}{F\textswab}{F\textgoth}}}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
@@ -8682,6 +8717,20 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@get@first@group{%
   \MT@prot@ifcat\bgroup{%
     \def\MT@temp*{\MT@prot@addgroup}%
+  }{%
+    \def\MT@temp*{\MT@prot@get@first@token}%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@get@first@group@tc}
+% The variant for text commands (in case they start with another group).
+%    \begin{macrocode}
+\def\MT@prot@get@first@group@tc{%
+  \MT@prot@ifcat\bgroup{%
+    \def\MT@temp*##1##2\MT@nil{\MT@ifempty{##1}\relax
+          {\bgroup\MT@prot@get@firstgroup@tc##1\MT@nil\egroup}}%
   }{%
     \def\MT@temp*{\MT@prot@get@first@token}%
   }%
@@ -8780,7 +8829,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*pdf-|lua-|xe->
 \def\MT@prot@addtoken@next#1{%
   \MT@toks\expandafter{\the\MT@toks#1}%
-  \setbox\MT@tempbox\hbox{\the\MT@toks
+  \setbox\MT@tempbox\hbox{%
+    \MT@exp@one@n\MT@maybe@textcmd{\the\MT@toks}%
 %<pdf-|xe->    \relax
 %<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
     \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
