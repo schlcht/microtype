@@ -3909,18 +3909,20 @@
 %  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
 %  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
-%  \active,\bfseries,\documentclass,\dotfill,\em,\fbox,\fboxrule,\fboxsep,\fmtversion,
+%  \active,\bfseries,\documentclass,\dotfill,\em,\emph,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
 %  \LARGE,\leavevmode,\llap,\makeatletter,\makebox,\marginparsep,\mathrm,\mbox,\mdseries,
 %  \medskip,\newbox,\newcommand,\newcount,\newdimen,\newif,\newline,\newskip,\newtoks,
 %  \nobreak,\nonfrenchspacing,\normalbaselineskip,\normalshape,\normalsize,\numberline,
 %  \obeylines,\par,\parbox,\providecommand,\quad,\raggedright,\renewcommand,\rmfamily,
 %  \scalebox,\sffamily,\scriptsize,\scshape,\slshape,\small,\space,\sscshape,\strut,\swshape,
-%  \textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,\usefont,\tiny,
-%  \AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,\DeclareOption,
-%  \DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,\MessageBreak,
-%  \PackageError,\PackageInfo,\PackageWarning,\PassOptionsToPackage,\ProcessOptions,
-%  \RawNoindent,\RequirePackage,\UnicodeEncodingName}
+%  \textbf,\textit,\textmd,\textnormal,\textrm,\textsc,\textsf,\textsl,\textssc,\textsw,
+%  \textulc,\textup,\textwidth,\texttt,\tiny,\tracingnone,\ttfamily,\upshape,\ulcshape,
+%  \usefont,\tiny,\AddToHook,\AtBeginDocument,\AtEndOfPackage,\CheckCommand,\CurrentOption,
+%  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
+%  \MakeLowercase,\MakeUppercase,\MakeTitlecase,\MessageBreak,\PackageError,\PackageInfo,
+%  \PackageWarning,\PassOptionsToPackage,\ProcessOptions,\RawNoindent,\RequirePackage,
+%  \UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -3940,7 +3942,8 @@
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
-%  \fontfigurealignment,\fontbasefamily,\figureversion}                      ^^A fontaxes
+%  \fontfigurealignment,\fontbasefamily,\figureversion,\textfigures,
+%  \liningfigures,\tabularfigures,\proportionalfigures}                      ^^A fontaxes
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
 % \pdfstringdefWarn}                                                         ^^A hyperref
@@ -3961,7 +3964,13 @@
 % \plstyle,\postyle,\tlstyle,\tostyle,\scolshape,\olshape,\sishape,\ushape,
 % \scushape,\uishape,\rishape,\dfshape,\swstyle,\nwwidth,\cdwidth,\ecwidth,
 % \ucwidth,\etwidth,\epwidth,\exwidth,\uxwidth,\regwidth,\mbweight,\dbweight,
-% \sbweight,\ebweight,\ubweight,\lgweight,\elweight,\ulweight}               ^^A nfssext-cfr
+% \sbweight,\ebweight,\ubweight,\lgweight,\elweight,\ulweight,
+% \textti,\textlt,\textof,\textalt,\textreg,\emboss,\textorn,\ornament,
+% \textqt,\textsh,\texttm,\texttv,\textswash,\textln,\textos,\textin,\textsu,
+% \textl,\texto,\textp,\textt,\textpl,\textpo,\texttl,\textto,\textol,\textsi,
+% \textu,\textscu,\textui,\textri,\textdf,\textnw,\textcd,\textec,\textuc,
+% \textet,\textep,\textex,\textux,\textrw,\textmb,\textdb,\textsb,\texteb,
+% \textub,\textlg,\textel,\textul}                                           ^^A nfssext-cfr
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
@@ -3970,7 +3979,7 @@
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
 %\DoNotIndex{\conditionally@traceoff}                                        ^^A trace
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
-%\DoNotIndex{\frakfamily,\swabfamily,\gothfamily}                            ^^A yfonts
+%\DoNotIndex{\frakfamily,\gothfamily,\swabfamily,\textfrak,\textgoth,\textswab}^^A yfonts
 %\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
 %  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
 %  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
@@ -8220,21 +8229,45 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \DeclareRobustCommand\leftprotrusion{%
   \MT@toks{}%
+  \MT@prot@toks{}%
+  \let\MT@prot@l\MT@prot@l@
+  \let\MT@maybe@textcmd\@firstofone
   \MT@prot@get@firstgroup
 }
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@prot@l}
+%\begin{macro}{\MT@prot@l@}
 %\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
 %                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
 %\changes{v3.0c}{2022/01/14}{next try at removing \cmd\long}
 % This probably doesn't need to be \cmd\long\ any longer.
 %    \begin{macrocode}
-\def\MT@prot@l#1{%
+\def\MT@prot@l@#1{%
   \MT@get@prot{#1}{left}%
   #1%
 }
 %    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@toks}
+%\begin{macro}{\MT@prot@l@tc}
+%\changes{v3.1}{2023/03/06}{new macro: for text commands}
+%\begin{macro}{\MT@gobble@to@nil}
+% If \cs{leftprotrusion} is followed by a text command,
+% we trial-typeset only the first glyph, then actually typeset
+% the whole argument, which we've saved in \cs{MT@prot@toks},
+% and finally gobble anything that might still be left in the
+% input stream (see \cs{MT@prot@check@F} below).
+%    \begin{macrocode}
+\newtoks\MT@prot@toks
+\def\MT@prot@l@tc#1{%
+  \MT@get@prot{\MT@maybe@textcmd{#1}}{left}%
+  \the\MT@prot@toks
+  \MT@gobble@to@nil
+}
+\def\MT@gobble@to@nil#1\MT@nil{}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\rightprotrusion}
 %\changes{v3.0}{2021/05/15}{new command}
@@ -8407,9 +8440,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \expandafter\expandafter\expandafter\@tempa
       \expandafter\MT@getthird\MT@prot@next\relax\@nil
     \MT@exp@two@c\ifx\@car\@tempa\relax\@nil\@text@composite
-      \def\MT@temp*##1##2{\MT@prot@l{\the\MT@toks##1##2}}%
+      \def\MT@temp*##1##2{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2}}%
     \else
-      \def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}%
+      \def\MT@temp*##1{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1}}%
     \fi
   }%
 }
@@ -8420,7 +8453,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %               (reported by \contributor Torsten Schuetze <torsten.schuetze\at gmx.net>)}
 %               ^^A private mail, 2021/11/18
 %               ^^A also on the non-public dante-ev mailing list: https://lists.dante.de/mailman/listinfo/dante-ev
-% If we have a group, we inject \cs{MT@prot@get@firsttoken} at the
+% If we have a group, we inject \cs{MT@prot@get@firstgroup} again at the
 % beginning and don't bother about the rest. This still allows,
 % \eg, |\verb|, |verbatim| or |lstlistings| material.
 % The downside of being this cautious is that we'll miss lots of cases.
@@ -8430,19 +8463,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0d}{2022/02/26}{no brace delimiting
 %                           (reported by \contributor Nelson Lago <@\at @>) \githubissue{10}}
 %\changes{v3.0e}{2022/06/16}{only add group if very first token}
+%\changes{v3.1}{2023/03/06}{allow multiple groups}
 %    \begin{macrocode}
-\def\MT@prot@addgroup{\bgroup\afterassignment\MT@prot@get@firsttoken\let\MT@temp= }
+\def\MT@prot@addgroup{\bgroup\afterassignment\MT@prot@get@firstgroup\let\MT@temp= }
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@firstgroup}
+%\begin{macro}{\MT@prot@get@firstgroup@tc}
 %\begin{macro}{\MT@prot@get@firsttoken}
 %\begin{macro}{\MT@prot@get@nexttoken}
 % Scan token by token.
 %    \begin{macrocode}
 \def\MT@prot@get@firstgroup{\futurelet\MT@prot@next\MT@prot@get@first@group}
+\def\MT@prot@get@firstgroup@tc{\futurelet\MT@prot@next\MT@prot@get@first@group@tc}
 \def\MT@prot@get@firsttoken{\futurelet\MT@prot@next\MT@prot@get@first@token}
 \def\MT@prot@get@nexttoken{\futurelet\MT@prot@next\MT@prot@get@next@token}
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -8471,7 +8508,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % This is for commands to be \textbf{I}gnored.
 %    \begin{macrocode}
 \def\MT@prot@check@I{%
-  \def\MT@temp*##1{\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1{\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8480,7 +8517,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add a \textbf{S}ingle command (without an argument).
 %    \begin{macrocode}
 \def\MT@prot@check@S{%
-  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks##1}\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1{\MT@toks\expandafter{\the\MT@toks##1}\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8489,7 +8526,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add a command with \textbf{O}ne argument.
 %    \begin{macrocode}
 \def\MT@prot@check@O{%
-  \def\MT@temp*##1##2{\MT@toks\expandafter{\the\MT@toks##1{##2}}\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1##2{\MT@toks\expandafter{\the\MT@toks##1{##2}}\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8498,7 +8535,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add a command with \textbf{T}wo arguments.
 %    \begin{macrocode}
 \def\MT@prot@check@T{%
-  \def\MT@temp*##1##2##3{\MT@toks\expandafter{\the\MT@toks##1{##2}{##3}}\MT@prot@get@firsttoken}%
+  \def\MT@temp*##1##2##3{\MT@toks\expandafter{\the\MT@toks##1{##2}{##3}}\MT@prot@get@firstgroup}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8535,34 +8572,56 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %  \item
-%\begin{macro}{\MT@prot@check@f}
+%\begin{macro}{\MT@prot@check@l}
 %\changes{v3.1}{2022/12/26}{new macro: for commands that enclose their second argument}
-%\begin{macro}{\MT@prot@check@f@}
-% \pkg{csquotes} provides a couple of commands for quotations in \textbf{f}oreign
-% languages (lowercase, because it may be starred), whose first argument (the language)
+%\begin{macro}{\MT@prot@check@l@}
+% \pkg{csquotes} provides a couple of commands for quotations in foreign
+% languages (lowercase, because it may be starred), whose first argument (the \textbf{l}anguage)
 % we also have to evaluate before trial typesetting.
 %    \begin{macrocode}
-\def\MT@prot@check@f{%
-  \def\MT@temp*##1{\@ifstar{\MT@prot@check@f@{##1*}}{\MT@prot@check@f@{##1}}}}
-\def\MT@prot@check@f@#1#2{\MT@prot@l{#1{#2}}}
+\def\MT@prot@check@l{%
+  \def\MT@temp*##1{\@ifstar{\MT@prot@check@l@{##1*}}{\MT@prot@check@l@{##1}}}}
+\def\MT@prot@check@l@#1#2{\MT@prot@l{#1{#2}}}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %  \item
-%\begin{macro}{\MT@prot@check@fX}
+%\begin{macro}{\MT@prot@check@lX}
 %\changes{v3.1}{2022/12/28}{new macro: replace language-switching enclosing commands}
-%\begin{macro}{\MT@prot@check@fX@}
+%\begin{macro}{\MT@prot@check@lX@}
 % Another macro for \pkg{csquotes} commands: replace integrated language-switching
 % commands with their regular variants.
 %    \begin{macrocode}
-\def\MT@prot@check@fX#1{%
+\def\MT@prot@check@lX#1{%
   \def\MT@temp*##1{\@ifstar
-    {\def\MT@temp{##1*}\MT@prot@check@fX@{#1*}}
-    {\def\MT@temp{##1}\MT@prot@check@fX@{#1}}}}
-\def\MT@prot@check@fX@#1#2{%
+    {\def\MT@temp{##1*}\MT@prot@check@lX@{#1*}}
+    {\def\MT@temp{##1}\MT@prot@check@lX@{#1}}}}
+\def\MT@prot@check@lX@#1#2{%
   \MT@get@prot{#1{#2}}{left}\MT@temp{#2}}
 %    \end{macrocode}
 %\end{macro}
+%\end{macro}
+%  \item
+%\begin{macro}{\MT@prot@check@F}
+%\changes{v3.1}{2022/03/06}{new macro: for text commands}
+% Here we deal with \textbf{F}ont switching commands (\ie, text commands,
+% which take an argument).
+% We (a) remember the text command, (b) save the full text,
+% and then (c) continue inspecting the contents of the argument.
+% Nested text commands still don't work.
+%    \begin{macrocode}
+\def\MT@prot@check@F{%
+  \ifx\MT@prot@l\MT@prot@l@tc
+    \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
+  \else
+    \let\MT@prot@l\MT@prot@l@tc
+    \def\MT@temp*##1##2{%
+      \let\MT@maybe@textcmd##1%
+      \MT@prot@toks{##1{##2}}%
+      \MT@prot@get@firstgroup@tc##2\MT@nil}%
+  \fi
+}
+%    \end{macrocode}
 %\end{macro}
 %\end{itemize}
 %\begin{macro}{\MT@prot@check@cmds}
@@ -8571,9 +8630,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/06/15}{add standard font selection commands}
 %\changes{v3.0f}{2022/06/22}{add \microtype's commands}
 %\changes{v3.1}{2023/01/07}{add \cmd\em}
+%\changes{v3.1}{2023/03/06}{add \cmd\MakeUppercase\ and friends}
 % And here's the list of commands that we can deal with.
-% We'll postpone the handling of commands whose argument would have
-% to be processed (\eg, \cmd\textrm).
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
@@ -8586,9 +8644,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {O\fontencoding}{O\fontfamily}{O\fontseries}{O\fontshape}%
   {O\microtypesetup}{O\microtypecontext}%
   {T\fontsize}%
+  {F\textrm}{F\textsf}{F\texttt}{F\textnormal}%
+  {F\textbf}{F\textmd}{F\textit}{F\textsl}{F\textsc}{F\textup}{F\emph}%
+  {F\MakeUppercase}{F\MakeLowercase}%
 }
 %    \end{macrocode}
-% \LaTeX\ 2020/02/02 introduced some more commands
+% \LaTeX\ 2020/02/02 introduced some more text commands
 %\changes{v3.0f}{2022/06/22}{add new <NFSS> commands}
 % (adopted from \pkg{fontaxes}, which provides some more, see below).
 %\changes{v3.1}{2023/01/08}{add \pkg{fontaxes} commands}
@@ -8596,10 +8657,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \IfFormatAtLeastTF{2020/02/02}
   {\g@addto@macro\MT@prot@check@cmds{%
     {S\swshape}{S\ulcshape}{S\sscshape}{S\normalshape}%
+    {F\textulc}{F\textsw}{F\textssc}%
     {O\fontseriesforce}{O\fontshapeforce}}}
-  {\MT@addto@setup{\MT@with@package@T{fontaxes}
-    {\g@addto@macro\MT@prot@check@cmds{%
-      {S\swshape}{S\ulcshape}{S\sscshape}}}}}
+  \relax
+\IfFormatAtLeastTF{2022/11/01}
+  {\g@addto@macro\MT@prot@check@cmds{{F\MakeTitlecase}}}\relax
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -8617,7 +8679,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {\g@addto@macro\MT@prot@check@cmds{%
       {S\txfigures}{S\lnfigures}{S\tbfigures}{S\prfigures}%
       {O\fontfigurestyle}{O\fontfigurealignment}{O\fontbasefamily}%
-      {O\figureversion}}}%
+      {O\figureversion}%
+      {F\textsw}{F\textssc}{F\textulc}%
+      {F\textfigures}{F\liningfigures}{F\tabularfigures}{F\proportionalfigures}}%
+      \IfFormatAtLeastTF{2020/02/02}\relax
+        {\g@addto@macro\MT@prot@check@cmds{%
+          {S\swshape}{S\ulcshape}{S\sscshape}%
+          {F\textulc}{F\textsw}{F\textssc}}}}
 %    \end{macrocode}
 % The \pkg{nfssext-cfr} package (an extension of the \pkg{nfssext} package,
 % which is part of Philipp Lehman's \pkg{fontinstallationguide} but was never
@@ -8632,17 +8700,30 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {S\lnstyle}{S\osstyle}{S\instyle}{S\sustyle}{S\lstyle}{S\ostyle}%
       {S\pstyle}{S\tstyle}{S\plstyle}{S\postyle}{S\tlstyle}{S\tostyle}%
       {S\scolshape}{S\olshape}{S\sishape}{S\ushape}{S\scushape}%
-      {S\uishape}{S\rishape}{S\dfshape}{S\swshape}{S\swstyle}%
+      {S\uishape}{S\rishape}{S\dfshape}{S\swstyle}%
       {S\nwwidth}{S\cdwidth}{S\ecwidth}{S\ucwidth}%
       {S\etwidth}{S\epwidth}{S\exwidth}{S\uxwidth}{S\regwidth}%
       {S\mbweight}{S\dbweight}{S\sbweight}{S\ebweight}%
-      {S\ubweight}{S\lgweight}{S\elweight}{S\ulweight}}}
+      {S\ubweight}{S\lgweight}{S\elweight}{S\ulweight}%
+      {F\textti}{F\textlt}{F\textof}{F\textalt}{F\textreg}{F\emboss}%
+      {F\textorn}{O\ornament}{F\textqt}{F\textsh}{F\texttm}{F\texttv}{F\textswash}%
+      {F\textln}{F\textos}{F\textin}{F\textsu}{F\textl}{F\texto}%
+      {F\textp}{F\textt}{F\textpl}{F\textpo}{F\texttl}{F\textto}%
+      {F\textol}{F\textsi}{F\textu}{F\textscu}%
+      {F\textui}{F\textri}{F\textdf}%
+      {F\textnw}{F\textcd}{F\textec}{F\textuc}%
+      {F\textet}{F\textep}{F\textex}{F\textux}{F\textrw}%
+      {F\textmb}{F\textdb}{F\textsb}{F\texteb}%
+      {F\textub}{F\textlg}{F\textel}{F\textul}}%
+      \IfFormatAtLeastTF{2020/02/02}\relax
+        {\g@addto@macro\MT@prot@check@cmds{{S\swshape}{F\textsw}}}}
 %    \end{macrocode}
-% If \pkg{yfonts} is loaded, we add the relevant commands (again, only those that
-% don't take an argument).
+% If \pkg{yfonts} is loaded, we add the relevant commands.
 %    \begin{macrocode}
   \MT@with@package@T{yfonts}
-    {\g@addto@macro\MT@prot@check@cmds{{S\frakfamily}{S\swabfamily}{S\gothfamily}}}%
+    {\g@addto@macro\MT@prot@check@cmds{%
+      {S\frakfamily}{S\swabfamily}{S\gothfamily}%
+      {F\textfrak}{F\textswab}{F\textgoth}}}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
@@ -8655,10 +8736,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {\patchcmd\MT@prot@check@cmds{E\enquote}{e\enquote}\relax\relax}
       {\g@addto@macro\MT@prot@check@cmds{{e\enquote}}}%
      \g@addto@macro\MT@prot@check@cmds{{e\textquote}%
-       {f\foreignquote}{f\hyphenquote}{f\foreigntextquote}{f\hyphentextquote}%
+       {l\foreignquote}{l\hyphenquote}{l\foreigntextquote}{l\hyphentextquote}%
        {{eX}\textcquote\textquote}%
-       {{fX}\foreigntextcquote\foreigntextquote}%
-       {{fX}\hyphentextcquote\hyphentextquote}}}%
+       {{lX}\foreigntextcquote\foreigntextquote}%
+       {{lX}\hyphentextcquote\hyphentextquote}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -8676,13 +8757,30 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@get@first@group@tc}
+% The variant for text commands (in case they start with another group).
+%    \begin{macrocode}
+\def\MT@prot@get@first@group@tc{%
+  \MT@prot@ifcat\bgroup{%
+    \def\MT@temp*##1##2\MT@nil{\MT@ifempty{##1}\relax
+          {{\MT@prot@get@firstgroup@tc##1\MT@nil}}}%
+  }{%
+    \def\MT@temp*{\MT@prot@get@first@token}%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@get@first@token}
 %\changes{v3.0e}{2022/06/15}{don't gobble previously captured content}
+%\changes{v3.1}{2023/03/06}{expand toks once}
 % This can be called repeatedly.
 % We add a letter or other character, \dots
 %    \begin{macrocode}
 \def\MT@prot@get@first@token{%
-  \def\MT@temp*{\MT@exp@one@n\MT@ifempty{\the\MT@toks}\relax{\MT@prot@l{\the\MT@toks}}}%
+  \def\MT@temp*{\MT@exp@one@n\MT@ifempty{\the\MT@toks}
+      {\MT@exp@one@n\MT@ifempty{\the\MT@prot@toks}\relax{\the\MT@prot@toks\MT@gobble@to@nil}}
+      {\MT@exp@one@n\MT@prot@l{\the\MT@toks}}}%
   \MT@prot@ifcat{a}{%
     \def\MT@temp*{\MT@prot@addtoken@first}%
   }{%
@@ -8693,7 +8791,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % a space character, \dots
 %    \begin{macrocode}
       \MT@prot@ifx\@sptoken{%
-        \def\MT@temp* {\MT@prot@get@firsttoken}%
+        \def\MT@temp* {\MT@prot@get@firstgroup}%
       }{%
 %    \end{macrocode}
 % commands, \dots
@@ -8705,19 +8803,19 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
         \MT@prot@ifmacro{%
           \MT@prot@iffirstcmd\UTFviii@two@octets{%
-            \def\MT@temp*##1##2{\MT@prot@l{\the\MT@toks##1##2}}%
+            \def\MT@temp*##1##2{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2}}%
           }{%
             \MT@prot@iffirstcmd\UTFviii@three@octets{%
-              \def\MT@temp*##1##2##3{\MT@prot@l{\the\MT@toks##1##2##3}}%
+              \def\MT@temp*##1##2##3{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2##3}}%
             }{%
               \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                \def\MT@temp*##1##2##3##4{\MT@prot@l{\the\MT@toks##1##2##3##4}}%
+                \def\MT@temp*##1##2##3##4{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2##3##4}}%
               }{%
 %    \end{macrocode}
 % (this is for chars made active by \pkg{csquotes}, via \cmd\MakeAutoQuote\ or
 % \cmd\MakeOuterQuote)
 %    \begin{macrocode}
-                \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@prot@l{\the\MT@toks##1}}}{%
+                \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1}}}{%
 %    \end{macrocode}
 % or, finally, a <LICR> command.
 %    \begin{macrocode}
@@ -8750,7 +8848,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \def\MT@temp*{\MT@prot@addtoken@next}%
   \MT@prot@ifcat{a}\relax{%
     \MT@prot@ifcat{!}\relax{%
-      \def\MT@temp*{\MT@prot@l{\the\MT@toks}}%
+      \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
     }%
   }%
   \MT@temp*%
@@ -8766,12 +8864,18 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*pdf-|lua-|xe->
 \def\MT@prot@addtoken@next#1{%
   \MT@toks\expandafter{\the\MT@toks#1}%
-  \setbox\MT@tempbox\hbox{\the\MT@toks
+  \setbox\MT@tempbox\hbox{%
+%    \end{macrocode}
+% We disable italic correction, which would prevent us from
+% seeing the ligature (with text commands).
+%    \begin{macrocode}
+    \let\maybe@ic\relax
+    \MT@exp@one@n\MT@maybe@textcmd{\the\MT@toks}%
 %<pdf-|xe->    \relax
 %<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
     \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
       \MT@prot@get@nexttoken
-      {\MT@prot@l{\the\MT@toks}}%
+      {\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
 }
 %</pdf-|lua-|xe->
 %    \end{macrocode}
@@ -20215,7 +20319,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12790}
+% \CheckSum{12962}
 %
 % \Finale
 %
