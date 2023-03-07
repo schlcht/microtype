@@ -36,6 +36,8 @@ help:
 	@echo '           world - all & ctan'
 	@echo '     mostlyclean - remove all intermediary files'
 	@echo '           clean - remove all generated and built files'
+	@echo '             tag - edit tags (v=VERSION d=DATE, both optional)'
+	@echo '        manifest - print file list'
 	@echo ' '
 	@echo '         install - install the complete package into your home texmf tree'
 	@echo '     sty-install - install the package code only'
@@ -277,6 +279,24 @@ sty-install: $(RUNFILES)
 	fi ;
 	@echo "Installing in '$(TEXMFROOT)'."
 	$(run-sty-install)
+
+tag: $(ALLDTX) $(README)
+	@if test ! -n "$(v)" ; then \
+	  v="$(shell LANG=C && \
+	    sed -n '/%<\*package|letterspace|m-t|pdf-|lua-|xe-|show>$$/{N;s/.*\[.* v\(.*\)$$/\1/p;}' $(DTX))" ; \
+	  echo "Version not set .. using current one ($$v)" ; \
+	fi ; \
+	if test ! -n "$(d)" ; then \
+	  d="$(shell date '+%Y/%m/%d')" ; \
+	  echo "Date not set .. using today ($$d)" ; \
+	fi ; \
+	echo "Tagging: $$v -- $$d" ; \
+	LANG=C && \
+	  sed -i '' -e "/^%<\*package|letterspace|m-t|pdf-|lua-|xe-|show>$$/{N;s:\( *\[\).* .*$$:\1$$d v$$v:;}" \
+	            -e "s:\(%<luafile> *version *= \)\".*\":\1\"$$v\":" \
+	            -e "s:\(%<luafile> *date    *= \)\".*\":\1\"$$d\":" $(DTX) && \
+	  sed -i '' -e "/^%<\*driver>$$/{N;s:\[.* v.*\]$$:\[$$d v$$v\]:;}" $(UTFDTX) && \
+	  sed -i '' -e "s:^  (v.* -- .*)$$:  (v$$v -- $$d):" $(README) ;
 
 manifest: $(SOURCE)
 	@echo "=== Source files ==="
