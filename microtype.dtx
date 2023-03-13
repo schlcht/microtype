@@ -3086,7 +3086,7 @@
 %\microtypesetup{nopatch={eqnum}}
 %\end{verbatim}
 %
-%%  \item
+%  \item
 %\begin{verbatim}
 %! Font csnameendcsname=<cmr10+20 at 10.0pt> not loadable: Metric (TFM) file not found.
 %\end{verbatim}
@@ -8553,6 +8553,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % and which we trial-typeset without any contents.
 %    \begin{macrocode}
 \def\MT@prot@check@E{%
+  \the\MT@toks
   \def\MT@temp*##1{\MT@prot@l{##1}}%
 }
 %    \end{macrocode}
@@ -8563,6 +8564,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Same for starred commands (the main candidate here is \pkg{csquotes}'s \cmd\enquote).
 %    \begin{macrocode}
 \def\MT@prot@check@e{%
+  \the\MT@toks
   \def\MT@temp*##1{\@ifstar{\MT@prot@l{##1*}}{\MT@prot@l{##1}}}%
 }
 %    \end{macrocode}
@@ -8573,9 +8575,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Here we replace the `integrated interface' (\pkg{csquotes}) with the regular one.
 %    \begin{macrocode}
 \def\MT@prot@check@eX#1{%
+  \the\MT@toks
   \def\MT@temp*##1{\@ifstar
     {\MT@get@prot{#1*}{left}##1*}
-    {\MT@get@prot{#1}{left}##1}}}
+    {\MT@get@prot{#1}{left}##1}}%
+}
 %    \end{macrocode}
 %\end{macro}
 %  \item
@@ -8587,8 +8591,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % (the language) we also have to evaluate before trial typesetting.
 %    \begin{macrocode}
 \def\MT@prot@check@l{%
-  \def\MT@temp*##1{\@ifstar{\MT@prot@check@l@{##1*}}{\MT@prot@check@l@{##1}}}}
-\def\MT@prot@check@l@#1#2{\MT@prot@l{#1{#2}}}
+  \def\MT@temp*##1{\@ifstar{\MT@prot@check@l@{##1*}}{\MT@prot@check@l@{##1}}}%
+}
+\def\MT@prot@check@l@#1#2{%
+  \the\MT@toks
+  \MT@prot@l{#1{#2}}%
+}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -8602,19 +8610,27 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@check@lX#1{%
   \def\MT@temp*##1{\@ifstar
     {\def\MT@temp{##1*}\MT@prot@check@lX@{#1*}}
-    {\def\MT@temp{##1}\MT@prot@check@lX@{#1}}}}
+    {\def\MT@temp{##1}\MT@prot@check@lX@{#1}}}%
+}
 \def\MT@prot@check@lX@#1#2{%
-  \MT@get@prot{#1{#2}}{left}\MT@temp{#2}}
+  \the\MT@toks
+  \MT@get@prot{#1{#2}}{left}\MT@temp{#2}%
+}
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %  \item
 %\begin{macro}{\MT@prot@check@F}
 %\changes{v3.1}{2022/03/06}{new macro: for text commands}
+%\changes{v3.1a}{2022/03/12}{fix: execute (and empty) \cs{MT@toks}
+%                            (reported by \contributor Artur A. Marczok <marczok\at t-online.de>)}
+%                            ^^A private mail, 2023/03/12
 % Here we deal with \textbf{F}ont switching commands (\ie, text commands,
 % which take an argument).
 % We (a) remember the text command, (b) save the full text,
 % and then (c) continue inspecting the contents of the argument.
+% We also have to execute (and empty) \cs{MT@toks}, because it might
+% already contain other commands.
 % Nested text commands still don't work.
 %    \begin{macrocode}
 \def\MT@prot@check@F{%
@@ -8624,8 +8640,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\MT@prot@l\MT@prot@l@tc
     \def\MT@temp*##1##2{%
       \let\MT@maybe@textcmd##1%
+      \the\MT@toks
+      \MT@toks{}%
       \MT@prot@toks{##1{##2}}%
-      \MT@prot@get@firstgroup@tc##2\MT@nil}%
+      \MT@prot@get@firstgroup@tc##2\MT@nil
+    }%
   \fi
 }
 %    \end{macrocode}
@@ -20326,7 +20345,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12962}
+% \CheckSum{12975}
 %
 % \Finale
 %
