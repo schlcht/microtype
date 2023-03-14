@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2023/03/13 v3.1a
+  [2023/03/23 v3.1b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3367,9 +3367,10 @@
 %  \contributor Christophe Dervieux <@\at @>, ^^A https://github.com/cderv
 %  \contributor Shen Zhou Hong    <@\at @>,  ^^A https://github.com/ShenZhouHong
 %  \contributor David Purton      <@\at @>,  ^^A https://github.com/dcpurton
-% `\contributor rallg             <@\at @>'  ^^A https://github.com/rallg
+% `\contributor rallg             <@\at @>', ^^A https://github.com/rallg
+%  \contributor Artur A. Marczok  <marczok\at t-online.de>
 % and
-%  \contributor Artur A. Marczok  <marczok\at t-online.de>.
+%  \contributor Uwe Siart         <uwe.siart\at tum.de>.
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3511,6 +3512,8 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.1a}{2023/03/13}
 %
 %\Version{3.1}{2023/03/06}
 %  \item New command \cs{DeclareMicrotypeFilePrefix} to change the prefix of the
@@ -8626,8 +8629,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@prot@check@F}
 %\changes{v3.1}{2022/03/06}{new macro: for text commands}
 %\changes{v3.1a}{2022/03/12}{fix: execute (and empty) \cs{MT@toks}
-%                            (reported by \contributor Artur A. Marczok <marczok\at t-online.de>)}
+%                            (reported by \contributor Artur A. Marczok <marczok\at t-online.de>
+%                             and \contributor Uwe Siart <uwe.siart\at tum.de>)}
 %                            ^^A private mail, 2023/03/12
+%                            ^^A private mail, 2023/03/13
 % Here we deal with \textbf{F}ont switching commands (\ie, text commands,
 % which take an argument).
 % We (a) remember the text command, (b) save the full text,
@@ -14403,8 +14408,20 @@ end
 %\subsubsection{Loading the definition file}\label{ssub:def-files}
 %
 % Load the engine-specific code (as strewn across this file).
+%\changes{v3.1b}{2023/03/14}{check if \texttt{.sty} and \texttt{.def} files match}
+% We also check whether versions are the same.
 %    \begin{macrocode}
-\input{microtype-\MT@engine tex.def}
+\input{\MT@MT-\MT@engine tex.def}
+\@expandtwoargs\@ifl@t@r{\@nameuse{ver@\MT@MT-\MT@engine tex.def}}{\@nameuse{ver@\MT@MT.sty}}
+  {\@expandtwoargs\@ifl@t@r{\@nameuse{ver@\MT@MT.sty}}{\@nameuse{ver@\MT@MT-\MT@engine tex.def}}
+     \@gobble
+     \@firstofone}
+  \@firstofone
+{\MT@warning@nl{Mismatching file versions:\MessageBreak
+   \MT@MT.sty provides:\MessageBreak`\@nameuse{ver@\MT@MT.sty}',\MessageBreak
+   whereas \MT@MT-\MT@engine tex.def says:\MessageBreak
+   `\@nameuse{ver@\MT@MT-\MT@engine tex.def}'\MessageBreak
+   Please fix your installation}}
 %    \end{macrocode}
 %
 % \subsubsection{Reading the configuration file}
@@ -20348,7 +20365,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{12975}
+% \CheckSum{13007}
 %
 % \Finale
 %
