@@ -57,8 +57,12 @@
   \item <ABC> def
 \microtypesetup{nopatch=item}
   \item --- some words (without patch)\newline --- a new line
-  \item \textbf{bold}
-  \item \sffamily\textbf{sans}
+\microtypesetup{patch=item}
+  \item \textbf{---bold}
+  \item \sffamily\textbf{---sans}\rmfamily
+  \item \MakeUppercase{---upper}
+  \item {\sffamily\MakeUppercase{---upper sans}}
+  \item \MakeUppercase{\sffamily---upper sans}
 \end{itemize}
 
 % https://tex.stackexchange.com/questions/647223
