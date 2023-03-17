@@ -3368,9 +3368,10 @@
 %  \contributor Shen Zhou Hong    <@\at @>,  ^^A https://github.com/ShenZhouHong
 %  \contributor David Purton      <@\at @>,  ^^A https://github.com/dcpurton
 % `\contributor rallg             <@\at @>', ^^A https://github.com/rallg
-%  \contributor Artur A. Marczok  <marczok\at t-online.de>
+%  \contributor Artur A. Marczok  <marczok\at t-online.de>,
+%  \contributor Uwe Siart         <uwe.siart\at tum.de>
 % and
-%  \contributor Uwe Siart         <uwe.siart\at tum.de>.
+% `\contributor scholnik          <@\at @>'. ^^A https://github.com/scholnik
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3907,14 +3908,14 @@
 %\DoNotIndex{\@backslashchar,\@car,\@cclvi,\@changed@cmd,\@classoptionslist,
 %  \@current@cmd,\@currext,\@currname,\@defaultunits,\@empty,\@@enc@update,
 %  \@eqnnum,\@expandtwoargs,\@firstofone,\@firstoftwo,\@footnotetext,\@gobble,
-%  \@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifpackagelater,\@ifpackageloaded,
-%  \@ifstar,\@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,\@minus,\@mpfootnotetext,
-%  \@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,\@onelevel@sanitize,\@onlypreamble,
-%  \@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,\@spaces,\@sptoken,
-%  \@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,\@typeset@protect,
-%  \@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,\check@icr,
-%  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
-%  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
+%  \@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifnextchar,\@ifpackagelater,
+%  \@ifpackageloaded,\@ifstar,\@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,
+%  \@minus,\@mpfootnotetext,\@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,\@onelevel@sanitize,
+%  \@onlypreamble,\@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,
+%  \@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
+%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
+%  \check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
+%  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
 %  \active,\bfseries,\documentclass,\dotfill,\em,\emph,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
@@ -8627,8 +8628,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %  \item
 %\begin{macro}{\MT@prot@check@F}
-%\changes{v3.1}{2022/03/06}{new macro: for text commands}
-%\changes{v3.1a}{2022/03/12}{fix: execute (and empty) \cs{MT@toks}
+%\changes{v3.1}{2023/03/06}{new macro: for text commands}
+%\changes{v3.1a}{2023/03/12}{fix: execute (and empty) \cs{MT@toks}
 %                            (reported by \contributor Artur A. Marczok <marczok\at t-online.de>
 %                             and \contributor Uwe Siart <uwe.siart\at tum.de>)}
 %                            ^^A private mail, 2023/03/12
@@ -8657,6 +8658,35 @@ time will almost certainly lead to undesired results. Have your choice!}%
 }
 %    \end{macrocode}
 %\end{macro}
+%  \item
+%\begin{macro}{\MT@prot@check@C}
+%\changes{v3.1b}{2023/03/16}{new macro: for text commands with an optional argument
+%                            (after \contributor scholnik <@\at @> reported
+%                             that \cmd\MakeUppercase\ and friends support one) \githubissue{29}}
+% Same, but for commands that allow an optional argument (\eg, the \textbf{C}ase
+% changing commands since \LaTeX\ 2022/11/01).
+%    \begin{macrocode}
+\def\MT@prot@check@C{%
+  \ifx\MT@prot@l\MT@prot@l@tc
+    \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
+  \else
+    \let\MT@prot@l\MT@prot@l@tc
+    \def\MT@temp*##1{%
+      \the\MT@toks
+      \MT@toks{}%
+      \@ifnextchar[%
+        {\MT@prot@check@C@##1}%
+        {\MT@prot@check@C@##1[]}%
+    }%
+  \fi
+}
+\def\MT@prot@check@C@#1[#2]#3{%
+  \def\MT@maybe@textcmd{#1[#2]}%
+  \MT@prot@toks{#1[#2]{#3}}%
+  \MT@prot@get@firstgroup@tc#3\MT@nil
+}
+%    \end{macrocode}
+%\end{macro}
 %\end{itemize}
 %\begin{macro}{\MT@prot@check@cmds}
 %\changes{v3.0e}{2022/06/09}{new macro: make list of commands extensible}
@@ -8680,7 +8710,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
   {T\fontsize}%
   {F\textrm}{F\textsf}{F\texttt}{F\textnormal}%
   {F\textbf}{F\textmd}{F\textit}{F\textsl}{F\textsc}{F\textup}{F\emph}%
-  {F\MakeUppercase}{F\MakeLowercase}%
 }
 %    \end{macrocode}
 % \LaTeX\ 2020/02/02 introduced some more text commands
@@ -8695,7 +8724,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
     {O\fontseriesforce}{O\fontshapeforce}}}
   \relax
 \IfFormatAtLeastTF{2022/11/01}
-  {\g@addto@macro\MT@prot@check@cmds{{F\MakeTitlecase}}}\relax
+  {\g@addto@macro\MT@prot@check@cmds{{C\MakeUppercase}{C\MakeLowercase}{C\MakeTitlecase}}}
+  {\g@addto@macro\MT@prot@check@cmds{{F\MakeUppercase}{F\MakeLowercase}}}
 %    \end{macrocode}
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
@@ -20365,7 +20395,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13007}
+% \CheckSum{13041}
 %
 % \Finale
 %
