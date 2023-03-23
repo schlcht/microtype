@@ -14442,16 +14442,16 @@ end
 % We also check whether versions are the same.
 %    \begin{macrocode}
 \input{\MT@MT-\MT@engine tex.def}
-\@expandtwoargs\@ifl@t@r{\@nameuse{ver@\MT@MT-\MT@engine tex.def}}{\@nameuse{ver@\MT@MT.sty}}
-  {\@expandtwoargs\@ifl@t@r{\@nameuse{ver@\MT@MT.sty}}{\@nameuse{ver@\MT@MT-\MT@engine tex.def}}
-     \@gobble
-     \@firstofone}
-  \@firstofone
-{\MT@warning@nl{Mismatching file versions:\MessageBreak
-   \MT@MT.sty provides:\MessageBreak`\@nameuse{ver@\MT@MT.sty}',\MessageBreak
-   whereas \MT@MT-\MT@engine tex.def says:\MessageBreak
-   `\@nameuse{ver@\MT@MT-\MT@engine tex.def}'\MessageBreak
-   Please fix your installation}}
+\def\MT@temp#1 #2 #3\@nil{#1 #2}
+\edef\@tempa{\expandafter\expandafter\expandafter\MT@temp
+  \csname ver@\MT@MT.sty\endcsname\@nil}
+\edef\@tempb{\expandafter\expandafter\expandafter\MT@temp
+  \csname ver@\MT@MT-\MT@engine tex.def\endcsname\@nil}
+\MT@ifstreq\@tempa\@tempb{}{%
+  \MT@warning@nl{Mismatching file versions:\MessageBreak
+     \MT@MT.sty provides:\MessageBreak`\@tempa',\MessageBreak
+     whereas \MT@MT-\MT@engine tex.def provides:\MessageBreak
+     `\@tempb'\MessageBreak Please fix your installation}}
 %    \end{macrocode}
 %
 % \subsubsection{Reading the configuration file}
@@ -14485,21 +14485,19 @@ end
 %\changes{v1.8}{2005/05/15}{new option: \opt{config} to load a different main
 %                           configuration file}
 %\begin{macro}{\MT@config@file}
-%\begin{macro}{\MT@get@config}
 % However, the \opt{config} option must of course be evaluated beforehand.
 % We also have to define a no-op for the regular option processing later.
 %    \begin{macrocode}
 %<*package>
 \define@key{MT}{config}[]{\relax}
-\def\MT@get@config#1config=#2,#3\@nil{%
+\def\MT@temp#1config=#2,#3\@nil{%
   \MT@ifempty{#2}%
     {\def\MT@config@file{\MT@MT.cfg}}%
     {\def\MT@config@file{#2.cfg}}%
 }
-\expandafter\expandafter\expandafter\MT@get@config
+\expandafter\expandafter\expandafter\MT@temp
   \csname opt@\@currname.\@currext\endcsname,config=,\@nil
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\changes{v1.4b}{2004/11/25}{fix: set catcodes before reading global configuration file
 %                (reported by \contributor Christoph Bier <christoph.bier\at web.de>)}
@@ -20395,7 +20393,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13041}
+% \CheckSum{13048}
 %
 % \Finale
 %

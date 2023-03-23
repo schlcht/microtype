@@ -52,4 +52,4 @@ make-doc-sty
 *.zip
 
 test.tex
-tests/*
+other/*
