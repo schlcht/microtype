@@ -3074,7 +3074,7 @@
 %\begin{verbatim}[deletekeywords={[1]{patch}}]
 %Package microtype Warning: Unable to apply patch `<eqnum>' on input line <29>.
 %\end{verbatim}
-%\changes{v3.1}{2021/09/15}{add hint about protrusion patch warnings}
+%\changes{v3.1}{2022/09/15}{add hint about protrusion patch warnings}
 % As described in chapter~\ref{sec:pedantic} above, \microtype\ tries to patch a number
 % of commands to enable or disable protrusion in certain situations. If you receive a warning
 % like the above, you should first make sure (as always) that the package is up to date.
@@ -4174,7 +4174,7 @@
 % The old command names had one more hunch (|\..MicroType..|).
 % Before finally letting them sink into oblivion, raise an error.
 %\changes{v1.8}{2005/04/28}{renamed commands from \cmd{\..MicroType..} to \cmd{\..Microtype..}}
-%\changes{v3.0}{2020/04/10}{old command names will raise an error}
+%\changes{v3.0}{2021/04/10}{old command names will raise an error}
 %    \begin{macrocode}
 \def\MT@old@cmd#1#2{%
   \newcommand*#1{\MT@error{%
@@ -5680,6 +5680,13 @@ microtype.if_str_eq = if_str_eq
 %</luafile>
 %    \end{macrocode}
 %\end{macro}
+% With this, we can now also check whether versions match (using the command from
+% \ref{ssub:def-files}).
+%    \begin{macrocode}
+%<lua->\MT@check@MT@version
+%<lua->  {\MT@lua{tex.write(microtype.module['date'] .. ' v' .. microtype.module['version'])}}
+%<lua->  {\MT@MT.lua}
+%    \end{macrocode}
 %\begin{macro}{\MT@xadd}
 %\changes{v1.8}{2005/04/17}{simplified}
 % Add item to a list.
@@ -11558,7 +11565,7 @@ end
 %\end{macro}
 %\begin{macro}{\MT@remove@tlig}
 % We remove the \cs{remove@tlig} command and only pass on the number.
-%\changes{v2.8c}{2020/03/04}{fix for text commands containing conditionals
+%\changes{v2.8c}{2021/03/04}{fix for text commands containing conditionals
 %                            (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>)}
 %                            ^^A private mail, 2021/03/02
 %    \begin{macrocode}
@@ -14438,21 +14445,29 @@ end
 %\subsubsection{Loading the definition file}\label{ssub:def-files}
 %
 % Load the engine-specific code (as strewn across this file).
-%\changes{v3.1b}{2023/03/14}{check if \texttt{.sty} and \texttt{.def} files match}
+%\begin{macro}{\MT@get@MT@version}
+%\begin{macro}{\MT@version}
+%\begin{macro}{\MT@check@MT@version}
+%\changes{v3.1b}{2023/03/14}{check if \texttt{.sty} and \texttt{.def} (and \texttt{.lua}) files match}
 % We also check whether versions are the same.
 %    \begin{macrocode}
-\input{\MT@MT-\MT@engine tex.def}
-\def\MT@temp#1 #2 #3\@nil{#1 #2}
-\edef\@tempa{\expandafter\expandafter\expandafter\MT@temp
+\def\MT@get@MT@version#1 #2 #3\@nil{#1 #2}
+\edef\MT@version{\expandafter\expandafter\expandafter\MT@get@MT@version
   \csname ver@\MT@MT.sty\endcsname\@nil}
-\edef\@tempb{\expandafter\expandafter\expandafter\MT@temp
+\def\MT@check@MT@version#1#2{%
+  \MT@ifstreq\MT@version{#1}{}{%
+    \MT@warning@nl{Mismatching file versions:\MessageBreak
+       \MT@MT.sty provides:\MessageBreak`\MT@version',\MessageBreak
+       whereas #2 provides:\MessageBreak`#1'\MessageBreak
+       Please fix your installation}}}
+\input{\MT@MT-\MT@engine tex.def}
+\edef\@tempa{\expandafter\expandafter\expandafter\MT@get@MT@version
   \csname ver@\MT@MT-\MT@engine tex.def\endcsname\@nil}
-\MT@ifstreq\@tempa\@tempb{}{%
-  \MT@warning@nl{Mismatching file versions:\MessageBreak
-     \MT@MT.sty provides:\MessageBreak`\@tempa',\MessageBreak
-     whereas \MT@MT-\MT@engine tex.def provides:\MessageBreak
-     `\@tempb'\MessageBreak Please fix your installation}}
+\MT@check@MT@version\@tempa{\MT@MT-\MT@engine tex.def}
 %    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\end{macro}
 %
 % \subsubsection{Reading the configuration file}
 %
@@ -20393,7 +20408,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13048}
+% \CheckSum{13053}
 %
 % \Finale
 %
