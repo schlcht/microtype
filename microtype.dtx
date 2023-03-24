@@ -3911,11 +3911,11 @@
 %  \@gobbletwo,\@ifclassloaded,\@ifl@t@r,\@ifl@aded,\@ifnextchar,\@ifpackagelater,
 %  \@ifpackageloaded,\@ifstar,\@ifundefined,\@item,\@let@token,\@m,\@M,\@makeother,
 %  \@minus,\@mpfootnotetext,\@nameuse,\@ne,\@newlistfalse,\@nil,\@nnil,\@onelevel@sanitize,
-%  \@onlypreamble,\@pkgextension,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,
-%  \@spaces,\@sptoken,\@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,
-%  \@typeset@protect,\@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,
-%  \check@icr,\color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,
-%  \maybe@ic,\maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
+%  \@onlypreamble,\@plus,\@ptionlist,\@removeelement,\@secondoftwo,\@spaces,\@sptoken,
+%  \@tempa,\@tempb,\@tempc,\@tempcnta,\@tempcntb,\@tempdima,\@typeset@protect,
+%  \@undefined,\@unprocessedoptions,\@unusedoptionlist,\@xobeysp,\check@icr,
+%  \color@begingroup,\color@endgroup,\g@addto@macro,\hmode@bgroup,\m@ne,\maybe@ic,
+%  \maybe@ic@,\nfss@text,\not@math@alphabet,\on@line,\p@,\set@display@protect,
 %  \strip@prefix,\strip@pt,\@text@composite,\tw@,\@verbatim,\z@,\z@skip,\zap@space,
 %  \active,\bfseries,\documentclass,\dotfill,\em,\emph,\fbox,\fboxrule,\fboxsep,\fmtversion,
 %  \fontseriesforce,\fontshapeforce,\footnotesize,\huge,\Huge,\itshape,\large,\Large,
@@ -6198,12 +6198,13 @@ microtype.do_font = do_font
 %\begin{macro}{\MT@with@babel@and@T}
 %\changes{v2.2}{2007/05/25}{also inspect class options}
 %\changes{v3.0a}{2021/11/23}{fix grouping}
+%\changes{v3.1b}{2023/03/24}{don't use \cmd\@pkgextension\ (was \cmd\@onlypreamble d in older \LaTeX\ versions)}
 % \LaTeX's \cmd\@ifpackagewith\ ignores the class options.
 %    \begin{macrocode}
 \def\MT@with@babel@and@T#1{%
-  \MT@ifdefined@n@T{opt@babel.\@pkgextension}{%
+  \MT@ifdefined@n@T{opt@babel.sty}{%
     \@expandtwoargs\MT@in@clist{#1}
-      {\csname opt@babel.\@pkgextension\endcsname,\@classoptionslist}%
+      {\csname opt@babel.sty\endcsname,\@classoptionslist}%
     \ifMT@inlist@\expandafter\@secondoftwo\else\expandafter\@firstofone\fi
   }\@gobble
 }
@@ -14448,7 +14449,7 @@ end
 %\begin{macro}{\MT@get@MT@version}
 %\begin{macro}{\MT@version}
 %\begin{macro}{\MT@check@MT@version}
-%\changes{v3.1b}{2023/03/14}{check if \texttt{.sty} and \texttt{.def} (and \texttt{.lua}) files match}
+%\changes{v3.1b}{2023/03/14}{check if \texttt{.sty} and \texttt{.def} (and \texttt{.lua}) file versions match}
 % We also check whether versions are the same.
 %    \begin{macrocode}
 \def\MT@get@MT@version#1 #2 #3\@nil{#1 #2}
@@ -20408,7 +20409,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13053}
+% \CheckSum{13051}
 %
 % \Finale
 %
