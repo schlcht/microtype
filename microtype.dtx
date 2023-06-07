@@ -3365,6 +3365,7 @@
 %  \contributor Ralf Steinle      <rasteinle\at web.de>,
 %  \contributor Denis Bitouz\'e   <@\at @>,  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
 %  \contributor Christophe Dervieux <@\at @>, ^^A https://github.com/cderv
+%  \contributor Scott Kostyshak   <@\at @>,  ^^A https://github.com/scottkosty
 %  \contributor Shen Zhou Hong    <@\at @>,  ^^A https://github.com/ShenZhouHong
 %  \contributor David Purton      <@\at @>,  ^^A https://github.com/dcpurton
 % `\contributor rallg             <@\at @>', ^^A https://github.com/rallg
@@ -3512,7 +3513,7 @@
 %
 %\begin{History}
 %
-%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
 %\VersionDate{3.1a}{2023/03/13}
 %
@@ -14459,7 +14460,7 @@ end
   \MT@ifstreq\MT@version{#1}{}{%
     \MT@warning@nl{Mismatching file versions:\MessageBreak
        \MT@MT.sty provides:\MessageBreak`\MT@version',\MessageBreak
-       whereas #2 provides:\MessageBreak`#1'\MessageBreak
+       whereas #2 provides:\MessageBreak`#1'.\MessageBreak
        Please fix your installation}}}
 \input{\MT@MT-\MT@engine tex.def}
 \edef\@tempa{\expandafter\expandafter\expandafter\MT@get@MT@version
