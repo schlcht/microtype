@@ -3370,9 +3370,10 @@
 %  \contributor David Purton      <@\at @>,  ^^A https://github.com/dcpurton
 % `\contributor rallg             <@\at @>', ^^A https://github.com/rallg
 %  \contributor Artur A. Marczok  <marczok\at t-online.de>,
-%  \contributor Uwe Siart         <uwe.siart\at tum.de>
+%  \contributor Uwe Siart         <uwe.siart\at tum.de>,
+% `\contributor scholnik          <@\at @>'  ^^A https://github.com/scholnik
 % and
-% `\contributor scholnik          <@\at @>'. ^^A https://github.com/scholnik
+%  \contributor Ulrich Schwarz    <@\at @>.  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -5466,10 +5467,20 @@ end
 %<package>^^Q  \begingroup\MT@exp@two@c\endgroup\ifx\csname #1\endcsname\relax
 %<package>^^Q    \expandafter\@secondoftwo\else\expandafter\@firstoftwo\fi
 }
-%<*package>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@if@expanding@F}
+%\changes{v3.1b}{2023/06/07}{new macro: check whether inside expanding context}
+%\begin{macro}{\MT@if@expanding@F@}
+% The following voodoo is based on a trick by \contributor Ulrich Schwarz <@\at @>.\footnote{Cf. \url{https://tex.stackexchange.com/a/29188/7674}}
+%    \begin{macrocode}
+\def\MT@if@expanding@F{\let\MT@if@expanding@F@\MT@if@expanding@F@\@firstofone}
+\def\MT@if@expanding@F@#1#2#3{\relax\relax}
+%<*package>
+%    \end{macrocode}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@detokenize@n}
@@ -11905,6 +11916,16 @@ end
 %    \begin{macrocode}
   \MT@with@package@T{trace}{\g@addto@macro\pickup@font{\conditionally@traceoff}}%
   \g@addto@macro\pickup@font{%
+%    \end{macrocode}
+%\changes{v3.1b}{2023/06/07}{guard against expanding context}
+% If we're inside an \cmd\edef\ (or \cmd\write~\dots), we don't want to
+% execute our code. This will still leave `|\begingroup \let \relax \relax \endgroup|'
+% in the input stream, which is not nothing but should be harmless enough.
+% \cmd\pickup@font\ should never be executed in these contexts anyway, but obviously
+% this may, under rare circumstances, still happen (\eg, with \pkg{hyperref}).\footnote{
+%    Cf. \url{https://tex.stackexchange.com/q/687763/7674}}
+%    \begin{macrocode}
+%<package>    \MT@if@expanding@F{%
       \escapechar\m@ne
 %<*package>
 %<debug>      \global\MT@inannottrue
@@ -11926,7 +11947,7 @@ end
           \MT@register@subst@font
         \fi
       \fi
-      \MT@setupfont
+      \MT@setupfont}%
 %</package>
 %<letterspace>      \MT@tracking
     \endgroup
@@ -20410,7 +20431,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13051}
+% \CheckSum{13062}
 %
 % \Finale
 %
