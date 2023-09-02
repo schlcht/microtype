@@ -1,0 +1,16 @@
+% https://tex.stackexchange.com/questions/687763
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{microtype}
+\usepackage{listings}
+\renewcommand*\thelstnumber{\oldstylenums{\arabic{lstnumber}}} % nicer numbering
+\usepackage{hyperref}
+\begin{document}
+
+We are at page \pageref{sec:here}.\label{sec:here}
+\begin{lstlisting}
+import numpy as np
+\end{lstlisting}
+
+\end{document}
