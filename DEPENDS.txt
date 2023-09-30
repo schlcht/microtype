@@ -1,1 +1,1 @@
-hard etoolbox
+etoolbox   # with etex
