@@ -61,6 +61,7 @@ DTX     = $(NAME).dtx
 UTFDTX  = $(NAMEU).dtx
 ALLDTX  = $(DTX) $(UTFDTX)
 README  = README.md
+DEPENDS = DEPENDS.txt
 
 # Files grouped by generation mode
 COMPILED = $(DOC) $(CODEDOC)
@@ -72,7 +73,7 @@ UNPACKED = microtype.sty letterspace.sty microtype.lua microtype.cfg \
 	   mt-CharisSIL.cfg mt-LatinModernRoman.cfg mt-NewComputerModern.cfg mt-Palatino.cfg \
 	   mt-TU-basic.cfg mt-TU-empty.cfg \
 	   microtype-show.sty test-microtype.tex
-SOURCE    = $(ALLDTX) $(INS) $(README)
+SOURCE    = $(ALLDTX) $(INS) $(README) $(DEPENDS)
 GENERATED = $(UNPACKED) $(COMPILED)
 
 CTAN_FILES = $(SOURCE) $(COMPILED)
@@ -80,7 +81,7 @@ CTAN_FILES = $(SOURCE) $(COMPILED)
 # Files grouped by installation location
 UNPACKED_DOC = test-microtype.tex
 RUNFILES = $(filter-out $(UNPACKED_DOC), $(UNPACKED))
-DOCFILES = $(COMPILED) $(UNPACKED_DOC) $(README)
+DOCFILES = $(COMPILED) $(UNPACKED_DOC) $(README) $(DEPENDS)
 SRCFILES = $(ALLDTX) $(INS)
 
 ALL_FILES = $(RUNFILES) $(DOCFILES) $(SRCFILES)
@@ -240,7 +241,7 @@ docstrip.cfg:
 $(CTAN_ZIP): manifest doc $(CTAN_FILES) $(TDS_ZIP)
 	@echo "Making $@ for CTAN upload."
 	@$(RM) -- $@
-	@mkdir ./$(NAME)
+	@mkdir -p ./$(NAME)
 	@cp $(CTAN_FILES) ./$(NAME)
 	@zip -9 -r $@ ./$(NAME) $(TDS_ZIP) $(REDIRECT)
 	@$(RM) -r ./$(NAME)
