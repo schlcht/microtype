@@ -3371,9 +3371,11 @@
 % `\contributor rallg             <@\at @>', ^^A https://github.com/rallg
 %  \contributor Artur A. Marczok  <marczok\at t-online.de>,
 %  \contributor Uwe Siart         <uwe.siart\at tum.de>,
-% `\contributor scholnik          <@\at @>'  ^^A https://github.com/scholnik
+% `\contributor scholnik          <@\at @>', ^^A https://github.com/scholnik
+%  \contributor Ulrich Schwarz    <@\at @>,  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
+%  \contributor Bruno Victal      <mirai\at makinata.eu>
 % and
-%  \contributor Ulrich Schwarz    <@\at @>.  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
+%  \contributor Linas Stonys      <lstonys\at vtex.lt>.
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -7254,6 +7256,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Leo <sdl.web\at gmail.com>)}
 %                                             ^^A MID: <m0vdk4g8t2.fsf@cam.ac.uk>
 %\changes{v2.8}{2020/05/25}{try to fix zero \fontdim6}
+%\changes{v3.1b}{2023/12/04}{compatibility with \luatex\ in <DVI> mode
+%                            (reported by \contributor Linas Stonys <lstonys\at vtex.lt>)}
+%                                          ^^A private mail, 2023/11/30
 %\begin{macro}{\MT@dimen@six}
 % If \fontdim6 is zero, character protrusion, spacing, kerning and tracking
 % won't work, and we could skip the settings (for example, the \pkg{dsfont}
@@ -7261,16 +7266,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % and \pkg{newpx}/\pkg{newtx} packages have been fixed in the meantime).
 % However, we can fix it ourselves (and since \pdftex\ 1.40.23, this also works
 % for \cmd\letterspacefont). ^^A https://mailman.ntg.nl/pipermail/ntg-pdftex/2021-June/004335.html
-% \xetex\ doesn't provide an equivalent to \cmd\pdffontsize, so we use the
-% nominal size instead.
+% \xetex\ (and newer \luatex\ in <DVI> mode) doesn't provide an equivalent to
+% \cmd\pdffontsize, so we use the nominal size instead.
 %    \begin{macrocode}
 %<*pdf-|lua-|xe->
 \def\MT@fix@fontdimen@six{%
   \ifnum\fontdimen6\MT@font=\z@
     \fontdimen6\MT@font=%
 %<pdf->      \pdffontsize\MT@font
-%<lua->      \MT@requires@luatex4{\pdffeedback fontsize}{\pdffontsize}\MT@font
-%<xe->      \MT@size pt
+%<lua->      \MT@requires@luatex4{\ifnum\outputmode=\@ne \pdffeedback fontsize\else
+%<lua-|xe->               \MT@size pt%
+%<lua->                          \expandafter\@gobble\fi}{\pdffontsize}\MT@font
     \MT@info{Fixing zero \@backslashchar fontdimen 6 for font `\MT@@font'\MessageBreak
              (new value: \the\fontdimen6\MT@font)}%
 %<pdf->    \MT@requires@pdftex8\relax{\MT@glet@nc{\MT@@font-fake6}\@empty}%
@@ -20431,7 +20437,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13062}
+% \CheckSum{13069}
 %
 % \Finale
 %
