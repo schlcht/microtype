@@ -3375,6 +3375,7 @@
 % `\contributor rallg             <@\at @>', ^^A https://github.com/rallg
 %  \contributor Artur A. Marczok  <marczok\at t-online.de>,
 %  \contributor Uwe Siart         <uwe.siart\at tum.de>,
+% `\contributor simon-codes-something <@\at @>', ^^A https://github.com/simon-codes-something
 % `\contributor scholnik          <@\at @>', ^^A https://github.com/scholnik
 %  \contributor Ulrich Schwarz    <@\at @>,  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
 %  \contributor Bruno Victal      <mirai\at makinata.eu>
@@ -8272,11 +8273,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@toks{}%
   \MT@prot@toks{}%
   \let\MT@prot@l\MT@prot@l@
+  \let\MT@prot@get@first@group\MT@prot@get@first@group@
   \let\MT@maybe@textcmd\@firstofone
   \MT@prot@get@firstgroup
 }
 %    \end{macrocode}
 %\end{macro}
+%\begin{macro}{\MT@prot@l}
 %\begin{macro}{\MT@prot@l@}
 %\changes{v3.0b}{2021/12/05}{make \cmd\long\ again
 %                           (reported by \contributor Akira Yokosawa <@\at @>) \githubissue{3}}
@@ -8288,6 +8291,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   #1%
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@toks}
 %\begin{macro}{\MT@prot@l@tc}
@@ -8664,6 +8668,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                             and \contributor Uwe Siart <uwe.siart\at tum.de>)}
 %                            ^^A private mail, 2023/03/12
 %                            ^^A private mail, 2023/03/13
+%\changes{v3.1b}{2024/03/29}{fix: failed when group began with another command
+%                            \githubissue{31}}
 % Here we deal with \textbf{F}ont switching commands (\ie, text commands,
 % which take an argument).
 % We (a) remember the text command, (b) save the full text,
@@ -8677,6 +8683,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
   \else
     \let\MT@prot@l\MT@prot@l@tc
+    \let\MT@prot@get@first@group\MT@prot@get@first@group@tc
     \def\MT@temp*##1##2{%
       \let\MT@maybe@textcmd##1%
       \the\MT@toks
@@ -8701,6 +8708,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
   \else
     \let\MT@prot@l\MT@prot@l@tc
+    \let\MT@prot@get@first@group\MT@prot@get@first@group@tc
     \def\MT@temp*##1{%
       \the\MT@toks
       \MT@toks{}%
@@ -8838,10 +8846,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@first@group}
+%\begin{macro}{\MT@prot@get@first@group@}
 % If next char is |{|, start a group and try again, else continue until
 % we find a beginning char.
 %    \begin{macrocode}
-\def\MT@prot@get@first@group{%
+\def\MT@prot@get@first@group@{%
   \MT@prot@ifcat\bgroup{%
     \def\MT@temp*{\MT@prot@addgroup}%
   }{%
@@ -8850,6 +8859,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@temp*%
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@get@first@group@tc}
 % The variant for text commands (in case they start with another group).
@@ -20441,7 +20451,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13069}
+% \CheckSum{13078}
 %
 % \Finale
 %

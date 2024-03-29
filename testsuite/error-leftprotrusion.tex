@@ -60,9 +60,10 @@
 \microtypesetup{patch=item}
   \item \textbf{---bold}
   \item \sffamily\textbf{---sans}\rmfamily
-  \item \MakeUppercase{---upper}
+  \item \MakeUppercase{---upper} % #29
   \item {\sffamily\MakeUppercase{---upper sans}}
-  \item \MakeUppercase{\sffamily---upper sans}
+  \item \MakeUppercase[lang=en]{\sffamily---upper sans}
+  \item \textbf{\Huge{---Throws an error in 3.1a}} % #31
 \end{itemize}
 
 % https://tex.stackexchange.com/questions/647223
