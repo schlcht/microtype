@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2024/03/29 v3.1b
+  [2024/03/29 v3.1c
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3523,6 +3523,8 @@
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
+%\VersionDate{3.1b}{2024/03/29}
+%
 %\VersionDate{3.1a}{2023/03/13}
 %
 %\Version{3.1}{2023/03/06}
@@ -5484,9 +5486,9 @@ end
 %\begin{macro}{\MT@if@expanding@F@}
 % The following voodoo is based on a trick by \contributor Ulrich Schwarz <@\at @>.\footnote{Cf. \url{https://tex.stackexchange.com/a/29188/7674}}
 %    \begin{macrocode}
+%<*package>
 \def\MT@if@expanding@F{\let\MT@if@expanding@F@\MT@if@expanding@F@\@firstofone}
 \def\MT@if@expanding@F@#1#2#3{\relax\relax}
-%<*package>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
