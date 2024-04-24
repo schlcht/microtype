@@ -12213,7 +12213,7 @@ end
 % Inside the preamble, this command shouldn't actually do anything but remember itself for
 % later.
 %    \begin{macrocode}
-\def\microtypecontext{\MT@begin@catcodes\MT@microtypecontext}
+\DeclareRobustCommand\microtypecontext{\MT@begin@catcodes\MT@microtypecontext}
 \def\MT@microtypecontext#1{\MT@end@catcodes\MT@addto@setup{\microtypecontext{#1}}}
 \MT@addto@setup{%
   \DeclareRobustCommand\microtypecontext{%
@@ -14683,6 +14683,7 @@ end
 %\changes{v1.7}{2005/02/17}{fix: warning also when setting to \texttt{(no)compatibility}}
 %\changes{v1.9a}{2005/11/21}{inside the preamble, accepts all package options}
 %\changes{v2.3d}{2009/03/05}{select font after setup}
+%\changes{v3.2}{2024/04/24}{make robust}
 %\begin{macro}{\MT@define@optionX}
 % Inside the preamble, \cs{microtypesetup} accepts the same options as the
 % package (unless \opt{defersetup}|=false|).
@@ -14690,8 +14691,8 @@ end
 % |protrusion|, |expansion|, |activate|, |tracking|, |spacing| and |kerning|
 % (but specifying font sets is not allowed), and |patch| and |nopatch|.
 %    \begin{macrocode}
-\def\microtypesetup{\setkeys{MT}}
-\MT@addto@setup{\def\microtypesetup#1{\setkeys{MTX}{#1}\selectfont}}
+\DeclareRobustCommand\microtypesetup{\setkeys{MT}}
+\MT@addto@setup{\DeclareRobustCommand\microtypesetup[1]{\setkeys{MTX}{#1}\selectfont}}
 %</package>
 %<*pdf-|lua-|xe->
 \def\MT@define@optionX#1#2{%
