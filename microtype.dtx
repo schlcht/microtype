@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2024/03/29 v3.1c
+  [2024/03/29 v3.2
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -2029,15 +2029,19 @@
 %       This key expects a comma-separated list of characters for which
 %       ligatures should be disabled; only the character that begins a ligature
 %       must be specified.
-%       If the key is given without a value, \emph{all} ligatures of the font
-%       will be disabled. With \pdftex, this is not recommended, however,
+%       If the key is given without a value (or with the value `|all|'),
+%       \emph{all} ligatures of the font will be disabled.
+%       (With \pdftex, this is not recommended, however,
 %       since it entails that kerning will be switched off, too. With \luatex,
-%       there is no such limitation.
+%       there is no such limitation.)
+%       Given the value `|none|', none of the ligatures will be disabled,
+%       or, put positively, all of the font's ligatures will stay intact.
 %       The default settings disable ligatures for the character `|f|' only,
-%       \ie, `ff', `fi', ffi', etc.\footnote{
-%         With \pdftex\ versions older than 1.40.4, \emph{all} ligatures, and
-%         hence all kerning, will be disabled. It is therefore recommended to
-%         use at least version 1.40.4.}
+%       \ie, `ff', `fi', ffi', etc.
+%     ^^A\footnote{
+%     ^^A    With \pdftex\ versions older than 1.40.4, \emph{all} ligatures, and
+%     ^^A    hence all kerning, will be disabled. It is therefore recommended to
+%     ^^A    use at least version 1.40.4.}
 %       In exceptional situations, you can manually break up a ligature by
 %       inserting `|{\kern0pt}|' resp. \pkg{babel}'s \verb="|=
 %       shortcut, or protect it by enclosing it in \cs{lslig} (see
@@ -3194,7 +3198,7 @@
 %
 % This package would be pointless if
 %  \contributor H\`an \thanhthe{} Th\`anh <thanh\at pdftex.org>
-% hadn't created the \pdftex\ programme in the first place, which introduced
+% hadn't created the \pdftex\ program in the first place, which introduced
 % the micro-typographic extensions and made them available to the \TeX\ world.
 % Furthermore, I thank him for helping me to improve this package, and not
 % least for promoting it in \cite{ThanhPracTeX}, \cite{ThanhEuroTeX07} and ^^A comma, to avoid the Three Ands Falls
@@ -3378,9 +3382,10 @@
 % `\contributor simon-codes-something <@\at @>', ^^A https://github.com/simon-codes-something
 % `\contributor scholnik          <@\at @>', ^^A https://github.com/scholnik
 %  \contributor Ulrich Schwarz    <@\at @>,  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
-%  \contributor Bruno Victal      <mirai\at makinata.eu>
+%  \contributor Bruno Victal      <mirai\at makinata.eu>,
+%  \contributor Linas Stonys      <lstonys\at vtex.lt>
 % and
-%  \contributor Linas Stonys      <lstonys\at vtex.lt>.
+% `\contributor user202729        <@\at @>'. ^^A https://tex.stackexchange.com/users/250119/user202729
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3522,7 +3527,9 @@
 %
 %\begin{History}
 %
-%\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%\Version{\expandafter\@gobble\fileversion}{\filedate}
+%  \item New values `|none|' and `|all|' for the `|no ligatures|' option of
+%        \cs{SetTracking} \refsection{\ref{sub:tracking}}
 %
 %\VersionDate{3.1b}{2024/03/29}
 %
@@ -9962,6 +9969,12 @@ microtype.add_ls = add_ls
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@tr@noligatures}
+% Since an empty value is somewhat ambiguous, we also allow the values
+% `|all|' and `|none|'.
+%\changes{v3.2}{2024/04/03}{new values `\texttt{none}' and `\texttt{all}'
+%                           for the `\texttt{no ligatures}' key in
+%                           \cs{SetTracking} (after a report by \contributor user202729 <@\at @>)}
+%                           ^^A https://tex.stackexchange.com/questions/709456/ligatures-are-not-preserved-by-textls-letter-spacing/
 % \pdftex\ 1.40.0--1.40.3 disabled all ligatures in letterspaced fonts.
 %    \begin{macrocode}
 %<*pdf-|lua->
@@ -9970,16 +9983,24 @@ microtype.add_ls = add_ls
     \ifx\MT@tr@ligatures\@empty
       \MT@noligatures@\MT@lsfont\@undefined
     \else
-      \MT@noligatures@\MT@lsfont\MT@tr@ligatures
+      \MT@ifstreq\MT@tr@ligatures{all}{%
+        \MT@noligatures@\MT@lsfont\@undefined
+      }{%
+        \MT@ifstreq\MT@tr@ligatures{none}\relax{%
+          \MT@noligatures@\MT@lsfont\MT@tr@ligatures
+        }%
+      }%
     \fi
   }
 %<*pdf->
 }{
   \def\MT@tr@noligatures{%
-    \MT@warning@nl{%
-      Disabling selected ligatures is only possible since\MessageBreak
-      pdftex 1.40.4. Disabling all ligatures instead}%
-    \MT@glet\MT@tr@noligatures\relax
+    \MT@ifstreq\MT@tr@ligatures{all}\relax{%
+      \MT@warning@nl{%
+        Disabling (selected) ligatures is possible since\MessageBreak
+        pdftex 1.40.4. Disabling all ligatures instead}%
+      \MT@glet\MT@tr@noligatures\relax
+    }%
   }
 }
 %</pdf->
@@ -20454,7 +20475,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13078}
+% \CheckSum{13089}
 %
 % \Finale
 %
