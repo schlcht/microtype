@@ -8357,7 +8357,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % that's how the penalties bug was discovered~\dots).
 %\changes{v3.0d}{2022/03/03}{no longer reset counters
 %                           (reported by \contributor Brian Dunn <@\at @>) \githubissue{14}}
-% (We no longer reset counters etc., since we don't typeset groups anymore.)
+% (We no longer reset counters etc., since we don't typeset whole arguments anymore.)
+% Also, we begin a group to make it color-safe.
+%\changes{v3.2}{2024/04/24}{make color-safe}
 %\begin{macro}{\MT@prot@hook}
 % Furthermore, we have a hook for compatibility fixes (currently used for \pkg{csquotes} only),
 %\begin{macro}{\MT@csq@eqgroup}
@@ -8396,7 +8398,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \interlinepenalty\z@
       \@newlistfalse
       \MT@prot@hook
-      \MT@noindent #1\relax\MT@csq@eqgroup}%
+      \begingroup
+        \MT@noindent #1\relax\MT@csq@eqgroup
+      \endgroup}%
     \vbadness=\@M
     \splittopskip=\z@
     \vfuzz=\maxdimen
@@ -8974,11 +8978,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Add token to our toks and test whether we've seen enough (ligature completed).
 % For luatex, we have to jump through another hoop (\ie, box), because, contrary
 % to the manual, \cmd\lastnodetype\ isn't really compatible. ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-August/006536.html et seqq.
+%\changes{v3.2}{2024/04/24}{make color-safe}
 %    \begin{macrocode}
 %<*pdf-|lua-|xe->
 \def\MT@prot@addtoken@next#1{%
   \MT@toks\expandafter{\the\MT@toks#1}%
   \setbox\MT@tempbox\hbox{%
+    \begingroup
 %    \end{macrocode}
 % We disable italic correction, which would prevent us from
 % seeing the ligature (with text commands).
@@ -8986,6 +8992,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \let\maybe@ic\relax
     \MT@exp@one@n\MT@maybe@textcmd{\the\MT@toks}%
 %<pdf-|xe->    \relax
+    \endgroup
 %<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
     \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
       \MT@prot@get@nexttoken
