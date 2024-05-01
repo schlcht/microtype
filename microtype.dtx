@@ -9741,11 +9741,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<*luafile>
 local function add_ls(k)
   local f = tex.fontname(font.current())
+  f = f:gsub('^"', ""):gsub('"$', "") -- remove surrounding quotation marks
   local spec,size = match(f,'^(.+)( at .+)$')
   if not spec then spec = f end
   local a,b,c = match(spec,'^([^:]+):?([^:]*):?(.*)$')
   local ls = "kernfactor=" .. k/1000 .. ';'
   microtype.sprint(a..':')
+  if (a == "name") then
+    b = b:gsub("%s+", "") -- remove space from font name
+  end
   if (a == "name" or a == "file") then
     microtype.sprint(b..':'..ls..c)
   else
