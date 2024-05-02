@@ -3383,9 +3383,10 @@
 % `\contributor scholnik          <@\at @>', ^^A https://github.com/scholnik
 %  \contributor Ulrich Schwarz    <@\at @>,  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
 %  \contributor Bruno Victal      <mirai\at makinata.eu>,
-%  \contributor Linas Stonys      <lstonys\at vtex.lt>
+%  \contributor Linas Stonys      <lstonys\at vtex.lt>,
+% `\contributor user202729        <@\at @>'  ^^A https://tex.stackexchange.com/users/250119/user202729
 % and
-% `\contributor user202729        <@\at @>'. ^^A https://tex.stackexchange.com/users/250119/user202729
+%  \contributor Oliver Beery      <@\at @>.  ^^A https://github.com/beeryoliver
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -12656,6 +12657,13 @@ end
     \MT@get@size@
   \fi
 %    \end{macrocode}
+% Font specifications also accept dimens. (\cmd\ifdefdimen\ is provided
+% by \pkg{etoolbox}.)
+%\changes{v3.2}{2024/05/03}{check for dimen (reported by \contributor Oliver Beery <@\at @>)
+%                           \githubissue{34}}
+%    \begin{macrocode}
+^^X  \expandafter\ifdefdimen\MT@val{\edef\MT@val{\the\MT@val}}\relax
+%    \end{macrocode}
 % Test whether we finally got a number or dimension so that we can strip the
 % `|pt|' (\cmd\@defaultunits\ and \cmd\strip@pt\ are kernel macros).
 %\changes{v1.2}{2004/09/27}{additional magic to catch some errors}
@@ -20510,7 +20518,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13116}
+% \CheckSum{13124}
 %
 % \Finale
 %
