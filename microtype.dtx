@@ -3384,9 +3384,10 @@
 %  \contributor Ulrich Schwarz    <@\at @>,  ^^A https://tex.stackexchange.com/users/1860/ulrich-schwarz
 %  \contributor Bruno Victal      <mirai\at makinata.eu>,
 %  \contributor Linas Stonys      <lstonys\at vtex.lt>,
-% `\contributor user202729        <@\at @>'  ^^A https://tex.stackexchange.com/users/250119/user202729
+% `\contributor user202729        <@\at @>', ^^A https://tex.stackexchange.com/users/250119/user202729
+%  \contributor Oliver Beery      <@\at @>   ^^A https://github.com/beeryoliver
 % and
-%  \contributor Oliver Beery      <@\at @>.  ^^A https://github.com/beeryoliver
+%  \contributor Bernhard Fisseni  <@\at @>.  ^^A https://github.com/teoric
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3474,7 +3475,7 @@
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson,
 %   \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%   13~February 2024.
+%   27~April 2024.
 %   (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
@@ -9769,6 +9770,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ls@fontspec@font}
+% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}.
 %\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
 %\changes{v2.7}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
 %                           (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
@@ -9776,7 +9778,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/03/19}{use \texttt{lua} to parse font spec\slash fix for font spec containing spaces
 %                           (reported by \contributor Aman Mehra <reportaman\at gmail.com>)}
 %                            ^^A https://tex.stackexchange.com/questions/567698/luatex-microtype-fontspec-luaotfload-buggy-interaction-canceling-each-others-s
-% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}.
+%\changes{v3.2}{2024/05/03}{fix for spaces in font names, made necessary because \pkg{fontspec} v2.9b no longer strips them
+%                           (reported by \contributor Bernhard Fisseni <@\at @>)
+%                           \githubissue{35}} ^^A cf. https://github.com/latex3/fontspec/commit/b3f91feab5519d1a04db4b63adfc397e3e81a742
 %    \begin{macrocode}
 %<*lua-|letterspace>
 \def\MT@ls@fontspec@font{%
@@ -9788,13 +9792,14 @@ local function add_ls(k)
   local f = tex.fontname(font.current())
   local spec,size = match(f,'^(.+)( at .+)$')
   if not spec then spec = f end
-  local a,b,c = match(spec,'^([^:]+):?([^:]*):?(.*)$')
+  local q = match(spec,'^"') or ""
+  local a,b,c = match(spec,'^'..q..'([^:]+):?([^:]*):?(.*)'..q..'$')
   local ls = "kernfactor=" .. k/1000 .. ';'
-  microtype.sprint(a..':')
+  microtype.sprint(q..a..':')
   if (a == "name" or a == "file") then
-    microtype.sprint(b..':'..ls..c)
+    microtype.sprint(b..':'..ls..c..q)
   else
-    microtype.sprint(ls..b)
+    microtype.sprint(ls..b..q)
   end
   if size then
     microtype.sprint(size)
@@ -12660,7 +12665,7 @@ end
 % Font specifications also accept dimens. (\cmd\ifdefdimen\ is provided
 % by \pkg{etoolbox}.)
 %\changes{v3.2}{2024/05/03}{check for dimen (reported by \contributor Oliver Beery <@\at @>)
-%                           \githubissue{34}}
+%                           \githubissue{36}}
 %    \begin{macrocode}
 ^^X  \expandafter\ifdefdimen\MT@val{\edef\MT@val{\the\MT@val}}\relax
 %    \end{macrocode}
