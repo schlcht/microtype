@@ -3969,7 +3969,7 @@
 %  \enquote,\foreignquote,\foreigntextquote,\foreigntextcquote,
 %  \hyphenquote,\hyphentextquote,\hyphentextcquote,\textquote,\textcquote}   ^^A csquotes
 %\DoNotIndex{\meta}                                                          ^^A doc
-%\DoNotIndex{\apptocmd,\gappto,\ifdefmacro,\ifdefparam,\patchcmd}            ^^A etoolbox
+%\DoNotIndex{\apptocmd,\gappto,\ifdefdimen,\ifdefmacro,\ifdefparam,\patchcmd}^^A etoolbox
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
 %  \fontfigurealignment,\fontbasefamily,\figureversion,\textfigures,
 %  \liningfigures,\tabularfigures,\proportionalfigures}                      ^^A fontaxes
@@ -12667,7 +12667,7 @@ end
 %\changes{v3.2}{2024/05/03}{check for dimen (reported by \contributor Oliver Beery <@\at @>)
 %                           \githubissue{36}}
 %    \begin{macrocode}
-^^X  \expandafter\ifdefdimen\MT@val{\edef\MT@val{\the\MT@val}}\relax
+^^X  \MT@exp@one@n\ifdefdimen\MT@val{\edef\MT@val{\the\MT@val}}\relax
 %    \end{macrocode}
 % Test whether we finally got a number or dimension so that we can strip the
 % `|pt|' (\cmd\@defaultunits\ and \cmd\strip@pt\ are kernel macros).
