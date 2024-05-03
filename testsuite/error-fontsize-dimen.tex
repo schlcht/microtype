@@ -1,0 +1,83 @@
+% https://github.com/schlcht/microtype/issues/36
+\documentclass{article}
+
+\ExplSyntaxOn
+\makeatletter
+
+% Example using \@setfontsize with ExplSyntax
+
+\dim_new:N  \l__module_normalsize_size_dim
+\skip_new:N \l__module_normalsize_baselineskip_skip
+
+\dim_set:Nn  \l__module_normalsize_size_dim          { 10pt }
+\skip_set:Nn \l__module_normalsize_baselineskip_skip { 12pt }
+
+\DeclareDocumentCommand \normalsize { }
+  {
+    \@setfontsize \normalsize \l__module_normalsize_size_dim
+      \l__module_normalsize_baselineskip_skip
+  }
+
+% Example using \fontsize + \selectfont with ExplSyntax
+
+\dim_new:N  \l__module_large_size_dim
+\skip_new:N \l__module_large_baselineskip_skip
+
+\dim_set:Nn  \l__module_large_size_dim          { 12pt }
+\skip_set:Nn \l__module_large_baselineskip_skip { 14pt }
+
+\DeclareDocumentCommand \large { }
+  {
+    \fontsize \l__module_large_size_dim \l__module_large_baselineskip_skip
+    \selectfont
+  }
+
+\makeatother
+\ExplSyntaxOff
+
+
+\makeatletter
+
+% Example using \@setfontsize without ExplSyntax
+
+\newdimen\small@size
+\newskip\small@baselineskip
+\small@size=9.5pt
+\small@baselineskip=10.5pt\relax
+\DeclareDocumentCommand\small{}{%
+  \@setfontsize\small\small@size\small@baselineskip%
+}
+
+% Example using \fontsize + \selectfont without ExplSyntax
+
+\newdimen\footnotesize@size
+\newskip\footnotesize@baselineskip
+\footnotesize@size=8.5pt
+\footnotesize@baselineskip=9.5pt\relax
+\DeclareDocumentCommand\footnotesize{}{%
+  \fontsize\footnotesize@size\footnotesize@baselineskip\selectfont%
+}
+
+\makeatother
+
+\usepackage{fix-cm}
+\usepackage{microtype}
+\usepackage{lipsum} % placeholder text
+
+\begin{document}
+
+\normalsize
+\lipsum[1]
+
+\large
+\lipsum[1]
+
+\small
+\lipsum[1]
+
+\footnotesize
+\lipsum[1]
+
+\end{document}
+
+
