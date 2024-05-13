@@ -5067,7 +5067,6 @@
     \MessageBreak I will quit now}
   \MT@clear@options
 \endinput\fi
-%</package|letterspace>
 %    \end{macrocode}
 % Still there? Then we can begin:
 % We need the \pkg{keyval} package, including the `new' \cmd\KV@@sp@def\
@@ -5076,7 +5075,6 @@
 % For the \opt{patch} option, we use \pkg{etoolbox}, which requires \etex.
 %\changes{v3.0}{2021/05/17}{require package \pkg{etoolbox} (for \opt{patch} option)}
 %    \begin{macrocode}
-%<*package|letterspace>
 \RequirePackage{keyval}[1997/11/10]
 %<*package>
 ^^X\RequirePackage{etoolbox}
@@ -5935,27 +5933,38 @@ microtype.if_str_eq = if_str_eq
 %    \end{macrocode}
 %\end{macro}
 %\changes{v2.6a}{2016/05/03}{fixes for \letterspace\ package with \luatex}
-%\begin{macro}{\MT@if@luaotf@font}
+%\begin{macro}{\MT@if@opentype@font}
 %\changes{v2.8}{2019/11/27}{use \texttt{lua} function}
-% For fonts loaded by \pkg{luaotfload} we query the font's table.
+%\changes{v3.2}{2024/05/13}{version for \xetex}
+% For fonts loaded by \pkg{luaotfload} we query the font's table,
+% for \xetex, the font type. (`opentype' here stands for non-legacy.)
 %    \begin{macrocode}
-%<letterspace>\MT@pdf@or@lua{\let\MT@if@luaotf@font\@secondoftwo}{
+%<letterspace>\MT@pdf@or@lua{\let\MT@if@opentype@font\@secondoftwo}{
 %<*lua-|letterspace>
-\def\MT@if@luaotf@font{\csname\MT@lua{%
-  microtype.if_luaotf_font()
+\def\MT@if@opentype@font{\csname\MT@lua{%
+  microtype.if_opentype_font()
   }\endcsname
 }
 %</lua-|letterspace>
+%<*xe->
+\def\MT@if@opentype@font{%
+  \ifnum\XeTeXfonttype\font@name=\z@
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\@firstoftwo
+  \fi
+}
+%</xe->
 %<letterspace>}
 %<*luafile>
-local function if_luaotf_font()
+local function if_opentype_font()
   local thefont = font.getfont(font.current())
   if thefont and ( thefont.format == "opentype" or thefont.format == "truetype" )
     then tex.write("@firstoftwo")
     else tex.write("@secondoftwo")
   end
 end
-microtype.if_luaotf_font = if_luaotf_font
+microtype.if_opentype_font = if_opentype_font
 
 %</luafile>
 %    \end{macrocode}
@@ -5975,7 +5984,7 @@ microtype.if_luaotf_font = if_luaotf_font
 %    \begin{macrocode}
 %<*lua->
 \def\MT@do@font#1{%
-  \MT@if@luaotf@font{%
+  \MT@if@opentype@font{%
     \def\MT@dofont@function{#1}%
     \MT@lua{microtype.do_font()}%
   }{\MT@while@num\z@\@cclvi{#1}}%
@@ -6017,7 +6026,6 @@ microtype.do_font = do_font
     \ifnum\@tempcnta < \XeTeXlastfontchar\MT@font \MT@repeat
 }
 %</xe->
-%<*package>
 %    \end{macrocode}
 %\end{macro}
 %\changes{v1.4}{2004/11/12}{use one instead of five counters}
@@ -6027,6 +6035,7 @@ microtype.do_font = do_font
 %\changes{v1.7}{2005/03/07}{use \etex's \cmd\numexpr\ if available}
 % The \etex\ way is slightly faster.
 %    \begin{macrocode}
+%<*package>
 \newcount\MT@count
 \def\MT@increment#1{%
 ^^X  \edef#1{\number\numexpr #1 + 1\relax}%
@@ -6191,6 +6200,7 @@ microtype.do_font = do_font
     Expect lots of warnings and some malfunctions.\MessageBreak
     You might want to use a proper class instead}%
 }\relax
+%</package>
 %    \end{macrocode}
 %\begin{macro}{\MT@setup@}
 %\changes{v1.9a}{2005/11/21}{defer setup until the end of the preamble}
@@ -6203,7 +6213,6 @@ microtype.do_font = do_font
 % advantages: \cs{microtypesetup} can be used to change options later on in the
 % preamble, and fonts don't have to be set up before \microtype.
 %    \begin{macrocode}
-%</package>
 %<*package|letterspace>
 %<plain>\MT@requires@latex1{
 \let\MT@setup@\@empty
@@ -6225,7 +6234,6 @@ microtype.do_font = do_font
 %    \begin{macrocode}
 \def\MT@with@package@T#1{\@ifpackageloaded{#1}\@firstofone\@gobble}
 %</package|letterspace>
-%<*package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@with@babel@and@T}
@@ -6234,6 +6242,7 @@ microtype.do_font = do_font
 %\changes{v3.1b}{2023/03/24}{don't use \cmd\@pkgextension\ (was \cmd\@onlypreamble d in older \LaTeX\ versions)}
 % \LaTeX's \cmd\@ifpackagewith\ ignores the class options.
 %    \begin{macrocode}
+%<*package>
 \def\MT@with@babel@and@T#1{%
   \MT@ifdefined@n@T{opt@babel.sty}{%
     \@expandtwoargs\MT@in@clist{#1}
@@ -6241,6 +6250,7 @@ microtype.do_font = do_font
     \ifMT@inlist@\expandafter\@secondoftwo\else\expandafter\@firstofone\fi
   }\@gobble
 }
+%</package>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ledmac@setup}
@@ -6272,7 +6282,6 @@ microtype.do_font = do_font
 %\changes{v2.6}{2015/08/10}{support for \pkg{reledmac}}^^A
 % The successor packages \pkg{eledmac} and \pkg{reledmac} are also supported.
 %    \begin{macrocode}
-%</package>
 %<*pdf-|lua-|xe->
 %<pdf->\MT@requires@pdftex5{
   \def\MT@ledmac@setup{%
@@ -6698,7 +6707,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   }%
 %</package>
 }
-%<*package>
+%</package|letterspace>
 %    \end{macrocode}
 %
 %\subsubsection{Protrusion patches}
@@ -6710,6 +6719,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\begin{macro}{\MT@patch@info@undo}
 % We have to patch some macros to get protrusion right.
 %    \begin{macrocode}
+%<*package>
 \newif\ifMT@patch@ok
 \def\MT@patch@info#1{\MT@info{Applying patch `#1'}}
 \def\MT@patch@warn#1{\MT@warning{Unable to apply patch `#1'}}
@@ -7070,7 +7080,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@redefined@patches
 }}
 %</package>
-%</package|letterspace>
 %    \end{macrocode}
 %
 %\subsection{Font setup}\label{sub:font-setup}
@@ -7143,7 +7152,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<pdf->\MT@requires@pdftex6
 %<lua->\MT@requires@luatex3
-%<pdf-|lua->  {\g@addto@macro\MT@setupfont\MT@tracking}\relax
+%<xe->\@firstoftwo
+%<pdf-|lua-|xe->  {\g@addto@macro\MT@setupfont\MT@tracking}\relax
 \g@addto@macro\MT@setupfont{%
   \MT@check@font
   \ifMT@inlist@
@@ -7273,7 +7283,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<pdf->}\relax
 %    \end{macrocode}
 %\end{macro}
-%\begin{macro}{\MT@lua@copy@font}
+%\begin{macro}{\MT@lua@copy@font} ^^A TODO: \fontname ?
 % \meta{\#1} and \meta{\#2} are `|select|' and `|font|', respectively,
 % \meta{\#3} is the font spec.
 %    \begin{macrocode}
@@ -9544,10 +9554,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5}{2010/09/17}{letterspacing with \luatex\ 0.62} ^^A (beta:03)
 % or \luatex\ 0.62.
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
 %<pdf->\MT@requires@pdftex6
 %<lua->\MT@requires@luatex3
-{
+%<pdf-|lua->{
 %    \end{macrocode}
 %\begin{macro}{\MT@tracking}
 %\changes{v2.2}{2007/02/23}{remember fonts that shouldn't be letterspaced}
@@ -9567,9 +9577,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
     \fi
   \fi
 }
-%</pdf-|lua->
-%<pdf-|lua-|letterspace>\let\MT@tracking
-%<pdf-|lua->  \MT@tracking@
+%</pdf-|lua-|xe->
+%<pdf-|lua-|xe-|letterspace>\let\MT@tracking
+%<pdf-|lua-|xe->  \MT@tracking@
 %<letterspace>  \relax
 %    \end{macrocode}
 %\end{macro}
@@ -9586,9 +9596,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/07/01}{with \pdftex\ 1.40.23, tracking also works for fonts with a zero \fontdim6}
 % case we issue a warning (once for every font).
 %    \begin{macrocode}
-%<*pdf-|lua-|letterspace>
+%<*pdf-|lua-|xe-|letterspace>
 \def\MT@set@tr@codes{%
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
   \MT@vinfo{Tracking font `\MT@@font'\on@line}%
 %<*pdf->
   \MT@requires@pdftex8\@firstofone{%
@@ -9606,7 +9616,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@if@list@exists
     \MT@get@tr@opt
     \relax
-%</pdf-|lua->
+%</pdf-|lua-|xe->
   \MT@ifdefined@c@TF\MT@letterspace@\relax{\let\MT@letterspace@\MT@letterspace}%
   \ifnum\MT@letterspace@=\z@
 %    \end{macrocode}
@@ -9615,11 +9625,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \MT@set@tr@zero
   \else
-%<pdf-|lua->    \MT@vinfo{... Tracking by \number\MT@letterspace@}%
+%<pdf-|lua-|xe->    \MT@vinfo{... Tracking by \number\MT@letterspace@}%
 %    \end{macrocode}
 % Letterspacing only works in <PDF> mode.
 %    \begin{macrocode}
-    \MT@warn@tracking@DVI
+%<pdf-|lua-|letterspace>    \MT@warn@tracking@DVI
 %    \end{macrocode}
 %\begin{macro}{\MT@lsfont}
 % The letterspaced font instances are saved in macros
@@ -9646,21 +9656,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % use when dealing with non-legacy fonts, as it is less problematic and faster
 % than the \pdftex\ primitive \cmd\letterspacefont.
 %    \begin{macrocode}
-%<*lua-|letterspace>
-      \MT@if@luaotf@font{%
-%<lua-&debug>\MT@dinfo@nl{1}{... luaotf font: \MessageBreak
-%<lua-&debug>         \expandafter\fontname\font@name}%
+%<*lua-|xe-|letterspace>
+      \MT@if@opentype@font{%
+%<debug>\MT@dinfo@nl{1}{... opentype font: \MessageBreak
+%<debug>         \expandafter\fontname\font@name}%
         \global\expandafter\font\MT@lsfont=\MT@ls@fontspec@font
       }{%
-%</lua-|letterspace>
+%</lua-|xe-|letterspace>
 %<lua-&debug>\MT@dinfo@nl{1}{... legacy font}%
-      \global\expandafter\letterspacefont\MT@lsfont\font@name\MT@letterspace@
-%<lua-|letterspace>      }%
+%<pdf-|lua-|letterspace>      \global\expandafter\letterspacefont\MT@lsfont\font@name\MT@letterspace@
+%<xe->   \typeout{!!!! cannot letterspace \font@name}%
+%<xe->   \global\let\MT@lsfont\font@name
+%<lua-|xe-|letterspace>      }%
 %    \end{macrocode}
 %\changes{v2.2}{2007/06/16}{possibility to customise interword spacing}
 % Scale interword spacing (not configurable in \letterspace).
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
       \MT@ifdefined@c@TF\MT@tr@ispace
         {\let\@tempa\MT@tr@ispace}%
         {\edef\@tempa{\MT@letterspace@*,,}}%
@@ -9668,7 +9680,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
         {\edef\@tempa{\@tempa,\MT@tr@ospace}}%
         {\edef\@tempa{\@tempa,,,}}%
       \expandafter\MT@tr@set@space\@tempa,%
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %<*letterspace>
       % spacing = {<letterspace amount>*,,}
       \fontdimen2\MT@lsfont=\dimexpr\numexpr 1000+\MT@letterspace@\relax sp
@@ -9680,7 +9692,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A MID: <46aa1cbb$0$31620$9b4e6d93@newsspool3.arcor-online.net>
 % Adjust outer kerning (\microtype\ only).
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
       \MT@ifdefined@c@TF\MT@tr@okern{\let\@tempa\MT@tr@okern}{\def\@tempa{*,*}}%
       \expandafter\MT@tr@set@okern\@tempa,%
 %    \end{macrocode}
@@ -9689,7 +9701,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Disable ligatures (not configurable in \letterspace).
 %    \begin{macrocode}
       \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %<*letterspace>
       % no ligatures = {f}
       \tagcode\MT@lsfont`f=\m@ne
@@ -9705,11 +9717,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (reported by \contributor Wolfram Schaalo <schaalo\at gmx.net>)}
 %                                                              ^^A private mail, 2008/05/12
 %    \begin{macrocode}
-%<lua-|letterspace>      \MT@if@luaotf@font\relax{%
-%<debug>\MT@dinfo@nl{2}{... compensating for tracking (\number\MT@letterspace@)}%
-      \MT@do@font{\lpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax
-                  \rpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax}%
-      \let\MT@the@pr@code\MT@the@pr@code@tr
+%<lua-|letterspace>      \MT@if@opentype@font\relax{%
+%<(lua-|pdf-)&debug>\MT@dinfo@nl{2}{... compensating for tracking (\number\MT@letterspace@)}%
+%<!xe->      \MT@do@font{\lpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax
+%<!xe->                  \rpcode\MT@lsfont\@tempcnta=\numexpr\MT@letterspace@/2\relax}%
+%<!xe->      \let\MT@the@pr@code\MT@the@pr@code@tr
 %<lua-|letterspace>     }%
     \fi
 %    \end{macrocode}
@@ -9718,8 +9730,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.5a}{2013/05/15}{fix: load font for \pkg{fontspec}} ^^A for MT@get@slot
 %    \begin{macrocode}
     \aftergroup\MT@set@lsfont
-%<pdf-|lua->    \let\MT@font\MT@lsfont
-%<lua->    \MT@if@luaotf@font\MT@font\relax
+%<pdf-|lua-|xe->    \let\MT@font\MT@lsfont
+%<lua-|xe->    \MT@if@opentype@font\MT@font\relax
 %    \end{macrocode}
 %\begin{macro}{\MT@set@curr@ls}
 %\begin{macro}{\MT@curr@ls}
@@ -9736,11 +9748,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % We get the current outer spacing and adjust it, then, after the end of the
 % current outer group, set the current outer spacing, again, and adjust.
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
     \MT@outer@space=\csname MT@outer@space\expandafter\string\font@name\endcsname\relax
     \xdef\MT@set@curr@os{\MT@outer@space=\the\MT@outer@space\relax}%
     \MT@tr@outer@l
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 % If \cs{MT@ls@adjust} is empty, it's the starred version of \cs{textls}.
@@ -9754,14 +9766,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Otherwise, get the current outer kerning and adjust it, for left and right
 % side (\microtype\ only).
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
     \else
       \MT@outer@kern=\expandafter\expandafter\expandafter\@firstoftwo
                       \csname MT@outer@kern\expandafter\string\font@name\endcsname\relax
       \ifdim\MT@outer@kern=\z@\else \MT@ls@outer@k \fi
       \MT@outer@kern=\expandafter\expandafter\expandafter\@secondoftwo
                       \csname MT@outer@kern\expandafter\string\font@name\endcsname\relax
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %<*letterspace>
       \xdef\MT@set@curr@ok{\MT@outer@kern=\the\MT@outer@kern\relax}%
       \MT@afteraftergroup{%
@@ -9770,7 +9782,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       }%
 %</letterspace>
     \fi
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
 %    \end{macrocode}
 %\begin{macro}{\MT@set@curr@ok}
 % Carry the outer kerning amount to outside the next group, then set outer
@@ -9787,7 +9799,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@set@curr@ok
       \noexpand\MT@tr@outer@r
     }%
-%</pdf-|lua->
+%</pdf-|lua-|xe->
   \fi
 %<pdf->  }%
 }
@@ -9809,7 +9821,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
     }%
 %<!letterspace>  }%
 }
-%</pdf-|lua-|letterspace>
+%</pdf-|lua-|xe-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ls@fontspec@font}
@@ -9830,6 +9842,14 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@lua{microtype.add_ls([[\MT@letterspace@]])}%
 }
 %</lua-|letterspace>
+%<*xe->
+\def\MT@ls@fontspec@font{\MT@exp@two@c\MT@ls@fontspec@font@\fontname\font@name\MT@nil}
+\def\MT@ls@fontspec@font@"#1"#2\MT@nil{\MT@ls@fontspec@font@@#1::\MT@nil#2}
+\def\MT@ls@fontspec@font@@#1:#2:#3\MT@nil{%
+  "#1:#2letterspace=\strip@pt\dimexpr\MT@letterspace@ pt/10\relax
+  ;-dlig;-rlig;-liga;-dlig;-clig;-hlig;"%
+}%
+%</xe->
 %<*luafile>
 local function add_ls(k)
   local f = tex.fontname(font.current())
@@ -9856,7 +9876,7 @@ microtype.add_ls = add_ls
 %\begin{macro}{\MT@get@tr@opt}
 % Various settings (only for the \microtype\ version).
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
 \def\MT@get@tr@opt{%
   \MT@set@listname
   \let\MT@tr@factor@\@m
@@ -9912,14 +9932,14 @@ microtype.add_ls = add_ls
   \MT@ifdefined@n@T{MT@tr@c@\MT@tr@c@name @#1}%
     {\MT@let@nn{MT@tr@#2}{MT@tr@c@\MT@tr@c@name @#1}}%
 }
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@set@lsfont}
 % Redefine \cmd\font@name, which will be called a second later (in
 % \cmd\selectfont).
 %    \begin{macrocode}
-%<*pdf-|lua-|letterspace>
+%<*pdf-|lua-|xe-|letterspace>
 %<plain>\MT@requires@latex2{
 \def\MT@set@lsfont{\MT@exp@two@c\let\font@name\MT@lsfont}
 %    \end{macrocode}
@@ -9955,8 +9975,8 @@ microtype.add_ls = add_ls
 \DeclareRobustCommand\lsstyle{%
   \not@math@alphabet\lsstyle\textls
   \let\glb@currsize\@empty
-%<pdf-|lua->  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
-%<pdf-|lua->  \def\MT@feat{tr}%
+%<pdf-|lua-|xe->  \MT@maybe@gobble@with@tikz{\aftergroup\glb@settings}%
+%<pdf-|lua-|xe->  \def\MT@feat{tr}%
   \let\MT@tracking\MT@set@tr@codes
   \selectfont
 }
@@ -10047,7 +10067,7 @@ microtype.add_ls = add_ls
     \aftergroup\MT@set@lsbasefont
   \fi
 }
-%</pdf-|lua-|letterspace>
+%</pdf-|lua-|xe-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -10060,7 +10080,7 @@ microtype.add_ls = add_ls
 %                           ^^A https://tex.stackexchange.com/questions/709456/ligatures-are-not-preserved-by-textls-letter-spacing/
 % \pdftex\ 1.40.0--1.40.3 disabled all ligatures in letterspaced fonts.
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe-> % TODO XEL
 %<pdf->\MT@requires@pdftex7{
   \def\MT@tr@noligatures{%
     \ifx\MT@tr@ligatures\@empty
@@ -10366,6 +10386,7 @@ microtype.add_ls = add_ls
 %\end{macro}
 % For older \pdftex\ versions and \luatex, throw an error.
 %    \begin{macrocode}
+%<*pdf-|lua->
 }{
   \DeclareRobustCommand\lsstyle{%
     \MT@error{Letterspacing only works with \MT@engine tex version
@@ -10376,17 +10397,8 @@ microtype.add_ls = add_ls
     \MT@glet\lsstyle\relax
   }
 }
-%    \end{macrocode}
-% And for \xetex, too.
-%    \begin{macrocode}
 %</pdf-|lua->
-%<*xe->
-\DeclareRobustCommand\lsstyle{%
-  \MT@error{Letterspacing currently doesn't work with xetex}
-           {Run pdftex or luatex, or use the `soul' package instead.}%
-  \MT@glet\lsstyle\relax
-}
-%</xe->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\begin{macro}{\textls}
 %\changes{v2.0}{2005/09/21}{new command: letterspacing} ^^A (beta:1)
@@ -10476,7 +10488,7 @@ microtype.add_ls = add_ls
 %    \begin{macrocode}
 \newdimen\MT@outer@kern
 %</package|letterspace>
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
 \def\MT@tr@set@okern#1,#2,{%
   \let\MT@temp\@empty
   \MT@ifempty{#1}{\MT@tr@set@okern@{*}}{\MT@tr@set@okern@{#1}}%
@@ -10505,7 +10517,7 @@ microtype.add_ls = add_ls
                              * \fontdimen6\MT@lsfont/2000\relax
   \edef\MT@temp{\MT@temp{\the\@tempdima}}%
 }
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ls@outer@k}
@@ -10513,7 +10525,7 @@ microtype.add_ls = add_ls
 % for cases of nested letterspacing without anything actually printed. ^^A eg. \LaTeX!
 %\changes{v2.5a}{2013/05/15}{add marker for tightly nested letterspacing}
 %    \begin{macrocode}
-%<*pdf-|lua-|letterspace>
+%<*pdf-|lua-|xe-|letterspace>
 \def\MT@ls@outer@k{%
   \ifhmode
     \ifdim\lastkern=-3sp \unkern
@@ -10528,7 +10540,7 @@ microtype.add_ls = add_ls
     {\kern\MT@outer@kern\kern3sp\kern-3sp\relax}%
   \fi
 }
-%</pdf-|lua-|letterspace>
+%</pdf-|lua-|xe-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %
@@ -10580,7 +10592,7 @@ microtype.add_ls = add_ls
 % in a table (used by the \pkg{luaotfload} function |keepligature|).
 %\changes{v2.6}{2016/04/20}{use \pkg{luaotfload} function to keep\slash inhibit ligatures}
 %    \begin{macrocode}
-%<lua->          \MT@if@luaotf@font
+%<lua->          \MT@if@opentype@font
 %<lua->             {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
         \fi
       }%
@@ -10593,13 +10605,16 @@ microtype.add_ls = add_ls
     }%
   }{%
     \pdfnoligatures#1%
-%<lua->    \MT@if@luaotf@font
+%<lua->    \MT@if@opentype@font
 %<lua->        {\MT@lua{microtype.noligatures([[#1]],"_all_")}}\relax
     \MT@vinfo{... Disabling all ligatures}%
   }%
 }
 %<pdf->}\relax
 %</pdf-|lua->
+%<*xe->
+\let\MT@noligatures@\@gobbletwo
+%</xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -12193,9 +12208,9 @@ end
 %<*pdf-|lua-|xe->
 %<pdf->\MT@requires@pdftex6
 %<lua->\MT@requires@luatex3
-%<pdf-|lua->  {\def\MT@active@features{,tr}}{%
-  \let\MT@active@features\@empty
-%<pdf-|lua->  }
+%<pdf-|lua->  {
+  \def\MT@active@features{,tr}%
+%<pdf-|lua->  }{\let\MT@active@features\@empty}%
 %</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
@@ -13252,6 +13267,7 @@ end
   \MT@gdef@n{MT@ex@c@\MT@ex@c@name}{#3}%
   \MT@end@catcodes
 }
+%</pdf-|lua->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -13267,6 +13283,7 @@ end
 %                           (suggested by \contributor Steven~E. Harris <seh\at panix.com>)}
 %                                                             ^^A private mail, 2007/06/15
 %    \begin{macrocode}
+%<*pdf-|lua-|xe->
 \def\SetTracking{%
   \MT@begin@catcodes
   \MT@SetTracking
@@ -13292,7 +13309,7 @@ end
                    tracking set `\MT@curr@set@name'}}}%
   \MT@end@catcodes
 }
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\SetExtraSpacing}
@@ -13640,11 +13657,9 @@ end
       {\MT@warn@nodim{character widths}}%
   }%
 }
-%</package>
 %    \end{macrocode}
 % Tracking may only be relative to a dimension.
 %    \begin{macrocode}
-%<*pdf-|lua->
 \define@key{MT@tr@c}{unit}[1em]{%
   \MT@glet@nc{MT@tr@c@\MT@curr@set@name @unit}\@empty
   \def\@tempa{#1}%
@@ -13653,7 +13668,7 @@ end
     {\MT@warn@nodim{1em}%
      \MT@gdef@n{MT@tr@c@\MT@curr@set@name @unit}{1em}}%
 }
-%</pdf-|lua->
+%</package>
 %    \end{macrocode}
 % Spacing and kerning codes may additionally be relative to space dimensions.
 %    \begin{macrocode}
@@ -13717,11 +13732,13 @@ end
 %<pdf->      \relax
   \fi
 }
+%</pdf-|lua->
 %    \end{macrocode}
 % Tracking: Interword spacing and outer kerning.
 % The variant with space just in case \cs{SetTracking} is called inside an
 % argument (\eg, to \cmd\IfFileExists).
 %    \begin{macrocode}
+%<*pdf-|lua-|xe->
 \MT@define@opt@key{tr}{spacing}
 \MT@define@opt@key{tr}{outerspacing}
 \MT@define@opt@key{tr}{outerkerning}
@@ -13733,7 +13750,7 @@ end
 \define@key{MT@tr@c}{outer spacing}[]{\setkeys{MT@tr@c}{outerspacing={#1}}}
 \define@key{MT@tr@c}{outer kerning}[]{\setkeys{MT@tr@c}{outerkerning={#1}}}
 \define@key{MT@tr@c}{no ligatures}[]{\setkeys{MT@tr@c}{noligatures={#1}}}
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %
 %\subsubsection{Character inheritance}
@@ -14919,7 +14936,7 @@ end
 %    \end{macrocode}
 % Disable for older \pdftex\ versions and for \xetex\ and \luatex.
 %    \begin{macrocode}
-\define@key{MTX}{tracking}[true]{\MT@warning{Ignoring tracking setup}}
+\define@key{MTX}{tracking}[true]{\MT@warning{Ignoring tracking setup}} % TODO XEL
 %<lua->}
 \define@key{MTX}{kerning}[true]{\MT@warning{Ignoring kerning setup}}
 \define@key{MTX}{spacing}[true]{\MT@warning{Ignoring spacing setup}}
@@ -15380,7 +15397,7 @@ end
 %\begin{macro}{\MT@setup@tracking}
 % Tracking, spacing and kerning.
 %    \begin{macrocode}
-%<*pdf-|lua->
+%<*pdf-|lua-|xe->
 %<pdf->\MT@requires@pdftex6{%
 %<lua->\MT@requires@luatex3{%
   \def\MT@setup@tracking{%
@@ -15397,7 +15414,7 @@ end
       \MT@info@nl{No adjustment of tracking}%
     \fi
   }
-%</pdf-|lua->
+%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@spacing}
@@ -15508,7 +15525,7 @@ end
       }%
     \fi
   }
-%<pdf-|xe->  \def\MT@setup@tracking{\MT@error@doesnt@work{tracking}}
+%<pdf->  \def\MT@setup@tracking{\MT@error@doesnt@work{tracking}}
   \def\MT@setup@kerning {\MT@error@doesnt@work{kerning}}
   \def\MT@setup@spacing {\MT@error@doesnt@work{spacing}}
 %<pdf->}
@@ -15517,8 +15534,8 @@ end
 %\end{macro}
 %\begin{macro}{\MT@setup@warntracking}
 %    \begin{macrocode}
+%<pdf-|lua-|xe->\def\MT@setup@warntracking
 %<letterspace>\MT@addto@setup
-%<pdf-|lua->\def\MT@setup@warntracking
 %    \end{macrocode}
 %\begin{macro}{\MT@warn@tracking@DVI}
 %\changes{v2.2}{2007/02/11}{warning when letterspacing in <DVI> mode}
@@ -15527,7 +15544,7 @@ end
 % not work. We also switch on protrusion if it isn't already, to compensate for
 % the letterspacing kerns.
 %    \begin{macrocode}
-%<*pdf-|lua-|letterspace>
+%<*pdf-|lua-|xe-|letterspace>
 {%
 %<*pdf-|letterspace>
   \ifnum\pdfoutput<\@ne
@@ -15543,10 +15560,12 @@ end
     }%
   \else
 %</pdf-|letterspace>
+%<*pdf-|lua-|letterspace>
     \def\MT@warn@tracking@DVI{%
       \ifnum\pdfprotrudechars<\@ne \global\pdfprotrudechars\@ne \fi
       \MT@glet\MT@warn@tracking@DVI\relax
     }%
+%</pdf-|lua-|letterspace>
 %<pdf-|letterspace>  \fi
 %    \end{macrocode}
 %\end{macro}
@@ -15557,8 +15576,7 @@ end
     \MT@ls@too@large\MT@letterspace
   \fi
 }
-%</pdf-|lua-|letterspace>
-%<xe->\let\MT@setup@warntracking\relax
+%</pdf-|lua-|xe-|letterspace>
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@setup@noligatures}
@@ -20566,7 +20584,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13204}
+% \CheckSum{13236}
 %
 % \Finale
 %
