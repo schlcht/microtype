@@ -9698,9 +9698,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\changes{v2.2}{2007/02/23}{disable ligatures in letterspaced fonts manually
 %                           (due to change in \pdftex\ 1.40.4)}
-% Disable ligatures (not configurable in \letterspace).
+% Disable ligatures (not configurable in \letterspace, not possible with \xetex).
 %    \begin{macrocode}
-      \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
+%<pdf-|lua->      \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
 %</pdf-|lua-|xe->
 %<*letterspace>
       % no ligatures = {f}
@@ -9921,7 +9921,7 @@ microtype.add_ls = add_ls
 %\begin{macro}{\MT@tr@ligatures}
 % Which ligatures should we disable (empty means all, undefined none)?
 %    \begin{macrocode}
-  \MT@get@tr@opt@{noligatures} {ligatures}%
+%<pdf-|lua->  \MT@get@tr@opt@{noligatures} {ligatures}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -12208,9 +12208,9 @@ end
 %<*pdf-|lua-|xe->
 %<pdf->\MT@requires@pdftex6
 %<lua->\MT@requires@luatex3
-%<pdf-|lua->  {
+%<pdf-|lua->  {%
   \def\MT@active@features{,tr}%
-%<pdf-|lua->  }{\let\MT@active@features\@empty}%
+%<pdf-|lua->  }{\let\MT@active@features\@empty}
 %</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
@@ -16554,6 +16554,7 @@ end
 %\changes{v2.2}{2007/02/23}{add ligatures that are to be disabled}
 %\changes{v2.5}{2011/09/07}{add <EU2> encoding to default list} ^^A (beta:09)
 %\changes{v2.6}{2016/04/22}{add <TU> encoding to default list}
+%\changes{v3.2}{2024/05/13}{no \texttt{no ligatures} with \xetex}
 % By default, we only disable the `f*' ligatures, for those fonts that have
 % any. Thus, ligatures and especially kerning for all other characters will be
 % retained.
@@ -16562,11 +16563,13 @@ end
 %%% -----------------------------------------------------------------------
 %%% TRACKING/LETTERSPACING
 
+\ifx\XeTeXrevision\@undefined
 \SetTracking
   [ name         = default,
     no ligatures = {f} ]
   { encoding     = {OT1,T1,T2A,LY1,OT4,QX,EU2,TU} }
   { }
+\fi
 
 %    \end{macrocode}
 %
@@ -20584,7 +20587,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13236}
+% \CheckSum{13240}
 %
 % \Finale
 %
