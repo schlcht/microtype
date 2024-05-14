@@ -9666,7 +9666,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %<lua-&debug>\MT@dinfo@nl{1}{... legacy font}%
 %<pdf-|lua-|letterspace>      \global\expandafter\letterspacefont\MT@lsfont\font@name\MT@letterspace@
 %<xe->   \typeout{!!!! cannot letterspace \font@name}%
-%<xe->   \global\let\MT@lsfont\font@name
+%<xe->   \MT@glet\MT@lsfont\font@name
 %<lua-|xe-|letterspace>      }%
 %    \end{macrocode}
 %\changes{v2.2}{2007/06/16}{possibility to customise interword spacing}
@@ -9700,7 +9700,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (due to change in \pdftex\ 1.40.4)}
 % Disable ligatures (not configurable in \letterspace, not possible with \xetex).
 %    \begin{macrocode}
-%<pdf-|lua->      \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
+      \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
 %</pdf-|lua-|xe->
 %<*letterspace>
       % no ligatures = {f}
@@ -9921,7 +9921,7 @@ microtype.add_ls = add_ls
 %\begin{macro}{\MT@tr@ligatures}
 % Which ligatures should we disable (empty means all, undefined none)?
 %    \begin{macrocode}
-%<pdf-|lua->  \MT@get@tr@opt@{noligatures} {ligatures}%
+  \MT@get@tr@opt@{noligatures} {ligatures}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -10080,8 +10080,9 @@ microtype.add_ls = add_ls
 %                           ^^A https://tex.stackexchange.com/questions/709456/ligatures-are-not-preserved-by-textls-letter-spacing/
 % \pdftex\ 1.40.0--1.40.3 disabled all ligatures in letterspaced fonts.
 %    \begin{macrocode}
-%<*pdf-|lua-|xe-> % TODO XEL
+%<*pdf-|lua-|xe->
 %<pdf->\MT@requires@pdftex7{
+%<*pdf-|lua->
   \def\MT@tr@noligatures{%
     \ifx\MT@tr@ligatures\@empty
       \MT@noligatures@\MT@lsfont\@undefined
@@ -10095,18 +10096,21 @@ microtype.add_ls = add_ls
       }%
     \fi
   }
-%<*pdf->
-}{
+%</pdf-|lua->
+%<*pdf-|xe->
+%<pdf->}{
   \def\MT@tr@noligatures{%
     \MT@ifstreq\MT@tr@ligatures{all}\relax{%
       \MT@warning@nl{%
-        Disabling (selected) ligatures is possible since\MessageBreak
-        pdftex 1.40.4. Disabling all ligatures instead}%
+        Disabling (selected) ligatures is
+%<pdf->        possible since\MessageBreak pdftex 1.40.4.
+%<xe->       not possible\MessageBreak with xetex.
+        Disabling all ligatures instead}% TODO XEL
       \MT@glet\MT@tr@noligatures\relax
     }%
   }
-}
-%</pdf->
+%<pdf->}
+%</pdf-|xe->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@outer@space}
@@ -10501,6 +10505,7 @@ microtype.add_ls = add_ls
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@tr@set@okern@}
+% TODO XEL & LUA
 %    \begin{macrocode}
 \def\MT@tr@set@okern@#1{%
   \MT@test@ast#1*\@nil{%
@@ -14864,7 +14869,6 @@ end
 %\end{macro}
 %    \begin{macrocode}
 \MT@define@optionX{protrusion}\MT@protrudechars
-%</pdf-|lua-|xe->
 %<*pdf-|lua->
 \MT@define@optionX{expansion}\MT@adjustspacing
 %    \end{macrocode}
@@ -14891,7 +14895,6 @@ end
 % The same for |tracking|, |spacing| and |kerning|, which do not have a
 % |compatibility| level.
 %    \begin{macrocode}
-%<*pdf-|lua->
 %<pdf->\MT@requires@pdftex6{
 %<lua->\MT@requires@luatex3{
   \def\MT@define@optionX@#1#2{%
@@ -14930,13 +14933,11 @@ end
 %<pdf->  \MT@define@optionX@{spacing}{\pdfadjustinterwordglue\@tempcnta}
 %<pdf->  \MT@define@optionX@{kerning}{\pdfprependkern\@tempcnta
 %<pdf->                               \pdfappendkern\@tempcnta}
-}{
-%</pdf-|lua->
-%<*pdf-|lua-|xe->
+%<pdf-|lua->}{
 %    \end{macrocode}
 % Disable for older \pdftex\ versions and for \xetex\ and \luatex.
 %    \begin{macrocode}
-\define@key{MTX}{tracking}[true]{\MT@warning{Ignoring tracking setup}} % TODO XEL
+%<pdf-|lua->\define@key{MTX}{tracking}[true]{\MT@warning{Ignoring tracking setup}}
 %<lua->}
 \define@key{MTX}{kerning}[true]{\MT@warning{Ignoring kerning setup}}
 \define@key{MTX}{spacing}[true]{\MT@warning{Ignoring spacing setup}}
