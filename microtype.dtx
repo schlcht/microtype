@@ -10146,7 +10146,6 @@ microtype.add_ls = add_ls
 % from the inner spacing settings \meta{\#1}.
 %\changes{v2.8}{2020/11/24}{simplified}
 %    \begin{macrocode}
-% TODO XE & LUA
 \def\MT@tr@set@space@#1#2#3#4{%
   \MT@ifempty{#2}{%
     \MT@ifempty{#1}\relax{%
@@ -10179,10 +10178,16 @@ microtype.add_ls = add_ls
 %    \end{macrocode}
 % For \fontdim2, we also have to subtract the kerning that letterspacing adds
 % to each side of the characters (only half if it's for outer spacing).
+%\changes{v3.2}{2024/05/15}{fix for \luatex\ and \xetex}
+% This is necessary only for legacy fonts.
 %    \begin{macrocode}
+%<*pdf-|lua->
     \ifnum#2=\tw@
+%<lua->    \MT@if@opentype@font\relax{%
       \advance\@tempdima -\dimexpr\MT@letterspace@ sp*\MT@dimen@six/#3\relax
+%<lua->   }%
     \fi
+%</pdf-|lua->
   }{%
     \MT@ifempty\@tempa{\let\@tempa\MT@letterspace@}\relax
     \@tempdima=\dimexpr \numexpr1000+\@tempa sp *\fontdimen#2\MT@lsfont/1000\relax
@@ -10519,10 +10524,10 @@ microtype.add_ls = add_ls
     \@tempdima=\dimexpr \numexpr\@tempa*\MT@letterspace@/1000\relax sp
                       * \fontdimen6\MT@lsfont/2000\relax
   }%
-%<lua-|xe->  \MT@if@opentype@font\relax{%
-  \advance\@tempdima -\dimexpr \MT@letterspace@ sp
-                             * \fontdimen6\MT@lsfont/2000\relax
-%<lua-|xe->  }%
+%<lua->  \MT@if@opentype@font\relax{%
+%<pdf-|lua->  \advance\@tempdima -\dimexpr \MT@letterspace@ sp
+%<pdf-|lua->                  * \fontdimen6\MT@lsfont/2000\relax
+%<lua->  }%
   \edef\MT@temp{\MT@temp{\the\@tempdima}}%
 }
 %</pdf-|lua-|xe->
@@ -20591,7 +20596,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13242}
+% \CheckSum{13244}
 %
 % \Finale
 %
