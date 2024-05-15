@@ -1196,11 +1196,10 @@
 %\Describe{Option}{tracking}{true,!false,:font set name}
 % This option will systematically change the tracking of the fonts specified in
 % the active font set (by default, all small capitals).
-% It is not available with \xetex\ (you may use the `|LetterSpace|'
-% option of the \cite{fontspec} package instead).
 % With \pdftex, it is only available in <PDF> mode.
 %
-%\medskip
+%^^A\medskip
+%\pagebreak ^^A layout
 %\Describe{Option}{kerning}{true,!false,:font set name}
 %\DescribeOption{spacing}
 % These features do not unconditionally improve the quality of the typeset text:
@@ -1257,7 +1256,7 @@
 %\cmidrule(r){1-3}
 % \let\textoractual\@firstoftwo ^^A why?
 % \xetex
-%    & $\geq$ 0.9997 & <PDF>       & ! & _ & _ & _ & _ & _\\
+%    & $\geq$ 0.9997 & <PDF>       & ! & _ & _ & ? & _ & _\\
 %\addlinespace[2pt]
 %\bottomrule
 %\end{tabular}^^A
@@ -1388,7 +1387,7 @@
 %
 %
 %\subsection[Tracking]
-%           {Tracking \requires{\pdftex~1.40,\luatex~0.62}}
+%           {Tracking \requires{\pdftex~1.40,\luatex~0.62,\xetex~0.9997}}
 %           \label{sub:options-tracking}
 %
 %\Describe{Option}{letterspace}{:integer}[100]
@@ -1962,7 +1961,7 @@
 %
 %
 %\subsection[Tracking]
-%           {Tracking \requires{\pdftex~1.40,\luatex~0.62}}
+%           {Tracking \requires{\pdftex~1.40,\luatex~0.62,\xetex~0.9997}}
 %           \label{sub:tracking}
 %
 %\Describe{Macro}{\SetTracking}{?options,set of fonts,tracking amount}
@@ -2046,6 +2045,8 @@
 %       inserting `|{\kern0pt}|' resp. \pkg{babel}'s \verb="|=
 %       shortcut, or protect it by enclosing it in \cs{lslig} (see
 %       section~\ref{sec:lettersp}).
+%       \xetex\ doesn't allow disabling ligatures selectively, instead
+%       \emph{all} ligatures will be disabled.
 %\end{options}
 %
 %\ifx\lssample\undefined
@@ -2523,7 +2524,9 @@
 % if you have your own set of configuration files that you want to be
 % loaded \emph{instead of} any of those provided with the package.
 %
-%\section{Context-sensitive setup}\label{sec:context}
+%\section[Context-sensitive setup]
+%        {Context-sensitive setup\requires{\pdftex~1.40,\luatex~0.30}}
+% \label{sec:context}
 %
 % The \microtype\ package also allows applying different micro-typographic
 % settings to the fonts depending on the context in which they occur. This
@@ -3531,7 +3534,8 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
-%  \item New values `|none|' and `|all|' for the `|no ligatures|' option of
+%  \item Support for tracking/letterspacing with \xetex\ \refsection{\ref{sub:tracking}, \ref{sec:lettersp}}
+%  \item New values `|none|' and `|all|' for the `|no ligatures|' key of
 %        \cs{SetTracking} \refsection{\ref{sub:tracking}}
 %
 %\VersionDate{3.1b}{2024/03/29}
@@ -9847,7 +9851,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@ls@fontspec@font@"#1"#2\MT@nil{\MT@ls@fontspec@font@@#1::\MT@nil#2}
 \def\MT@ls@fontspec@font@@#1:#2:#3\MT@nil{%
   "#1:#2letterspace=\strip@pt\dimexpr\MT@letterspace@ pt/10\relax
-  ;-dlig;-rlig;-liga;-dlig;-clig;-hlig;"%
+  ;-dlig;-rlig;-liga;-dlig;-clig;-hlig;"% TODO
 }%
 %</xe->
 %<*luafile>
