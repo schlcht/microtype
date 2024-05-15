@@ -10146,6 +10146,7 @@ microtype.add_ls = add_ls
 % from the inner spacing settings \meta{\#1}.
 %\changes{v2.8}{2020/11/24}{simplified}
 %    \begin{macrocode}
+% TODO XE & LUA
 \def\MT@tr@set@space@#1#2#3#4{%
   \MT@ifempty{#2}{%
     \MT@ifempty{#1}\relax{%
@@ -10487,6 +10488,7 @@ microtype.add_ls = add_ls
 %\begin{macro}{\MT@outer@kern}
 %\begin{macro}{\MT@tr@set@okern}
 %\changes{v2.3d}{2008/12/19}{allow empty value for \texttt{outer kerning}}
+%\changes{v3.2}{2024/05/14}{fix for \luatex\ and \xetex}
 % This dimen is used for the starred version of \cs{textls}, for \cs{lslig}
 % and for adjusted outer kerning.
 %    \begin{macrocode}
@@ -10505,7 +10507,6 @@ microtype.add_ls = add_ls
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@tr@set@okern@}
-% TODO XEL & LUA
 %    \begin{macrocode}
 \def\MT@tr@set@okern@#1{%
   \MT@test@ast#1*\@nil{%
@@ -10518,8 +10519,10 @@ microtype.add_ls = add_ls
     \@tempdima=\dimexpr \numexpr\@tempa*\MT@letterspace@/1000\relax sp
                       * \fontdimen6\MT@lsfont/2000\relax
   }%
+%<lua-|xe->  \MT@if@opentype@font\relax{%
   \advance\@tempdima -\dimexpr \MT@letterspace@ sp
                              * \fontdimen6\MT@lsfont/2000\relax
+%<lua-|xe->  }%
   \edef\MT@temp{\MT@temp{\the\@tempdima}}%
 }
 %</pdf-|lua-|xe->
@@ -20588,7 +20591,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13240}
+% \CheckSum{13242}
 %
 % \Finale
 %
