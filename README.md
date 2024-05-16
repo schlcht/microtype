@@ -11,11 +11,11 @@ Overview
 --------
 
 The `microtype` package provides a LaTeX interface to the micro-typographic
-extensions that were introduced by pdfTeX and have since also propagated to
-LuaTeX and XeTeX: most prominently, character protrusion and font expansion,
-furthermore the adjustment of interword spacing and additional kerning, as
-well as hyphenatable letterspacing (tracking) and the possibility to disable
-all or selected ligatures.
+extensions that were introduced by pdfTeX and some of which have since also
+propagated to LuaTeX and XeTeX: most prominently, character protrusion and
+font expansion, furthermore the adjustment of interword spacing and additional
+kerning, as well as hyphenatable letterspacing (tracking) and the possibility
+to disable all or selected ligatures.
 
 These features may be applied to customisable sets of fonts, and all
 micro-typographic aspects of the fonts can be configured in a straight-forward
@@ -27,7 +27,8 @@ LuaTeX, or XeTeX (at least version 0.9997). Font expansion works with pdfTeX
 enable protrusion and expansion if they can safely be assumed to work.
 Disabling ligatures requires pdfTeX (at least version 1.30) or LuaTeX, while
 the adjustment of interword spacing and of kerning only works with pdfTeX
-(at least 1.40). Letterspacing is available with pdfTeX (1.40) or LuaTeX (0.62).*
+(at least 1.40). Letterspacing is available with pdfTeX (1.40), LuaTeX (0.62)
+or XeTeX.*
 
 The alternative package `letterspace`, which also works with plain TeX,
 provides the user commands for letterspacing only, omitting support for all
