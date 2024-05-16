@@ -2045,9 +2045,15 @@
 %       inserting `|{\kern0pt}|' resp. \pkg{babel}'s \verb="|=
 %       shortcut, or protect it by enclosing it in \cs{lslig} (see
 %       section~\ref{sec:lettersp}).
-%       \xetex\ doesn't allow disabling ligatures selectively, instead
-%       \emph{all} ligatures will be disabled.
-%  \item[\key{features}] \dots TODO
+%       \xetex\ does not allow disabling ligatures selectively, or generally,
+%       for that matter.
+%  \item[\key{features}] What it does allow, though, is enabling or disabling
+%       OpenType font features pertaining to ligatures. With \xetex\ or \luatex,
+%       the |features| key accepts any number of \pkg{fontspec} options for the
+%       `Ligatures' font feature, \eg, |NoCommon|, |Rare|, |RequiredOff| or
+%       |ResetAll| (see the \cite{fontspec} documentation for details).
+%       With \luatex, the |features| and the |no ligatures| keys
+%       may even be combined, where the latter will take precedence.
 %\end{options}
 %
 %\ifx\lssample\undefined
@@ -2173,6 +2179,7 @@
 %      \par
 %       For example, you can find the following settings, intended to be used
 %       for documents written in French, in the main configuration file:
+%\pagebreak ^^A layout
 %\begin{verbatim}[deletekeywords={[1]{unit}}]
 %\SetExtraKerning
 %   [ name     = french-default,
@@ -2328,7 +2335,6 @@
 % same time, whereas lists prefixed with `|(l)|' or `|(r)|' and those prefixed with
 % `|(lr)|' are mutually exclusive.
 % For all other features except protrusion, these prefixed lists will be ignored.
-%\looseness=-1 ^^A layout
 %
 %
 %\subsection{Configuration files}\label{sub:config-file}
@@ -2708,6 +2714,7 @@
 % (which does not support package options) simply \cmd\input\ \file{letterspace.sty}.
 %
 %
+%\pagebreak ^^A layout
 %\section[Disabling ligatures]
 %        {Disabling ligatures \requires{\pdftex~1.30,\luatex~0.30}}
 %        \label{sec:disable-ligatures}
@@ -3137,6 +3144,7 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
+%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %Warning: pdflatex (file <ecrm1000+20>): Font <ecrm1000+20 at 1200> not found
@@ -3480,7 +3488,7 @@
 % \bibitem[\pkg{fontspec}]{fontspec}
 %   Will Robertson,
 %   \emph{The \pkg{fontspec} package: Font selection for \xe\LaTeX\ and Lua\LaTeX},
-%   27~April 2024.
+%   11~May 2024.
 %   (\ctanpkgurl{fontspec})
 %
 % \bibitem[\pkg{luaotfload}]{luaotfload}
