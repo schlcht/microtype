@@ -9676,9 +9676,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
       }{%
 %</lua-|xe-|letterspace>
 %<lua-&debug>\MT@dinfo@nl{1}{... legacy font}%
+%<lua->        \MT@ifdefined@c@T\MT@tr@feat
+%<lua->          {\MT@warning{\MT@@font\space is a legacy font.\MessageBreak
+%<lua->                Cannot disable Opentype `features' in \MT@curr@list@name}}%
 %<pdf-|lua-|letterspace>      \global\expandafter\letterspacefont\MT@lsfont\font@name\MT@letterspace@
-%<xe->   \typeout{!!!! cannot letterspace \font@name}%
-%<xe->   \MT@glet\MT@lsfont\font@name
+%<xe->        \MT@warning{\MT@@font\space is a legacy font.\MessageBreak
+%<xe->                    Cannot letterspace it}%
+%<xe->        \MT@glet\MT@lsfont\font@name
 %<lua-|xe-|letterspace>      }%
 %    \end{macrocode}
 %\changes{v2.2}{2007/06/16}{possibility to customise interword spacing}
@@ -9984,8 +9988,8 @@ microtype.add_ls = add_ls
 %<xe->                                        mapping=tex-text;%
                                        }%
               }{%
-                \MT@warning@nl{Unknown Ligatures feature `##1' in tracking list%
-                               \MessageBreak\MT@tr@c@name. Ignoring it}%
+                \MT@warning@nl{Unknown Ligatures feature `##1' in \MT@curr@list@name.
+                               Ignoring it}%
               }%
 %<xe->        }}}%
       \fi
@@ -10195,8 +10199,10 @@ microtype.add_ls = add_ls
       \MT@warning@nl{%
         Disabling (selected) ligatures is
 %<pdf->        possible since\MessageBreak pdftex 1.40.4.
-%<xe->       not possible\MessageBreak with xetex.
-        Disabling all ligatures instead}% TODO XEL
+%<pdf->        Disabling all ligatures instead%
+%<xe->        not possible with\MessageBreak xetex.
+%<xe->        Ignoring `no ligatures' key in \MT@curr@list@name
+      }%
       \MT@glet\MT@tr@noligatures\relax
     }%
   }
@@ -10686,7 +10692,8 @@ microtype.add_ls = add_ls
 %\changes{v2.3b}{2008/03/27}{fix: warning messages for unknown slots}
 %    \begin{macrocode}
       \let\MT@warn@maybe@inputenc\@empty
-      \def\MT@curr@list@name{\@backslashchar DisableLigatures}%
+      \MT@ifstreq\MT@feat{tr}\relax
+        {\def\MT@curr@list@name{\@backslashchar DisableLigatures}}%
       \MT@map@clist@c#2{%
         \MT@ifempty{##1}\relax{%
           \KV@@sp@def\@tempa{##1}\MT@get@slot
@@ -20699,7 +20706,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13320}
+% \CheckSum{13332}
 %
 % \Finale
 %
