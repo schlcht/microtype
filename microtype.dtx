@@ -7161,8 +7161,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<pdf->\MT@requires@pdftex6
 %<lua->\MT@requires@luatex3
-%<xe->\@firstoftwo
-%<pdf-|lua-|xe->  {\g@addto@macro\MT@setupfont\MT@tracking}\relax
+%<pdf-|lua->{
+%<pdf-|lua-|xe->  \g@addto@macro\MT@setupfont\MT@tracking
+%<pdf-|lua->}\relax
 \g@addto@macro\MT@setupfont{%
   \MT@check@font
   \ifMT@inlist@
@@ -9669,7 +9670,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@if@opentype@font{%
 %<debug>\MT@dinfo@nl{1}{... opentype font: \MessageBreak
 %<debug>         \expandafter\fontname\font@name}%
-%<lua-|xe->        \let\MT@tr@features\@empty
+%<lua-|xe-|letterspace>        \let\MT@tr@features\@empty
 %<lua-|xe->        \MT@ifdefined@c@T\MT@tr@feat\MT@tr@set@features
         \global\expandafter\font\MT@lsfont=\MT@ls@fontspec@font
 %<debug>\MT@dinfo@nl{2}{... -- new font: \expandafter\fontname\MT@lsfont}%
@@ -9715,12 +9716,15 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v2.2}{2007/02/23}{disable ligatures in letterspaced fonts manually
 %                           (due to change in \pdftex\ 1.40.4)}
 % Disable ligatures (not configurable in \letterspace, not possible with \xetex).
+%\changes{v3.2}{2024/05/16}{fix noligatures for OpenType fonts with \letterspace}
 %    \begin{macrocode}
       \MT@ifdefined@c@T\MT@tr@ligatures\MT@tr@noligatures
 %</pdf-|lua-|xe->
 %<*letterspace>
       % no ligatures = {f}
-      \tagcode\MT@lsfont`f=\m@ne
+      \MT@if@opentype@font
+        {\MT@lua{microtype.noligatures([[\MT@lsfont]],[[\number\numexpr`f]])}}
+        {\tagcode\MT@lsfont`f=\m@ne}%
 %</letterspace>
 %    \end{macrocode}
 % Adjust protrusion values now, and maybe later (in \cs{MT@pr@split@val})
@@ -10725,9 +10729,6 @@ microtype.add_ls = add_ls
 }
 %<pdf->}\relax
 %</pdf-|lua->
-%<*xe->
-\let\MT@noligatures@\@gobbletwo
-%</xe->
 %    \end{macrocode}
 %\end{macro}
 %\end{macro}
@@ -20706,7 +20707,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13332}
+% \CheckSum{13333}
 %
 % \Finale
 %
