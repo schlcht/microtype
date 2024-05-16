@@ -2047,6 +2047,7 @@
 %       section~\ref{sec:lettersp}).
 %       \xetex\ doesn't allow disabling ligatures selectively, instead
 %       \emph{all} ligatures will be disabled.
+%  \item[\key{features}] \dots TODO
 %\end{options}
 %
 %\ifx\lssample\undefined
@@ -3534,7 +3535,11 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
-%  \item Support for tracking/letterspacing with \xetex\ \refsection{\ref{sub:tracking}, \ref{sec:lettersp}}
+%  \item Support for tracking/letterspacing with \xetex\
+%        \refsection{\ref{sub:tracking}, \ref{sec:lettersp}}
+%  \item New key `\texttt{features}' for \cs{SetTracking} to en-/disable
+%        \pkg{fontspec} Ligatures features
+%        \refsection{\ref{sub:tracking}}
 %  \item New values `|none|' and `|all|' for the `|no ligatures|' key of
 %        \cs{SetTracking} \refsection{\ref{sub:tracking}}
 %
@@ -9664,7 +9669,10 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \MT@if@opentype@font{%
 %<debug>\MT@dinfo@nl{1}{... opentype font: \MessageBreak
 %<debug>         \expandafter\fontname\font@name}%
+%<lua-|xe->        \let\MT@tr@features\@empty
+%<lua-|xe->        \MT@ifdefined@c@T\MT@tr@feat\MT@tr@set@features
         \global\expandafter\font\MT@lsfont=\MT@ls@fontspec@font
+%<debug>\MT@dinfo@nl{2}{... -- new font: \expandafter\fontname\MT@lsfont}%
       }{%
 %</lua-|xe-|letterspace>
 %<lua-&debug>\MT@dinfo@nl{1}{... legacy font}%
@@ -9843,7 +9851,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 %<*lua-|letterspace>
 \def\MT@ls@fontspec@font{%
-  \MT@lua{microtype.add_ls([[\MT@letterspace@]])}%
+  \MT@lua{microtype.add_ls([[\MT@letterspace@]],[[\MT@tr@features]])}%
 }
 %</lua-|letterspace>
 %<*xe->
@@ -9851,11 +9859,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@ls@fontspec@font@"#1"#2\MT@nil{\MT@ls@fontspec@font@@#1::\MT@nil#2}
 \def\MT@ls@fontspec@font@@#1:#2:#3\MT@nil{%
   "#1:#2letterspace=\strip@pt\dimexpr\MT@letterspace@ pt/10\relax
-  ;-dlig;-rlig;-liga;-dlig;-clig;-hlig;"% TODO
-}%
+  ;\MT@tr@features"%
+}
 %</xe->
 %<*luafile>
-local function add_ls(k)
+local function add_ls(k,feat)
   local f = tex.fontname(font.current())
   local spec,size = match(f,'^(.+)( at .+)$')
   if not spec then spec = f end
@@ -9864,9 +9872,9 @@ local function add_ls(k)
   local ls = "kernfactor=" .. k/1000 .. ';'
   microtype.sprint(q..a..':')
   if (a == "name" or a == "file") then
-    microtype.sprint(b..':'..ls..c..q)
+    microtype.sprint(b..':'..ls..c..feat..q)
   else
-    microtype.sprint(ls..b..q)
+    microtype.sprint(ls..b..feat..q)
   end
   if size then
     microtype.sprint(size)
@@ -9926,6 +9934,7 @@ microtype.add_ls = add_ls
 % Which ligatures should we disable (empty means all, undefined none)?
 %    \begin{macrocode}
   \MT@get@tr@opt@{noligatures} {ligatures}%
+%<lua-|xe->  \MT@get@tr@opt@{features}    {feat}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9938,6 +9947,84 @@ microtype.add_ls = add_ls
 }
 %</pdf-|lua-|xe->
 %    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@tr@set@features}
+% With \luatex\ or \xetex, Ligatures features may be switched
+% on or off.
+%    \begin{macrocode}
+%<*lua-|xe->
+\def\MT@tr@set@features{%
+  \MT@map@clist@c\MT@tr@feat{%
+    \MT@ifempty{##1}\relax{%
+      \MT@if@false
+      \lowercase{\edef\@tempa{##1}}%
+      \MT@map@tlist@n{{{required}     {rlig}}
+                      {{common}       {liga}}
+                      {{contextual}   {clig}}
+                      {{rare}         {dlig}}
+                      {{discretionary}{dlig}}
+                      {{historic}     {hlig}}
+%<lua->                      {{tex}          {tlig}}
+                     }\MT@tr@set@feature@
+      \ifMT@if@\else
+%<*xe->
+        \MT@ifstreq{\@tempa}{tex}{%
+          \MT@xadd\MT@tr@features{mapping=tex-text;}%
+        }{%
+          \MT@ifstreq{\@tempa}{texoff}{%
+            \MT@xadd\MT@tr@features{mapping=;}%
+          }{%
+            \MT@ifstreq{\@tempa}{notex}{%
+              \MT@xadd\MT@tr@features{mapping=;}%
+            }{%
+%</xe->
+              \MT@ifstreq{\@tempa}{resetall}{%
+                \MT@xadd\MT@tr@features{+dlig;-dlig;+rlig;-rlig;+liga;-liga;+clig;-clig;+hlig;-hlig;%
+%<lua->                                        +tlig,-tlig;%
+%<xe->                                        mapping=tex-text;%
+                                       }%
+              }{%
+                \MT@warning@nl{Unknown Ligatures feature `##1' in tracking list%
+                               \MessageBreak\MT@tr@c@name. Ignoring it}%
+              }%
+%<xe->        }}}%
+      \fi
+    }%
+  }%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@tr@set@feature@}
+%\begin{macro}{\MT@tr@set@feature@@}
+%    \begin{macrocode}
+\def\MT@tr@set@feature@#1{%
+  \MT@tr@set@feature@@#1%
+}
+\def\MT@tr@set@feature@@#1#2{%
+  \MT@ifstreq\@tempa{#1}{%
+    \MT@tr@set@feature@@@{+#2}%
+  }{%
+    \MT@ifstreq\@tempa{#1off}{%
+      \MT@tr@set@feature@@@{-#2}%
+    }{%
+      \MT@ifstreq\@tempa{no#1}{%
+        \MT@tr@set@feature@@@{-#2}%
+      }{%
+        \MT@ifstreq\@tempa{#1reset}{%
+          \MT@tr@set@feature@@@{+#2;-#2}%
+        }\relax
+      }%
+    }%
+  }%
+}
+\def\MT@tr@set@feature@@@#1{%
+  \MT@xadd\MT@tr@features{#1;}%
+  \MT@if@true
+  \MT@tlist@break
+}
+%</lua-|xe->
+%    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@set@lsfont}
 % Redefine \cmd\font@name, which will be called a second later (in
@@ -10601,17 +10688,19 @@ microtype.add_ls = add_ls
       \let\MT@warn@maybe@inputenc\@empty
       \def\MT@curr@list@name{\@backslashchar DisableLigatures}%
       \MT@map@clist@c#2{%
-        \KV@@sp@def\@tempa{##1}\MT@get@slot
-        \ifnum\MT@char>\m@ne
-          \tagcode#1\MT@char=\m@ne
+        \MT@ifempty{##1}\relax{%
+          \KV@@sp@def\@tempa{##1}\MT@get@slot
+          \ifnum\MT@char>\m@ne
+            \tagcode#1\MT@char=\m@ne
 %    \end{macrocode}
 % With \luatex, we additionally register the ligatures that should be inhibited
 % in a table (used by the \pkg{luaotfload} function |keepligature|).
 %\changes{v2.6}{2016/04/20}{use \pkg{luaotfload} function to keep\slash inhibit ligatures}
 %    \begin{macrocode}
-%<lua->          \MT@if@opentype@font
-%<lua->             {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
-        \fi
+%<lua->            \MT@if@opentype@font
+%<lua->               {\MT@lua{microtype.noligatures([[#1]],[[\MT@char]])}}\relax
+          \fi
+        }%
       }%
       \MT@vinfo{... Disabling ligatures for characters: #2}%
     }{%
@@ -13299,6 +13388,8 @@ end
 %                           to adjust interword spacing
 %                           (suggested by \contributor Steven~E. Harris <seh\at panix.com>)}
 %                                                             ^^A private mail, 2007/06/15
+%\changes{v3.2}{2024/05/15}{new key `\texttt{features}' to en-\slash disable \pkg{fontspec}
+%                           features (\luatex\ or \xetex)}
 %    \begin{macrocode}
 %<*pdf-|lua-|xe->
 \def\SetTracking{%
@@ -13759,6 +13850,7 @@ end
 \MT@define@opt@key{tr}{spacing}
 \MT@define@opt@key{tr}{outerspacing}
 \MT@define@opt@key{tr}{outerkerning}
+\MT@define@opt@key{tr}{features}
 %    \end{macrocode}
 % Which ligatures should be disabled?
 %    \begin{macrocode}
@@ -16567,20 +16659,27 @@ end
 %\changes{v2.2}{2007/02/23}{add ligatures that are to be disabled}
 %\changes{v2.5}{2011/09/07}{add <EU2> encoding to default list} ^^A (beta:09)
 %\changes{v2.6}{2016/04/22}{add <TU> encoding to default list}
-%\changes{v3.2}{2024/05/13}{no \texttt{no ligatures} with \xetex}
 % By default, we only disable the `f*' ligatures, for those fonts that have
 % any. Thus, ligatures and especially kerning for all other characters will be
 % retained.
+%\changes{v3.2}{2024/05/13}{\texttt{features} instead of \texttt{no ligatures} with \xetex}
+% With \xetex, we reset all ligatures (keeping only the \TeX\ pseudo-ligatures).
 %    \begin{macrocode}
 %<*m-t>
 %%% -----------------------------------------------------------------------
 %%% TRACKING/LETTERSPACING
 
 \ifx\XeTeXrevision\@undefined
-\SetTracking
+\SetTracking % pdftex/luatex
   [ name         = default,
     no ligatures = {f} ]
   { encoding     = {OT1,T1,T2A,LY1,OT4,QX,EU2,TU} }
+  { }
+\else
+\SetTracking % xetex
+  [ name         = default,
+    features     = {ResetAll} ]
+  { encoding     = {EU1,TU} }
   { }
 \fi
 
@@ -20600,7 +20699,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13244}
+% \CheckSum{13320}
 %
 % \Finale
 %
