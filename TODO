@@ -7,7 +7,6 @@
 %%<luatex-def>    \MT@if@fontspec@font{\advance\@tempdima \dimexpr\MT@letterspace@ sp*\MT@dimen@six/1000\relax}\relax
 * what to do about lualatex -ini ?
 * fix (outer) spacing with luatex
-* make tracking work with xetex (shouldn't be a problem?)
 ---
 % from Vadim Radionov <@>
 % http://tex.stackexchange.com/questions/149165/microtype-and-word-spacing
