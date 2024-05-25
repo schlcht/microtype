@@ -13290,19 +13290,27 @@ end
 %\subsubsection{Interaction with \pkg{babel}}
 %
 %\begin{macro}{\DeclareMicrotypeBabelHook}
+%\changes{v2.0}{2005/10/04}{new command: interaction with \pkg{babel}} ^^A (beta:1)
+%\changes{v3.2}{2024/05/25}{make catcode-safe}
+%\begin{macro}{\MT@DeclareMicrotypeBabelHook}
 % Declare the context that should be loaded when a \pkg{babel} language
 % is selected. The command will not check whether a previous declaration will
 % be overwritten.
-%\changes{v2.0}{2005/10/04}{new command: interaction with \pkg{babel}} ^^A (beta:1)
 %    \begin{macrocode}
 %<*package>
-\def\DeclareMicrotypeBabelHook#1#2{%
+\def\DeclareMicrotypeBabelHook{%
+  \MT@begin@catcodes
+  \MT@DeclareMicrotypeBabelHook
+}
+\def\MT@DeclareMicrotypeBabelHook#1#2{%
   \MT@map@clist@n{#1}{%
     \KV@@sp@def\@tempa{##1}%
     \MT@gdef@n{MT@babel@\@tempa}{#2}%
   }%
+  \MT@end@catcodes
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %
 %
@@ -20727,7 +20735,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13336}
+% \CheckSum{13341}
 %
 % \Finale
 %
