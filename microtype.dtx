@@ -3547,7 +3547,7 @@
 %  \item Support for tracking/letterspacing with \xetex\
 %        \refsection{\ref{sub:tracking}, \ref{sec:lettersp}}
 %  \item New key `\texttt{features}' for \cs{SetTracking} to en-/disable
-%        \pkg{fontspec} Ligatures features
+%        \pkg{fontspec} Ligatures features (\luatex/\xetex\ only)
 %        \refsection{\ref{sub:tracking}}
 %  \item New values `|none|' and `|all|' for the `|no ligatures|' key of
 %        \cs{SetTracking} \refsection{\ref{sub:tracking}}
@@ -8658,7 +8658,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %  \item
-%\begin{macro}{\MT@prot@check@X}
+%\begin{macro}{\MT@prot@check@O}
 % Add a command with \textbf{O}ne argument.
 %    \begin{macrocode}
 \def\MT@prot@check@O{%
@@ -8918,7 +8918,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \IfFormatAtLeastTF{2020/02/02}\relax
         {\g@addto@macro\MT@prot@check@cmds{%
           {S\swshape}{S\ulcshape}{S\sscshape}%
-          {F\textulc}{F\textsw}{F\textssc}}}}
+          {F\textulc}{F\textsw}{F\textssc}}}}%
+%    \end{macrocode}
+% \pkg{fontspec}'s \cmd\fontspec's command allows an optional
+% argument \emph{after} the mandatory one, and we can't deal with
+% that (yet).
+%\changes{v3.2}{2024/05/22}{add some \pkg{fontspec} commands}
+%    \begin{macrocode}
+  \MT@with@package@T{fontspec}
+    {\g@addto@macro\MT@prot@check@cmds{%
+      {O\addfontfeature}{O\addfontfeatures}{F\strong}}}%
 %    \end{macrocode}
 % The \pkg{nfssext-cfr} package (an extension of the \pkg{nfssext} package,
 % which is part of Philipp Lehman's \pkg{fontinstallationguide} but was never
@@ -8949,7 +8958,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {F\textmb}{F\textdb}{F\textsb}{F\texteb}%
       {F\textub}{F\textlg}{F\textel}{F\textul}}%
       \IfFormatAtLeastTF{2020/02/02}\relax
-        {\g@addto@macro\MT@prot@check@cmds{{S\swshape}{F\textsw}}}}
+        {\g@addto@macro\MT@prot@check@cmds{{S\swshape}{F\textsw}}}}%
 %    \end{macrocode}
 % If \pkg{yfonts} is loaded, we add the relevant commands.
 %    \begin{macrocode}
@@ -20719,7 +20728,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13333}
+% \CheckSum{13339}
 %
 % \Finale
 %
