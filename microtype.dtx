@@ -2020,8 +2020,8 @@
 %       by default equal to the current letterspace amount. To remove kerning on
 %       both sides, you would write `|outer kerning={0,0}|'.
 %  \item[\key{no ligatures}]
-%       By default, ligatures in letterspaced fonts will be
-%       constructed as usual, which may be advisable when changing the
+%       In the absence of this option, ligatures in letterspaced fonts would
+%       be constructed as usual, which may be advisable when changing the
 %       tracking by only a small amount. For larger letterspacing amounts, on
 %       the other hand, the normal letter space within ligatures would have
 %       displeasing \textls[150]{e\lslig{ff}ects}.
@@ -2035,8 +2035,8 @@
 %       there is no such limitation.)
 %       Given the value `|none|', none of the ligatures will be disabled,
 %       or, put positively, all of the font's ligatures will stay intact.
-%       The default settings disable ligatures for the character `|f|' only,
-%       \ie, `ff', `fi', ffi', etc.
+%       The default settings (in \file{microtype.cfg}) disable ligatures
+%       for the character `|f|' only, \ie, `ff', `fi', ffi', etc.
 %     ^^A\footnote{
 %     ^^A    With \pdftex\ versions older than 1.40.4, \emph{all} ligatures, and
 %     ^^A    hence all kerning, will be disabled. It is therefore recommended to
@@ -3399,9 +3399,10 @@
 %  \contributor Linas Stonys      <lstonys\at vtex.lt>,
 % `\contributor user202729        <@\at @>', ^^A https://tex.stackexchange.com/users/250119/user202729
 %  \contributor Oliver Beery      <@\at @>,  ^^A https://github.com/beeryoliver
-%  \contributor Bernhard Fisseni  <@\at @>   ^^A https://github.com/teoric
+%  \contributor Bernhard Fisseni  <@\at @>,  ^^A https://github.com/teoric
+%  \contributor Aleksandr Petrosyan <@\at @> ^^A https://github.com/appetrosyan
 % and
-%  \contributor Aleksandr Petrosyan <@\at @>. ^^A https://github.com/appetrosyan
+%  \contributor Didier Verna      <@\at @>.  ^^A https://tex.stackexchange.com/users/24506/didier-verna
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3483,7 +3484,7 @@
 %
 % \bibitem[\LaTeXe\ font selection]{fntguide}
 %   \LaTeX\ Project Team, \emph{\LaTeXe\ font selection},
-%   October 2023.
+%   March 2024.
 %   (\ctanurl{macros/latex/base/fntguide.pdf})
 %
 % \bibitem[\pkg{fontspec}]{fontspec}
@@ -3546,8 +3547,8 @@
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
 %  \item Support for tracking/letterspacing with \xetex\
 %        \refsection{\ref{sub:tracking}, \ref{sec:lettersp}}
-%  \item New key `\texttt{features}' for \cs{SetTracking} to en-/disable
-%        \pkg{fontspec} Ligatures features (\luatex/\xetex\ only)
+%  \item New key `\texttt{features}' for \cs{SetTracking} to enable\slash disable
+%        \pkg{fontspec} `Ligatures' features (\luatex/\xetex\ only)
 %        \refsection{\ref{sub:tracking}}
 %  \item New values `|none|' and `|all|' for the `|no ligatures|' key of
 %        \cs{SetTracking} \refsection{\ref{sub:tracking}}
