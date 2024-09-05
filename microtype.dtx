@@ -3400,9 +3400,10 @@
 % `\contributor user202729        <@\at @>', ^^A https://tex.stackexchange.com/users/250119/user202729
 %  \contributor Oliver Beery      <@\at @>,  ^^A https://github.com/beeryoliver
 %  \contributor Bernhard Fisseni  <@\at @>,  ^^A https://github.com/teoric
-%  \contributor Aleksandr Petrosyan <@\at @> ^^A https://github.com/appetrosyan
+%  \contributor Aleksandr Petrosyan <@\at @>,^^A https://github.com/appetrosyan
+%  \contributor Didier Verna      <@\at @>   ^^A https://tex.stackexchange.com/users/24506/didier-verna
 % and
-%  \contributor Didier Verna      <@\at @>.  ^^A https://tex.stackexchange.com/users/24506/didier-verna
+% `\contributor nowox             <@\at @>.  ^^A https://tex.stackexchange.com/users/85416/nowox
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -8781,6 +8782,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A private mail, 2023/03/13
 %\changes{v3.1b}{2024/03/29}{fix: failed when group began with another command
 %                            \githubissue{31}}
+%\changes{v3.2}{2024/09/03}{fix: add \cmd\relax\ (reported by \contributor nowox <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/725639/insert-monospace-text-at-the-beginning-of-item-while-using-microtype
 % Here we deal with \textbf{F}ont switching commands (\ie, text commands,
 % which take an argument).
 % We (a) remember the text command, (b) save the full text,
@@ -8800,7 +8803,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       \the\MT@toks
       \MT@toks{}%
       \MT@prot@toks{##1{##2}}%
-      \MT@prot@get@firstgroup@tc##2\MT@nil
+      \MT@prot@get@firstgroup@tc##2\@empty\MT@nil
     }%
   \fi
 }
@@ -8833,7 +8836,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \def\MT@prot@check@C@#1[#2]#3{%
   \def\MT@maybe@textcmd{#1[#2]}%
   \MT@prot@toks{#1[#2]{#3}}%
-  \MT@prot@get@firstgroup@tc#3\MT@nil
+  \MT@prot@get@firstgroup@tc#3\@empty\MT@nil
 }
 %    \end{macrocode}
 %\end{macro}
@@ -20736,7 +20739,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13341}
+% \CheckSum{13343}
 %
 % \Finale
 %
