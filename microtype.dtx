@@ -2634,7 +2634,7 @@
 %
 %
 %\section[Letterspacing revisited]
-%        {Letterspacing revisited \requires{\pdftex~1.40,\luatex~0.62}}
+%        {Letterspacing revisited \requires{\pdftex~1.40,\luatex~0.62,\xetex~0.9997}}
 %        \label{sec:lettersp} ^^A [also referenced in microtype.ins]
 %
 %\Describe{Macro}{\textls}{?amount,general text}
@@ -3400,10 +3400,10 @@
 % `\contributor user202729        <@\at @>', ^^A https://tex.stackexchange.com/users/250119/user202729
 %  \contributor Oliver Beery      <@\at @>,  ^^A https://github.com/beeryoliver
 %  \contributor Bernhard Fisseni  <@\at @>,  ^^A https://github.com/teoric
-%  \contributor Aleksandr Petrosyan <@\at @>,^^A https://github.com/appetrosyan
+%  \contributor Aleksandr Petrosyan <@\at @>, ^^A https://github.com/appetrosyan
 %  \contributor Didier Verna      <@\at @>   ^^A https://tex.stackexchange.com/users/24506/didier-verna
 % and
-% `\contributor nowox             <@\at @>.  ^^A https://tex.stackexchange.com/users/85416/nowox
+% `\contributor nowox             <@\at @>'. ^^A https://tex.stackexchange.com/users/85416/nowox
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -8782,8 +8782,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            ^^A private mail, 2023/03/13
 %\changes{v3.1b}{2024/03/29}{fix: failed when group began with another command
 %                            \githubissue{31}}
-%\changes{v3.2}{2024/09/03}{fix: add \cmd\relax\ (reported by \contributor nowox <@\at @>)}
+%\changes{v3.2}{2024/09/03}{fix: add \cmd\@empty\ (reported by \contributor nowox <@\at @>)}
 %                            ^^A https://tex.stackexchange.com/questions/725639/insert-monospace-text-at-the-beginning-of-item-while-using-microtype
+%\begin{macro}{\MT@prot@check@F@@}
 % Here we deal with \textbf{F}ont switching commands (\ie, text commands,
 % which take an argument).
 % We (a) remember the text command, (b) save the full text,
@@ -8798,15 +8799,46 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \else
     \let\MT@prot@l\MT@prot@l@tc
     \let\MT@prot@get@first@group\MT@prot@get@first@group@tc
-    \def\MT@temp*##1##2{%
-      \let\MT@maybe@textcmd##1%
+    \def\MT@temp*##1{%
       \the\MT@toks
       \MT@toks{}%
-      \MT@prot@toks{##1{##2}}%
-      \MT@prot@get@firstgroup@tc##2\@empty\MT@nil
+      \MT@prot@check@F@##1%
     }%
   \fi
 }
+\def\MT@prot@check@F@@#1#2{%
+  \let\MT@maybe@textcmd#1%
+  \MT@prot@toks{#1{#2}}%
+  \MT@prot@get@firstgroup@tc#2\@empty\MT@nil
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@F@beamer}
+%\changes{v3.2}{2024/10/02}{compatibility with \cls{beamer}'s overlay specifications \githubissue{38}}
+%\begin{macro}{\MT@prot@check@F@beamer@}
+% Compatibility with the \cls{beamer} class and its overlay specifications
+% (\eg, |\textbf<2>{...}|).
+%    \begin{macrocode}
+\def\MT@prot@check@F@beamer#1{%
+  \@ifnextchar<%
+    {\MT@prot@check@F@beamer@#1}%
+    {\MT@prot@check@F@@#1}%
+}
+\def\MT@prot@check@F@beamer@#1<#2>#3{%
+  \def\MT@maybe@textcmd{#1<#2>}%
+  \MT@prot@toks{#1<#2>{#3}}%
+  \MT@prot@get@firstgroup@tc#3\@empty\MT@nil
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@check@F@}
+% Choose the right definition.
+%    \begin{macrocode}
+\@ifclassloaded{beamer}
+  {\let\MT@prot@check@F@\MT@prot@check@F@beamer}
+  {\let\MT@prot@check@F@\MT@prot@check@F@@}
 %    \end{macrocode}
 %\end{macro}
 %  \item
@@ -8850,6 +8882,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.1}{2023/01/07}{add \cmd\em}
 %\changes{v3.1}{2023/03/06}{add \cmd\MakeUppercase\ and friends}
 % And here's the list of commands that we can deal with.
+% (It's a bit of a shame that \cs{textls} is not among them.)
 %    \begin{macrocode}
 \def\MT@prot@check@cmds{%
   {I\ignorespaces}{I\relax}{I\@empty}%
@@ -8884,13 +8917,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % The \cls{ltxdoc} class and the \pkg{doc} package provide some abbreviations.
 % Unfortunately, the \cmd\cmd\ command doesn't work.
 %\changes{v3.1}{2022/12/04}{add \cls{ltxdoc} and \pkg{doc} abbreviations}
-%\changes{v3.2}{2024/04/24}{add \pkg{color}'s \cmd\color\ command}
 %    \begin{macrocode}
 \@ifclassloaded{ltxdoc}
   {\g@addto@macro\MT@prot@check@cmds{{E\enquote}{E\marg}{E\oarg}{E\parg}{E\cs}}}\relax
+%    \end{macrocode}
+% Add \cmd\color\ (but not yet \cmd\textcolor).
+%\changes{v3.2}{2024/04/24}{add \pkg{color}'s \cmd\color\ command}
+% We also don't yet understand \pkg{beamer}'s |<.-.>| notation added to \cmd\color.
+%    \begin{macrocode}
 \MT@addto@setup{%
   \MT@with@package@T{color}
-    {\g@addto@macro\MT@prot@check@cmds{{o\color}}}%
+    {\@ifclassloaded{beamer}\relax{\g@addto@macro\MT@prot@check@cmds{{o\color}}}}%
 %    \end{macrocode}
 % \pkg{csquotes}'s \cmd\enquote\ command.
 % It would take precedence over the one provided by \cls{ltxdoc}.
@@ -20739,7 +20776,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13343}
+% \CheckSum{13368}
 %
 % \Finale
 %

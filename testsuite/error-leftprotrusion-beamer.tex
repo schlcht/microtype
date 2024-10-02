@@ -1,0 +1,23 @@
+% github/38
+\documentclass{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[verbose]{microtype}
+%\microtypesetup{nopatch=item}
+
+\begin{document}
+\begin{frame}{Overlays}{test}
+
+\begin{itemize}
+  \item \textbf {--- Bold}
+  \item \only<1>{---Ok} ---or not
+  \item \textbf<2->{---Fail} ---or not
+  \item \color<3>[rgb]{1,0,0}{---red on 3}
+  \item \color[rgb]{1,0,0}{---red}
+\end{itemize}
+
+\leftprotrusion\textbf<1>{Bye}
+
+\end{frame}
+
+\end{document}
