@@ -5,7 +5,7 @@
   \usepackage[T1]{fontenc}
 \fi
 \usepackage[verbose]{microtype}
-\usepackage{csquotes}
+\usepackage{csquotes,color}
 \usepackage{listings,verbatim,fancyvrb,hyperref}
 \MakeAutoQuote{“}{”}
 \MakeOuterQuote{"}
@@ -30,9 +30,15 @@
 	Test
 \end{abstract}
 
+\rightprotrusion{\sffamily--abc def--}
+
 \leftprotrusion{\sffamily--abc\par def--}
 
-\rightprotrusion{\sffamily--abc def--}
+{\leftprotrusion\color[rgb]{1,0.2,0.3}-- rgb}
+
+{\leftprotrusion\color{red}-- red}
+
+\leftprotrusion\textcolor{red}{-- text} % doesn't work yet
 
 % the following cases will not be protruded
 \def\xxx{--abc\par def--}
