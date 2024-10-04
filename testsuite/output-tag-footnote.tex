@@ -1,0 +1,30 @@
+% github/40
+\DocumentMetadata{
+  lang        = de,
+  pdfversion  = 2.0,
+  pdfstandard = ua-2,
+  pdfstandard = a-4f, %or a-4
+  testphase   = 
+   {phase-III,
+    title,
+    table,
+    math,
+    firstaid}  
+}
+\tracingoutput1
+\showboxbreadth1000
+\showboxdepth1000
+
+\documentclass{article}
+
+\usepackage{microtype}
+
+\title{test title}
+
+\begin{document}
+
+Simple text\footnote{--- proof}
+
+\end{document}
+
+! grep 'Unable to apply patch'

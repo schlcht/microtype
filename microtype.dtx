@@ -3401,9 +3401,10 @@
 %  \contributor Oliver Beery      <@\at @>,  ^^A https://github.com/beeryoliver
 %  \contributor Bernhard Fisseni  <@\at @>,  ^^A https://github.com/teoric
 %  \contributor Aleksandr Petrosyan <@\at @>, ^^A https://github.com/appetrosyan
-%  \contributor Didier Verna      <@\at @>   ^^A https://tex.stackexchange.com/users/24506/didier-verna
+%  \contributor Didier Verna      <@\at @>,  ^^A https://tex.stackexchange.com/users/24506/didier-verna
+% `\contributor nowox             <@\at @>'  ^^A https://tex.stackexchange.com/users/85416/nowox
 % and
-% `\contributor nowox             <@\at @>'. ^^A https://tex.stackexchange.com/users/85416/nowox
+% `\contributor hpvd              <@\at @>'. ^^A https://github.com/hpvd
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -7012,6 +7013,24 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/05/25}{protrusion patch for footnote text}^^A
 %\changes{v3.0c}{2022/01/21}{protrusion patch \texttt{footnote}: also for minipages}^^A
 % \begin{itemize}
+%   \item The new footnote code (in \file{latex-lab-footnotes.ltx}), which is meant
+%         to facilitate tagging, introduces many hooks, among them |fntext/begin|, which
+%         would seem appropriate for us. Unfortunately, however, we cannot use it, as we'd
+%         stumble over the hook management itself.
+%         I think it's unnecessary to patch the |expl3| version too, but I suppose
+%         it won't do any harm either.
+%         There's no new code for footnotes in minipages at the moment.
+%\changes{v3.2}{2024/10/03}{fix protrusion patch \texttt{footnote} for tagging
+%                           (reported by \contributor `hpvd' <@\at @>) \githubissue{40}}
+%    \begin{macrocode}
+  \MT@define@patch{footnote}{%
+    \MT@ifdefined@n@TF{fnote_footnotetext:n}
+      {\ExplSyntaxOn
+       \MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@exp@cs\MT@patch@patch{fnote_footnotetext:n}{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+       \ExplSyntaxOff}
+%    \end{macrocode}
 %   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|,
 %         |implicit=true| and \cmd\hyper@nopatch@footnote\ is undefined)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
@@ -7021,8 +7040,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/21}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
 %                            if \cmd\hyper@nopatch@footnote\ is defined}
 %    \begin{macrocode}
-  \MT@define@patch{footnote}{%
-    \@ifpackageloaded{hyperref}
+      {\@ifpackageloaded{hyperref}
         {\MT@if@false
          \ifHy@implicit
            \ifHy@hyperfootnotes
@@ -7068,12 +7086,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \item the base classes
 %    \begin{macrocode}
             {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
-           \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}%
+           \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|verbatim|] disable all microtypographic extensions in
-%                    verbatim blocks. (This could have been a nice opportunity
+%                    verbatim blocks. (This could have been another nice opportunity
 %                    to use the new \LaTeX\ hook management, however, the hook
 %                    here is executed too early -- namely, before the |\par| in
 %                    \cmd\@verbatim, which may result in spilling the
@@ -8815,7 +8833,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@prot@check@F@beamer}
-%\changes{v3.2}{2024/10/02}{compatibility with \cls{beamer}'s overlay specifications \githubissue{38}}
+%\changes{v3.2}{2024/10/02}{compatibility with \cls{beamer}'s overlay specifications
+%                           (reported by \contributor Frank Mittelbach <frank.mittelbach\at latex-project.org>) \githubissue{38}}
 %\begin{macro}{\MT@prot@check@F@beamer@}
 % Compatibility with the \cls{beamer} class and its overlay specifications
 % (\eg, |\textbf<2>{...}|).
@@ -20776,7 +20795,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13368}
+% \CheckSum{13386}
 %
 % \Finale
 %
