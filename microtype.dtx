@@ -8639,6 +8639,148 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\end{macro}
 %\end{macro}
+%\begin{macro}{\MT@prot@get@first@group}
+%\begin{macro}{\MT@prot@get@first@group@}
+% If next char is |{|, start a group and try again, else continue until
+% we find a beginning char.
+%    \begin{macrocode}
+\def\MT@prot@get@first@group@{%
+  \MT@prot@ifcat\bgroup{%
+    \def\MT@temp*{\MT@prot@addgroup}%
+  }{%
+    \def\MT@temp*{\MT@prot@get@first@token}%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
+%\end{macro}
+%\begin{macro}{\MT@prot@get@first@group@tc}
+% The variant for text commands (in case they start with another group).
+%    \begin{macrocode}
+\def\MT@prot@get@first@group@tc{%
+  \MT@prot@ifcat\bgroup{%
+    \def\MT@temp*##1##2\MT@nil{\MT@ifempty{##1}\relax
+          {{\MT@prot@get@firstgroup@tc##1\MT@nil}}}%
+  }{%
+    \def\MT@temp*{\MT@prot@get@first@token}%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@get@first@token}
+%\changes{v3.0e}{2022/06/15}{don't gobble previously captured content}
+%\changes{v3.1}{2023/03/06}{expand toks once}
+% This can be called repeatedly.
+% We add a letter or other character, \dots
+%    \begin{macrocode}
+\def\MT@prot@get@first@token{%
+  \def\MT@temp*{\MT@exp@one@n\MT@ifempty{\the\MT@toks}
+      {\MT@exp@one@n\MT@ifempty{\the\MT@prot@toks}\relax{\the\MT@prot@toks\MT@gobble@to@nil}}
+      {\MT@exp@one@n\MT@prot@l{\the\MT@toks}}}%
+  \MT@prot@ifcat{a}{%
+    \def\MT@temp*{\MT@prot@addtoken@first}%
+  }{%
+    \MT@prot@ifcat{!}{%
+      \def\MT@temp*{\MT@prot@addtoken@first}%
+    }{%
+%    \end{macrocode}
+% a space character, \dots
+%    \begin{macrocode}
+      \MT@prot@ifx\@sptoken{%
+        \def\MT@temp* {\MT@prot@get@firstgroup}%
+      }{%
+%    \end{macrocode}
+% commands, \dots
+%    \begin{macrocode}
+        \let\MT@prot@ifmacro\MT@prot@ifmacro@
+        \MT@map@tlist@c\MT@prot@check@cmds\MT@prot@check
+%    \end{macrocode}
+% \dots~or a command/active char whose first command is one of the following:
+%    \begin{macrocode}
+        \MT@prot@ifmacro{%
+          \MT@prot@iffirstcmd\UTFviii@two@octets{%
+            \def\MT@temp*##1##2{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2}}%
+          }{%
+            \MT@prot@iffirstcmd\UTFviii@three@octets{%
+              \def\MT@temp*##1##2##3{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2##3}}%
+            }{%
+              \MT@prot@iffirstcmd\UTFviii@four@octets{%
+                \def\MT@temp*##1##2##3##4{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2##3##4}}%
+              }{%
+%    \end{macrocode}
+% (this is for chars made active by \pkg{csquotes}, via \cmd\MakeAutoQuote\ or
+% \cmd\MakeOuterQuote)
+%    \begin{macrocode}
+                \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1}}}{%
+%    \end{macrocode}
+% or, finally, a <LICR> command.
+%    \begin{macrocode}
+                  \MT@prot@iflicrcmd
+                }%
+              }%
+            }%
+          }%
+        }%
+      }%
+    }%
+  }%
+  \MT@temp*%
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@addtoken@first}
+% Begin filling toks.
+%    \begin{macrocode}
+\def\MT@prot@addtoken@first#1{%
+  \MT@toks\expandafter{\the\MT@toks#1}%
+  \MT@prot@get@nexttoken
+}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@get@next@token}
+% Continue if letter or other.
+%    \begin{macrocode}
+\def\MT@prot@get@next@token{%
+  \def\MT@temp*{\MT@prot@addtoken@next}%
+  \MT@prot@ifcat{a}\relax{%
+    \MT@prot@ifcat{!}\relax{%
+      \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
+    }%
+  }%
+  \MT@temp*%
+}
+%</package>
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\MT@prot@addtoken@next}
+% Add token to our toks and test whether we've seen enough (ligature completed).
+% For luatex, we have to jump through another hoop (\ie, box), because, contrary
+% to the manual, \cmd\lastnodetype\ isn't really compatible. ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-August/006536.html et seqq.
+%\changes{v3.2}{2024/04/24}{make color-safe}
+%    \begin{macrocode}
+%<*pdf-|lua-|xe->
+\def\MT@prot@addtoken@next#1{%
+  \MT@toks\expandafter{\the\MT@toks#1}%
+  \setbox\MT@tempbox\hbox{%
+    \begingroup
+%    \end{macrocode}
+% We disable italic correction, which would prevent us from
+% seeing the ligature (with text commands).
+%    \begin{macrocode}
+    \let\maybe@ic\relax
+    \MT@exp@one@n\MT@maybe@textcmd{\the\MT@toks}%
+%<pdf-|xe->    \relax
+    \endgroup
+%<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
+    \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
+      \MT@prot@get@nexttoken
+      {\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
+}
+%</pdf-|lua-|xe->
+%    \end{macrocode}
+%\end{macro}
 %\begin{macro}{\MT@prot@check}
 %\changes{v3.1}{2022/12/17}{allow replacement command}
 %\begin{macro}{\MT@prot@check@}
@@ -8646,6 +8788,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % \meta{\#3} will be \cmd\relax\ by default, but can also indicate
 % a replacement command.
 %    \begin{macrocode}
+%<*package>
 \def\MT@prot@check#1{\MT@prot@check@#1\relax\@nil}
 \def\MT@prot@check@#1#2#3\@nil{%
   \ifx\MT@prot@next#2%
@@ -9026,148 +9169,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {S\frakfamily}{S\swabfamily}{S\gothfamily}%
       {F\textfrak}{F\textswab}{F\textgoth}}}%
 }
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@get@first@group}
-%\begin{macro}{\MT@prot@get@first@group@}
-% If next char is |{|, start a group and try again, else continue until
-% we find a beginning char.
-%    \begin{macrocode}
-\def\MT@prot@get@first@group@{%
-  \MT@prot@ifcat\bgroup{%
-    \def\MT@temp*{\MT@prot@addgroup}%
-  }{%
-    \def\MT@temp*{\MT@prot@get@first@token}%
-  }%
-  \MT@temp*%
-}
-%    \end{macrocode}
-%\end{macro}
-%\end{macro}
-%\begin{macro}{\MT@prot@get@first@group@tc}
-% The variant for text commands (in case they start with another group).
-%    \begin{macrocode}
-\def\MT@prot@get@first@group@tc{%
-  \MT@prot@ifcat\bgroup{%
-    \def\MT@temp*##1##2\MT@nil{\MT@ifempty{##1}\relax
-          {{\MT@prot@get@firstgroup@tc##1\MT@nil}}}%
-  }{%
-    \def\MT@temp*{\MT@prot@get@first@token}%
-  }%
-  \MT@temp*%
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@get@first@token}
-%\changes{v3.0e}{2022/06/15}{don't gobble previously captured content}
-%\changes{v3.1}{2023/03/06}{expand toks once}
-% This can be called repeatedly.
-% We add a letter or other character, \dots
-%    \begin{macrocode}
-\def\MT@prot@get@first@token{%
-  \def\MT@temp*{\MT@exp@one@n\MT@ifempty{\the\MT@toks}
-      {\MT@exp@one@n\MT@ifempty{\the\MT@prot@toks}\relax{\the\MT@prot@toks\MT@gobble@to@nil}}
-      {\MT@exp@one@n\MT@prot@l{\the\MT@toks}}}%
-  \MT@prot@ifcat{a}{%
-    \def\MT@temp*{\MT@prot@addtoken@first}%
-  }{%
-    \MT@prot@ifcat{!}{%
-      \def\MT@temp*{\MT@prot@addtoken@first}%
-    }{%
-%    \end{macrocode}
-% a space character, \dots
-%    \begin{macrocode}
-      \MT@prot@ifx\@sptoken{%
-        \def\MT@temp* {\MT@prot@get@firstgroup}%
-      }{%
-%    \end{macrocode}
-% commands, \dots
-%    \begin{macrocode}
-        \let\MT@prot@ifmacro\MT@prot@ifmacro@
-        \MT@map@tlist@c\MT@prot@check@cmds\MT@prot@check
-%    \end{macrocode}
-% \dots~or a command/active char whose first command is one of the following:
-%    \begin{macrocode}
-        \MT@prot@ifmacro{%
-          \MT@prot@iffirstcmd\UTFviii@two@octets{%
-            \def\MT@temp*##1##2{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2}}%
-          }{%
-            \MT@prot@iffirstcmd\UTFviii@three@octets{%
-              \def\MT@temp*##1##2##3{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2##3}}%
-            }{%
-              \MT@prot@iffirstcmd\UTFviii@four@octets{%
-                \def\MT@temp*##1##2##3##4{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1##2##3##4}}%
-              }{%
-%    \end{macrocode}
-% (this is for chars made active by \pkg{csquotes}, via \cmd\MakeAutoQuote\ or
-% \cmd\MakeOuterQuote)
-%    \begin{macrocode}
-                \MT@prot@iffirstcmd\csqQQ{\def\MT@temp*##1{\MT@exp@one@n\MT@prot@l{\the\MT@toks##1}}}{%
-%    \end{macrocode}
-% or, finally, a <LICR> command.
-%    \begin{macrocode}
-                  \MT@prot@iflicrcmd
-                }%
-              }%
-            }%
-          }%
-        }%
-      }%
-    }%
-  }%
-  \MT@temp*%
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@addtoken@first}
-% Begin filling toks.
-%    \begin{macrocode}
-\def\MT@prot@addtoken@first#1{%
-  \MT@toks\expandafter{\the\MT@toks#1}%
-  \MT@prot@get@nexttoken
-}
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@get@next@token}
-% Continue if letter or other.
-%    \begin{macrocode}
-\def\MT@prot@get@next@token{%
-  \def\MT@temp*{\MT@prot@addtoken@next}%
-  \MT@prot@ifcat{a}\relax{%
-    \MT@prot@ifcat{!}\relax{%
-      \def\MT@temp*{\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
-    }%
-  }%
-  \MT@temp*%
-}
 %</package>
-%    \end{macrocode}
-%\end{macro}
-%\begin{macro}{\MT@prot@addtoken@next}
-% Add token to our toks and test whether we've seen enough (ligature completed).
-% For luatex, we have to jump through another hoop (\ie, box), because, contrary
-% to the manual, \cmd\lastnodetype\ isn't really compatible. ^^A cf. https://mailman.ntg.nl/pipermail/dev-luatex/2021-August/006536.html et seqq.
-%\changes{v3.2}{2024/04/24}{make color-safe}
-%    \begin{macrocode}
-%<*pdf-|lua-|xe->
-\def\MT@prot@addtoken@next#1{%
-  \MT@toks\expandafter{\the\MT@toks#1}%
-  \setbox\MT@tempbox\hbox{%
-    \begingroup
-%    \end{macrocode}
-% We disable italic correction, which would prevent us from
-% seeing the ligature (with text commands).
-%    \begin{macrocode}
-    \let\maybe@ic\relax
-    \MT@exp@one@n\MT@maybe@textcmd{\the\MT@toks}%
-%<pdf-|xe->    \relax
-    \endgroup
-%<lua->  }\setbox\MT@tempbox\hbox{\unhbox\MT@tempbox
-    \ifnum\lastnodetype=7 \aftergroup\@firstoftwo\else\aftergroup\@secondoftwo\fi}%
-      \MT@prot@get@nexttoken
-      {\MT@exp@one@n\MT@prot@l{\the\MT@toks}}%
-}
-%</pdf-|lua-|xe->
 %    \end{macrocode}
 %\end{macro}
 %
