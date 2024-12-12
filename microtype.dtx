@@ -1287,7 +1287,7 @@
 %           {Character protrusion \requires{\pdftex~0.14f,\luatex~0.30,\xetex~0.9997}}
 %           \label{sub:options-protrusion}
 %
-%\Describe{Option}{factor}{:integer}[1000]
+%\Describe{Option}{factor}{:integer}[\MT@factor@default]
 % Using this option, you can globally increase or decrease the amount by which
 % the characters will be protruded. While a value of 1000 means that the full
 % protrusion as specified in the configuration (see section~\ref{sub:protrusion})
@@ -1349,7 +1349,7 @@
 % themselves, which may or may not be desired.
 %
 %\medskip
-%\Describe{Option}{stretch}{:integer}[20]
+%\Describe{Option}{stretch}{:integer}[\MT@stretch@default]
 %\DescribeOption{shrink}
 % You may specify the stretchability and shrinkability of a font, \ie, the
 % maximum amount that a font may be stretched or shrunk. The numbers will be
@@ -1390,7 +1390,7 @@
 %           {Tracking \requires{\pdftex~1.40,\luatex~0.62,\xetex~0.9997}}
 %           \label{sub:options-tracking}
 %
-%\Describe{Option}{letterspace}{:integer}[100]
+%\Describe{Option}{letterspace}{:integer}[\MT@letterspace@default]
 % This option changes the default amount for tracking (see section~\ref{sub:tracking})
 % resp. letterspacing (see section~\ref{sec:lettersp}). The amount is specified
 % in thousandths of \EM{1}; admissible values are in the range of \textminus1000
@@ -2124,8 +2124,9 @@
 %
 %\medskip\noindent
 % Letterspaced fonts for which settings don't exist will be spaced out by the
-% default of \EM{0.1} (adjustable with the package option \opt{letterspace}, see
-% section~\ref{sub:options-misc}). Suppose your editor wants you to shorten
+% default of \EM{\fpeval{\MT@letterspace@default/1000}}
+% (adjustable with the package option \opt{letterspace}, see
+% section~\ref{sub:options-tracking}). Suppose your editor wants you to shorten
 % your 1000-pages chef-d'\oe uvre by a handful of pages, you could load
 % \microtype\ with (fingers crossed):
 %\begin{verbatim}
@@ -2526,7 +2527,7 @@
 %
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeFilePrefix}{prefix}
-% Or, in fact, it will load the file `\meta{prefix}|-|\meta{file name}|.cfg|'.
+% Or, in fact, it will load the file `\meta{prefix}|-|\meta{font name}|.cfg|'.
 % The \meta{prefix} may be changed, which, however, you should only do
 % if you have your own set of configuration files that you want to be
 % loaded \emph{instead of} any of those provided with the package.
@@ -2657,7 +2658,8 @@
 % The starred version of \cs{textls} does not add any
 % extra kerning before or after the text, which may be useful, \eg, for section
 % titles. By default, each character will be spaced out by
-% \EM{100/1000}\,=\,\EM{0.1}; this amount may be altered in the optional
+% \EM{\MT@letterspace@default/1000}\,=\,\EM{\fpeval{\MT@letterspace@default/1000}};
+% this amount may be altered in the optional
 % argument to \cs{textls}, using the \cs{SetTracking} command, or globally with
 % the \opt{letterspace} package option, with decreasing significance in this
 % order.
@@ -3402,9 +3404,10 @@
 %  \contributor Bernhard Fisseni  <@\at @>,  ^^A https://github.com/teoric
 %  \contributor Aleksandr Petrosyan <@\at @>, ^^A https://github.com/appetrosyan
 %  \contributor Didier Verna      <@\at @>,  ^^A https://tex.stackexchange.com/users/24506/didier-verna
-% `\contributor nowox             <@\at @>'  ^^A https://tex.stackexchange.com/users/85416/nowox
+% `\contributor nowox             <@\at @>', ^^A https://tex.stackexchange.com/users/85416/nowox
+% `\contributor hpvd              <@\at @>'  ^^A https://github.com/hpvd
 % and
-% `\contributor hpvd              <@\at @>'. ^^A https://github.com/hpvd
+%  \contributor Mark Collins      <@\at @>.  ^^A https://github.com/Marcool04
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3548,7 +3551,8 @@
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
 %  \item Support for tracking/letterspacing with \xetex\
-%        \refsection{\ref{sub:tracking}, \ref{sec:lettersp}}
+%        \refsection{\ref{sub:options-microtype}, \ref{sub:tracking}, \ref{sec:lettersp}}
+%  \item New default for letterspacing: \MT@letterspace@default\space \refsection{\ref{sub:options-tracking}}
 %  \item New key `\texttt{features}' for \cs{SetTracking} to enable\slash disable
 %        \pkg{fontspec} `Ligatures' features (\luatex/\xetex\ only)
 %        \refsection{\ref{sub:tracking}}
@@ -5259,10 +5263,12 @@
 %\begin{macro}{\MT@letterspace}
 %\begin{macro}{\MT@letterspace@default}
 % Default value for letterspacing (in thousandths of \EM{1}).
+%\changes{v3.2}{2024/10/11}{new default for letterspacing: \MT@letterspace@default\space
+%                           (following a report by \contributor Mark Collins <@\at @>) \githubissue{41}}
 %    \begin{macrocode}
 %</package>
 \let\MT@letterspace\m@ne
-\def\MT@letterspace@default{100}
+\def\MT@letterspace@default{50}
 %<*package>
 %    \end{macrocode}
 %\end{macro}
@@ -7021,7 +7027,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         it won't do any harm either.
 %         There's no new code for footnotes in minipages at the moment.
 %\changes{v3.2}{2024/10/03}{fix protrusion patch \texttt{footnote} for tagging
-%                           (reported by \contributor `hpvd' <@\at @>) \githubissue{40}}
+%                           (reported by \contributor hpvd <@\at @>) \githubissue{40}}
 %    \begin{macrocode}
   \MT@define@patch{footnote}{%
     \MT@ifdefined@n@TF{fnote_footnotetext:n}
