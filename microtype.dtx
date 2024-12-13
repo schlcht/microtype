@@ -6965,6 +6965,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
 %                           (provided by \contributor Holger Gerhardt <holger.gerhardt\at uni-bonn.de>)}
 %\changes{v3.0a}{2021/11/22}{protrusion patch \texttt{eqnum} for \cls{IEEEtran}}
+%\changes{v3.2}{2024/12/12}{protrusion patch \texttt{eqnum}: fix for \pkg{showkeys}}
 % \begin{itemize}
 %  \item \cls{IEEEtran}
 %    \begin{macrocode}
@@ -6977,11 +6978,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
       {}%
 %    \end{macrocode}
 %  \item \cmd\eqref\ (\pkg{amsmath}) relies on \cmd\tagform@, so we have to have it
-%        use the original definition.
+%        use the original definition. The \pkg{showkeys} package also modifies this
+%        command, as well as \cmd\@eqnnum\space (below); we don't test for the package
+%        itself but the relevant command, which is only redefined <ABD>.
 %    \begin{macrocode}
     \@ifpackageloaded{amsmath}
-      {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
-       \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}%
+      {\MT@ifdefined@c@TF\SK@tagform@
+        {\MT@patch@patch\SK@tagform@{(}{\leftprotrusion{(}}%
+         \MT@patch@patch\SK@tagform@{)}{\rightprotrusion{)}}}%
+        {\MT@patch@patch\tagform@{(}{\leftprotrusion{(}}%
+         \MT@patch@patch\tagform@{)}{\rightprotrusion{)}}}%
 %    \end{macrocode}
 % The command has been made robust in 2022.
 %\changes{v3.0e}{2022/05/21}{protrusion patch \texttt{eqnum}: adjust to robustness of \cmd\eqref\
@@ -7001,6 +7007,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0c}{2021/12/30}{info that protrusion patch \texttt{eqnum} may not be effective with \pkg{mathtools}
 %                           (reported by \contributor user182849 <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/628090/usetagform-incompatible-with-microtype/
+%\changes{v3.2}{2024/12/12}{protrusion patch \texttt{eqnum}: fix for \cls{IEEEtran}}
 %    \begin{macrocode}
        \MT@with@package@T{mathtools}{%
          \ifMT@patch@ok\else \MT@patch@oktrue
@@ -7010,8 +7017,12 @@ time will almost certainly lead to undesired results. Have your choice!}%
                `\@backslashchar rightprotrusion' as\MessageBreak
                appropriate in mathtools's `\@backslashchar newtagform' command}%
          \fi}}
-      {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
-       \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}%
+      {\@ifclassloaded{IEEEtran}{}
+        {\MT@ifdefined@c@TF\SK@eqnnum
+          {\MT@patch@patch\SK@eqnnum{(}{\leftprotrusion{(}}%
+           \MT@patch@patch\SK@eqnnum{)}{\rightprotrusion{)}}}%
+          {\MT@patch@patch\@eqnnum{(}{\leftprotrusion{(}}%
+           \MT@patch@patch\@eqnnum{)}{\rightprotrusion{)}}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
@@ -7023,6 +7034,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         to facilitate tagging, introduces many hooks, among them |fntext/begin|, which
 %         would seem appropriate for us. Unfortunately, however, we cannot use it, as we'd
 %         stumble over the hook management itself.
+%^^A see my feature request at https://github.com/latex3/tagging-project/issues/726
 %         I think it's unnecessary to patch the |expl3| version too, but I suppose
 %         it won't do any harm either.
 %         There's no new code for footnotes in minipages at the moment.
@@ -20803,7 +20815,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13386}
+% \CheckSum{13403}
 %
 % \Finale
 %
