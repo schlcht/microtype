@@ -3983,6 +3983,7 @@
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
 %^^A  \remove@tlig,\selectfont,\seriesdefault,\shapedefault,\set@fontsize,\showhyphens}  ^^A latex
+%\DoNotIndex{\ExplSyntaxOff,\ExplSyntaxOn}                                   ^^A latex3
 %\DoNotIndex{\normalpdfoutput,\normalpdftexversion,\normalpdftexrevision}    ^^A tex live 2004
 %\DoNotIndex{\alltt}                                                         ^^A alltt
 %\DoNotIndex{\eqref,\tagform@}                                               ^^A amsmath
@@ -4000,9 +4001,11 @@
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
 %  \fontfigurealignment,\fontbasefamily,\figureversion,\textfigures,
 %  \liningfigures,\tabularfigures,\proportionalfigures}                      ^^A fontaxes
+%\DoNotIndex{\addfontfeature,\addfontfeatures,\strong}                       ^^A fontspec
 %\DoNotIndex{\hyper@@anchor,\hyper@nopatch@footnote,\Hy@footnote@currentHref,
 % \ifHy@hyperfootnotes,\ifHy@implicit,\pdfstringdefDisableCommands,
 % \pdfstringdefWarn}                                                         ^^A hyperref
+%\DoNotIndex{\theequationdis,\theIEEEsubequationdis}                         ^^A IEEEtran
 %\DoNotIndex{\ifpdf,\ifetex,\ifluatex,\ifxetex}                              ^^A ifpdf/iftex
 %\DoNotIndex{\@inpenc@undefined@,\IeC,\inputencoding,\inputencodingname}     ^^A inputenc
 %^^A\DoNotIndex{\UTFviii@defined,\UTF@four@octets@noexpand,                  ^^A inputenc/utf8
@@ -4010,6 +4013,7 @@
 %^^A            \UTFviii@four@octets,\UTFviii@three@octets,\UTFviii@two@octets}
 %\DoNotIndex{\PrerenderUnicode,\unicode@charfilter}                          ^^A inputenc/utf8x
 %\DoNotIndex{\define@key,\KV@@sp@def,\setkeys}                               ^^A keyval
+%\DoNotIndex{\KOMAClassName,\setuptoc,\unsettoc,\scr@saved@footnotetext}     ^^A koma (tocbasic)
 %\DoNotIndex{\l@dunhbox@line}                                                ^^A ((r)e)ledmac,((r)e)ledpar
 %\DoNotIndex{\lst@ProcessLetter}                                             ^^A listings
 %\DoNotIndex{\cs,\marg,\oarg,\parg}                                          ^^A ltxdoc
@@ -4027,9 +4031,14 @@
 % \textu,\textscu,\textui,\textri,\textdf,\textnw,\textcd,\textec,\textuc,
 % \textet,\textep,\textex,\textux,\textrw,\textmb,\textdb,\textsb,\texteb,
 % \textub,\textlg,\textel,\textul}                                           ^^A nfssext-cfr
+%\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
+%  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
+%  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
+%  \cftsubsubsectionafterpnum,\cfttableafterpnum}                            ^^A memoir
 %\DoNotIndex{\pdf@escapestring}                                              ^^A pdftexcmds
 %\DoNotIndex{\py@macron}                                                     ^^A pinyin
 %\DoNotIndex{\polyglossia@language@switched}                                 ^^A polyglossia
+%\DoNotIndex{\SK@eqnnum,\SK@tagform@}                                        ^^A showkeys
 %\DoNotIndex{\@topic@item}                                                   ^^A simplecv
 %\DoNotIndex{\SOUL@,\SOUL@doword,\soulregister}                              ^^A soul
 %\DoNotIndex{\tikz@expandcount}                                              ^^A tikz
@@ -4037,12 +4046,6 @@
 %\DoNotIndex{\@vwid@sift,\sift@deathcycles,\@vwid@resetb,\@vwid@loff,\@vwid@measure}^^A varwidth
 %\DoNotIndex{\@xspace,\@xspace@firsttrue}                                    ^^A xspace
 %\DoNotIndex{\frakfamily,\gothfamily,\swabfamily,\textfrak,\textgoth,\textswab}^^A yfonts
-%\DoNotIndex{\booknumberline,\chapternumberline,\foottextfont,\partnumberline,
-%  \cftbookafterpnum,\cftchapterafterpnum,\cftfigureafterpnum,\cftparagraphafterpnum,
-%  \cftpartafterpnum,\cftsectionafterpnum,\cftsubparagraphafterpnum,\cftsubsectionafterpnum,
-%  \cftsubsubsectionafterpnum,\cfttableafterpnum}                            ^^A memoir
-%\DoNotIndex{\KOMAClassName,\setuptoc,\unsettoc,\scr@saved@footnotetext}     ^^A koma (tocbasic)
-%\DoNotIndex{\theequationdis,\theIEEEsubequationdis}                         ^^A IEEEtran
 %\DoNotIndex{\x,\MT@dinfo,\MT@dinfo@nl,\tracingmicrotype,\tracingmicrotypeinpdf,
 %  \ifMT@inannot,\MT@inannottrue,\MT@inannotfalse,\MT@addto@annot,\MT@pdf@annot,
 %  \MT@show@pdfannot,\iftracingmicrotypeinpdfall,\tracingmicrotypeinpdfalltrue,
@@ -6359,7 +6362,7 @@ microtype.do_font = do_font
 % line by line, in the course of which margin kerns will get lost.
 % We patch the relevant commands to record and reinsert the margin kerns.
 %\changes{v3.2}{2024/05/03}{patch \pkg{varwidth} to allow for margin kerning
-%                           (reported by `\contributor web-stranger <@\at @>')}
+%                           (reported by \contributor web-stranger <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/245798/microtype-raggedright-and-varwidth-doesnt-work-well-with-each-other
 %    \begin{macrocode}
 \MT@requires@pdftex5{
