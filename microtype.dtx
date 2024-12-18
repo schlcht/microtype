@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2024/12/12 v3.2
+  [2024/12/12 v3.2a
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3406,9 +3406,10 @@
 %  \contributor Aleksandr Petrosyan <@\at @>, ^^A https://github.com/appetrosyan
 %  \contributor Didier Verna      <@\at @>,  ^^A https://tex.stackexchange.com/users/24506/didier-verna
 % `\contributor nowox             <@\at @>', ^^A https://tex.stackexchange.com/users/85416/nowox
-% `\contributor hpvd              <@\at @>'  ^^A https://github.com/hpvd
+% `\contributor hpvd              <@\at @>', ^^A https://github.com/hpvd
+%  \contributor Mark Collins      <@\at @>   ^^A https://github.com/Marcool04
 % and
-%  \contributor Mark Collins      <@\at @>.  ^^A https://github.com/Marcool04
+%  \contributor Nick Bart         <@\at @>.  ^^A https://github.com/njbart
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -3551,6 +3552,8 @@
 %\begin{History}
 %
 %\Version{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.2}{2024/12/12}
 %  \item Support for tracking/letterspacing with \xetex\
 %        \refsection{\ref{sub:options-microtype}, \ref{sub:tracking}, \ref{sec:lettersp}}
 %  \item New default for letterspacing: \MT@letterspace@default\space \refsection{\ref{sub:options-tracking}}
@@ -10768,12 +10771,14 @@ microtype.add_ls = add_ls
 % The possibility to disable ligatures is a new features of \pdftex\ 1.30, and
 % also works with \luatex.
 %\changes{v2.3}{2007/10/23}{fix: set evaluation didn't work (bug introduced in v2.2)}
+%\changes{v3.2a}{2024/12/18}{fix: define current feature (reported by \contributor Nick Bart <@\at @>) \githubissue{42}}
 %    \begin{macrocode}
 %<*pdf-|lua->
 %<pdf->\MT@requires@pdftex5{
 \def\MT@noligatures{%
   \MT@dotrue
   \let\@tempa\MT@nl@setname
+  \def\MT@feat{nl}%
   \MT@map@clist@n{font,encoding,family,series,shape,size}{%
     \MT@ifdefined@n@TF{MT@checklist@##1}%
       {\csname MT@checklist@##1\endcsname}%
@@ -20819,7 +20824,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13403}
+% \CheckSum{13405}
 %
 % \Finale
 %
