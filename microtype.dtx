@@ -3387,7 +3387,7 @@
 %  \contributor Nelson Lago       <@\at @>,  ^^A https://github.com/urrameu
 %  \contributor Brian Dunn        <@\at @>,  ^^A https://github.com/bdtc
 %  \contributor Ralf Steinle      <rasteinle\at web.de>,
-%  \contributor Denis Bitouz\'e   <@\at @>,  ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9
+%  \contributor Denis Bitouz\'e   <dbitouze\at wanadoo.fr>, ^^A https://tex.stackexchange.com/users/18401/denis-bitouz%c3%a9, https://github.com/dbitouze
 %  \contributor Christophe Dervieux <@\at @>, ^^A https://github.com/cderv
 %  \contributor Scott Kostyshak   <@\at @>,  ^^A https://github.com/scottkosty
 %  \contributor Shen Zhou Hong    <@\at @>,  ^^A https://github.com/ShenZhouHong
@@ -6367,6 +6367,8 @@ microtype.do_font = do_font
 %\changes{v3.2}{2024/05/03}{patch \pkg{varwidth} to allow for margin kerning
 %                           (reported by \contributor web-stranger <@\at @>)}
 %                           ^^A https://tex.stackexchange.com/questions/245798/microtype-raggedright-and-varwidth-doesnt-work-well-with-each-other
+%\changes{v3.2a}{2024/12/21}{fix for \cls{standalone} class
+%                            (reported by \contributor Denis Bitouz\'e <dbitouze\at wanadoo.fr>) \githubissue{43}}
 %    \begin{macrocode}
 \MT@requires@pdftex5{
 %</pdf->
@@ -6377,8 +6379,8 @@ microtype.do_font = do_font
 ^^X      \newdimen\MT@vwid@leftmargin
 ^^X      \newdimen\MT@vwid@rightmargin
 ^^X      \patchcmd\@vwid@sift{\sift@deathcycles\z@}
-^^X        {\MT@vwid@leftmargin\leftmarginkern\z@
-^^X         \MT@vwid@rightmargin\rightmarginkern\z@ \sift@deathcycles\z@}{}{}%
+^^X        {\ifhbox\z@ \MT@vwid@leftmargin\leftmarginkern\z@
+^^X         \MT@vwid@rightmargin\rightmarginkern\z@\fi \sift@deathcycles\z@}{}{}%
 ^^X      \patchcmd\@vwid@resetb{\kern\@vwid@loff \unhbox\z@}
 ^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern\MT@vwid@leftmargin\fi
 ^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern\MT@vwid@rightmargin\fi}{}{}%
@@ -20824,7 +20826,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13405}
+% \CheckSum{13408}
 %
 % \Finale
 %
