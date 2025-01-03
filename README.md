@@ -83,4 +83,4 @@ provided that: (1) the original copyright statement is not removed, and
 (2) the identification string is changed.
 
 ------------------------------------------------------
-Copyright (c) 2004--2024  R Schlicht `<w.m.l@gmx.net>`
+Copyright (c) 2004--2025  R Schlicht `<w.m.l@gmx.net>`
