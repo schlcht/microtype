@@ -2809,7 +2809,7 @@
 %              \MTsupp{\cls{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (visible in particular
 %              when the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{hyperref}}
+%              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{fnbreak}, \pkg{hyperref}}
 % \item[verbatim] Disables protrusion and expansion in verbatim environments.
 %              \MTsupp{\pkg{alltt}}
 % \item[eqnum] Protrusion for equation numbers on either side. If you are using the
@@ -3407,9 +3407,10 @@
 %  \contributor Didier Verna      <@\at @>,  ^^A https://tex.stackexchange.com/users/24506/didier-verna
 % `\contributor nowox             <@\at @>', ^^A https://tex.stackexchange.com/users/85416/nowox
 % `\contributor hpvd              <@\at @>', ^^A https://github.com/hpvd
-%  \contributor Mark Collins      <@\at @>   ^^A https://github.com/Marcool04
+%  \contributor Mark Collins      <@\at @>,  ^^A https://github.com/Marcool04
+%  \contributor Nick Bart         <@\at @>   ^^A https://github.com/njbart
 % and
-%  \contributor Nick Bart         <@\at @>.  ^^A https://github.com/njbart
+% `\contributor Rimole            <@\at @>'. ^^A https://github.com/Rimole
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -4001,6 +4002,7 @@
 %  \hyphenquote,\hyphentextquote,\hyphentextcquote,\textquote,\textcquote}   ^^A csquotes
 %\DoNotIndex{\meta}                                                          ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefdimen,\ifdefmacro,\ifdefparam,\patchcmd}^^A etoolbox
+%\DoNotIndex{\fnb@fnstart,\fnb@orig@footnotetext}                            ^^A fnbreak
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
 %  \fontfigurealignment,\fontbasefamily,\figureversion,\textfigures,
 %  \liningfigures,\tabularfigures,\proportionalfigures}                      ^^A fontaxes
@@ -7058,6 +7060,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
        \ExplSyntaxOff}
 %    \end{macrocode}
+%   \item \pkg{fnbreak} patches the footnote command <ABD>, overwriting everything else.
+%         This also means that we can only patch it if \pkg{fnbreak} has been loaded first.
+%\changes{v3.2a}{2025/01/07}{fix protrusion patch \texttt{footnote} with \pkg{fnbreak}
+%                            (reported by \contributor `Rimole' <@\at @>) \githubissue{44}}
+%    \begin{macrocode}
+      {\@ifpackageloaded{fnbreak}
+        {\MT@ifdefined@c@TF\fnb@orig@footnotetext
+          {\MT@patch@patch\@footnotetext{\fnb@fnstart}{\fnb@fnstart\leftprotrusion}}%
+          {\MT@warning{Unable to apply patch `footnote'.\MessageBreak
+                       Load package `fnbreak' before `microtype'}}}%
+%    \end{macrocode}
 %   \item \pkg{hyperref} also patches this command (but only if |hyperfootnotes=true|,
 %         |implicit=true| and \cmd\hyper@nopatch@footnote\ is undefined)
 %\changes{v3.0a}{2021/11/30}{fix protrusion patch \texttt{footnote} with \pkg{hyperref}
@@ -7067,39 +7080,39 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/21}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
 %                            if \cmd\hyper@nopatch@footnote\ is defined}
 %    \begin{macrocode}
-      {\@ifpackageloaded{hyperref}
-        {\MT@if@false
-         \ifHy@implicit
-           \ifHy@hyperfootnotes
-             \MT@ifdefined@c@TF\hyper@nopatch@footnote\relax
-               \MT@if@true
+        {\@ifpackageloaded{hyperref}
+          {\MT@if@false
+           \ifHy@implicit
+             \ifHy@hyperfootnotes
+               \MT@ifdefined@c@TF\hyper@nopatch@footnote\relax
+                 \MT@if@true
+             \fi
            \fi
-         \fi
-         \ifMT@if@\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
-        \@secondoftwo
-      {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-       \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
-       \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
-       \MT@patch@patch\@mpfootnotetext
-           {{\expandafter\hyper@@anchor\expandafter
-               {\Hy@footnote@currentHref}{\relax}}\ignorespaces}
-           {{\expandafter\hyper@@anchor\expandafter
-               {\Hy@footnote@currentHref}{\relax}}\ignorespaces\leftprotrusion}}
+           \ifMT@if@\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
+          \@secondoftwo
+        {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+         \MT@patch@patch\@footnotetext{\@empty\ignorespaces}{\@empty\ignorespaces\leftprotrusion}%
+         \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+         \MT@patch@patch\@mpfootnotetext
+             {{\expandafter\hyper@@anchor\expandafter
+                 {\Hy@footnote@currentHref}{\relax}}\ignorespaces}
+             {{\expandafter\hyper@@anchor\expandafter
+                 {\Hy@footnote@currentHref}{\relax}}\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
 %   \item \cls{memoir} additionally allows footnotes in the margins
 %    \begin{macrocode}
-      {\@ifclassloaded{memoir}
-        {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}%
-         \MT@patch@patch\@mpfootnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
+        {\@ifclassloaded{memoir}
+          {\MT@patch@patch\@footnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}%
+           \MT@patch@patch\@mpfootnotetext{\foottextfont #1}{\foottextfont\leftprotrusion #1}}
 %    \end{macrocode}
 %   \item \cls{beamer} has it its own way, of course
 %\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} with \cls{beamer}}
 %    \begin{macrocode}
-        {\@ifclassloaded{beamer}
-          {\MT@exp@cs\MT@patch@patch{beamerx@\string\beamer@framefootnotetext}
-               {\ignorespaces}{\ignorespaces\leftprotrusion}%
-           \MT@exp@cs\MT@patch@patch{beamerx@\string\@mpfootnotetext}
-               {\ignorespaces}{\ignorespaces\leftprotrusion}}
+          {\@ifclassloaded{beamer}
+            {\MT@exp@cs\MT@patch@patch{beamerx@\string\beamer@framefootnotetext}
+                 {\ignorespaces}{\ignorespaces\leftprotrusion}%
+             \MT@exp@cs\MT@patch@patch{beamerx@\string\@mpfootnotetext}
+                 {\ignorespaces}{\ignorespaces\leftprotrusion}}
 %    \end{macrocode}
 %   \item the <\cls{KOMA}> classes
 %\changes{v3.0a}{2021/12/02}{fix protrusion patch \texttt{footnote} with <\cls{KOMA}> classes
@@ -7107,13 +7120,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.1}{2022/08/03}{fix test for <\cls{KOMA}> classes in protrusion patch \texttt{footnote}
 %                           (also reported by \contributor David Purton <@\at @>) \githubissue{26}}
 %    \begin{macrocode}
-          {\MT@ifdefined@c@TF\KOMAClassName
-            {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
+            {\MT@ifdefined@c@TF\KOMAClassName
+              {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
 %    \end{macrocode}
 %   \item the base classes
 %    \begin{macrocode}
-            {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
-           \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}}%
+              {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
+             \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
@@ -20826,7 +20839,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13408}
+% \CheckSum{13418}
 %
 % \Finale
 %
