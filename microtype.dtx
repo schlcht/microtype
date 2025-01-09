@@ -2809,7 +2809,7 @@
 %              \MTsupp{\cls{memoir}}
 % \item[footnote] Protrusion for the first line of footnote text (visible in particular
 %              when the footnote text is set in block paragraphs, like in this document).
-%              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{fnbreak}, \pkg{hyperref}}
+%              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{changebar}, \pkg{fnbreak}, \pkg{hyperref}}
 % \item[verbatim] Disables protrusion and expansion in verbatim environments.
 %              \MTsupp{\pkg{alltt}}
 % \item[eqnum] Protrusion for equation numbers on either side. If you are using the
@@ -3995,6 +3995,7 @@
 %\DoNotIndex{\percentsign}                                                   ^^A babel/spanish,galician,mexican
 %\DoNotIndex{\beamer@@callorigitem,\beamer@callorigitem,
 %  \beamer@framefootnotetext}                                                ^^A beamer
+%\DoNotIndex{\cb@end,\ltx@footnotetext,\ltx@mpfootnotetext}                  ^^A changebar
 %\DoNotIndex{\CJK@ifundefined,\CJK@plane,\CJK@temp,\CJK@addcmap}             ^^A CJK,CJKutf8
 %\DoNotIndex{\color}                                                         ^^A color
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes,
@@ -7063,7 +7064,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %   \item \pkg{fnbreak} patches the footnote command <ABD>, overwriting everything else.
 %         This also means that we can only patch it if \pkg{fnbreak} has been loaded first.
 %\changes{v3.2a}{2025/01/07}{fix protrusion patch \texttt{footnote} with \pkg{fnbreak}
-%                            (reported by \contributor `Rimole' <@\at @>) \githubissue{44}}
+%                            (reported by \contributor Rimole <@\at @>) \githubissue{44}}
 %    \begin{macrocode}
       {\@ifpackageloaded{fnbreak}
         {\MT@ifdefined@c@TF\fnb@orig@footnotetext
@@ -7121,12 +7122,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (also reported by \contributor David Purton <@\at @>) \githubissue{26}}
 %    \begin{macrocode}
             {\MT@ifdefined@c@TF\KOMAClassName
-              {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
+              {\MT@patch@patch\scr@saved@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+               \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
 %    \end{macrocode}
-%   \item the base classes
+%   \item \pkg{changebar}
+%\changes{v3.2a}{2025/01/07}{fix protrusion patch \texttt{footnote} with \pkg{changebar}
+%                            (reported by \contributor Rimole <@\at @>) \githubissue{45}}
 %    \begin{macrocode}
-              {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}%
-             \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}}}%
+              {\@ifpackageloaded{changebar}
+                {\MT@patch@patch\@footnotetext{#1}{\leftprotrusion#1}%
+                 \MT@patch@patch\@footnotetext{#1\cb@end}{\leftprotrusion#1\cb@end}%
+                 \MT@patch@patch\@mpfootnotetext{#1}{\leftprotrusion#1}%
+                 \MT@patch@patch\@mpfootnotetext{#1\cb@end}{\leftprotrusion#1\cb@end}}%
+%    \end{macrocode}
+%   \item finally, the base classes
+%    \begin{macrocode}
+                {\MT@patch@patch\@footnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}%
+                 \MT@patch@patch\@mpfootnotetext{\ignorespaces}{\ignorespaces\leftprotrusion}}}}}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
@@ -20839,7 +20851,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13418}
+% \CheckSum{13440}
 %
 % \Finale
 %

@@ -1,0 +1,11 @@
+% github/45
+\documentclass{article}
+\usepackage{changebar}
+\usepackage[verbose]{microtype}
+\begin{document}
+\cbstart 
+Hello, bug!\footnote{---\cbstart A footnote\cbend}
+\cbend
+\end{document}
+
+! grep "Unable to apply"

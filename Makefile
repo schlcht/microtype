@@ -339,6 +339,8 @@ test: testerrors testunknown testoutput
 	@$(RM) $(TESTDIR)/*.hd
 	@$(RM) $(TESTDIR)/*.bcf
 	@$(RM) $(TESTDIR)/*.run.xml
+	@$(RM) $(TESTDIR)/*.cb
+	@$(RM) $(TESTDIR)/*.cb2
 
 testerrors: $(wildcard $(TESTDIR)/error-*.tex)
 	@echo "* Errors:"
