@@ -1,4 +1,3 @@
-* update CTAN blurb
 * fix spacing in tracking with XeTeX
 * make microtype-show work with xetex
 * different md* (etc.) for different fonts
