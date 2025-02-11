@@ -3408,9 +3408,10 @@
 % `\contributor nowox             <@\at @>', ^^A https://tex.stackexchange.com/users/85416/nowox
 % `\contributor hpvd              <@\at @>', ^^A https://github.com/hpvd
 %  \contributor Mark Collins      <@\at @>,  ^^A https://github.com/Marcool04
-%  \contributor Nick Bart         <@\at @>   ^^A https://github.com/njbart
+%  \contributor Nick Bart         <@\at @>,  ^^A https://github.com/njbart
+% `\contributor Rimole            <@\at @>'  ^^A https://github.com/Rimole
 % and
-% `\contributor Rimole            <@\at @>'. ^^A https://github.com/Rimole
+%  \contributor Clea F. Rees      <@\at @>.
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -5357,6 +5358,7 @@ end
 
 local find       = string.find
 local match      = string.match
+local gsub       = string.gsub
 local tex_write  = tex.write
 
 local catpackage
@@ -9982,17 +9984,21 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@ls@fontspec@font}
-% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}.
+% Add the |kernfactor| feature to a font loaded by \pkg{fontspec}
 %\changes{v2.6a}{2016/05/03}{fix for value of \textpm1000}
 %\changes{v2.7}{2017/02/10}{fix for `\texttt{file:}\meta{font}' spec
-%                           (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}
+%                           (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at web.de>)}^^A
 %                            ^^A http://tug.org/pipermail/lualatex-dev/2017-February/001670.html
 %\changes{v3.0}{2021/03/19}{use \texttt{lua} to parse font spec\slash fix for font spec containing spaces
-%                           (reported by \contributor Aman Mehra <reportaman\at gmail.com>)}
+%                           (reported by \contributor Aman Mehra <reportaman\at gmail.com>)}^^A
 %                            ^^A https://tex.stackexchange.com/questions/567698/luatex-microtype-fontspec-luaotfload-buggy-interaction-canceling-each-others-s
 %\changes{v3.2}{2024/05/03}{fix for spaces in font names, made necessary because \pkg{fontspec} v2.9b no longer strips them
 %                           (reported by \contributor Bernhard Fisseni <@\at @>)
-%                           \githubissue{35}} ^^A cf. https://github.com/latex3/fontspec/commit/b3f91feab5519d1a04db4b63adfc397e3e81a742
+%                           \githubissue{35}}^^A
+%                           ^^A cf. https://github.com/latex3/fontspec/commit/b3f91feab5519d1a04db4b63adfc397e3e81a742
+% (after possibly removing a leftover |kernfactor| spec).
+%\changes{v3.2a}{2025/02/10}{remove \texttt{kernfactor} from font spec
+%                            (reported by \contributor Clea F. Rees <@\at @>) \githubissue{47}}
 %    \begin{macrocode}
 %<*lua-|letterspace>
 \def\MT@ls@fontspec@font{%
@@ -10012,6 +10018,7 @@ local function add_ls(k,feat)
   local f = tex.fontname(font.current())
   local spec,size = match(f,'^(.+)( at .+)$')
   if not spec then spec = f end
+  spec = gsub(spec,"kernfactor=[-]?%d+%.%d+;","")
   local q = match(spec,'^"') or ""
   local a,b,c = match(spec,'^'..q..'([^:]+):?([^:]*):?(.*)'..q..'$')
   local ls = "kernfactor=" .. k/1000 .. ';'

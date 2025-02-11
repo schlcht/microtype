@@ -1,0 +1,16 @@
+% gitub/47
+\documentclass{article}
+\usepackage[tracking=true,verbose]{microtype}
+\DeclareMicrotypeSet*[tracking]{my} { encoding = *, }
+\SetTracking { encoding = *, }{500}
+\SetTracking [ context = ttrack,  ] { encoding = *, }{ 1000 }
+\parindent=0pt
+\textwidth=10cm
+\begin{document}
+Sophisticated sphinxes.\par
+\begin{microtypecontext}{tracking=ttrack}
+  Sophisticated sphinxes.\par
+\end{microtypecontext}
+\end{document}
+
+grep '^Overfull '
