@@ -1198,8 +1198,8 @@
 % the active font set (by default, all small capitals).
 % With \pdftex, it is only available in <PDF> mode.
 %
-%^^A\medskip
 %\pagebreak ^^A layout
+%\medskip
 %\Describe{Option}{kerning}{true,!false,:font set name}
 %\DescribeOption{spacing}
 % These features do not unconditionally improve the quality of the typeset text:
@@ -1373,7 +1373,6 @@
 % in case you are using a pre-1.40 \pdftex\ version, \opt{step} is by default
 % set to one fifth of the smaller value of \opt{stretch} and \opt{shrink}.
 %
-%\enlargethispage{\baselineskip} ^^A layout
 %\medskip
 %\Describe{Option}{selected}{true,!false}
 % When applying font expansion, it is possible to restrict the expansion of some
@@ -1417,13 +1416,14 @@
 %\medskip
 %\Describe{Option}{verbose}{true,!false,errors,silent}
 % Information on the settings used for each font will be written into the log
-% file if you enable the \opt{verbose} option. When \microtype\ encounters a
-% problem that is not fatal (\eg, an unknown character in the settings, or
-% non-existent settings), it will by default only issue a warning and try to
-% continue. Loading the package with |verbose=errors| will turn all warnings
-% into errors, so that you can be sure that no problem will go unnoticed. If on
-% the other hand you have investigated all warnings and decide to ignore them,
-% you may silence \microtype\ with |verbose=silent|.
+% file if you enable the \opt{verbose} option. This is useful for debugging.
+% When \microtype\ encounters a problem that is not fatal (\eg, an unknown
+% character in the settings, or non-existent settings), it will by default
+% only issue a warning and try to continue. Loading the package with
+% |verbose=errors| will turn all warnings into errors, so that you can be sure
+% that no problem will go unnoticed. If, on the other hand, you have
+% investigated all warnings and decide to ignore them, you may silence
+% \microtype\ with |verbose=silent|.
 %
 %\medskip
 %\Describe{Option}{babel}{true,!false}
@@ -1449,7 +1449,7 @@
 % instead, it is recommended to just call the respective program (|latex| resp.
 % |dvilualatex|).
 %\changes{v2.8}{2020/04/02}{declare \opt{DVIoutput} option deprecated}
-% For \xetex, this option is not applicable.\looseness=-1 ^^A layout
+% For \xetex, this option is not applicable.
 %
 %\iffalse
 %\changes{v1.5}{2004/12/15}{add note about \opt{DVIoutput} option}
@@ -1559,7 +1559,6 @@
 % words, this is equivalent to specifying \emph{all} possible values for that
 % attribute.
 % Therefore, the predefined set `|alltext|', which is declared as:
-%\enlargethispage{\baselineskip} ^^A layout
 %\begin{verbatim}
 %\DeclareMicrotypeSet{alltext}
 %   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2,TU} }
@@ -1754,7 +1753,7 @@
 % normal weight (|T1//m/it/|), the settings for the |cmr| family would apply.
 %\changes{v1.7}{2005/03/23}{remove table of match order
 %                           (now table~\ref{tab:match-order} on page~\pageref{tab:match-order})}
-% The encoding must always match.
+% The encoding must always match.\looseness=-1 ^^A layout
 %\iffalse
 %^^A TODO: When using native TrueType\slash OpenType fonts (with \xetex\ or \luatex, and
 %^^A the \pkg{fontspec} package), you may additionally restrict the settings to
@@ -2086,6 +2085,7 @@
 %
 % \lssample
 %
+%\enlargethispage{\baselineskip}^^A layout
 %\noindent
 % While the word `Stop' is not letterspaced, the space between the letters in
 % the other two words is expanded by the \showarrow[tracking]{tracking~amount}{red}
@@ -2180,7 +2180,6 @@
 %      \par
 %       For example, you can find the following settings, intended to be used
 %       for documents written in French, in the main configuration file:
-%\pagebreak ^^A layout
 %\begin{verbatim}[deletekeywords={[1]{unit}}]
 %\SetExtraKerning
 %   [ name     = french-default,
@@ -2484,7 +2483,6 @@
 %}\kern-\dimexpr\fboxsep+\fboxrule\relax ^^A end \fcolorbox
 %\end{table}
 %
-%\enlargethispage{\baselineskip} ^^A layout
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeVariants}{list of suffixes}
 %\DescribeMacro{\DeclareMicrotypeVariants*}
@@ -2525,7 +2523,6 @@
 %     section~\ref{sub:hook}.}
 % This command will load the file `|mt-|\meta{font name}|.cfg|'.
 %
-%\enlargethispage{\baselineskip} ^^A layout
 %\medskip
 %\Describe{Macro}{\DeclareMicrotypeFilePrefix}{prefix}
 % Or, in fact, it will load the file `\meta{prefix}|-|\meta{font name}|.cfg|'.
@@ -2717,7 +2714,6 @@
 % (which does not support package options) simply \cmd\input\ \file{letterspace.sty}.
 %
 %
-%\pagebreak ^^A layout
 %\section[Disabling ligatures]
 %        {Disabling ligatures \requires{\pdftex~1.30,\luatex~0.30}}
 %        \label{sec:disable-ligatures}
