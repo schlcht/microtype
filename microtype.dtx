@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2025/02/11 v3.2a
+  [2025/02/11 v3.2b
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -3550,6 +3550,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.2a}{2025/02/11}
 %
 %\Version{3.2}{2024/12/12}
 %  \item Support for tracking/letterspacing with \xetex\
@@ -16480,6 +16482,21 @@ end
    }
 
 %    \end{macrocode}
+% To accomodate the quirky nature of <OT1>, we have to provide dedicated settings
+% without the |f| to |ff| inheritance for |tt| families.
+%\changes{v3.2b}{2025/04/21}{settings for <OT1>/\texttt{tt}}
+%    \begin{macrocode}
+\DeclareCharacterInheritance
+   { encoding = OT1,
+     family   = tt* }
+   { i = {\i},
+     j = {\j},
+     O = {\O},
+     o = {\o}
+   }
+
+%    \end{macrocode}
+
 %
 %\subsubsection{<T1>}
 % Candidates here: |028|~(`fi'), |029|~(`fl'), |030|~(`ffi'), |031|~(`ffl'),
@@ -17331,6 +17348,30 @@ end
 %</cmr|ebg>
    }
 
+%</m-t|cmr|ebg|pmn>
+%    \end{macrocode}
+% There are rogue glyphs in |tt| families.
+%\changes{v3.2b}{2025/04/21}{settings for <OT1>/\texttt{tt} \githubissue{50}}
+%    \begin{macrocode}
+%<*m-t>
+\SetProtrusion
+   [ name     = OT1-tt-default,
+     load     = OT1-default ]
+   { encoding = OT1,
+     family   = tt*  }
+   {
+     060  = {150, 50}, % <
+     061  = { 50, 50}, % =
+     062  = { 50,150}, % >
+     091  = {250,100}, % [
+     092  = {100,100}, % \
+     093  = {100,250}, % ]
+     123  = {150, 50}, % {
+     124  = {100,100}, % |
+     125  = { 50,150}, % }
+   }
+
+%</m-t>
 %    \end{macrocode}
 % Settings for figure variants.
 %\changes{v3.0}{2021/06/10}{settings for <EB> Garamond figure variants}
@@ -17366,7 +17407,6 @@ end
    }
 
 %</ebg>
-%</m-t|cmr|ebg|pmn>
 %    \end{macrocode}
 % <T1> and <LY1> encodings contain some more characters. The default list
 % will be loaded first.
@@ -20857,7 +20897,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13422}
+% \CheckSum{13429}
 %
 % \Finale
 %
