@@ -2401,7 +2401,7 @@
 % Bitstream Letter Gothic (|blg|)\footnote{Alias: \pkg{ulgothic} (|ulg|)}
 %      & <OT1>, <T1>, <TS1>
 %      & n, it \\
-% Adobe Minion (|pmnx|, |pmnj|)
+% Adobe Minion (|pmnx|, |pmnj|)\footnote{Alias: Crimson}
 %      & <OT1>, <T1>, <T2A>, <LY1>, <TS1>
 %      & n, it, (sl)\fnref{fn:t1-itsl}, sc, si\\
 % Palatino (|ppl|, |pplx|, |pplj|)\footnote{Aliases: \pkg{pxfonts} (|pxr|),
@@ -16225,6 +16225,16 @@ end
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{CMU Serif}          {New Computer Modern}
 %    \end{macrocode}
+%\changes{v3.2b}{2025/04/26}{declare Crimson as an alias of Minion
+%                            (suggested by \contributor Karl Berry <karl\at freefriends.org>)}
+%                            ^^A private mail, 2025/03/02
+% The Crimson font is (intentionally) reasonably close to Minion to share the
+% settings.
+%    \begin{macrocode}
+%% -- Minion
+\DeclareMicrotypeAlias{Crimson-TLF}{pmnx}
+\DeclareMicrotypeAlias{Crimson-TOsF}{pmnj}
+%    \end{macrocode}
 % The packages \pkg{pxfonts} and \pkg{txfonts} fonts inherit Palatino and Times
 % settings respectively,
 %\changes{v1.8}{2005/04/19}{declare \texttt{pxr} and \texttt{txr}
@@ -16386,7 +16396,7 @@ end
 %\changes{v3.0}{2021/03/15}{declare \texttt{empty} aliases for \pkg{fontawesome5}}
 %    \begin{macrocode}
 \DeclareMicrotypeAlias{FontAwesome}      {TU-empty} % fontawesome
-\DeclareMicrotypeAlias{fontawesomefree}  {TU-empty} % fontawesome5
+\DeclareMicrotypeAlias{fontawesomefree}  {TU-empty} % fontawesome5/6
 \DeclareMicrotypeAlias{fontawesomepro}   {TU-empty}
 \DeclareMicrotypeAlias{fontawesomebrands}{TU-empty}
 
@@ -17351,7 +17361,9 @@ end
 %</m-t|cmr|ebg|pmn>
 %    \end{macrocode}
 % There are rogue glyphs in |tt| families.
-%\changes{v3.2b}{2025/04/21}{settings for <OT1>/\texttt{tt} \githubissue{50}}
+%\changes{v3.2b}{2025/04/21}{settings for <OT1>/\texttt{tt}
+%                            (suggested by \contributor Karl Berry <karl\at freefriends.org>)
+%                            \githubissue{50}}
 %    \begin{macrocode}
 %<*m-t>
 \SetProtrusion
@@ -20897,7 +20909,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13429}
+% \CheckSum{13431}
 %
 % \Finale
 %
