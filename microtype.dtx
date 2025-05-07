@@ -3374,7 +3374,7 @@
 % `\contributor florian           <@\at @>', ^^A https://tex.stackexchange.com/users/172863/florian
 %  \contributor Liang-Bo Wang     <@\at @>,  ^^A https://github.com/ccwang002
 % `\contributor MisterFiLou       <@\at @>', ^^A https://github.com/MisterFiLou
-%  \contributor Akira Yokosawa    <@\at @>,  ^^A https://github.com/akiyks
+%  \contributor Akira Yokosawa    <akiyks\at gmail.com>,  ^^A https://github.com/akiyks
 % `\contributor theufman          <@\at @>', ^^A https://github.com/theufman
 % `\contributor frafl             <@\at @>', ^^A https://github.com/frafl
 %  \contributor Joel Coffman      <@\at @>,  ^^A https://github.com/joel-coffman
@@ -3408,6 +3408,7 @@
 % `\contributor Rimole            <@\at @>'  ^^A https://github.com/Rimole
 % and
 %  \contributor Clea F. Rees      <@\at @>.
+%
 %
 %\iffalse
 %\section{History of micro-typography} ^^A some time ...
@@ -10767,10 +10768,10 @@ microtype.add_ls = add_ls
     \@tempdima=\dimexpr \numexpr\@tempa*\MT@letterspace@/1000\relax sp
                       * \fontdimen6\MT@lsfont/2000\relax
   }%
-%<lua->  \MT@if@opentype@font\relax{%
+%%<lua->  \MT@if@opentype@font\relax{%
 %<pdf-|lua->  \advance\@tempdima -\dimexpr \MT@letterspace@ sp
 %<pdf-|lua->                  * \fontdimen6\MT@lsfont/2000\relax
-%<lua->  }%
+%%<lua->  }%
   \edef\MT@temp{\MT@temp{\the\@tempdima}}%
 }
 %</pdf-|lua-|xe->
@@ -15618,26 +15619,23 @@ end
 %                             and \contributor Falk Hanisch <falk.hanisch\at tu-dresden.de>)}
 %                            ^^A private mail, 2019/09/26
 %                            ^^A private mail, 2019/10/08
-% Since 2019/10/01, the command is robust.
+% Since 2019/10/01, the command is robust. It has changed again in 2025/06/01.
+%\changes{v3.2b}{2025/05/06}{compatibility with \LaTeX\ 2025/06/01
+%                            (reported by \contributor Akira Yokosawa <akiyks\at gmail.com>) \githubissue{53}}
+% Here we can use \pkg{etoolbox}, as \LaTeX\ requires \etex\ since 2017/01/01.
 %    \begin{macrocode}
     \MT@ifdefined@n@TF{showhyphens }{%
-      \def\MT@temp##1##2{%
-        \MT@exp@cs\CheckCommand{showhyphens }[1]{##1}%
-        \DeclareRobustCommand\showhyphens[1]{##2}}%
+      \MT@exp@cs\patchcmd{showhyphens }{\color@begingroup}{\color@begingroup\pdfadjustspacing\z@}
+        {\MT@info@nl{Patching command `\string\showhyphens'}}
+        {\MT@warning@nl{Unable to patch command `\string\showhyphens'}}%
     }{%
-      \def\MT@temp##1##2{%
-        \CheckCommand*\showhyphens[1]{##1}%
-        \gdef\showhyphens####1{##2}}%
+      \CheckCommand*\showhyphens[1]{\setbox0\vbox{\color@begingroup
+        \everypar{}\parfillskip\z@skip\hsize\maxdimen\normalfont
+        \pretolerance\m@ne\tolerance\m@ne\hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}
+      \gdef\showhyphens##1{\setbox0\vbox{\color@begingroup\pdfadjustspacing\z@
+        \everypar{}\parfillskip\z@skip\hsize\maxdimen\normalfont
+        \pretolerance\m@ne\tolerance\m@ne\hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}%
     }%
-    \MT@temp
-       {\setbox0\vbox{\color@begingroup
-        \everypar{}\parfillskip\z@skip
-        \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
-        \hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}
-       {\setbox0\vbox{\color@begingroup\pdfadjustspacing\z@
-        \everypar{}\parfillskip\z@skip
-        \hsize\maxdimen\normalfont\pretolerance\m@ne\tolerance\m@ne
-        \hbadness\z@\showboxdepth\z@\ ##1\color@endgroup}}%
 %    \end{macrocode}
 %\end{macro}
 %    \begin{macrocode}
@@ -20909,7 +20907,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13431}
+% \CheckSum{13434}
 %
 % \Finale
 %
