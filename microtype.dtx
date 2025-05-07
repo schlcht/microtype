@@ -10768,10 +10768,10 @@ microtype.add_ls = add_ls
     \@tempdima=\dimexpr \numexpr\@tempa*\MT@letterspace@/1000\relax sp
                       * \fontdimen6\MT@lsfont/2000\relax
   }%
-%%<lua->  \MT@if@opentype@font\relax{%
+%<lua->  \MT@if@opentype@font\relax{%
 %<pdf-|lua->  \advance\@tempdima -\dimexpr \MT@letterspace@ sp
 %<pdf-|lua->                  * \fontdimen6\MT@lsfont/2000\relax
-%%<lua->  }%
+%<lua->  }%
   \edef\MT@temp{\MT@temp{\the\@tempdima}}%
 }
 %</pdf-|lua-|xe->
