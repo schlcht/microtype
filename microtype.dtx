@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2025/07/09 v3.2b
+  [2025/07/09 v3.2c
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,7 +52,7 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.2b",
+%<luafile>    version      = "3.2c",
 %<luafile>    date         = "2025/07/09",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
@@ -3552,6 +3552,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.2b}{2025/07/09}
 %
 %\VersionDate{3.2a}{2025/02/11}
 %
@@ -16728,6 +16730,7 @@ end
 %\subsubsection{<EU1>, <EU2>, <TU>}
 %\changes{v2.5}{2010/11/05}{add rudimentary list for <EU1> and <EU2>} ^^A (beta:03)
 %\changes{v2.6}{2016/04/22}{add <TU> encoding}
+%\changes{v3.2c}{2025/07/12}{add soft hyphen (reported by \contributor Ulrike Fischer <@\at @>) \githubissue{56}}
 % The <EU1> (\xetex), <EU2> (\luatex), and, since \pkg{fontspec} version 2.5,
 % <TU> encodings are not well-defined in the sense that they don't
 % contain a fixed number of glyphs, all of which must be present.
@@ -16768,7 +16771,8 @@ end
      Y = {\'Y,\"Y},
      y = {\'y,\"y},
      Z = {\'Z,\.Z,\v Z},
-     z = {\'z,\.z,\v z}
+     z = {\'z,\.z,\v z},
+     - = "AD
    }
 
 %</m-t>
