@@ -3406,9 +3406,10 @@
 %  \contributor Mark Collins      <@\at @>,  ^^A https://github.com/Marcool04
 %  \contributor Nick Bart         <@\at @>,  ^^A https://github.com/njbart
 % `\contributor Rimole            <@\at @>', ^^A https://github.com/Rimole
-%  \contributor Clea F. Rees      <@\at @>   ^^A https://github.com/cfr42
+%  \contributor Clea F. Rees      <@\at @>,  ^^A https://github.com/cfr42
+%  \contributor Joerg Klein       <@\at @>   ^^A https://github.com/joergklein
 % and
-%  \contributor Joerg Klein       <@\at @>.  ^^A https://github.com/joergklein
+% `\contributor pluton            <@\at @>'.  ^^A https://tex.stackexchange.com/users/371/pluton
 %
 %
 %\iffalse
@@ -8623,7 +8624,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@prot@iffirstcmd#1{%
   \ifx\relax#1\expandafter\@secondoftwo\else
-    \MT@exp@two@c\ifx\MT@car\MT@prot@next\relax\@nil#1%
+    \MT@exp@two@c\ifx\MT@car\MT@prot@next\relax\MT@nil#1%
       \expandafter\expandafter\expandafter\@firstoftwo
     \else
       \expandafter\expandafter\expandafter\@secondoftwo
@@ -8634,8 +8635,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\end{macro}
 %\begin{macro}{\MT@car}
 % A long car.
+%\changes{v3.2c}{2025/08/01}{use \cs{MT@nil} in case there's a \cmd\@nil\ in the macro
+%                            (reported by \contributor pluton <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/748918/conflict-between-microtype-and-asme2e-cls
 %    \begin{macrocode}
-\long\def\MT@car#1#2\@nil{#1}
+\long\def\MT@car#1#2\MT@nil{#1}
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@prot@iflicrcmd}
