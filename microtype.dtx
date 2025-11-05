@@ -3986,7 +3986,7 @@
 %  \DeclareOption,\DeclareRobustCommand,\IfFileExists,\IfFormatAtLeastTF,\InputIfFileExists,
 %  \MakeLowercase,\MakeUppercase,\MakeTitlecase,\MessageBreak,\PackageError,\PackageInfo,
 %  \PackageWarning,\PassOptionsToPackage,\ProcessOptions,\RawNoindent,\RequirePackage,
-%  \UnicodeEncodingName}
+%  \SuspendTagging,\UnicodeEncodingName}
 %^^A\DoNotIndex{\add@accent,\cf@encoding,\curr@fontshape,\define@newfont,
 %^^A  \do@subst@correction,\f@encoding,\f@family,\f@size,\font@name,\fontencoding,
 %^^A  \fontseries,\fontshape,\glb@currsize,\glb@settings,\normalfont,\pickup@font,
@@ -8516,6 +8516,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.2}{2024/04/24}{make color-safe}
 %\begin{macro}{\MT@prot@hook}
 % Furthermore, we have a hook for compatibility fixes (currently used for \pkg{csquotes} only),
+%\begin{macro}{\MT@suspend@tagging}
+%\changes{v3.2c}{2025/11/05}{suspend tagging (reported by \contributor Ulrike Fischer <@\at @>) \githubissue{59}}
+% one to disable tagging,
 %\begin{macro}{\MT@csq@eqgroup}
 %\changes{v3.0c}{2022/01/06}{compatibility with \pkg{csquotes}, again
 %                           (reported by \contributor NightShade <@\at @>)}
@@ -8539,10 +8542,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \let\MT@prot@hook\@empty
 \let\MT@csq@eqgroup\relax
 \IfFormatAtLeastTF{2021/11/15}
-  {\let\MT@noindent\RawNoindent}
+  {\let\MT@noindent\RawNoindent
+   \IfFormatAtLeastTF{2024/06/01}{\def\MT@suspend@tagging{\SuspendTagging{microtype}}}
+                                 {\let\MT@suspend@tagging\relax}}
   {\let\MT@noindent\noindent}
 \def\MT@get@prot#1#2{%
   \begingroup
+    \MT@suspend@tagging
     \setbox\MT@tempbox\vbox{%
       \everypar{}%
       \parfillskip=\z@skip
@@ -8581,6 +8587,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \fi
 }
 %    \end{macrocode}
+%\end{macro}
 %\end{macro}
 %\end{macro}
 %\end{macro}
@@ -20917,7 +20924,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13434}
+% \CheckSum{13442}
 %
 % \Finale
 %
