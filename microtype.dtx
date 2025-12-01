@@ -3407,9 +3407,10 @@
 %  \contributor Nick Bart         <@\at @>,  ^^A https://github.com/njbart
 % `\contributor Rimole            <@\at @>', ^^A https://github.com/Rimole
 %  \contributor Clea F. Rees      <@\at @>,  ^^A https://github.com/cfr42
-%  \contributor Joerg Klein       <@\at @>   ^^A https://github.com/joergklein
+%  \contributor Joerg Klein       <@\at @>,  ^^A https://github.com/joergklein
+% `\contributor pluton            <@\at @>'  ^^A https://tex.stackexchange.com/users/371/pluton
 % and
-% `\contributor pluton            <@\at @>'.  ^^A https://tex.stackexchange.com/users/371/pluton
+%  \contributor Udi Fogiel        <@\at @>.  ^^A https://github.com/Udi-Fogiel
 %
 %
 %\iffalse
@@ -8518,7 +8519,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
 % Furthermore, we have a hook for compatibility fixes (currently used for \pkg{csquotes} only),
 %\begin{macro}{\MT@suspend@tagging}
 %\changes{v3.2c}{2025/11/05}{suspend tagging (reported by \contributor Ulrike Fischer <@\at @>) \githubissue{59}}
-% one to disable tagging,
+% one to disable tagging
+%\changes{v3.2c}{2025/12/01}{add \cmd\partokencontext\texttt{\quotechar=0}
+%                            (reported by \contributor Udi Fogiel <@\at @>) \githubissue{60}}
+% and to undo the insertion of |\par| tokens (introduced with \LaTeX\ 2025-11-01),
+% which could be problematic with the \pkg{doc} |verbatim| environment,
 %\begin{macro}{\MT@csq@eqgroup}
 %\changes{v3.0c}{2022/01/06}{compatibility with \pkg{csquotes}, again
 %                           (reported by \contributor NightShade <@\at @>)}
@@ -8543,7 +8548,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 \let\MT@csq@eqgroup\relax
 \IfFormatAtLeastTF{2021/11/15}
   {\let\MT@noindent\RawNoindent
-   \IfFormatAtLeastTF{2024/06/01}{\def\MT@suspend@tagging{\SuspendTagging{microtype}}}
+   \IfFormatAtLeastTF{2024/06/01}{\def\MT@suspend@tagging{\SuspendTagging{microtype}\partokencontext\z@}}
                                  {\let\MT@suspend@tagging\relax}}
   {\let\MT@noindent\noindent}
 \def\MT@get@prot#1#2{%
@@ -20924,7 +20929,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13442}
+% \CheckSum{13444}
 %
 % \Finale
 %
