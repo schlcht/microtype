@@ -3408,9 +3408,10 @@
 % `\contributor Rimole            <@\at @>', ^^A https://github.com/Rimole
 %  \contributor Clea F. Rees      <@\at @>,  ^^A https://github.com/cfr42
 %  \contributor Joerg Klein       <@\at @>,  ^^A https://github.com/joergklein
-% `\contributor pluton            <@\at @>'  ^^A https://tex.stackexchange.com/users/371/pluton
+% `\contributor pluton            <@\at @>', ^^A https://tex.stackexchange.com/users/371/pluton
+%  \contributor Udi Fogiel        <@\at @>   ^^A https://github.com/Udi-Fogiel
 % and
-%  \contributor Udi Fogiel        <@\at @>.  ^^A https://github.com/Udi-Fogiel
+%  \contributor Jannis Weis       <@\at @>.  ^^A https://github.com/weisJ
 %
 %
 %\iffalse
@@ -7091,6 +7092,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            with option \texttt{implicit!=false}}
 %\changes{v3.0e}{2022/05/21}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
 %                            if \cmd\hyper@nopatch@footnote\ is defined}
+%\changes{v3.2c}{2026/02/16}{fix protrusion patch \texttt{footnote} after \pkg{hyperref} change
+%                            (reported by \contributor Jannis Weis <@\at @>) \githubissue{64}}
+%                            ^^A https://github.com/latex3/hyperref/issues/402
 %    \begin{macrocode}
         {\@ifpackageloaded{hyperref}
           {\MT@if@false
@@ -7105,9 +7109,11 @@ time will almost certainly lead to undesired results. Have your choice!}%
         {\MT@patch@patch@app\@footnotetext\ignorespaces\leftprotrusion
          \MT@patch@patch@app\@footnotetext{\@empty\ignorespaces}\leftprotrusion
          \MT@patch@patch@app\@mpfootnotetext\ignorespaces\leftprotrusion
-         \MT@patch@patch@app\@mpfootnotetext{{\expandafter\hyper@@anchor
-                 \expandafter{\Hy@footnote@currentHref}{\relax}}\ignorespaces}
-             \leftprotrusion}
+         \@ifpackagelater{hyperref}{2025/07/12}
+           {\MT@patch@patch@app\@mpfootnotetext{\@empty\ignorespaces}\leftprotrusion}
+           {\MT@patch@patch@app\@mpfootnotetext{{\expandafter\hyper@@anchor
+                   \expandafter{\Hy@footnote@currentHref}{\relax}}\ignorespaces}
+               \leftprotrusion}}
 %    \end{macrocode}
 %   \item \cls{memoir} additionally allows footnotes in the margins
 %    \begin{macrocode}
@@ -20929,7 +20935,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13444}
+% \CheckSum{13450}
 %
 % \Finale
 %
