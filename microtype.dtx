@@ -6827,7 +6827,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %\begin{macro}{\MT@append@patch}
 %\begin{macro}{\MT@patch@patch}
-%\begin{macro}{\MT@patch@patch@app}
 % Wrappers around \pkg{etoolbox} commands.
 % We also remember the original command to allow unpatching.
 %    \begin{macrocode}
@@ -6839,11 +6838,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@remember@patch{#1}%
   \patchcmd#1{#2}{#3}\relax\MT@patch@okfalse
 }
-\def\MT@patch@patch@app#1#2#3{%
-  \MT@patch@patch#1{#2}{#2#3}%
-}
 %    \end{macrocode}
-%\end{macro}
 %\end{macro}
 %\end{macro}
 %\begin{macro}{\MT@remember@patch}
@@ -6928,7 +6923,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
     \@ifclassloaded{beamer}
       {\MT@append@patch\beamer@@callorigitem\leftprotrusion
-       \MT@patch@patch@app\beamer@callorigitem\ignorespaces\leftprotrusion}
+       \MT@patch@patch\beamer@callorigitem\ignorespaces\leftprotrusion}
 %    \end{macrocode}
 % \item the \cls{simplecv} class
 %    \begin{macrocode}
@@ -6989,7 +6984,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            (requested by \contributor Simmo Saan <@\at @>) \githubissue{65}}
 %    \begin{macrocode}
     \MT@with@package@T{titletoc}
-      {\MT@patch@patch@app\ttl@tocentry\ignorespaces\leftprotrusion}%
+      {\MT@patch@patch\ttl@tocentry\ignorespaces\leftprotrusion}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|eqnum|] equation numbers
@@ -7075,9 +7070,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
   \MT@define@patch{footnote}{%
     \MT@ifdefined@n@TF{fnote_footnotetext:n}
       {\ExplSyntaxOn
-       \MT@patch@patch@app\@footnotetext\ignorespaces\leftprotrusion
-       \MT@exp@cs\MT@patch@patch@app{fnote_footnotetext:n}\ignorespaces\leftprotrusion
-       \MT@patch@patch@app\@mpfootnotetext\ignorespaces\leftprotrusion
+       \MT@patch@patch\@footnotetext\ignorespaces\leftprotrusion
+       \MT@exp@cs\MT@patch@patch{fnote_footnotetext:n}\ignorespaces\leftprotrusion
+       \MT@patch@patch\@mpfootnotetext\ignorespaces\leftprotrusion
        \ExplSyntaxOff}
 %    \end{macrocode}
 %   \item \pkg{fnbreak} patches the footnote command <ABD>, overwriting everything else.
@@ -7087,7 +7082,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
       {\@ifpackageloaded{fnbreak}
         {\MT@ifdefined@c@TF\fnb@orig@footnotetext
-          {\MT@patch@patch@app\@footnotetext\fnb@fnstart\leftprotrusion}
+          {\MT@patch@patch\@footnotetext\fnb@fnstart{\fnb@fnstart\leftprotrusion}}
           {\MT@warning{Unable to apply patch `footnote'.\MessageBreak
                        Load package `fnbreak' before `microtype'}}}%
 %    \end{macrocode}
@@ -7099,9 +7094,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                            with option \texttt{implicit!=false}}
 %\changes{v3.0e}{2022/05/21}{fix protrusion patch \texttt{footnote} for \pkg{hyperref}
 %                            if \cmd\hyper@nopatch@footnote\ is defined}
-%\changes{v3.2c}{2026/02/16}{fix protrusion patch \texttt{footnote} after \pkg{hyperref} change
-%                            (reported by \contributor Jannis Weis <@\at @>) \githubissue{64}}
-%                            ^^A https://github.com/latex3/hyperref/issues/402
 %    \begin{macrocode}
         {\@ifpackageloaded{hyperref}
           {\MT@if@false
@@ -7113,14 +7105,17 @@ time will almost certainly lead to undesired results. Have your choice!}%
            \fi
            \ifMT@if@\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
           \@secondoftwo
-        {\MT@patch@patch@app\@footnotetext\ignorespaces\leftprotrusion
-         \MT@patch@patch@app\@footnotetext{\@empty\ignorespaces}\leftprotrusion
-         \MT@patch@patch@app\@mpfootnotetext\ignorespaces\leftprotrusion
-         \@ifpackagelater{hyperref}{2025/07/12}
-           {\MT@patch@patch@app\@mpfootnotetext{\@empty\ignorespaces}\leftprotrusion}
-           {\MT@patch@patch@app\@mpfootnotetext{{\expandafter\hyper@@anchor
-                   \expandafter{\Hy@footnote@currentHref}{\relax}}\ignorespaces}
-               \leftprotrusion}}
+%    \end{macrocode}
+% There are two \cmd\ignorespaces\ in \pkg{hyperref}'s definition, which
+% we'll replace one after the other.
+%\changes{v3.2c}{2026/02/16}{fix protrusion patch \texttt{footnote} after \pkg{hyperref} change
+%                            (reported by \contributor Jannis Weis <@\at @>) \githubissue{64}}
+%                            ^^A https://github.com/latex3/hyperref/issues/402
+%    \begin{macrocode}
+        {\MT@patch@patch\@footnotetext\ignorespaces\leftprotrusion
+         \MT@patch@patch\@footnotetext\ignorespaces\leftprotrusion
+         \MT@patch@patch\@mpfootnotetext\ignorespaces\leftprotrusion
+         \MT@patch@patch\@mpfootnotetext\ignorespaces\leftprotrusion}
 %    \end{macrocode}
 %   \item \cls{memoir} additionally allows footnotes in the margins
 %    \begin{macrocode}
@@ -7132,9 +7127,9 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %\changes{v3.0e}{2022/05/13}{fix protrusion patch \texttt{footnote} with \cls{beamer}}
 %    \begin{macrocode}
           {\@ifclassloaded{beamer}
-            {\MT@exp@cs\MT@patch@patch@app{beamerx@\string\beamer@framefootnotetext}
+            {\MT@exp@cs\MT@patch@patch{beamerx@\string\beamer@framefootnotetext}
                  \ignorespaces\leftprotrusion
-             \MT@exp@cs\MT@patch@patch@app{beamerx@\string\@mpfootnotetext}
+             \MT@exp@cs\MT@patch@patch{beamerx@\string\@mpfootnotetext}
                  \ignorespaces\leftprotrusion}
 %    \end{macrocode}
 %   \item the <\cls{KOMA}> classes
@@ -7144,8 +7139,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %                           (also reported by \contributor David Purton <@\at @>) \githubissue{26}}
 %    \begin{macrocode}
             {\MT@ifdefined@c@TF\KOMAClassName
-              {\MT@patch@patch@app\scr@saved@footnotetext\ignorespaces\leftprotrusion
-               \MT@patch@patch@app\@mpfootnotetext\ignorespaces\leftprotrusion}
+              {\MT@patch@patch\scr@saved@footnotetext\ignorespaces\leftprotrusion
+               \MT@patch@patch\@mpfootnotetext\ignorespaces\leftprotrusion}
 %    \end{macrocode}
 %   \item \pkg{changebar}
 %\changes{v3.2a}{2025/01/07}{fix protrusion patch \texttt{footnote} with \pkg{changebar}
@@ -7159,8 +7154,8 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \end{macrocode}
 %   \item finally, the base classes
 %    \begin{macrocode}
-                {\MT@patch@patch@app\@footnotetext\ignorespaces\leftprotrusion
-                 \MT@patch@patch@app\@mpfootnotetext\ignorespaces\leftprotrusion}}}}}}}%
+                {\MT@patch@patch\@footnotetext\ignorespaces\leftprotrusion
+                 \MT@patch@patch\@mpfootnotetext\ignorespaces\leftprotrusion}}}}}}}%
   }{}%
 %    \end{macrocode}
 % \end{itemize}
@@ -20942,7 +20937,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13455}
+% \CheckSum{13441}
 %
 % \Finale
 %
