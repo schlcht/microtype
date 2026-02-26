@@ -2802,7 +2802,7 @@
 %              \MTsupp{\cls{beamer}, \cls{simplecv}}
 % \item[toc]   Adds protrusion at the left margins of sectioning titles in the Table of Contents
 %              and similar Lists of \meta{Things}.
-%              \MTsupp{\cls{memoir}}
+%              \MTsupp{\cls{memoir}, \pkg{titletoc}}
 % \item[footnote] Protrusion for the first line of footnote text (visible in particular
 %              when the footnote text is set in block paragraphs, like in this document).
 %              \MTsupp{\cls{memoir}, <\cls{KOMA}> classes, \cls{beamer}, \pkg{changebar}, \pkg{fnbreak}, \pkg{hyperref}}
@@ -3409,9 +3409,10 @@
 %  \contributor Clea F. Rees      <@\at @>,  ^^A https://github.com/cfr42
 %  \contributor Joerg Klein       <@\at @>,  ^^A https://github.com/joergklein
 % `\contributor pluton            <@\at @>', ^^A https://tex.stackexchange.com/users/371/pluton
-%  \contributor Udi Fogiel        <@\at @>   ^^A https://github.com/Udi-Fogiel
+%  \contributor Udi Fogiel        <@\at @>,  ^^A https://github.com/Udi-Fogiel
+%  \contributor Jannis Weis       <@\at @>   ^^A https://github.com/weisJ
 % and
-%  \contributor Jannis Weis       <@\at @>.  ^^A https://github.com/weisJ
+%  \contributor Simmo Saan        <@\at @>.  ^^A https://github.com/sim642
 %
 %
 %\iffalse
@@ -6972,7 +6973,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       who would understand <\cls{KOMA}> better than me.
 %\todo{fix KOMA patch (add \cmd\noprotrusion)}
 %    \begin{macrocode}
-%    \@ifpackageloaded{tocbasic}
+%    \MT@with@package@T{tocbasic}
 %      {\MT@define@patch{toc}
 %        {\MT@append@patch\numberline\leftprotrusion
 %         \setuptoc{toc}{noprotrusion}%
@@ -6980,10 +6981,16 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %         \setuptoc{lot}{noprotrusion}}
 %        {\unsettoc{toc}{noprotrusion}%
 %         \unsettoc{lof}{noprotrusion}%
-%         \unsettoc{lot}{noprotrusion}}}{}%
+%         \unsettoc{lot}{noprotrusion}}}%
 %    \end{macrocode}
-% \item (a patch for \pkg{titletoc} would also be worthwhile~\dots)
-%\todo{patch for \pkg{titletoc}}
+% \item \pkg{titletoc} itself redefines \cmd\numberline\ right before typesetting the
+%       title, which we can exploit to add \cs{leftprotrusion}.
+%\changes{v3.2c}{2026/02/26}{protrusion patch \texttt{toc} for \pkg{titletoc}
+%                            (requested by \contributor Simmo Saan <@\at @>) \githubissue{65}}
+%    \begin{macrocode}
+    \MT@with@package@T{titletoc}
+      {\MT@patch@patch@app\ttl@tocentry\ignorespaces\leftprotrusion}%
+%    \end{macrocode}
 % \end{itemize}
 % \item [|eqnum|] equation numbers
 %\changes{v3.0}{2021/05/21}{protrusion patch for equation numbers
@@ -20935,7 +20942,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13450}
+% \CheckSum{13455}
 %
 % \Finale
 %
