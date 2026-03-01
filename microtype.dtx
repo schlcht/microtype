@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2026/02/26 v3.2c
+  [2026/03/01 v3.2d
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,8 +52,8 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.2c",
-%<luafile>    date         = "2026/02/26",
+%<luafile>    version      = "3.2d",
+%<luafile>    date         = "2026/03/01",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
 %<luafile>    copyright    = "E. Roux, R. Schlicht and P. Gesang",
@@ -3557,6 +3557,8 @@
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
 %
+%\VersionDate{3.2c}{2026/02/26}
+%
 %\VersionDate{3.2b}{2025/07/09}
 %
 %\VersionDate{3.2a}{2025/02/11}
@@ -6957,7 +6959,6 @@ time will almost certainly lead to undesired results. Have your choice!}%
        \MT@append@patch\cftfigureafterpnum\noprotrusion
        \MT@append@patch\cfttableafterpnum\noprotrusion}
       {}%
-  }{}%
 %    \end{macrocode}
 % \item for the <\cls{KOMA}> classes (which load the \pkg{tocbasic} package)
 %       we additionally have to switch protrusion back on; this will
@@ -6982,9 +6983,13 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %       title, which we can exploit to add \cs{leftprotrusion}.
 %\changes{v3.2c}{2026/02/26}{protrusion patch \texttt{toc} for \pkg{titletoc}
 %                            (requested by \contributor Simmo Saan <@\at @>) \githubissue{65}}
+%\changes{v3.2d}{2026/03/01}{fix protrusion patch \texttt{toc}
+%                            (reported by \contributor Reinhard Kotucha <reinhard.kotucha\at gmx.de>)}
+%                             ^^A private mail, 2026/03/01
 %    \begin{macrocode}
     \MT@with@package@T{titletoc}
       {\MT@patch@patch\ttl@tocentry\ignorespaces\leftprotrusion}%
+  }{}%
 %    \end{macrocode}
 % \end{itemize}
 % \item [|eqnum|] equation numbers
