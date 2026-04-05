@@ -1,39 +1,34 @@
 \DocumentMetadata{lang=en-UK}
-\documentclass[]{ltxdoc}
+\documentclass{ltxdoc}
 \usepackage{microtype}
-\NewDocElement[]{name}{name}
+\NewDocElement{name}{name}
 \begin{document}
 \noindent
 \DescribeMacro{\DescribeMacro}
-    ---Test: ---Test: ---Test: ---Test:
-    ---Test: ---Test: ---Test: ---Test:
-    ---Test: ---Test: ---Test: ---Test:
+    ---Test\\
+    ---Test
 
 \begin{environment}{env}
-    ---Test: ---Test: ---Test: ---Test:
+    ---Test
 \end{environment}
 \begin{macro}{\hey,\you}
-    ---Test: Test: ---Test: ---Test:
-    ---Test: ---Test: ---Test: ---Test:
-    ---Test: ---Test: ---Test: ---Test:
+    ---Test\\
+    ---Test
 \end{macro}
 \begin{macro}{\hey,\you}
-    \cs{Test} Test: ---Test: ---Test:
+    \marg{hey}\\
+    \marg{you}
 \end{macro}
 
 \begin{verbatim}
-    ---Test: ---Test:
-    ---Test: ---Test:
-    Test: ---Test:
+    ---Test:
+    ---Test:
+    Test:
 \end{verbatim}
 
 \begin{name}{RRO}
-    ---Test: ---Test:
-    ---Test: ---Test:
-    ---Test: ---Test:
-    ---Test: ---Test:
-    ---Test: ---Test:
-    ---Test: ---Test:
+    ---Test\\
+    ---Test
 \end{name}
 \end{document}
 

@@ -569,8 +569,8 @@
 \def\cmd#1{\orig@cs{\expandafter\cmd@to@cs\string#1}}
 \DeclareRobustCommand\orig@cs[1]{\texttt{\char`\\#1}}
 \DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}%
-  {\let\special@index\index
-   \expandafter\SpecialIndex@\expandafter{\csname#1\endcsname}{\encapchar \ifcodedoc\else doc\fi hyperpage}}}
+  {\ifx#1\relax\else\let\special@index\index
+   \expandafter\SpecialIndex@\expandafter{\csname#1\endcsname}{\encapchar \ifcodedoc\else doc\fi hyperpage}\fi}}
 %</driver|docsty>
 % microtype's index style (microtype-gind.ist):
 %<docist>actual '='
@@ -8974,7 +8974,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@prot@check@E{%
   \the\MT@toks
-  \def\MT@temp*##1{\MT@prot@l{##1{}}}%
+  \def\MT@temp*##1{\MT@prot@l{##1}}%
 }
 %    \end{macrocode}
 %\end{macro}
