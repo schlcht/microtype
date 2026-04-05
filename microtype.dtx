@@ -37,7 +37,7 @@
 %<lua->  {microtype-luatex.def}
 %<xe->  {microtype-xetex.def}
 %<*package|letterspace|m-t|pdf-|lua-|xe-|show>
-  [2026/03/01 v3.2d
+  [2026/03/01 v3.2e
 %<package>   Micro-typographical refinements
 %<letterspace>   Robust letterspacing
 %<show>  Visual debugging for the microtype package
@@ -52,7 +52,7 @@
 %<luafile>local microtype  = microtype
 %<luafile>microtype.module = {
 %<luafile>    name         = "microtype",
-%<luafile>    version      = "3.2d",
+%<luafile>    version      = "3.2e",
 %<luafile>    date         = "2026/03/01",
 %<luafile>    description  = "microtype module.",
 %<luafile>    author       = "E. Roux, R. Schlicht and P. Gesang",
@@ -2815,6 +2815,8 @@
 %\newtagform{mytag}[\textbf]{\leftprotrusion{(}}{\rightprotrusion{)}}
 %\end{verbatim}^^A
 %              \MTsupp{\pkg{amsmath}, \cls{IEEEtran}, \pkg{showkeys}}
+% \item[doc]   Protrusion in the first line of a |macro| or |environment| environment.
+%              \MTsupp{\cls{ltxdoc}, \pkg{doc}}
 %\endlist\endgroup
 %
 %\medskip\noindent
@@ -3143,7 +3145,6 @@
 % distributions, this can be changed in the file \file{updmap.cfg} by setting
 % |pdftexDownloadBase14| to |true|.
 %
-%\pagebreak ^^A layout
 %  \item
 %\begin{verbatim}
 %Warning: pdflatex (file <ecrm1000+20>): Font <ecrm1000+20 at 1200> not found
@@ -3408,6 +3409,7 @@
 % `\contributor Rimole            <@\at @>', ^^A https://github.com/Rimole
 %  \contributor Clea F. Rees      <@\at @>,  ^^A https://github.com/cfr42
 %  \contributor Joerg Klein       <@\at @>,  ^^A https://github.com/joergklein
+% `\contributor Gargantuar        <@\at @>', ^^A https://tex.stackexchange.com/users/172890/gargantuar
 % `\contributor pluton            <@\at @>', ^^A https://tex.stackexchange.com/users/371/pluton
 %  \contributor Udi Fogiel        <@\at @>,  ^^A https://github.com/Udi-Fogiel
 %  \contributor Jannis Weis       <@\at @>   ^^A https://github.com/weisJ
@@ -3556,6 +3558,8 @@
 %\begin{History}
 %
 %\VersionDate{\expandafter\@gobble\fileversion}{\filedate}
+%
+%\VersionDate{3.2d}{2026/03/01}
 %
 %\VersionDate{3.2c}{2026/02/26}
 %
@@ -4010,7 +4014,7 @@
 %\DoNotIndex{\csqQQ,\csq@bqgroup,\csq@eqgroup,\@disablequotes,
 %  \enquote,\foreignquote,\foreigntextquote,\foreigntextcquote,
 %  \hyphenquote,\hyphentextquote,\hyphentextcquote,\textquote,\textcquote}   ^^A csquotes
-%\DoNotIndex{\meta}                                                          ^^A doc
+%\DoNotIndex{\@doc@env,\m@cro@,\meta}                                        ^^A doc
 %\DoNotIndex{\apptocmd,\gappto,\ifdefdimen,\ifdefmacro,\ifdefparam,\patchcmd}^^A etoolbox
 %\DoNotIndex{\fnb@fnstart,\fnb@orig@footnotetext}                            ^^A fnbreak
 %\DoNotIndex{\txfigures,\lnfigures,\tbfigures,\prfigures,\fontfigurestyle,
@@ -7183,9 +7187,23 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %      \item package \pkg{alltt}
 %    \begin{macrocode}
     \MT@with@package@T{alltt}{\MT@append@patch\alltt{\microtypesetup{activate=false}}}%
-  }{}
+  }{}%
 %    \end{macrocode}
 %   \end{itemize}
+% \item [|doc|] first line in |{macro}| or |{environment}| environments (\pkg{doc}/\cls{ltxdoc})
+%\changes{v3.2e}{2026/04/04}{protrusion patch for \pkg{doc}/\cls{ltxdoc}
+%                            (reported by \contributor Gargantuar <@\at @>)}
+%                            ^^A https://tex.stackexchange.com/questions/745157/wrong-protrusion-with-microtype-and-ltxdoc
+%    \begin{macrocode}
+  \MT@with@package@T{doc}{%
+    \MT@define@patch{doc}{%
+      \@ifpackagelater{doc}{2021/06/01}
+        {\ExplSyntaxOn
+         \MT@append@patch\@doc@env\leftprotrusion
+         \ExplSyntaxOff}
+        {\MT@append@patch\m@cro@\leftprotrusion}}%
+  }{}%
+%    \end{macrocode}
 %\end{description}
 % Finally, execute any redefinitions.
 %    \begin{macrocode}
@@ -8956,7 +8974,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
 %    \begin{macrocode}
 \def\MT@prot@check@E{%
   \the\MT@toks
-  \def\MT@temp*##1{\MT@prot@l{##1}}%
+  \def\MT@temp*##1{\MT@prot@l{##1{}}}%
 }
 %    \end{macrocode}
 %\end{macro}
@@ -9210,7 +9228,7 @@ time will almost certainly lead to undesired results. Have your choice!}%
           {S\swshape}{S\ulcshape}{S\sscshape}%
           {F\textulc}{F\textsw}{F\textssc}}}}%
 %    \end{macrocode}
-% \pkg{fontspec}'s \cmd\fontspec's command allows an optional
+% \pkg{fontspec}'s \cmd\fontspec\ command allows an optional
 % argument \emph{after} the mandatory one, and we can't deal with
 % that (yet).
 %\changes{v3.2}{2024/05/22}{add some \pkg{fontspec} commands}
@@ -20942,7 +20960,7 @@ This is the current font stretched by 5\%, normal, and shrunk by 5\%:
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-% \CheckSum{13441}
+% \CheckSum{13452}
 %
 % \Finale
 %
