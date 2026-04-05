@@ -1,0 +1,40 @@
+\DocumentMetadata{lang=en-UK}
+\documentclass[]{ltxdoc}
+\usepackage{microtype}
+\NewDocElement[]{name}{name}
+\begin{document}
+\noindent
+\DescribeMacro{\DescribeMacro}
+    ---Test: ---Test: ---Test: ---Test:
+    ---Test: ---Test: ---Test: ---Test:
+    ---Test: ---Test: ---Test: ---Test:
+
+\begin{environment}{env}
+    ---Test: ---Test: ---Test: ---Test:
+\end{environment}
+\begin{macro}{\hey,\you}
+    ---Test: Test: ---Test: ---Test:
+    ---Test: ---Test: ---Test: ---Test:
+    ---Test: ---Test: ---Test: ---Test:
+\end{macro}
+\begin{macro}{\hey,\you}
+    \cs{Test} Test: ---Test: ---Test:
+\end{macro}
+
+\begin{verbatim}
+    ---Test: ---Test:
+    ---Test: ---Test:
+    Test: ---Test:
+\end{verbatim}
+
+\begin{name}{RRO}
+    ---Test: ---Test:
+    ---Test: ---Test:
+    ---Test: ---Test:
+    ---Test: ---Test:
+    ---Test: ---Test:
+    ---Test: ---Test:
+\end{name}
+\end{document}
+
+! grep 'Unable to apply patch'
