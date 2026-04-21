@@ -625,7 +625,7 @@
     config,factor,auto,stretch,shrink,step,selected,unit,tracking,kerning,
     spacing,letterspace,babel,context,patch,nopatch,
    %defersetup,copyfonts,deactivate,reactivate,% undocumented
-    no ligatures,outer spacing,outer kerning}, % there are three \nobreakspace in this line
+    noï¿½ligatures,outerï¿½spacing,outerï¿½kerning}, % there are three \nobreakspace in this line
   keywordstyle=[1]\color{thered},
   comment=[l]\%,
   commentstyle=\color{thegrey}\itshape,
@@ -2070,10 +2070,10 @@
 % (which are in no way recommended; they only serve illustrative purposes):
 %\begin{verbatim}
 %\SetTracking
-%  [ no ligatures  = {"\anchorarrow{nolig}"f},
+%  [ noï¿½ligatures  = {"\anchorarrow{nolig}"f},
 %    spacing       = {60"\anchorarrow{ispace}"0*,-1"\anchorarrow{istretch}"00*, "\anchorarrow{ishrink}"},
-%    outer spacing = {4"\anchorarrow{ospace}"50,2"\anchorarrow{ostretch}"50,1"\anchorarrow{oshrink}"50},
-%    outer kerning = {"\anchorarrow{okernbegin}"*,"\anchorarrow{okernend}"*} ]
+%    outerï¿½spacing = {4"\anchorarrow{ospace}"50,2"\anchorarrow{ostretch}"50,1"\anchorarrow{oshrink}"50},
+%    outerï¿½kerning = {"\anchorarrow{okernbegin}"*,"\anchorarrow{okernend}"*} ]
 %  { encoding = * }
 %  { 1"\anchorarrow{lsamount}"60 }
 %\end{verbatim}
@@ -2117,7 +2117,7 @@
 %   { encoding = *,
 %     size     = {-small,Large-},
 %     font     = */*/*/sc/* }
-%\SetTracking[ no ligatures = f ]{ encoding = *, shape = sc}{ 50 }
+%\SetTracking[ noï¿½ligatures = f ]{ encoding = *, shape = sc}{ 50 }
 %\SetTracking{ encoding = *, size = -small }{  20 }
 %\SetTracking{ encoding = *, size = Large- }{ -20 }
 %\end{verbatim}
@@ -2687,11 +2687,11 @@
 %  with ligatures here highlighted in green, inhibited ligatures in red):
 %
 %\begin{verbatim}[morekeywords={[0]{\kern}}]
-%\SetTracking[no ligatures={f}]{encoding = LY, family = yfrak}{120}
+%\SetTracking[noï¿½ligatures={f}]{encoding = LY, family = yfrak}{120}
 %\textfrak{\lsstyle Aus:s{\kern0pt}ichts:los{\kern0pt}igkeit}
 %\end{verbatim}
 %\begin{verbatim}
-%\SetTracking[no ligatures={f,s,c}]{encoding = LY, family = yfrak}{120}
+%\SetTracking[noï¿½ligatures={f,s,c}]{encoding = LY, family = yfrak}{120}
 %\textfrak{\lsstyle Au\lslig{s:}si\lslig{ch}t\lslig{s:}losigkeit}
 %\end{verbatim}
 %
@@ -6371,6 +6371,7 @@ microtype.do_font = do_font
     \fi
   }
 }
+%</pdf->
 %    \end{macrocode}
 %\end{macro}
 %\begin{macro}{\MT@varwidth@setup}
@@ -6383,8 +6384,7 @@ microtype.do_font = do_font
 %\changes{v3.2a}{2024/12/21}{fix for \cls{standalone} class
 %                            (reported by \contributor Denis Bitouz\'e <dbitouze\at wanadoo.fr>) \githubissue{43}}
 %    \begin{macrocode}
-\MT@requires@pdftex5{
-%</pdf->
+%<pdf->\MT@requires@pdftex5{
   \def\MT@varwidth@setup{%
     \ifMT@protrusion
 ^^Q      \MT@warning@nl{Cannot patch varwidth without etex extensions}%
@@ -6395,11 +6395,15 @@ microtype.do_font = do_font
 ^^X        {\ifhbox\z@ \MT@vwid@leftmargin\leftmarginkern\z@
 ^^X         \MT@vwid@rightmargin\rightmarginkern\z@\fi \sift@deathcycles\z@}{}{}%
 ^^X      \patchcmd\@vwid@resetb{\kern\@vwid@loff \unhbox\z@}
-^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern\MT@vwid@leftmargin\fi
-^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern\MT@vwid@rightmargin\fi}{}{}%
+%<pdf-|xe->^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern\MT@vwid@leftmargin\fi
+%<pdf-|xe->^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern\MT@vwid@rightmargin\fi}{}{}%
+%<lua->^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern-\MT@vwid@leftmargin\fi
+%<lua->^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern-\MT@vwid@rightmargin\fi}{}{}%
 ^^X      \patchcmd\@vwid@measure{\kern\@vwid@loff \unhbox\z@}
-^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern\MT@vwid@leftmargin\fi
-^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern\MT@vwid@rightmargin\fi}{}{}%
+%<pdf-|xe->^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern\MT@vwid@leftmargin\fi
+%<pdf-|xe->^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern\MT@vwid@rightmargin\fi}{}{}%
+%<lua->^^X        {\kern\@vwid@loff \ifdim\MT@vwid@leftmargin=\z@\else\kern-\MT@vwid@leftmargin\fi
+%<lua->^^X         \unhbox\z@ \ifdim\MT@vwid@rightmargin=\z@\else\kern-\MT@vwid@rightmargin\fi}{}{}%
     \fi
   }
 %<*pdf->
